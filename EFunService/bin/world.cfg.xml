@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+	
+<hibernate-configuration>
+	<session-factory>
+		<mapping class="com.wyd.service.bean.GetItem" />
+		<mapping class="com.wyd.service.bean.GiftRecord" />
+		<mapping class="com.wyd.service.bean.Player" />
+		<mapping class="com.wyd.service.bean.PlayerItemsFromShop" />
+		<mapping class="com.wyd.service.bean.ShopItem" />
+		<mapping class="com.wyd.service.bean.ShopItemsPrice" />
+		<mapping class="com.wyd.service.bean.PlayerBill" />
+		<mapping class="com.wyd.service.bean.PetItem" />
+		<mapping class="com.wyd.service.bean.PlayerPet" />
+		<mapping class="com.wyd.service.bean.BuffRecord" />
+		<mapping class="com.wyd.service.bean.ConsortiaSkill" />
+		<mapping class="com.wyd.service.bean.Title" />
+		<mapping class="com.wyd.service.bean.PlayerDIYTitle" />
+		<mapping class="com.wyd.service.bean.MarryRecord" />
+		<mapping class="com.wyd.service.bean.Consortia" />
+		<mapping class="com.wyd.service.bean.ConsortiaContribute" />
+		<mapping class="com.wyd.service.bean.PlayerSinConsortia" />
+		<mapping class="com.wyd.service.bean.PlayerTaskTitle" />
+		<mapping class="com.wyd.service.bean.Mail" />
+	</session-factory>
+</hibernate-configuration>

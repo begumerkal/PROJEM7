@@ -1,0 +1,887 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<!-- JDBC参数配置 -->
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+		lazy-init="true">
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<value>classpath:/jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 数据源配置 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<!-- 设置JDBC驱动名称 -->
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<!-- 设置JDBC连接URL -->
+		<property name="url" value="${jdbc.url}" />
+		<!-- 设置数据库用户名 -->
+		<property name="username" value="${jdbc.username}" />
+		<!-- 设置数据库密码 -->
+		<property name="password" value="${jdbc.password}" />
+		<!-- 设置连接池初始值 -->
+		<property name="initialSize" value="5" />
+		<!-- 设置连接池最大值 -->
+		<property name="maxActive" value="50" />
+		<!-- 设置连接池最小空闲值 -->
+		<property name="minIdle" value="5" />
+		<!-- 设置连接池最大空闲值 -->
+		<property name="maxIdle" value="10" />
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<!-- 配置Hibernate拦截器,自动填充数据的插入、更新时间 -->
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
+		<property name="hibernateProperties">
+			<value>
+				<!-- 设置数据库方言 -->
+				hibernate.dialect=${hibernate.dialect}
+				<!-- 设置自动创建|更新|验证数据库表结构 -->
+				hibernate.hbm2ddl.auto=${hibernate.hbm2ddl.auto}
+				<!-- 输出SQL语句到控制台 -->
+				hibernate.show_sql=${hibernate.show_sql}
+				<!-- 格式化输出到控制台的SQL语句 -->
+				hibernate.format_sql=${hibernate.format_sql}
+				<!-- 是否开启二级缓存 -->
+				hibernate.cache.use_second_level_cache=${hibernate.cache.use_second_level_cache}
+				<!-- 配置二级缓存产品 -->
+				hibernate.cache.provider_class=${hibernate.cache.provider_class}
+				<!-- 是否开启查询缓存 -->
+				hibernate.cache.use_query_cache=${hibernate.cache.use_query_cache}
+				<!-- 数据库批量查询数 -->
+				hibernate.jdbc.fetch_size=${hibernate.jdbc.fetch_size}
+				<!-- 数据库批量更新数 -->
+				hibernate.jdbc.batch_size=${hibernate.jdbc.batch_size}
+				<!-- 是否采用CGLIB动态代理对象 -->
+				hibernate.bytecode.use_reflection_optimizer=${hibernate.bytecode.use_reflection_optimizer}
+			</value>
+		</property>
+	</bean>
+
+	<!-- world TransactionManager -->
+	<bean id="worldTransactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref local="sessionFactory" />
+		</property>
+	</bean>
+
+	<bean id="worldBaseTransactionProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+		abstract="true">
+		<property name="transactionManager" ref="worldTransactionManager" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="remove*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="save*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="create*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="is*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- world Service -->
+	<bean id="PlayerService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.BasePlayerService">
+				<property name="playerDao">
+					<bean class="com.wyd.empire.world.dao.impl.PlayerDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="ConsortiaService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.ConsortiaService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.ConsortiaDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="ConsortiaRightService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.ConsortiaRightService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.ConsortiaRightDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="OperationConfigService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.OperationConfigService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.OperationConfigDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="PlayerItemsFromShopService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.PlayerItemsFromShopService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.PlayerItemsFromShopDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="PlayerSinConsortiaService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.PlayerSinConsortiaService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.PlayerSinConsortiaDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="ShopItemService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.ShopItemService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.ShopItemDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="ShopItemsPriceService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.ShopItemsPriceService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.ShopItemsPriceDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="TaskService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.TaskService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.TaskDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="ToolsService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.ToolsService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.ToolsDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="RewardItemsService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.RewardItemsService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.RewardItemsDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="RandomNameService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.RandomNameService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.RandomNameDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="MailService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.MailService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.MailDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="FriendService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.FriendService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.FriendDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="InterfaceService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.InterfaceService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.InterfaceDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="MapService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.MapService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.MapDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="LogStatisticsService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.LogStatisticsService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.LogStatisticsDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="PlayerStaWeekService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.PlayerStaWeekService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.PlayerStaWeekDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="AdminService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.AdminService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.AdminDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="RechargeService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.RechargeService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.RechargeDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="ChatRecordService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.ChatRecordService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.ChatRecordDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="PlayerBossmapService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.PlayerBossmapService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.PlayerBossmapDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="GuaiService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.GuaiService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.GuaiDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="BossmapRewardService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.BossmapRewardService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.BossmapRewardDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="StrengthenService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.StrengthenService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.StrengthenDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="PlayerBillService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.PlayerBillService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.PlayerBillDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="BulletinService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.BulletinService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.BulletinDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="PromotionsService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.PromotionsService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.PromotionsDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="MarryService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.MarryService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.MarryDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="TitleService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.TitleService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.TitleDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="MagnificationService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.MagnificationService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.MagnificationDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="LotteryService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.LotteryService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.LotteryDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="RankRecordService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.RankRecordService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.RankRecordDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="PlayerFundService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.PlayerFundService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.PlayerFundDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="RechargeRewardService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.RechargeRewardService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.RechargeRewardDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<!-- 下载奖励服务 -->
+	<bean id="DownloadRewardService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.DownloadRewardService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.DownloadRewardDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="ActivitiesAwardService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.ActivitiesAwardService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.ActivitiesAwardDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="SchedulingService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.SchedulingService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.SchedulingDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="SpreeGiftService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.SpreeGiftService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.SpreeGiftDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="InviteService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.BaseInviteService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.InviteDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="DrawService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.DrawService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.DrawDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="ProbabilityService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.ProbabilityService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.ProbabilityDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="StarsInfoService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.StarsInfoService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.StarsInfoDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="OrderService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.OrderService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.OrderDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<!-- 第三方渠道配置 by:zengxc -->
+	<bean id="ThirdConfigService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.ThirdConfigService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.ThirdConfigDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<!-- 宠物表 by:zengxc -->
+	<bean id="PetItemService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.PetItemService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.PetItemDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<!-- 玩家宠物表 by:zengxc -->
+	<bean id="PlayerPetService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.PlayerPetService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.PlayerPetDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<!-- 日常活动 -->
+	<bean id="DailyActivityService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.DailyActivityService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.DailyActivityDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="SystemLogService"
+		class="com.wyd.empire.world.server.service.impl.SystemLogService">
+		<property name="logService" ref="LogStatisticsService" />
+	</bean>
+	<bean id="TasksService" class="com.wyd.empire.world.server.service.impl.TasksService">
+		<property name="taskService" ref="TaskService" />
+	</bean>
+	<bean id="WorldBossService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.WorldBossService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.WorldBossDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="PlayerDIYTitleService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.PlayerDIYTitleService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.PlayerDIYTitleDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="BossmapBuffService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.BossmapBuffService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.BossmapBuffDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<!-- 玩家头像上传 -->
+	<bean id="PictureUploadService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.PictureUploadService">
+			
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.PictureUploadDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="ChallengeService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.ChallengeService">
+   			    <property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.RankRecordDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<!-- 任务称号 -->
+	<bean id="PlayerTaskTitleService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.PlayerTaskTitleService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.PlayerTaskTitleDao">
+						<property name="sessionFactory" ref="sessionFactory"/>
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<!-- 获取日志服务 -->
+	<bean id="GetLogService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.GetLogService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.GetLogDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<!-- BM付费包奖励 -->
+	<bean id="PayAppRewardService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.PayAppRewardService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.PayAppRewardDao">
+						<property name="sessionFactory" ref="sessionFactory"/>
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<!-- 单人副本 -->
+	<bean id="SingleMapService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.SingleMapService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.SingleMapDao">
+						<property name="sessionFactory" ref="sessionFactory"/>
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<!-- 微博分享-->
+	<bean id="ShareService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.ShareService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.ShareDao">
+						<property name="sessionFactory" ref="sessionFactory"/>
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>	
+	<!-- 每日必做，我要变强-->
+	<bean id="DoEveryDayService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.DoEveryDayService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.DoEveryDayDao">
+						<property name="sessionFactory" ref="sessionFactory"/>
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>	
+	<!-- 活力值-->
+	<bean id="VigorService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.VigorService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.VigorPriceDao">
+						<property name="sessionFactory" ref="sessionFactory"/>
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>	
+	<!-- 星魂系统 -->
+	<bean id="StarSoulService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.StarSoulService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.StarSoulDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<!-- 修炼系统 -->
+	<bean id="PracticeService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.PracticeService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.PracticeDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<!-- 卡阵系统 -->
+	<bean id="PlayerCardsService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.PlayerCardsService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.PlayerCardsDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<!-- 本地推送列表 -->
+	<bean id="LocalPushListService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.LocalPushListService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.LocalPushListDao">
+						<property name="sessionFactory" ref="sessionFactory"/>
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>	
+	<!-- 月卡列表 -->
+	<bean id="MonthCardService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.world.server.service.base.impl.MonthCardService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.MonthCardDao">
+						<property name="sessionFactory" ref="sessionFactory"/>
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>	
+	<!-- VIP等级限购物品系统 -->
+	<bean id="LimitedPriceService" parent="worldBaseTransactionProxy">
+		<property name="target">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.LimitedPriceService">
+				<property name="dao">
+					<bean class="com.wyd.empire.world.dao.impl.LimitedPriceDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+</beans>

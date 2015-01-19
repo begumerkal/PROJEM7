@@ -1,0 +1,88 @@
+[2014-01-11|20:04:35] Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@787d6a: display name [org.springframework.context.support.ClassPathXmlApplicationContext@787d6a]; startup date [Sat Jan 11 20:04:35 CST 2014]; root of context hierarchy
+[2014-01-11|20:04:35] Loading XML bean definitions from class path resource [applicationContext.xml]
+[2014-01-11|20:04:35] Bean factory for application context [org.springframework.context.support.ClassPathXmlApplicationContext@787d6a]: org.springframework.beans.factory.support.DefaultListableBeanFactory@1cfb802
+[2014-01-11|20:04:36] Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@1cfb802: defining beans [DataSource,SessionFactory,hibernateProperties,TransactionManager,BaseTransactionProxy,PlayerItemsFromShopService]; root of factory hierarchy
+[2014-01-11|20:04:36] Hibernate Annotations 3.3.0.GA
+[2014-01-11|20:04:36] Hibernate 3.2.6
+[2014-01-11|20:04:36] hibernate.properties not found
+[2014-01-11|20:04:36] Bytecode provider name : cglib
+[2014-01-11|20:04:36] using JDK 1.4 java.sql.Timestamp handling
+[2014-01-11|20:04:36] configuring from url: file:/E:/workspace/EFunService/bin/hibernate.cfg.xml
+[2014-01-11|20:04:36] Configured SessionFactory: null
+[2014-01-11|20:04:36] Building new Hibernate SessionFactory
+[2014-01-11|20:04:36] Binding entity from annotated class: com.wyd.service.bean.GetItem
+[2014-01-11|20:04:36] Bind entity com.wyd.service.bean.GetItem on table log_getitem
+[2014-01-11|20:04:36] Binding entity from annotated class: com.wyd.service.bean.GiftRecord
+[2014-01-11|20:04:36] Bind entity com.wyd.service.bean.GiftRecord on table log_giftrecord
+[2014-01-11|20:04:36] Binding entity from annotated class: com.wyd.service.bean.Player
+[2014-01-11|20:04:36] Bind entity com.wyd.service.bean.Player on table tab_player
+[2014-01-11|20:04:36] Binding entity from annotated class: com.wyd.service.bean.PlayerItemsFromShop
+[2014-01-11|20:04:36] Bind entity com.wyd.service.bean.PlayerItemsFromShop on table tab_playeritemsfromshop
+[2014-01-11|20:04:36] Binding entity from annotated class: com.wyd.service.bean.ShopItem
+[2014-01-11|20:04:36] Bind entity com.wyd.service.bean.ShopItem on table tab_shopitems
+[2014-01-11|20:04:36] Binding entity from annotated class: com.wyd.service.bean.ShopItemsPrice
+[2014-01-11|20:04:36] Bind entity com.wyd.service.bean.ShopItemsPrice on table tab_shopitemsprice
+[2014-01-11|20:04:36] Hibernate Validator not found: ignoring
+[2014-01-11|20:04:36] Initializing connection provider: org.springframework.orm.hibernate3.LocalDataSourceConnectionProvider
+[2014-01-11|20:04:36] RDBMS: MySQL, version: 5.0.45-community-nt
+[2014-01-11|20:04:36] JDBC driver: MySQL-AB JDBC Driver, version: mysql-connector-java-5.0.8 ( Revision: ${svn.Revision} )
+[2014-01-11|20:04:36] Using dialect: com.wyd.db.hibernate.CustomSQLDialect
+[2014-01-11|20:04:36] Using default transaction strategy (direct JDBC transactions)
+[2014-01-11|20:04:36] No TransactionManagerLookup configured (in JTA environment, use of read-write or transactional second-level cache is not recommended)
+[2014-01-11|20:04:36] Automatic flush during beforeCompletion(): disabled
+[2014-01-11|20:04:36] Automatic session close at end of transaction: disabled
+[2014-01-11|20:04:36] JDBC batch size: 15
+[2014-01-11|20:04:36] JDBC batch updates for versioned data: disabled
+[2014-01-11|20:04:36] Scrollable result sets: enabled
+[2014-01-11|20:04:36] JDBC3 getGeneratedKeys(): enabled
+[2014-01-11|20:04:36] Connection release mode: on_close
+[2014-01-11|20:04:36] Maximum outer join fetch depth: 2
+[2014-01-11|20:04:36] Default batch fetch size: 1
+[2014-01-11|20:04:36] Generate SQL with comments: disabled
+[2014-01-11|20:04:36] Order SQL updates by primary key: disabled
+[2014-01-11|20:04:36] Order SQL inserts for batching: disabled
+[2014-01-11|20:04:36] Query translator: org.hibernate.hql.ast.ASTQueryTranslatorFactory
+[2014-01-11|20:04:36] Using ASTQueryTranslatorFactory
+[2014-01-11|20:04:36] Query language substitutions: {}
+[2014-01-11|20:04:36] JPA-QL strict compliance: disabled
+[2014-01-11|20:04:36] Second-level cache: disabled
+[2014-01-11|20:04:36] Query cache: disabled
+[2014-01-11|20:04:36] Optimize cache for minimal puts: disabled
+[2014-01-11|20:04:36] Structured second-level cache entries: disabled
+[2014-01-11|20:04:36] Statistics: disabled
+[2014-01-11|20:04:36] Deleted entity synthetic identifier rollback: disabled
+[2014-01-11|20:04:36] Default entity-mode: pojo
+[2014-01-11|20:04:36] Named query checking : enabled
+[2014-01-11|20:04:36] building session factory
+[2014-01-11|20:04:37] Not binding factory to JNDI, no JNDI name configured
+[2014-01-11|20:04:37] Running hbm2ddl schema update
+[2014-01-11|20:04:37] fetching database metadata
+[2014-01-11|20:04:37] updating schema
+[2014-01-11|20:04:37] Hibernate Validator not found: ignoring
+[2014-01-11|20:04:37] table found: ddd_world_cn.log_getitem
+[2014-01-11|20:04:37] columns: [createtime, id, days, remark, countnum, mark, playerid, itemid, getway]
+[2014-01-11|20:04:37] foreign keys: []
+[2014-01-11|20:04:37] indexes: [primary]
+[2014-01-11|20:04:37] table found: ddd_world_cn.log_giftrecord
+[2014-01-11|20:04:37] columns: [createtime, id, playerid, itemid, code]
+[2014-01-11|20:04:37] foreign keys: []
+[2014-01-11|20:04:37] indexes: [primary]
+[2014-01-11|20:04:37] table found: ddd_world_cn.tab_player
+[2014-01-11|20:04:37] columns: [betime, wb_user_icon, wintimes3v3_champion, invite_grade, suit_wear_code, wintimes3v3_athletics, playtimes3v3_relive, suit_weapon_id, playtimes1v1_relive, playtimes3v3_athletics, wintimes2v2_relive, integral, agility, wintimes3v3_relive, amount, viptime, level, reduce_crit, invite_code, channel_info, p_force, zs_old_level, playtimes2v2_champion, playtimes3v3_champion, wintimes1v1_athletics, status, honor, bind_invite_code, luck, item_jn_2, injury_free, item_jn_1, steps, zs_level, refresh_day, item_jn_4, bstime, item_jn_3, item_dj_2, item_dj_1, exp, suit_face_id, money_gold, item_dj_4, item_dj_3, update_time, playtimes2v2_athletics, onlinetime, playtimes2v2_relive, wintimes2v2_champion, gp, reduce_bury, sex, hp, armor, chat_status, wintimes1v1_champion, mac, suit_head_id, suit_wing_id, wintimes1v1_relive, createtime, id, playtimes1v1_champion, honorlevel, token, suit_ring1_id, name, accumulatediamond, array_win, wreck_defense, task_update_time, accountid, wb_user_id, defense, viplevel, bossmap_progress, wintimes2v2_athletics, suit_necklace_id, lottery_count, areaid, udid, suit_body_id, vipexp, prohibit_time, suit_ring2_id, physique, defend, attack, channel, playtimes1v1_athletics]
+[2014-01-11|20:04:37] foreign keys: []
+[2014-01-11|20:04:37] indexes: [iu_name, i_player_accountid, name, primary, i_player_status]
+[2014-01-11|20:04:37] table found: ddd_world_cn.tab_playeritemsfromshop
+[2014-01-11|20:04:37] columns: [buytime, p_addpower, skillful, miss_times, p_add_reduce_bury, skilllock, attackstone, p_add_physique, p_lasttime, id, p_criticalcoefficient, shopitemid, p_adddefend, hollnum, p_addattack, p_lastnum, p_expextrarate, p_add_wreck_defense, p_add_reduce_crit, p_add_force, weapskill2, playerid, weapskill1, p_add_armor, p_uselasttime, specialstone, p_add_crit, p_attackarea, p_addhp, stronglevel, p_add_luck, update_time, p_add_injury_free, stars, p_add_agility, defensestone, dispearatovertime, isinused, hollusednum]
+[2014-01-11|20:04:37] foreign keys: []
+[2014-01-11|20:04:37] indexes: [primary, i_play_f_shop_pid, i_play_f_shop_sid]
+[2014-01-11|20:04:37] table found: ddd_world_cn.tab_shopitems
+[2014-01-11|20:04:37] columns: [sex, onsaletime, criticalcoefficient, add_physique, maxhollnum, item_desc, animationindexcode, uselasttime, addhp, type, add_injury_free, id, level, name, expextrarate, can_recycle, hollforstoneid, attackarea, add_force, move, strongbystoneid, add_luck, addcriticalrate, autouse, addattack, icon, add_agility, add_reduce_crit, salednum, add_armor, use_type, powerskill, isonsale, offsaletime, sale_again, add_wreck_defense, add_reduce_bury, addpower, compositetype, weaponfollow, subtype, adddefend, weaponblastinganimation, dispearatovertime, strengthen]
+[2014-01-11|20:04:37] foreign keys: []
+[2014-01-11|20:04:37] indexes: [primary]
+[2014-01-11|20:04:37] table found: ddd_world_cn.tab_shopitemsprice
+[2014-01-11|20:04:37] columns: [id, count, days, shopitemid, costusegold, costusetickets, costtype]
+[2014-01-11|20:04:37] foreign keys: []
+[2014-01-11|20:04:37] indexes: [primary, fkd848b2e921db73ae]
+[2014-01-11|20:04:37] schema update complete
+[2014-01-11|20:04:37] Using DataSource [org.apache.commons.dbcp.BasicDataSource@1d206f0] of Hibernate SessionFactory for HibernateTransactionManager
+[2014-01-11|20:04:37] EFUN接口服务器启动...

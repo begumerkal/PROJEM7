@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<!-- 定时服务 保存满足活动的玩家信息 开始 -->
+	<bean id="saveLogServicesTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="SchedulingService" />
+		<property name="targetMethod" value="saveLogActivitiesAward" />
+	</bean>
+
+	<bean id="saveLogServicesCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="saveLogServicesTask" />
+		<!-- 工作执行的频率 每小时执行一次 -->
+		<property name="cronExpression" value="0 0 */1 * * ?" />
+	</bean>
+	<!-- 定时服务 保存满足活动的玩家信息 结束 -->
+
+	<!-- 定时服务 给玩家发送活动奖励 开始 -->
+	<bean id="sendItemsServicesTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="SchedulingService" />
+		<property name="targetMethod" value="sendItemsToPlayer" />
+	</bean>
+
+	<bean id="sendItemsServicesCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="sendItemsServicesTask" />
+		<!-- 工作执行的频率 每小时的20分执行一次 -->
+		<property name="cronExpression" value="0 20 * * * ?" />
+	</bean>
+	<!-- 定时服务 给玩家发送活动奖励 结束 -->
+
+	<!-- 定时服务 排行榜&日志 开始 -->
+	<bean id="thirtyMinuteSystemLogServiceTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="SystemLogService" />
+		<property name="targetMethod" value="thirtyMinute" />
+	</bean>
+
+	<bean id="thirtyMinuteSystemLogServiceCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="thirtyMinuteSystemLogServiceTask" />
+		<!-- 工作执行的频率 每30分钟执行一次 -->
+		<property name="cronExpression" value="0 0/30 * * * ?" />
+	</bean>
+	<!-- 定时服务 排行榜&日志 结束 -->
+
+	<bean id="oneDaySystemLogServiceTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="SystemLogService" />
+		<property name="targetMethod" value="oneDay" />
+	</bean>
+
+	<bean id="oneDaySystemLogServiceCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="oneDaySystemLogServiceTask" />
+		<!-- 工作执行的频率 每天凌晨执行一次 -->
+		<property name="cronExpression" value="0 0 0 * * ?" />
+	</bean>
+
+	<bean id="sevenDaySystemLogServiceTask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="SystemLogService" />
+		<property name="targetMethod" value="sevenDay" />
+	</bean>
+
+	<bean id="sevenDaySystemLogServiceCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="sevenDaySystemLogServiceTask" />
+		<!-- 工作执行的频率 每周一凌晨执行一次 -->
+		<property name="cronExpression" value="0 0 0 ? * MON" />
+	</bean>
+
+	<bean id="oneMonthSystemLogServiceTask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="SystemLogService" />
+		<property name="targetMethod" value="oneMonth" />
+	</bean>
+
+	<bean id="oneMonthSystemLogServiceCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="oneMonthSystemLogServiceTask" />
+		<!-- 工作执行的频率 每月1号凌晨执行一次 -->
+		<property name="cronExpression" value="0 0 0 1 * ?" />
+	</bean>
+	<!-- 定时服务 排行榜&日志 结束 -->
+
+	<!-- 定时服务 任务 开始 -->
+	<bean id="tasksServiceTask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="TasksService" />
+		<property name="targetMethod" value="oneDay" />
+	</bean>
+
+	<bean id="tasksServiceCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="tasksServiceTask" />
+		<!-- 工作执行的频率 每天凌晨执行一次 -->
+		<property name="cronExpression" value="0 0 0 * * ?" />
+	</bean>
+	<!-- 定时服务 任务 结束 -->
+
+
+	<!-- 定时服务 世界BOSS 开始 -->
+	<bean id="worldBossServiceTask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="WorldBossService" />
+		<property name="targetMethod" value="sysCheckStartEndTime" />
+	</bean>
+	<bean id="worldBossServiceCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="worldBossServiceTask" />
+		<!-- 工作执行的频率 每分钟 -->
+		<property name="cronExpression" value="0/5 * * * * ?" />
+	</bean>
+	<!-- 定时服务 世界BOSS 结束 -->
+	
+	<!-- 定时服务 挑战赛 开始 -->
+	<bean id="challengeServiceTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="ChallengeService" />
+		<property name="targetMethod" value="sysCheckStartEndTime" />
+	</bean>
+	<bean id="challengeServiceCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="challengeServiceTask" />
+		<!-- 工作执行的频率 -->
+		<property name="cronExpression" value="0 0/5 * * * ?" />
+	</bean>
+	<!-- 定时服务 挑战赛 结束 -->
+	
+	<!-- 定时服务 排位赛清理数据 开始 -->
+	<bean id="rankRecordServiceTask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="RankRecordService" />
+		<property name="targetMethod" value="deleteRankRecordForStart" />
+	</bean>
+	<bean id="rankRecordServiceCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="rankRecordServiceTask" />
+		<!-- 每周二凌晨 -->
+		<property name="cronExpression" value="0 0 0 ? * TUE" />
+	</bean>
+	<!-- 定时服务 排位赛清理数据 结束 -->
+
+	<!-- 定时服务 排位赛更新 开始 -->
+	<bean id="rankRecordUpdateServiceTask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="RankRecordService" />
+		<property name="targetMethod" value="updateRank" />
+	</bean>
+	<bean id="rankRecordUpdateServiceCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="rankRecordUpdateServiceTask" />
+		<!-- 每周一凌晨 -->
+		<property name="cronExpression" value="0 0 0 ? * MON" />
+	</bean>
+	<!-- 定时服务 排位赛更新 结束 -->
+	
+	<!-- 定时服务 充值对账 开始 -->
+	<bean id="checkRechargeServiceTask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="PlayerBillService" />
+		<property name="targetMethod" value="getRechargeRecordByAreaId" />
+	</bean>
+
+	<bean id="checkRechargeServiceCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="checkRechargeServiceTask" />
+		<!-- 工作执行的频率 每天凌晨5点执行一次 -->
+		<property name="cronExpression" value="0 0 5 * * ?" />
+	</bean>
+	<!-- 定时服务 充值对账 结束 -->
+    
+	<!-- 每月5日发放包月礼包-->
+	<bean id="monthlyServiceTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="monthlyVIPService" />
+		<property name="targetMethod" value="monthItems" />
+	</bean>
+
+	<bean id="monthlyServiceCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="monthlyServiceTask" />
+		<!--  工作执行的频率  每天凌晨执行一次-->
+ 		<property name="cronExpression" value="0 0 0 5 * ?" />
+ 		<!--<property name="cronExpression" value="0 0/2 * * * ?" />-->
+	</bean>
+	<!-- 定时服务  结束 -->
+	<!-- 每半小时检查结婚礼堂-->
+	<bean id="thirtyMinuteCheckMarryTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="MarryService" />
+		<property name="targetMethod" value="checkWeddingRoom" />
+	</bean>
+	<bean id="thirtyMinuteCheckMarryCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="thirtyMinuteCheckMarryTask" />
+		<!-- 工作执行的频率 每分钟执行一次 -->
+		<property name="cronExpression" value="0 0/1 * * * ?" />
+	</bean>
+	<!-- 每半小时检查结婚礼堂-->
+
+	<!-- 定时服务 重置每日充值暴击次数 开始 -->
+	<bean id="rechargeServiceTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="RechargeService" />
+		<property name="targetMethod" value="initData" />
+	</bean>
+
+	<bean id="rechargeServiceCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="rechargeServiceTask" />
+		<!-- 工作执行的频率 每天凌晨执行一次 -->
+		<property name="cronExpression" value="0 0 0 * * ?" />
+	</bean>
+	<!-- 定时服务 重置每日充值暴击次数 结束 -->
+	
+	<!-- 每5分钟更新一次活力-->
+	<bean id="playersVigorUpTask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="PlayerService" />
+		<property name="targetMethod" value="sysPlayersVigorUp" />
+	</bean>
+
+	<bean id="playersVigorUpCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="playersVigorUpTask" />
+		<!-- 工作执行的频率 每5分钟执行一次 注意：更改这个时间同时也要把WorldPlayer里的addVigorFormTime方法更新 -->
+		<property name="cronExpression" value="0 0/5 * * * ?" />
+	</bean>
+	<!-- 每5分钟更新一次活力 end-->
+	
+	<!-- 零点重置在线玩家单人副本通关次数-->
+	<bean id="resetSingleMapTask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="SingleMapService" />
+		<property name="targetMethod" value="sysResetTimes" />
+	</bean>
+	<bean id="resetSingleMapCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="resetSingleMapTask" />
+		<!-- 零点执行 -->
+		<property name="cronExpression" value="0 0 0 * * ?" />
+	</bean>
+	<!-- 零点重置在线玩家单人副本通关次数-->
+
+	<!-- 所有定时服务 -->
+	<bean id="taskScheduler"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<!-- 保存满足活动的玩家信息 -->
+				<ref bean="saveLogServicesCronTrigger" />
+
+				<!-- 给玩家发送活动奖励 -->
+				<ref bean="sendItemsServicesCronTrigger" />
+
+				<!-- 排行榜&日志 -->
+				<ref bean="thirtyMinuteSystemLogServiceCronTrigger" />
+				<ref bean="oneDaySystemLogServiceCronTrigger" />
+				<ref bean="sevenDaySystemLogServiceCronTrigger" />
+				<ref bean="oneMonthSystemLogServiceCronTrigger" />
+
+				<!-- 重置玩家的日常任务 -->
+				<ref bean="tasksServiceCronTrigger" />
+				<!-- 世界BOSS开启关闭任务 -->
+				<ref bean="worldBossServiceCronTrigger" />
+				<!-- 排位赛相关 -->
+				<ref bean="rankRecordUpdateServiceCronTrigger" />
+				<ref bean="rankRecordServiceCronTrigger" />
+				
+				<!-- 挑战赛开启关闭任务 -->
+				<ref bean="challengeServiceCronTrigger" />
+				
+				<!-- 每月5日发放包月礼包-->
+				<ref bean="monthlyServiceCronTrigger" />
+				<!-- 充值对账 -->
+				<ref bean="checkRechargeServiceCronTrigger" />
+				<!-- 重置每日充值暴击次数-->
+				<ref bean="rechargeServiceCronTrigger" />
+				<!-- 每半小时检查结婚礼堂-->
+				<ref bean="thirtyMinuteCheckMarryCronTrigger" />
+				<!-- 每5分钟更新一次活力-->
+				<ref bean="playersVigorUpCronTrigger" />
+				<!-- 零点重置在线玩家单人副本通关次数 -->
+				<ref bean="resetSingleMapCronTrigger" />
+			</list>
+		</property>
+	</bean>
+</beans>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName">
+			<value>com.mysql.jdbc.Driver</value>
+		</property>
+		<property name="url">
+	  		<value>jdbc:mysql://192.168.1.6/ddd_account?useUnicode=true&amp;characterEncoding=utf-8</value>
+		</property>
+		<property name="username">
+			<value>developer</value>
+		</property>
+		<property name="password">
+			<value>wyddev</value>
+		</property>
+	</bean>
+	<!-- Hibernate SessionFactory -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
+		<property name="hibernateProperties" ref="hibernateProperties" />
+	</bean>
+	<!--数据库属性配置 -->
+	<bean id="hibernateProperties"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="properties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.bytecode.use_reflection_optimizer">true</prop>
+				<prop key="hibernate.cache.provider_class">org.hibernate.cache.HashtableCacheProvider</prop>
+				<prop key="hibernate.hbm2ddl.auto">none</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref local="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="baseTransactionProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+		abstract="true">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="remove*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="save*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="create*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="AccountService" parent="baseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.gameaccount.service.impl.AccountService">
+				<property name="accountDao">
+					<bean class="com.wyd.empire.gameaccount.dao.impl.AccountDao">
+						<property name="sessionFactory" ref="sessionFactory"/>
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="EmpireaccountService" parent="baseTransactionProxy">
+		<property name="target">
+			<bean class="com.wyd.empire.gameaccount.service.impl.EmpireaccountService">
+				<property name="empireaccountDao">
+					<bean class="com.wyd.empire.gameaccount.dao.impl.EmpireaccountDao">
+						<property name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+</beans>

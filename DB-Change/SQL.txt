@@ -1,0 +1,65 @@
+-- 玩家表，绑定钻石
+ALTER TABLE `tab_player`
+ADD COLUMN `bind_amount`  int(11) NOT NULL DEFAULT 0 COMMENT '绑定钻石数' AFTER `synchonous_time`;
+
+
+-- 配置表添加内容
+update tab_operationconfig set specialMark =  CONCAT(specialMark,',changeMark=1')
+
+在线奖励类型
+ALTER TABLE `tab_online_reward`
+ADD COLUMN `type`  smallint NULL DEFAULT 0 AFTER `reward_remark`;
+
+基金优化    (注意升级时根据当前服务器的基金配置设置mysql的默认值)
+ALTER TABLE `tab_player_fund`
+ADD COLUMN `low_fund_info`  varchar(500) NOT NULL DEFAULT '10=50,20=100,30=300,35=600,40=950' AFTER `update_time`,
+ADD COLUMN `middle_fund_info`  varchar(500) NOT NULL DEFAULT '10=100,20=300,30=500,40=800,50=1000,60=2000,65=4000,70=6300' AFTER `low_fund_info`,
+ADD COLUMN `high_fund_info`  varchar(500) NOT NULL DEFAULT '10=200,20=500,30=1000,40=2000,50=3000,60=4000,70=5000,75=6000,80=8000,85=9000,90=11300' AFTER `middle_fund_info`;
+
+
+首充调整
+ALTER TABLE `tab_recharge_reward`
+ADD COLUMN `type`  tinyint NOT NULL DEFAULT 1 COMMENT '1 首充 2 每日首充' AFTER `strong_level`;
+
+ALTER TABLE `log_recharge_reward`
+ADD COLUMN `type`  tinyint NULL DEFAULT 1 COMMENT '1 首充 2 每日首充' AFTER `remark`;
+
+ALTER TABLE `tab_operationconfig`
+ADD COLUMN `rechargeInterval`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '1#100|2#200|3#300' COMMENT '充值间隔配置奖励每次首充次数 格式：1#100|2#200|3#300' AFTER `robot_skill`;
+
+ALTER TABLE `tab_player_info`
+ADD COLUMN `every_day_first_charge_num`  int(11) NULL DEFAULT 0 COMMENT '玩家可以领取的每日首充次数' AFTER `last_practice_time`;
+
+分包下载奖励
+
+DROP TABLE IF EXISTS `tab_download_reward`;
+CREATE TABLE `tab_download_reward` (
+  `id` int(11) NOT NULL auto_increment,
+  `shop_item_id` int(11) default NULL,
+  `days` int(11) default NULL,
+  `count` int(11) default NULL,
+  `strong_level` int(11) default NULL,
+  `player_level` int(11) default '0' COMMENT '用户等级',
+  PRIMARY KEY  (`id`),
+  KEY `shop_item_id` (`shop_item_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+
+
+vip  系统调整
+（领取记录表）
+ALTER TABLE `tab_rewardrecord`
+ADD COLUMN `receiveType`  int NOT NULL DEFAULT 1 COMMENT '1 会清空的数据如vip每日奖励 ，2 vip等级奖励' AFTER `remark`;
+
+
+
+增加赠送钻石
+ALTER TABLE `tab_recharge`
+ADD COLUMN `giftNumber`  int NULL DEFAULT 0 COMMENT '赠送增加点卷的数量' AFTER `number`;
+
+ALTER TABLE `log_playerbill`
+ADD COLUMN `giftAmount`  int NULL DEFAULT 0 COMMENT '充值赠送钻石数量' AFTER `amount`;
+
+
+
+

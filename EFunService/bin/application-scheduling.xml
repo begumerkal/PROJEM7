@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	
+	<!-- 定时服务 充值对账 开始 -->
+	<bean id="checkRechargeServiceTask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="PlayerBillService" />
+		<property name="targetMethod" value="getRechargeRecordByAreaId" />
+	</bean>
+
+	<bean id="checkRechargeServiceCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="checkRechargeServiceTask" />
+		<!-- 工作执行的频率 每天凌晨5点执行一次 -->
+		<property name="cronExpression" value="0 0 5 * * ?" />
+	</bean>
+	<!-- 定时服务 充值对账 结束 -->
+	
+	<!-- 所有定时服务 -->
+	<bean id="taskScheduler"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<!-- 充值对账 
+				<ref bean="checkRechargeServiceCronTrigger" />
+				-->
+			</list>
+		</property>
+	</bean>
+</beans>

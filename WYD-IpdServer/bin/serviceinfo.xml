@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<random>
+	<area id="CN">
+	    <group id="1000_G1" >
+			<machine id="0" name="一区" istest="1" openudid="0" bulletin="服务器正在维护" >50</machine>
+			<machine id="1" name="二区" istest="0" openudid="0" bulletin="服务器正在维护" >100</machine>
+		</group>
+		<group id="1001_G1" >
+			<machine id="0" name="一区" istest="0" openudid="0" bulletin="服务器正在维护" >50</machine>
+			<machine id="1" name="二区" istest="0" openudid="0" bulletin="服务器正在维护" >100</machine>
+		</group>
+		<group id="1001_G2" >
+			<machine id="0" name="二区" istest="0" openudid="0" bulletin="服务器正在维护" >50</machine>
+			<machine id="1" name="二区" istest="0" openudid="0" bulletin="服务器正在维护" >100</machine>
+		</group>
+	</area>
+	<area id="SG">
+	    <group id="1000_G1" >
+			<machine id="0" name="一区" istest="0" openudid="0" bulletin="服务器正在维护" >50</machine>
+			<machine id="1" name="一区" istest="0" openudid="0" bulletin="服务器正在维护" >100</machine>
+		</group>
+	</area>
+</random>
