@@ -1,8 +1,10 @@
 package com.wyd.dispatch;
 import java.net.InetSocketAddress;
+
 import org.apache.commons.configuration.Configuration;
 import org.apache.log4j.Logger;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
+
 import com.wyd.empire.protocol.data.server.SendAddress;
 import com.wyd.net.Connector;
 import com.wyd.protocol.data.AbstractData;
@@ -22,7 +24,7 @@ public class IpdConnector extends Connector {
 	 * @param configuration
 	 */
 	public IpdConnector(String id, InetSocketAddress address, Configuration configuration) {
-		super(id, address, false);
+		super(id, address);
 		this.configuration = configuration;
 	}
 
@@ -34,18 +36,12 @@ public class IpdConnector extends Connector {
 		this.connector.getFilterChain().addLast("wyd2databean", new DataBeanFilter());
 	}
 
-	protected AbstractData processLogin(AbstractData data) throws Exception {
-		return null;
-	}
-
-	protected void sendSecureAuthMessage() {
-	}
-
 	/**
-	 * 连接Dispatcher Server服务器<br>
+	 * 连接IPD Server服务器<br>
 	 * 发送游戏登录服务器 id，名称，地址<br>
 	 * 发送在线人数，最大人数限制，服务器状态
 	 */
+	@Override
 	protected void connected() {
 		log.info("dispatcher server connected");
 		int id = this.configuration.getInt("id");
@@ -87,4 +83,5 @@ public class IpdConnector extends Connector {
 		// send(load);
 
 	}
+
 }

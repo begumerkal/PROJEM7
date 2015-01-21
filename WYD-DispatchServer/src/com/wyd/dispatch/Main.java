@@ -49,8 +49,8 @@ public class Main {
 		this.trustIpService = new TrustIpService(serverType);
 		// 初始化ipd服务，启动Ipdservice ,作为客户端，连接ipd server
 		this.ipdService = new IpdService(configuration.getConfiguration());
-
 		this.controlProcessor.setIpdService(this.ipdService);
+
 		int worldreceivebuffsize = configuration.getConfiguration().getInt("worldreceivebuffsize");
 		int worldwritebuffsize = configuration.getConfiguration().getInt("worldwritebuffsize");
 		if ("socket".equals(serverType)) {
