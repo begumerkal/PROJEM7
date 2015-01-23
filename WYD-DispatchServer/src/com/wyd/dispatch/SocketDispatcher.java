@@ -67,7 +67,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		this.trustIpService = trustIpService;
 		log.info("add trustIpService: " + this.trustIpService);
 	}
-
+	/** 转发前端数据*/
 	public void dispatchToServer(IoSession session, Object object) {
 		Integer id = (Integer) session.getAttribute(ATTRIBUTE_STRING);
 		if (id != null) {
