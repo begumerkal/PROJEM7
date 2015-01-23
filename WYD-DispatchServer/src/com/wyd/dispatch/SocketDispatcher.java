@@ -67,7 +67,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		this.trustIpService = trustIpService;
 		log.info("add trustIpService: " + this.trustIpService);
 	}
-	/** 转发前端数据*/
+	/** 转发前端数据 */
 	public void dispatchToServer(IoSession session, Object object) {
 		Integer id = (Integer) session.getAttribute(ATTRIBUTE_STRING);
 		if (id != null) {
@@ -248,7 +248,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	public void registerClient(IoSession session) {
 		int id = this.ids.incrementAndGet();
 		if (id < 0) {
-			log.info("SessionId: "+id);
+			log.info("SessionId: " + id);
 		}
 		session.getConfig().setIdleTime(IdleStatus.BOTH_IDLE, 60);
 		session.setAttribute(ATTRIBUTE_STRING, Integer.valueOf(id));

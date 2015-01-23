@@ -10,7 +10,7 @@ import com.wyd.protocol.INetSegment;
 import com.wyd.protocol.s2s.S2SData;
 public class ServerWYDDecoder extends ProtocolDecoderAdapter {
 	protected final AttributeKey CURRENT_DECODER = new AttributeKey(getClass(), "decoder");
-
+	/** 解码worldServer 发送过来的数据 */
 	@SuppressWarnings("unused")
 	public void decode(IoSession session, IoBuffer in, ProtocolDecoderOutput out) throws Exception {
 		byte remains[] = (byte[]) (byte[]) session.getAttribute(CURRENT_DECODER);
