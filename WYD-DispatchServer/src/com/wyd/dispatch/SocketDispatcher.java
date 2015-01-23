@@ -24,12 +24,14 @@ import com.wyd.protocol.s2s.S2SSegment;
 
 public class SocketDispatcher implements Dispatcher, Runnable {
 	private static final String ATTRIBUTE_STRING = "UWAPSESSIONID";
+	private static final Logger log = Logger.getLogger(SocketDispatcher.class);
 	private AtomicInteger ids = new AtomicInteger(0);
 	private ConcurrentHashMap<Integer, IoSession> sessions = new ConcurrentHashMap<Integer, IoSession>();// 客户端iosession
 	private ControlProcessor processor = null;
 	private ChannelService channelService = null;
 	private NioSocketAcceptor acceptor = null;
 	private NioSocketConnector connector = null;
+	/** worldServer Iosession */
 	private IoSession serverSession = null;
 	private TrustIpService trustIpService = null;
 	private Configuration configuration = null;
@@ -38,7 +40,6 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	public static final String SERVERNAME = "servername";
 	public static final String SERVERPASSWORD = "serverpassword";
 	private SocketAddress address;
-	private static final Logger log = Logger.getLogger(SocketDispatcher.class);
 	private boolean connected = false;
 	private boolean shutdown = false;
 	private ShakeHands shakeHands = new ShakeHands();
@@ -166,6 +167,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		return this.sessions.get(sessionId);
 	}
 
+	/** 发数据到worldServer */
 	public void sendControlSegment(S2SSegment seg) {
 		seg.setSessionId(-1);
 		this.serverSession.write(IoBuffer.wrap(seg.getPacketByteArray()));
@@ -242,11 +244,11 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 			session.write(buffer);
 		}
 	}
-
+	/** 用户上线，注册客户端 */
 	public void registerClient(IoSession session) {
 		int id = this.ids.incrementAndGet();
 		if (id < 0) {
-			log.info("SessionId[-1]");
+			log.info("SessionId: "+id);
 		}
 		session.getConfig().setIdleTime(IdleStatus.BOTH_IDLE, 60);
 		session.setAttribute(ATTRIBUTE_STRING, Integer.valueOf(id));
@@ -266,7 +268,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		}
 		// =======
 	}
-
+	/** 用户下线，注销客户端 */
 	protected void unRegisterClient(IoSession session) {
 		if (LOGINMARK_LOGED == ((Integer) session.getAttribute(LOGINMARK_KEY)).intValue()) {
 			this.channelService.removeSessionFromAllChannel(session);
@@ -378,8 +380,8 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 
 		public void sessionCreated(IoSession session) throws Exception {
 			InetSocketAddress address = (InetSocketAddress) session.getRemoteAddress();
-			log.info("ok:" + address.getAddress().getHostAddress());
 			SocketDispatcher.this.registerClient(session);
+			log.info("ok:" + address.getAddress().getHostAddress());
 		}
 
 		public void sessionIdle(IoSession session, IdleStatus idleStatus) throws Exception {

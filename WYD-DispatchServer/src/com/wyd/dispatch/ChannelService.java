@@ -28,9 +28,4 @@ public class ChannelService {
 		for (Channel channel : this.channels.values())
 			channel.removeSession(session);
 	}
-
-	public void clearChannels(IoSession session) {
-		for (Channel channel : this.channels.values())
-			channel.removeSession(session);
-	}
 }

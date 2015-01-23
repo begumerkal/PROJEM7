@@ -54,13 +54,13 @@ public class Main {
 		int worldreceivebuffsize = configuration.getConfiguration().getInt("worldreceivebuffsize");
 		int worldwritebuffsize = configuration.getConfiguration().getInt("worldwritebuffsize");
 		if ("socket".equals(serverType)) {
-			// dis
+			// dis 监听端口链接客户端
 			this.dispatcher = new SocketDispatcher(this.controlProcessor, configuration.getConfiguration());
 			((SocketDispatcher) this.dispatcher).start();
 			((SocketDispatcher) this.dispatcher).setChannelService(this.channelService);
 			((SocketDispatcher) this.dispatcher).setTrustIpService(this.trustIpService);
 			this.controlProcessor.setDispatcher(this.dispatcher);
-			// 获取socket接受连接配置
+			//配置
 			int clientreceivebuffsize = configuration.getConfiguration().getInt("clientreceivebuffsize");
 			int clientwritebuffsize = configuration.getConfiguration().getInt("clientwritebuffsize");
 			String ip = configuration.getConfiguration().getString("localip");

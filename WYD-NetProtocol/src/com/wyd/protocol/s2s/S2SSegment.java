@@ -21,18 +21,17 @@ public class S2SSegment implements INetSegment {
         this.numOfParameter = 0;
         this.serial = -1;
         this.sessionId = -1;
-        this.flag = 0;
         this.type = type;
         this.subType = subType;
         this.serial = serial;
         this.sessionId = sessionId;
         this.flag = flag;
         this.buffer = new ArrayByteList(128);
-        ByteListUtil.addByte(this.buffer, flag);
-        ByteListUtil.addByte(this.buffer, type);
-        ByteListUtil.addByte(this.buffer, subType);
-        ByteListUtil.addInt(this.buffer, 8);
-        ByteListUtil.addByte(this.buffer, (byte) 0);
+        ByteListUtil.addByte(this.buffer, flag);//1
+        ByteListUtil.addByte(this.buffer, type);//1
+        ByteListUtil.addByte(this.buffer, subType);//1
+        ByteListUtil.addInt(this.buffer, 8);//4
+        ByteListUtil.addByte(this.buffer, (byte) 0);//1
     }
 
     public S2SSegment(byte type, byte subType, byte flag) {

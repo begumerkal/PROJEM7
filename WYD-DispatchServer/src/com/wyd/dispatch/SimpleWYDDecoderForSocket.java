@@ -7,6 +7,7 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolDecoderAdapter;
 import org.apache.mina.filter.codec.ProtocolDecoderOutput;
 import com.wyd.protocol.INetSegment;
+
 public class SimpleWYDDecoderForSocket extends ProtocolDecoderAdapter {
 	protected final AttributeKey CURRENT_DECODER = new AttributeKey(getClass(), "decoder");
 	public static int companyCode = -1;
@@ -52,7 +53,7 @@ public class SimpleWYDDecoderForSocket extends ProtocolDecoderAdapter {
 					buffer.get(data);
 					byte verifyCode = data[data.length - 1];
 					byte[] value = Arrays.copyOfRange(data, 18, data.length - 1);
-					value = CryptionUtil.Decrypt(value, Main.configuration.getConfiguration().getString("deckey"));
+					value = CryptionUtil.Decrypt(value, Main.configuration.getConfiguration().getString("deckey"));//解密
 					len = value.length + 18;
 					data = Arrays.copyOf(data, len + 1);
 					System.arraycopy(value, 0, data, 18, value.length);
