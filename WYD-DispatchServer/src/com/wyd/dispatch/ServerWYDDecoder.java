@@ -44,7 +44,7 @@ public class ServerWYDDecoder extends ProtocolDecoderAdapter {
 					throw new IOException("error protocol");
 				}
 				if (len + 1 <= size) {
-					if (sessionId == -1) {
+					if (sessionId == -1) {//后端处理
 						buffer.mark();
 						byte flag = buffer.get();
 						byte type = buffer.get();
@@ -57,7 +57,7 @@ public class ServerWYDDecoder extends ProtocolDecoderAdapter {
 						INetData udata = new S2SData(data, serial, sessionId);
 						Packet packet = new Packet(udata);
 						out.write(packet);
-					} else {
+					} else {//发送前端的
 						byte[] data = new byte[len + 1];
 						buffer.reset();
 						buffer.get(data);

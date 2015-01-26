@@ -321,7 +321,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	}
 
 	/**
-	 * DispatchServer做为客户端的处理Handler，处理WorldServer数据信息，第一次登陆时注册dispatcher
+	 * DispatchServer处理WorldServer数据信息,做为客户端的处理Handler，第一次登陆时注册dispatcher
 	 * server信息
 	 */
 	class ServerSessionHandler extends IoHandlerAdapter {
@@ -346,7 +346,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		public void sessionCreated(IoSession session) throws Exception {
 			serverSession = session;
 			S2SSegment seg = new S2SSegment(Protocol.MAIN_SERVER, Protocol.SERVER_DispatchLogin);
-			seg.writeString((String) SocketDispatcher.this.configuration.getProperty("serverid"));
+			seg.writeString((String) SocketDispatcher.this.configuration.getProperty("area"));
 			seg.writeString((String) SocketDispatcher.this.configuration.getProperty("serverpassword"));
 			seg.writeInt(SocketDispatcher.this.configuration.getInt("maxplayer"));
 			SocketDispatcher.this.sendControlSegment(seg);

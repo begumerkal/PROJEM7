@@ -60,7 +60,7 @@ public class Main {
 			((SocketDispatcher) this.dispatcher).setChannelService(this.channelService);
 			((SocketDispatcher) this.dispatcher).setTrustIpService(this.trustIpService);
 			this.controlProcessor.setDispatcher(this.dispatcher);
-			//配置
+			// 配置
 			int clientreceivebuffsize = configuration.getConfiguration().getInt("clientreceivebuffsize");
 			int clientwritebuffsize = configuration.getConfiguration().getInt("clientwritebuffsize");
 			String ip = configuration.getConfiguration().getString("localip");
