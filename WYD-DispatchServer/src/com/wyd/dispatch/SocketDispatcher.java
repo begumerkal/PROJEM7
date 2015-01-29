@@ -33,6 +33,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	private NioSocketConnector connector = null;
 	/** worldServer Iosession */
 	private IoSession serverSession = null;
+	/** 允许加载的ip段 */
 	private TrustIpService trustIpService = null;
 	private Configuration configuration = null;
 	private byte[] lock = new byte[0];
@@ -58,16 +59,16 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		thread.setName("OnlinePrinter");
 		thread.start();
 	}
-
+	/** 设置通道服务 */
 	public void setChannelService(ChannelService channelService) {
 		this.channelService = channelService;
 	}
-
+	/** 设置允许加载的ip段 */
 	public void setTrustIpService(TrustIpService trustIpService) {
 		this.trustIpService = trustIpService;
 		log.info("add trustIpService: " + this.trustIpService);
 	}
-	/** 转发前端数据 */
+	/** 转发前端数据至worldServer */
 	public void dispatchToServer(IoSession session, Object object) {
 		Integer id = (Integer) session.getAttribute(ATTRIBUTE_STRING);
 		if (id != null) {
@@ -75,7 +76,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 			if (checkProtocol(session, buffer.get(19), buffer.get(20))) {
 				// 回应客户端心跳协议
 				if (buffer.limit() >= 20 && buffer.get(19) == Protocol.MAIN_SYSTEM && buffer.get(20) == Protocol.SYSTEM_ShakeHands
-						&& 1 == byteToShort(new byte[]{buffer.get(17), buffer.get(18)})) {
+						&& 1 == buffer.getShort(16)) {// 一个包&长度大于20
 					IoBuffer byteBuffer = IoBuffer.wrap(ProtocolManager.makeSegment(shakeHands).getPacketByteArray());
 					session.write(byteBuffer.duplicate());
 				}
@@ -98,23 +99,10 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		}
 	}
 
-	/**
-	 * 注释：字节数组到short的转换！
-	 * 
-	 * @param b
-	 * @return
-	 */
-	public static short byteToShort(byte[] b) {
-		short s = 0;
-		short s0 = (short) (b[0] & 0xff);// 最低位
-		short s1 = (short) (b[1] & 0xff);
-		s1 <<= 8;
-		s = (short) (s0 | s1);
-		return s;
-	}
 
 	/**
 	 * 检查协议上行数量是否正常
+	 * 心跳， 正常协议发送频率
 	 * 
 	 * @param session
 	 * @param type
@@ -125,11 +113,9 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		ClientInfo client = (ClientInfo) session.getAttribute(CLIENTINFO_KEY);
 		if (client != null) {
 			if (type == Protocol.MAIN_SYSTEM && subType == Protocol.SYSTEM_ShakeHands) {// 判断是否心跳
-				client.addHeartbeatCount();
 				if (System.currentTimeMillis() - client.getHeartbeatTime() <= 10000) {
+					client.addHeartbeatCount();
 					if (client.getHeartbeatCount() > this.configuration.getInt("heartbeatcount")) {// 10秒钟内心跳数大于2则断开连接
-						System.out.println("Warning SessionId [" + session.getId() + "] HeartbeatCount: + " + client.getHeartbeatCount()
-								+ "----type:" + type + "----subType:" + subType);
 						log.info("Warning SessionId [" + session.getId() + "] HeartbeatCount: + " + client.getHeartbeatCount());
 						session.close(true);
 						return false;
@@ -138,13 +124,11 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 					client.setHeartbeatCount(0);
 					client.setHeartbeatTime(System.currentTimeMillis());
 				}
-			} else {
-				client.addProtocolCount();
-				if (System.currentTimeMillis() - client.getProtocolTime() <= 1000 && client.getProtocolType() == type
-						&& client.getProtocolSubType() == subType && type != Protocol.MAIN_BATTLE && type != Protocol.MAIN_BOSSMAPBATTLE) {
-					if (client.getProtocolCount() > this.configuration.getInt("protocolcount")) {// 1秒钟内相同协议大于3则断开连接
-						System.out.println("Warning SessionId [" + session.getId() + "] ProtocolCount: + " + client.getProtocolCount()
-								+ "----type:" + type + "----subType:" + subType);
+			} else {// 其他协议
+				if (System.currentTimeMillis() - client.getProtocolTime() <= 1000 && type != Protocol.MAIN_BATTLE
+						&& type != Protocol.MAIN_BOSSMAPBATTLE) {// 除战斗
+					client.addProtocolCount();
+					if (client.getProtocolCount() > this.configuration.getInt("protocolcount")) {// 1秒钟内相同协议大于10则断开连接
 						log.info("Warning SessionId [" + session.getId() + "] ProtocolCount: + " + client.getProtocolCount());
 						session.close(true);
 						return false;
@@ -153,8 +137,6 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 					client.setProtocolCount(0);
 					client.setProtocolTime(System.currentTimeMillis());
 				}
-				client.setProtocolType(type);
-				client.setProtocolSubType(subType);
 			}
 		} else {
 			session.close(true);
@@ -394,8 +376,6 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		private int heartbeatCount = 0;
 		private long protocolTime = 0;
 		private int protocolCount = 0;
-		private int protocolType = 0;
-		private int protocolSubType = 0;
 
 		public long getHeartbeatTime() {
 			return heartbeatTime;
@@ -427,22 +407,6 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 
 		public void setProtocolCount(int protocolCount) {
 			this.protocolCount = protocolCount;
-		}
-
-		public int getProtocolType() {
-			return protocolType;
-		}
-
-		public void setProtocolType(int protocolType) {
-			this.protocolType = protocolType;
-		}
-
-		public int getProtocolSubType() {
-			return protocolSubType;
-		}
-
-		public void setProtocolSubType(int protocolSubType) {
-			this.protocolSubType = protocolSubType;
 		}
 
 		public void addHeartbeatCount() {
