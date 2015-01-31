@@ -26,11 +26,11 @@ public class S2SData implements INetData {
         pos = 0;
         sourceCompressed = false;
         this.data = data;
-        flag = (byte) (int) getNumber(data, 0, 1);
-        type = (byte) (int) getNumber(data, 1, 1);
-        subType = (byte) (int) getNumber(data, 2, 1);
+        flag = (byte) (int) getNumber(data, 0, 1);//1
+        type = (byte) (int) getNumber(data, 1, 1);//1
+        subType = (byte) (int) getNumber(data, 2, 1);//1
         this.sessionId = sessionId;
-        numOfParameter = this.data[7];
+        numOfParameter = this.data[7];//1 字段个数
         this.serial = serial;
         pos = 8;
         sourceCompressed = needUncompress;

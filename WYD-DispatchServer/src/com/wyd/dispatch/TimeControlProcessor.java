@@ -7,18 +7,17 @@ import org.apache.mina.core.session.IoSession;
 import com.wyd.empire.protocol.Protocol;
 import com.wyd.protocol.INetData;
 public class TimeControlProcessor implements ControlProcessor, Runnable {
+	private static final Logger log = Logger.getLogger(TimeControlProcessor.class);
 	public static final short ADMIN_ADDIP = 243;
 	public static final short FINITERELOAD = 195;
-	private ChannelService channelService;
+	private ChannelService channelService;// 通道服务
 	private Dispatcher dispatcher;
 	private IpdService ipdService;
 	// private TrustIpService trustIpService;
 	private ConfigMenger configuration;
-	private static final Logger log = Logger.getLogger(TimeControlProcessor.class);
-	private BlockingQueue<INetData> datas;
+	private BlockingQueue<INetData> datas = new LinkedBlockingQueue<INetData>();
 
 	public TimeControlProcessor() {
-		datas = new LinkedBlockingQueue<INetData>();
 	}
 
 	public void start() {
@@ -31,7 +30,10 @@ public class TimeControlProcessor implements ControlProcessor, Runnable {
 	public void setChannelService(ChannelService channelService) {
 		this.channelService = channelService;
 	}
-
+	
+	public void setConfiguration(ConfigMenger configuration) {
+		this.configuration = configuration;
+	}
 	// public void setTrustIpService(TrustIpService trustIpService) {
 	// this.trustIpService = trustIpService;
 	// }
@@ -42,7 +44,7 @@ public class TimeControlProcessor implements ControlProcessor, Runnable {
 	public void setIpdService(IpdService ipdService) {
 		this.ipdService = ipdService;
 	}
-
+	/** 添加执行任务 */
 	public void process(INetData data) {
 		try {
 			datas.put(data);
@@ -56,21 +58,18 @@ public class TimeControlProcessor implements ControlProcessor, Runnable {
 		try {
 			switch (type) {
 				case Protocol.SERVER_NotifyMaintance : // '\037'
-														// Protocol.SERVER_NotifyMaintance
-					maintance(data);
+					maintance(data);// 设置服务器状态状态
 					break;
 				case Protocol.SERVER_NotifyMaxPlayer : // '\031'
-														// Protocol.SERVER_NotifyMaxPlayer
 					maxPlayer(data);
 					break;
 				case Protocol.SERVER_BroadCast : // '\027'
-													// Protocol.SERVER_BroadCast
 					broadcast(data);
 					break;
 				case Protocol.SERVER_ForceBroadCast : // '\028'
 					forceBroadcast(data);
 					break;
-				case Protocol.SERVER_Kick : // '\029' Protocol.SERVER_Kick
+				case Protocol.SERVER_Kick : // '\029' 提玩家下线
 					kick(data);
 					break;
 				case Protocol.SERVER_ShutDown : // '\030'
@@ -115,7 +114,7 @@ public class TimeControlProcessor implements ControlProcessor, Runnable {
 			log.error(ex, ex);
 		}
 	}
-
+	/** 聊天处理 */
 	private void syncChannel(INetData data) throws Exception {
 		int sessionId = data.readInt();
 		IoSession session = dispatcher.getSession(sessionId);
@@ -134,7 +133,7 @@ public class TimeControlProcessor implements ControlProcessor, Runnable {
 			}
 		}
 	}
-
+	/** 任务处理 */
 	protected void process0(INetData data) {
 		byte type = data.getType();
 		try {
@@ -168,24 +167,24 @@ public class TimeControlProcessor implements ControlProcessor, Runnable {
 	// IoSession session = dispatcher.getSession(sessionId);
 	// if (session != null) channelService.clearChannels(session);
 	// }
+	/** 重新开启服务 */
 	private void shutdown() {
 		dispatcher.shutdown();
 	}
 
 	/**
-	 * 此方法调用<tt>SocketDispatcher</tt>中的<tt>broadcast</tt>方法
+	 * 广播线上所有用户 此方法调用 SocketDispatcher中的broadcast方法
 	 * 
 	 * @see com.wyd.dispatch.SocketDispatcher
 	 * @param data
 	 * @throws Exception
 	 */
 	private void forceBroadcast(INetData data) throws Exception {
-		byte bytes[] = data.readBytes();
-		dispatcher.broadcast(IoBuffer.wrap(bytes));
+		dispatcher.broadcast(IoBuffer.wrap(data.readBytes()));
 	}
 
 	/**
-	 * 读取对应通道
+	 * 读取对应通道，向该通道上广播数据
 	 * 
 	 * @param data
 	 * @throws Exception
@@ -234,13 +233,9 @@ public class TimeControlProcessor implements ControlProcessor, Runnable {
 			ipdService.updateVersion(area, group, machine, version, updateurl, remark, appraisal, serverId);
 		}
 	}
-
+	/** 踢玩家下线 */
 	private void kick(INetData data) throws Exception {
 		int sessionId = data.readInt();
 		dispatcher.unRegisterClient(sessionId);
-	}
-
-	public void setConfiguration(ConfigMenger configuration) {
-		this.configuration = configuration;
 	}
 }
