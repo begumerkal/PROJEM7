@@ -39,7 +39,7 @@ public class Main {
 		// 创建通道服务
 		this.channelService = new ChannelService();
 		// 控制处理器初始化,启动Control线程，监听
-		this.controlProcessor = new TimeControlProcessor();
+		this.controlProcessor = TimeControlProcessor.getControlProcessor();
 		this.controlProcessor.start();
 		this.controlProcessor.setChannelService(this.channelService);
 		this.controlProcessor.setConfiguration(configuration);

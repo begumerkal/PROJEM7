@@ -29,7 +29,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	private static final Logger log = Logger.getLogger(SocketDispatcher.class);
 	private AtomicInteger ids = new AtomicInteger(0);
 	private ConcurrentHashMap<Integer, IoSession> sessions = new ConcurrentHashMap<Integer, IoSession>();// 客户端iosession
-	private ControlProcessor processor = null;
+//	private ControlProcessor processor = null;
 	private ChannelService channelService = null;
 	private NioSocketAcceptor acceptor = null;
 	private NioSocketConnector connector = null;
@@ -50,7 +50,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	private static final String CLIENTINFO_KEY = "CLIENTINFO";
 
 	public SocketDispatcher(ControlProcessor processor, Configuration configuration) {
-		this.processor = processor;
+//		this.processor = processor;
 		this.configuration = configuration;
 	}
 
@@ -270,7 +270,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	}
 	/** 执行worldServer 发来的协议 */
 	protected void processControl(Packet packet) {
-		this.processor.process(packet.data);
+		TimeControlProcessor.getControlProcessor().process(packet.data);
 	}
 	/** 广播线上所有用户 */
 	public void broadcast(IoBuffer buffer) {

@@ -1,12 +1,15 @@
 package com.wyd.dispatch;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+
 import org.apache.log4j.Logger;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
+
 import com.wyd.empire.protocol.Protocol;
 import com.wyd.protocol.INetData;
 public class TimeControlProcessor implements ControlProcessor, Runnable {
+	private static TimeControlProcessor controlProcessor = new TimeControlProcessor();
 	private static final Logger log = Logger.getLogger(TimeControlProcessor.class);
 	public static final short ADMIN_ADDIP = 243;
 	public static final short FINITERELOAD = 195;
@@ -17,7 +20,10 @@ public class TimeControlProcessor implements ControlProcessor, Runnable {
 	private ConfigMenger configuration;
 	private BlockingQueue<INetData> datas = new LinkedBlockingQueue<INetData>();
 
-	public TimeControlProcessor() {
+	private TimeControlProcessor() {
+	}
+	public static TimeControlProcessor getControlProcessor() {
+		return controlProcessor;
 	}
 
 	public void start() {
@@ -30,7 +36,7 @@ public class TimeControlProcessor implements ControlProcessor, Runnable {
 	public void setChannelService(ChannelService channelService) {
 		this.channelService = channelService;
 	}
-	
+
 	public void setConfiguration(ConfigMenger configuration) {
 		this.configuration = configuration;
 	}
