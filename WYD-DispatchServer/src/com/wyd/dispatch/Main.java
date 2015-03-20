@@ -55,7 +55,7 @@ public class Main {
 		int worldwritebuffsize = configuration.getConfiguration().getInt("worldwritebuffsize");
 		if ("socket".equals(serverType)) {
 			// dis 监听端口链接客户端
-			this.dispatcher = new SocketDispatcher(this.controlProcessor, configuration.getConfiguration());
+			this.dispatcher = new SocketDispatcher(configuration.getConfiguration());
 			((SocketDispatcher) this.dispatcher).start();
 			((SocketDispatcher) this.dispatcher).setChannelService(this.channelService);
 			((SocketDispatcher) this.dispatcher).setTrustIpService(this.trustIpService);

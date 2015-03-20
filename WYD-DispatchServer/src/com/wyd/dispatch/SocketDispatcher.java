@@ -29,7 +29,6 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	private static final Logger log = Logger.getLogger(SocketDispatcher.class);
 	private AtomicInteger ids = new AtomicInteger(0);
 	private ConcurrentHashMap<Integer, IoSession> sessions = new ConcurrentHashMap<Integer, IoSession>();// 客户端iosession
-//	private ControlProcessor processor = null;
 	private ChannelService channelService = null;
 	private NioSocketAcceptor acceptor = null;
 	private NioSocketConnector connector = null;
@@ -49,8 +48,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	private static final boolean LOGINMARK_LOGED = true;
 	private static final String CLIENTINFO_KEY = "CLIENTINFO";
 
-	public SocketDispatcher(ControlProcessor processor, Configuration configuration) {
-//		this.processor = processor;
+	public SocketDispatcher(Configuration configuration) {
 		this.configuration = configuration;
 	}
 
@@ -171,8 +169,10 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		connector.setDefaultRemoteAddress(address);
 		ConnectFuture future = this.connector.connect();
 		try {
-			this.wait(10000L);
-			if (!this.serverSession.isConnected()) {
+			synchronized (this) {
+				this.wait(10000L);
+			}
+			if (this.serverSession == null || !this.serverSession.isConnected()) {
 				System.out.println("世界服务器连接失败!");
 				log.error("世界服务器连接失败!");
 			} else {

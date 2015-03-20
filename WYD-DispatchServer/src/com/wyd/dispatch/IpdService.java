@@ -36,11 +36,13 @@ public class IpdService implements Runnable {
 	 */
 	public void ipdConnect() {
 		try {
-			System.out.println("=====");
 			if (this.connector.isConnected())
 				this.connector.close();
 			this.connector.connect();
 			new Thread(this, "IPD Service").start();
+			
+			if (this.connector.isConnected())
+				System.out.println("ipd 服务链接成功！");
 		} catch (ConnectException e) {
 			log.warn("分配器连接失败！");
 		}
