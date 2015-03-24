@@ -2,69 +2,68 @@ package com.wyd.server.service;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 public class ServiceManager {
-    private static ServiceManager   serviceManager = new ServiceManager();
-    private PropertiesConfiguration configuration;
-    private ServerListService       serverListService;
-    private ConfigService           configService;
-    private UserInfoService         userInfoService;
-    private LineService             lineService;
-    private UdidService             udidService;
-    private VersionService          VersionService;
+	private static ServiceManager serviceManager = new ServiceManager();
+	private PropertiesConfiguration configuration;
+	private ServerListService serverListService;
+	private ConfigService configService;
+	private UserInfoService userInfoService;
+	private LineService lineService;
+	private UdidService udidService;
+	private VersionService VersionService;
 
-    private ServiceManager() {}
-    
-    public void initService(){
-        try {
-        	this.loadConfig();
-	        this.userInfoService = new UserInfoService();
-	        this.lineService = new LineService();
-            this.configService = new ConfigService();
-            this.serverListService = new ServerListService();
-            this.udidService = new UdidService();
-            this.VersionService = new VersionService();
-            
-        } catch (ConfigurationException e) {
-            e.printStackTrace();
-        }
-    
-    }
-    
-    public static ServiceManager getManager() {
-        return serviceManager;
-    }
-    
-    public void loadConfig() throws ConfigurationException{
-        this.configuration = new PropertiesConfiguration("config.properties");
-    }
+	private ServiceManager() {
+	}
+	public static ServiceManager getManager() {
+		return serviceManager;
+	}
+	public void initService() {
+		try {
+			this.loadConfig();
+			this.userInfoService = new UserInfoService();
+			this.lineService = new LineService();
+			this.configService = new ConfigService();
+			this.serverListService = new ServerListService();
+			this.udidService = new UdidService();
+			this.VersionService = new VersionService();
 
-    public ServerListService getServerListService() {
-        return this.serverListService;
-    }
+		} catch (ConfigurationException e) {
+			e.printStackTrace();
+		}
 
-    public PropertiesConfiguration getConfiguration() {
-        return this.configuration;
-    }
+	}
 
-    // public AccountSkeleton getAccountSkeleton() {
-    // return accountSkeleton;
-    // }
-    public ConfigService getConfigService() {
-        return configService;
-    }
+	public void loadConfig() throws ConfigurationException {
+		this.configuration = new PropertiesConfiguration("config.properties");
+	}
 
-    public UserInfoService getUserInfoService() {
-        return userInfoService;
-    }
+	public ServerListService getServerListService() {
+		return this.serverListService;
+	}
 
-    public LineService getLineService() {
-        return lineService;
-    }
+	public PropertiesConfiguration getConfiguration() {
+		return this.configuration;
+	}
 
-    public UdidService getUdidService() {
-        return udidService;
-    }
+	// public AccountSkeleton getAccountSkeleton() {
+	// return accountSkeleton;
+	// }
+	public ConfigService getConfigService() {
+		return configService;
+	}
 
-    public VersionService getVersionService() {
-        return VersionService;
-    }
+	public UserInfoService getUserInfoService() {
+		return userInfoService;
+	}
+
+	public LineService getLineService() {
+		return lineService;
+	}
+
+	public UdidService getUdidService() {
+		return udidService;
+	}
+
+	public VersionService getVersionService() {
+		return VersionService;
+	}
 }

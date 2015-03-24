@@ -7,6 +7,6 @@ import com.wyd.protocol.data.AbstractData;
  * @author doter
  */
 
-public abstract interface IDataHandler {
-    public abstract AbstractData handle(AbstractData paramAbstractData) throws Exception;
+public interface IDataHandler {
+	public AbstractData handle(AbstractData paramAbstractData) throws Exception;
 }

@@ -63,6 +63,8 @@ public abstract class Connector implements ISession {
 	}
 
 	public boolean isConnected() {
+		if(this.session == null)
+			return false;
 		return this.session.isConnected();
 	}
 

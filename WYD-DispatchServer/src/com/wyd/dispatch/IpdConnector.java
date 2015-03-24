@@ -7,7 +7,6 @@ import org.apache.mina.filter.codec.ProtocolCodecFilter;
 
 import com.wyd.empire.protocol.data.server.SendAddress;
 import com.wyd.net.Connector;
-import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.data.DataBeanFilter;
 import com.wyd.protocol.s2s.S2SDecoder;
 import com.wyd.protocol.s2s.S2SEncoder;
