@@ -1,11 +1,15 @@
 package com.wyd.server.dispatcher;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import com.wyd.server.service.ServerInfo;
 import com.wyd.server.service.ServiceManager;
 public class DispatcherServlet extends HttpServlet {
@@ -20,8 +24,8 @@ public class DispatcherServlet extends HttpServlet {
         doPost(req, resp);
     }
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String udid = req.getParameter("udid");
-        String area = req.getParameter("area");
+    	Map<String, Object> serverData = new HashMap<String, Object>();
+    	String area = req.getParameter("area");
         String group = req.getParameter("group");
         String channel = req.getParameter("channel");
         String serverid = req.getParameter("serverid");
@@ -32,7 +36,6 @@ public class DispatcherServlet extends HttpServlet {
         if (null == channel) channel = "1000";
         if (serverid == null) serverid = "0";
         
-        StringBuffer sb = new StringBuffer();
         if (!ServiceManager.getManager().getConfigService().exisArea(area)) {
             area = ServiceManager.getManager().getConfiguration().getString("defaultserver");
         }
@@ -49,17 +52,31 @@ public class DispatcherServlet extends HttpServlet {
             if (ServiceManager.getManager().getConfigService().exisMachine(area, group, Integer.parseInt( serverid))) {
                 serverInfo = ServiceManager.getManager().getServerListService().getServerInfoMap().get(area).get(group).get(Integer.parseInt( serverid));
             } else {
-                serverInfo = ServiceManager.getManager().getServerListService().getServerInfo(area, group);
+                serverInfo = ServiceManager.getManager().getServerListService().getServerInfo(area, group);//根据几率获取一个服
             }
-            if (null != serverInfo) {
-                sb.append(ServiceManager.getManager().getUserInfoService().infoToString(serverInfo, versionString, udid, channel));
-            } else {
-                sb.append("0,");
-                sb.append(ServiceManager.getManager().getConfiguration().getString("busymessage"));
-            }
-        } else {
-            sb.append(ServiceManager.getManager().getUserInfoService().infoToString(serverInfo, versionString, channel));
         }
+        
+        if(serverInfo != null){
+        	serverData = ServiceManager.getManager().getUserInfoService().infoToString(serverInfo, versionString, channel);	
+        }else{
+        	serverData.put("msg", ServiceManager.getManager().getUserInfoService().infoToString(serverInfo, versionString, channel));
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         resp.setContentType(CONTENT_TYPE);
         resp.setStatus(200);
         ServletOutputStream out = resp.getOutputStream();

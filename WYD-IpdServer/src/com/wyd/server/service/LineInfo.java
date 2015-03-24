@@ -12,7 +12,7 @@ public class LineInfo {
     private String         address;
     private int            currOnline;//实时在线人数
     private int            maxOnline;
-    private boolean        maintance;
+    private boolean        maintance;//维护
     private int            topOnline;
     private int            totalOnline; // 用于计算一天内平均在线数
     private int            totalTimes;  // 用于计算一天内平均在线数

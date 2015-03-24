@@ -104,9 +104,7 @@ public class ServerListService {
                     info.setVersion(version);
                     info.setUpdateurl(updateurl);
                     info.setAppraisal(appraisal);
-                    serverInfo.getConfig().setBulletin(bulletin);
-                    serverInfo.getConfig().setServerId(serverId);
-
+                    
                     System.out.println("AddServer 地区: " + area + "serverId: " + serverId + "线:" + id);
                 }
             }

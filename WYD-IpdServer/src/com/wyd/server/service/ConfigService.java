@@ -136,7 +136,7 @@ public class ConfigService implements Runnable {
                         serverConfigBean.setIstest(Integer.parseInt(machineEmployee.attributeValue("istest")));
                         serverConfigBean.setOpenudid(Integer.parseInt(machineEmployee.attributeValue("openudid")));
                         serverConfigBean.setBulletin(machineEmployee.attributeValue("bulletin"));
-                        
+                        System.out.println("--------"+machineEmployee.attributeValue("bulletin")+"=====");
                         serverInfo.setConfig( serverConfigBean);
                         
                         serverList.put(Integer.parseInt( machineEmployee.attributeValue("id")), serverInfo);
