@@ -3,8 +3,7 @@ package com.wyd.empire.world.server.handler.server;
 import org.apache.log4j.Logger;
 
 import com.wyd.empire.protocol.data.server.DispatchLogin;
-import com.wyd.empire.protocol.data.server.ServerLoginOk;
-import com.wyd.empire.protocol.data.server.UpdateVers;
+import com.wyd.empire.protocol.data.server.UpdateServerInfo;
 import com.wyd.empire.world.Server;
 import com.wyd.empire.world.common.util.VersionUtils;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
@@ -24,8 +23,8 @@ public class DispatchLoginHandler implements IDataHandler {
 		this.log = Logger.getLogger(DispatchLoginHandler.class);
 	}
 
-	public void handle(AbstractData data) throws Exception {
-		boolean success = false;
+	public AbstractData handle(AbstractData data) throws Exception {
+		UpdateServerInfo updateData = null;
 		DispatchLogin msg = (DispatchLogin) data;
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		try {
@@ -33,31 +32,33 @@ public class DispatchLoginHandler implements IDataHandler {
 			String password = msg.getPassword();
 			String serverPassword = ServiceManager.getManager().getConfiguration().getString("serverpassword");
 			int maxPlayer = msg.getMaxPlayer();
-			session.setMaxPlayer(maxPlayer);
+			
 			if ((password != null) && (password.equals(serverPassword))) {
 				session.setName(id);
-				ServerLoginOk seg = new ServerLoginOk();
-				session.write(seg);
-				success = true;
-				long current = System.currentTimeMillis();
-				session.notifyMaxPlayer(current);
-				session.notifyMaintanceStatus();
-
-				UpdateVers updateVers = new UpdateVers();
-				updateVers.setArea(Server.config.getArea());
-				updateVers.setGroup(Server.config.getGroup());
-				updateVers.setMachine(Server.config.getMachineCode() + "");
-				updateVers.setVersion(VersionUtils.select("num"));
-				updateVers.setUpdateurl(VersionUtils.select("updateurl"));
-				updateVers.setRemark(VersionUtils.select("remark"));
-				updateVers.setAppraisal(VersionUtils.select("appraisal"));
-				updateVers.setServerId(Server.config.getServerId());
-				session.write(updateVers);
+				session.setMaxPlayer(maxPlayer);
+				
+//				ServerLoginOk seg = new ServerLoginOk();
+//				session.write(seg);
+//				session.notifyMaxPlayer();
+//				session.notifyMaintanceStatus();
+				
+				//更新服务器信息
+				updateData = new UpdateServerInfo();
+				updateData.setArea(Server.config.getArea());
+				updateData.setGroup(Server.config.getGroup());
+				updateData.setMachine(Server.config.getMachineCode() + "");
+				updateData.setVersion(VersionUtils.select("num"));
+				updateData.setUpdateurl(VersionUtils.select("updateurl"));
+				updateData.setRemark(VersionUtils.select("remark"));
+				updateData.setAppraisal(VersionUtils.select("appraisal"));
+				updateData.setServerId(Server.config.getServerId());
+//				session.write(updateData);
+			}else{
+				session.close();
 			}
 		} catch (Exception e) {
 			this.log.error(e, e);
 		}
-		if (!(success))
-			session.close();
+		return updateData;
 	}
 }

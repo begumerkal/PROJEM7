@@ -4,12 +4,15 @@ import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSON;
+
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.wyd.server.service.ConfigService;
 import com.wyd.server.service.ServerInfo;
 import com.wyd.server.service.ServiceManager;
 public class DispatcherServlet extends HttpServlet {
@@ -37,11 +40,11 @@ public class DispatcherServlet extends HttpServlet {
         if (serverid == null) serverid = "0";
         
         if (!ServiceManager.getManager().getConfigService().exisArea(area)) {
-            area = ServiceManager.getManager().getConfiguration().getString("defaultserver");
+            area = ServiceManager.getManager().getConfiguration().getString("defaultArea");
         }
         group = channel+"_"+group;
         if (!ServiceManager.getManager().getConfigService().exisGroup(area,group)) {
-            group = ServiceManager.getManager().getConfiguration().getString("defaultgroup");
+            group = ServiceManager.getManager().getConfiguration().getString("defaultGroup");
         }
         ServerInfo serverInfo = null;
         if (ServiceManager.getManager().getVersionService().isTestVersion(versionString) 
@@ -49,6 +52,7 @@ public class DispatcherServlet extends HttpServlet {
             serverInfo = ServiceManager.getManager().getServerListService().getTestServerInfo(area,group);
         }
         if (serverInfo == null) {
+        	ConfigService sss = ServiceManager.getManager().getConfigService();
             if (ServiceManager.getManager().getConfigService().exisMachine(area, group, Integer.parseInt( serverid))) {
                 serverInfo = ServiceManager.getManager().getServerListService().getServerInfoMap().get(area).get(group).get(Integer.parseInt( serverid));
             } else {
@@ -57,31 +61,17 @@ public class DispatcherServlet extends HttpServlet {
         }
         
         if(serverInfo != null){
-        	serverData = ServiceManager.getManager().getUserInfoService().infoToString(serverInfo, versionString, channel);	
+        	serverData = ServiceManager.getManager().getUserInfoService().getLineInfo(serverInfo, versionString, channel);	
         }else{
-        	serverData.put("msg", ServiceManager.getManager().getUserInfoService().infoToString(serverInfo, versionString, channel));
+        	serverData.put("msg", ServiceManager.getManager().getConfiguration().getString("busyMessage"));
         }
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        String sendStr = JSON.toJSONString(serverData);
         resp.setContentType(CONTENT_TYPE);
         resp.setStatus(200);
         ServletOutputStream out = resp.getOutputStream();
         OutputStreamWriter os = new OutputStreamWriter(out, "utf-8");
-        os.write(sb.toString());
+        os.write(sendStr);
         os.flush();
         os.close();
     }

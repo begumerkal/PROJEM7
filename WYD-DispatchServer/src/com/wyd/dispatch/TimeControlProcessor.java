@@ -81,8 +81,8 @@ public class TimeControlProcessor implements ControlProcessor, Runnable {
 				case Protocol.SERVER_ShutDown : // '\030'
 					shutdown();
 					break;
-				case Protocol.SERVER_UpdateVers : // '\091'
-					updateVersion(data);
+				case Protocol.SERVER_UpdateServerInfo : // '\091'
+					updateServerInfo(data);
 					break;
 			}
 		} catch (Exception ex) {
@@ -144,7 +144,7 @@ public class TimeControlProcessor implements ControlProcessor, Runnable {
 		byte type = data.getType();
 		try {
 			switch (type) {
-				case Protocol.MAIN_SERVER :
+				case Protocol.MAIN_SERVER ://服务器间协议
 					processServerMsg(data);
 					break;
 				case Protocol.MAIN_CHAT :
@@ -225,7 +225,7 @@ public class TimeControlProcessor implements ControlProcessor, Runnable {
 	 * @param data
 	 * @throws Exception
 	 */
-	private void updateVersion(INetData data) throws Exception {
+	private void updateServerInfo(INetData data) throws Exception {
 		String area = data.readString();
 		String machine = data.readString();
 		data.readInt();

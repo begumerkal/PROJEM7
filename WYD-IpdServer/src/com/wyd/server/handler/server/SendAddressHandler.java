@@ -33,7 +33,7 @@ public class SendAddressHandler implements IDataHandler {
 
 			System.out.println("地区:" + address.getArea() + "组:" + address.getGroup() + "线:" + address.getId() + " 服务器ID:"
 					+ address.getServerId());
-			ServiceManager.getManager().getLineService().addSendAddress(address);
+			ServiceManager.getManager().getLineService().addServer(address);
 			this.log.info("Server [" + address.getArea() + "] [" + address.getGroup() + "] connected");
 		} else {
 			this.log.info("Server [" + address.getArea() + "] [" + address.getGroup() + "] connect fail");

@@ -1,5 +1,6 @@
 package com.wyd.server.service;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 //import com.wyd.server.util.CryptionUtil;
@@ -9,13 +10,13 @@ import java.util.Map;
 public class UserInfoService {
 
 	/**
-	 * 将服务器信息转换为 字符串
+	 * 获取服务器线中人数最少的一条链接消息给前端
 	 * 
 	 * @param serverInfo
 	 * @param version
 	 * @return
 	 */
-	public Map<String, Object> infoToString(ServerInfo serverInfo, String version, String channel) {
+	public Map<String, Object> getLineInfo(ServerInfo serverInfo, String version, String channel) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		LineInfo lineInfo = null;
 
@@ -35,12 +36,15 @@ public class UserInfoService {
 
 		if (null != lineInfo) {
 			dataMap.put("address", lineInfo.getAddress());
-			dataMap.put("version", version);
+			dataMap.put("version", lineInfo.getVersion());
 			dataMap.put("area", lineInfo.getArea());
 			dataMap.put("openudid", serverInfo.getConfig().getOpenudid());
-			for (String value : ServiceManager.getManager().getConfigService().getConfigList()) {
-				dataMap.put(value, value);
-			}
+			dataMap.put("group", lineInfo.getGroup());
+			dataMap.put("serverId", lineInfo.getServerId());
+			
+			List<String>  appendConfig = ServiceManager.getManager().getConfigService().getConfigList();
+			dataMap.put("append", appendConfig);
+			
 		} else {
 			dataMap.put("bulletin", serverInfo.getConfig().getBulletin());
 		}

@@ -12,7 +12,7 @@ import com.wyd.protocol.handler.IDataHandler;
  * 版本管理
  * 
  * @see com.sumsharp.protocol.handler.IDataHandler
- * @author mazheng
+ * @author doter
  */
 public class VersionHandler implements IDataHandler {
 	public void handle(AbstractData data) throws Exception {

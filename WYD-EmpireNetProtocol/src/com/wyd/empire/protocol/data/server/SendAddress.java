@@ -7,6 +7,7 @@ public class SendAddress extends AbstractData {
     private String group;
     private int serverId;
     private String address;
+    private String version;
 
     public SendAddress(int sessionId, int serial) {
         super(Protocol.MAIN_SERVER, Protocol.SERVER_SendAddress, sessionId, serial);
@@ -54,6 +55,14 @@ public class SendAddress extends AbstractData {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
 	}
 	
  

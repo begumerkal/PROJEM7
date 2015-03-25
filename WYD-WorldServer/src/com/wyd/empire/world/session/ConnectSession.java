@@ -163,12 +163,12 @@ public class ConnectSession extends Session {
 	 * 
 	 * @param current
 	 */
-	public void notifyMaxPlayer(long current) {
+	public void notifyMaxPlayer() {
 		if (this.maxPlayer != 0) {
 			NotifyMaxPlayer seg = new NotifyMaxPlayer();
 			seg.setCurrentCount(getPlayerCount());
 			seg.setMaxCount(this.maxPlayer);
-			seg.setCurrentTime(current);
+			seg.setCurrentTime(System.currentTimeMillis());
 			write(seg);
 		}
 	}

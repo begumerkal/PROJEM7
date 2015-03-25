@@ -50,7 +50,7 @@ public class IpdConnector extends Connector {
 		int port = this.configuration.getInt("publicport");
 		String group = this.configuration.getString("group");
 		String machineCode = this.configuration.getString("machinecode");
-		String address = ip + "," + port;
+		String address = ip + ":" + port;
 		if (type.equals("singlesocket")) {
 			String serverId = IpUtil.toServerID(ip, (short) port);
 			ip = this.configuration.getString("proxyaddress");
@@ -66,6 +66,8 @@ public class IpdConnector extends Connector {
 				address = address + "," + sn;
 			}
 		}
+		
+		
 		// 注册服务器
 		SendAddress send = new SendAddress();
 		send.setId(id);
@@ -73,6 +75,7 @@ public class IpdConnector extends Connector {
 		send.setAddress(address);
 		send.setGroup(group);
 		send.setServerId(Integer.parseInt(machineCode));
+		send.setVersion("--");
 		send(send);
 
 		// SyncLoad load = new SyncLoad();

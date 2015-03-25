@@ -9,7 +9,7 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.log4j.Logger;
 
 import com.wyd.empire.protocol.data.server.SyncLoad;
-import com.wyd.empire.protocol.data.server.UpdateVers;
+import com.wyd.empire.protocol.data.server.UpdateServerInfo;
 
 public class IpdService implements Runnable {
 	private BlockingQueue<SyncLoad> messages = new LinkedBlockingQueue<SyncLoad>();
@@ -40,7 +40,7 @@ public class IpdService implements Runnable {
 				this.connector.close();
 			this.connector.connect();
 			new Thread(this, "IPD Service").start();
-			
+
 			if (this.connector.isConnected())
 				System.out.println("ipd 服务链接成功！");
 		} catch (ConnectException e) {
@@ -65,7 +65,7 @@ public class IpdService implements Runnable {
 	 */
 	public void updateVersion(String area, String group, String machine, String version, String updateurl, String remark, String appraisal,
 			int serverId) {
-		UpdateVers updateVers = new UpdateVers();
+		UpdateServerInfo updateVers = new UpdateServerInfo();
 		updateVers.setArea(area);
 		updateVers.setGroup(group);
 		updateVers.setMachine(machine);

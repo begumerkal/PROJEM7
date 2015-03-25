@@ -332,7 +332,6 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 			seg.writeString((String) SocketDispatcher.this.configuration.getProperty("serverpassword"));
 			seg.writeInt(SocketDispatcher.this.configuration.getInt("maxplayer"));
 			SocketDispatcher.this.sendControlSegment(seg);
-
 		}
 		@Override
 		public void sessionIdle(IoSession session, IdleStatus idleStatus) throws Exception {

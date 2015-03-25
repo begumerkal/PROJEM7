@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 
-import com.wyd.empire.protocol.data.server.UpdateVers;
+import com.wyd.empire.protocol.data.server.UpdateServerInfo;
 import com.wyd.empire.world.Server;
 import com.wyd.empire.world.common.util.VersionUtils;
 import com.wyd.empire.world.session.ConnectSession;
@@ -119,10 +119,9 @@ public class ConnectService implements Runnable {
 			} catch (InterruptedException ex) {
 			}
 			try {
-				long current = System.currentTimeMillis();
 				for (int i = 0; i < this.connects.length; ++i)
 					if (this.connects[i] != null)
-						this.connects[i].notifyMaxPlayer(current);
+						this.connects[i].notifyMaxPlayer();
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}
@@ -133,7 +132,7 @@ public class ConnectService implements Runnable {
 	 * 更新服务器版本
 	 */
 	public void UpdateVersion() {
-		UpdateVers updateVers = new UpdateVers();
+		UpdateServerInfo updateVers = new UpdateServerInfo();
 		updateVers.setArea(Server.config.getArea());
 		updateVers.setGroup(Server.config.getGroup());
 		updateVers.setMachine(Server.config.getMachineCode() + "");
