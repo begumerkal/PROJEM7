@@ -25,6 +25,7 @@ public class DispatchSession extends Session {
     }
 
     public <T> void handle(T packet) {
+    	log.info(packet+" handle 没有找到");
     }
 
     public void idle(IdleStatus status) {

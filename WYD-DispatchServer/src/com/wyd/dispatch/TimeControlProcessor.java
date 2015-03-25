@@ -227,16 +227,15 @@ public class TimeControlProcessor implements ControlProcessor, Runnable {
 	 */
 	private void updateServerInfo(INetData data) throws Exception {
 		String area = data.readString();
-		String machine = data.readString();
+		int machine = data.readInt();
 		data.readInt();
 		String version = data.readString();
 		String updateurl = data.readString();
 		String remark = data.readString();
 		String appraisal = data.readString();
 		String group = data.readString();
-		int serverId = data.readInt();
 		if (ipdService != null) {
-			ipdService.updateVersion(area, group, machine, version, updateurl, remark, appraisal, serverId);
+			ipdService.updateServerInfo(area, group, machine, version, updateurl, remark, appraisal);
 		}
 	}
 	/** 踢玩家下线 */

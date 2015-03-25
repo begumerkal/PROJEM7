@@ -13,7 +13,6 @@ import com.wyd.protocol.s2s.S2SEncoder;
 import com.wyd.protocol.utils.IpUtil;
 public class IpdConnector extends Connector {
 	private static final Logger log = Logger.getLogger(IpdConnector.class);
-	private Configuration configuration = null;
 
 	/**
 	 * 初始化Connector
@@ -22,9 +21,8 @@ public class IpdConnector extends Connector {
 	 * @param address
 	 * @param configuration
 	 */
-	public IpdConnector(String id, InetSocketAddress address, Configuration configuration) {
+	public IpdConnector(String id, InetSocketAddress address) {
 		super(id, address);
-		this.configuration = configuration;
 	}
 
 	/**
@@ -42,48 +40,7 @@ public class IpdConnector extends Connector {
 	 */
 	@Override
 	protected void connected() {
-		log.info("dispatcher server connected");
-		int id = this.configuration.getInt("id");
-		String area = this.configuration.getString("area");
-		String type = this.configuration.getString("servertype");
-		String ip = this.configuration.getString("publicserver");
-		int port = this.configuration.getInt("publicport");
-		String group = this.configuration.getString("group");
-		String machineCode = this.configuration.getString("machinecode");
-		String address = ip + ":" + port;
-		if (type.equals("singlesocket")) {
-			String serverId = IpUtil.toServerID(ip, (short) port);
-			ip = this.configuration.getString("proxyaddress");
-			if (ip == null) {
-				ip = this.configuration.getString("proxyip");
-			}
-			Object obj = this.configuration.getProperty("proxyport");
-			port = Integer.parseInt(obj.toString());
-			String st = this.configuration.getString("serverMode", "");
-			String sn = this.configuration.getString("serverNumber", "1");
-			address = ip + "," + port + "." + serverId;
-			if (st.toUpperCase().equals("L7")) {
-				address = address + "," + sn;
-			}
-		}
-		
-		
-		// 注册服务器
-		SendAddress send = new SendAddress();
-		send.setId(id);
-		send.setArea(area);
-		send.setAddress(address);
-		send.setGroup(group);
-		send.setServerId(Integer.parseInt(machineCode));
-		send.setVersion("--");
-		send(send);
-
-		// SyncLoad load = new SyncLoad();
-		// load.setCurrOnline(0);
-		// load.setMaxOnline(this.configuration.getInt("maxplayer"));
-		// load.setMaintance(this.configuration.getBoolean("maintance", true));
-		// send(load);
-
+		System.out.println("dis lian   ipd ");
 	}
 
 }

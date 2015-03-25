@@ -42,6 +42,7 @@ public abstract class SessionHandler implements IoHandler {
 		Session session = this.registry.getSession(ioSession);
 		if (session != null) {
 			IDataHandler handler = ProtocolFactory.getDataHandler(dataobj);
+//			System.out.println("handler>>>>>>>>>>>>>>: "+handler+"session: "+session);
 			if (handler == null) {
 				session.handle(dataobj);
 			} else {

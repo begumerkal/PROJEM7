@@ -237,7 +237,7 @@ public class Server {
 		if (null != battleip && null != battleport) {
 			BattleSkeleton battleSkeleton = new BattleSkeleton("battleSkeleton", new InetSocketAddress(battleip,
 					Integer.parseInt(battleport)));
-			battleSkeleton.setUserName(config.getServerId() + "");
+			battleSkeleton.setUserName(config.getMachineCode() + "");
 			battleSkeleton.setPassword(ServiceManager.getManager().getConfiguration().getString("serverpassword"));
 			battleSkeleton.connect();
 			log.info("Battle auth connected");
@@ -257,7 +257,7 @@ public class Server {
 		if (null != nearbyip && null != nearbyport) {
 			NearbySkeleton nearbySkeleton = new NearbySkeleton("nearbySkeleton", new InetSocketAddress(nearbyip,
 					Integer.parseInt(nearbyport)));
-			nearbySkeleton.setUserName(config.getServerId() + "");
+			nearbySkeleton.setUserName(config.getMachineCode() + "");
 			nearbySkeleton.setPassword(ServiceManager.getManager().getConfiguration().getString("serverpassword"));
 			nearbySkeleton.connect();
 			log.info("Nearby auth connected");

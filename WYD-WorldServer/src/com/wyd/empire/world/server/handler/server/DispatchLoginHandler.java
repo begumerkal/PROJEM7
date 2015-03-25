@@ -37,25 +37,20 @@ public class DispatchLoginHandler implements IDataHandler {
 				session.setName(id);
 				session.setMaxPlayer(maxPlayer);
 				
-//				ServerLoginOk seg = new ServerLoginOk();
-//				session.write(seg);
-//				session.notifyMaxPlayer();
-//				session.notifyMaintanceStatus();
-				
-				//更新服务器信息
 				updateData = new UpdateServerInfo();
 				updateData.setArea(Server.config.getArea());
 				updateData.setGroup(Server.config.getGroup());
-				updateData.setMachine(Server.config.getMachineCode() + "");
+				updateData.setMachineId(Server.config.getMachineCode());
 				updateData.setVersion(VersionUtils.select("num"));
 				updateData.setUpdateurl(VersionUtils.select("updateurl"));
 				updateData.setRemark(VersionUtils.select("remark"));
 				updateData.setAppraisal(VersionUtils.select("appraisal"));
-				updateData.setServerId(Server.config.getServerId());
-//				session.write(updateData);
+				updateData.setAddress("--");
+				
 			}else{
 				session.close();
 			}
+			
 		} catch (Exception e) {
 			this.log.error(e, e);
 		}

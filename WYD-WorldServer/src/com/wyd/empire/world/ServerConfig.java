@@ -7,10 +7,9 @@ public class ServerConfig {
 	private int maxLevel;
 	private int zsMaxLevel;
 	private String area;
+    private String  areaId;
 	private int machineCode = 0;
-	private String areaId;
 	private String group;
-	private int serverId;
 	private boolean cross;
 	private String version;// 服务器版本用于跨服配对
 	private String serverName;// 服务器名称用于跨服配对
@@ -18,14 +17,15 @@ public class ServerConfig {
 	public ServerConfig(Configuration configuration) {
 		maxLevel = configuration.getInt("maxlevel", 99);
 		zsMaxLevel = configuration.getInt("zsMaxlevel", 219);
-		setAreaId(configuration.getString("areaid"));
-		setGroup(configuration.getString("group", "group1"));
+		setArea(configuration.getString("area"));
 		setMachineCode(configuration.getInt("machinecode"));
-		setServerId(configuration.getInt("serviceid"));
+		setAreaId(getArea() + "_" + getMachineCode());
+		setGroup(configuration.getString("group", "group1"));
 		setVersion(configuration.getString("version"));
 		String battleip = configuration.getString("battleip");
 		String battleport = configuration.getString("battleport");
 		setServerName(configuration.getString("servername"));
+
 		if (null != battleip && null != battleport)
 			cross = true;
 	}
@@ -61,18 +61,7 @@ public class ServerConfig {
 	 * 
 	 * @return
 	 */
-	public String getArea() {
-		return area;
-	}
-
-	public String getAreaId() {
-		return areaId;
-	}
-
-	public void setAreaId(String areaId) {
-		this.areaId = areaId;
-		this.area = areaId.substring(0, areaId.indexOf("_"));
-	}
+ 
 
 	/**
 	 * 服务器ID
@@ -81,6 +70,22 @@ public class ServerConfig {
 	 */
 	public int getMachineCode() {
 		return machineCode;
+	}
+
+	public String getArea() {
+		return area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
+	}
+
+	public String getAreaId() {
+		return areaId;
+	}
+
+	public void setAreaId(String areaId) {
+		this.areaId = areaId;
 	}
 
 	public void setMachineCode(int machineCode) {
@@ -95,13 +100,6 @@ public class ServerConfig {
 		this.group = group;
 	}
 
-	public int getServerId() {
-		return serverId;
-	}
-
-	public void setServerId(int serverId) {
-		this.serverId = serverId;
-	}
 
 	/**
 	 * 是否开启跨服战斗

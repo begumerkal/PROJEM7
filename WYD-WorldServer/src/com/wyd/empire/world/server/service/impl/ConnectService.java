@@ -128,20 +128,20 @@ public class ConnectService implements Runnable {
 		}
 	}
 
-	/**
-	 * 更新服务器版本
-	 */
-	public void UpdateVersion() {
-		UpdateServerInfo updateVers = new UpdateServerInfo();
-		updateVers.setArea(Server.config.getArea());
-		updateVers.setGroup(Server.config.getGroup());
-		updateVers.setMachine(Server.config.getMachineCode() + "");
-		updateVers.setVersion(VersionUtils.select("num"));
-		updateVers.setUpdateurl(VersionUtils.select("updateurl"));
-		updateVers.setRemark(VersionUtils.select("remark"));
-		updateVers.setAppraisal(VersionUtils.select("appraisal"));
-		for (int i = 0; i < this.connects.length; ++i)
-			if (this.connects[i] != null)
-				this.connects[i].write(updateVers);
-	}
+//	/**
+//	 * 更新服务器版本
+//	 */
+//	public void UpdateVersion() {
+//		UpdateServerInfo updateVers = new UpdateServerInfo();
+//		updateVers.setArea(Server.config.getArea());
+//		updateVers.setGroup(Server.config.getGroup());
+//		updateVers.setMachine(Server.config.getMachineCode() + "");
+//		updateVers.setVersion(VersionUtils.select("num"));
+//		updateVers.setUpdateurl(VersionUtils.select("updateurl"));
+//		updateVers.setRemark(VersionUtils.select("remark"));
+//		updateVers.setAppraisal(VersionUtils.select("appraisal"));
+//		for (int i = 0; i < this.connects.length; ++i)
+//			if (this.connects[i] != null)
+//				this.connects[i].write(updateVers);
+//	}
 }

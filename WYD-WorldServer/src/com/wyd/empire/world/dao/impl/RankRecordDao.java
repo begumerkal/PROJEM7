@@ -112,7 +112,7 @@ public class RankRecordDao extends UniversalDaoHibernate implements IRankRecordD
 		StringBuilder hql = new StringBuilder();
 		List<Object> values = new ArrayList<Object>();
 		hql.append("From ChallengeRecord where serviceId = ? ");
-		values.add(Server.config.getServerId());
+		values.add(Server.config.getMachineCode());
 		return getList(hql.toString(), values.toArray());
 	}
 
@@ -138,7 +138,7 @@ public class RankRecordDao extends UniversalDaoHibernate implements IRankRecordD
 		StringBuilder hql = new StringBuilder();
 		List<Object> values = new ArrayList<Object>();
 		hql.append("delete from ChallengeRecord where serviceId = ?");
-		values.add(Server.config.getServerId());
+		values.add(Server.config.getMachineCode());
 		execute(hql.toString(), values.toArray());
 	}
 
@@ -149,7 +149,7 @@ public class RankRecordDao extends UniversalDaoHibernate implements IRankRecordD
 		StringBuilder hql = new StringBuilder();
 		List<Object> values = new ArrayList<Object>();
 		hql.append("update ChallengeRecord set lastIntegral = integral,winNum=0 where serviceId = ?");
-		values.add(Server.config.getServerId());
+		values.add(Server.config.getMachineCode());
 		execute(hql.toString(), values.toArray());
 	}
 }

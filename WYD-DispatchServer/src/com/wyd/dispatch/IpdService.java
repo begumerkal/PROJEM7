@@ -16,16 +16,17 @@ public class IpdService implements Runnable {
 	private static final Logger log = Logger.getLogger(IpdService.class);
 	private IpdConnector connector;
 	private String mode;
-
+	private Configuration configuration;
 	/**
 	 * 初始化IP分配器，并连接IpdService服务器
 	 * 
 	 * @param configuration
 	 */
 	public IpdService(Configuration configuration) {
+		this.configuration = configuration;
 		String ip = configuration.getString("ipdServer");
 		int port = configuration.getInt("ipdPort");
-		this.connector = new IpdConnector("Ipd Connector", new InetSocketAddress(ip, port), configuration);
+		this.connector = new IpdConnector("Ipd Connector", new InetSocketAddress(ip, port));
 		this.mode = configuration.getString("servertype");
 		if (!(this.mode.equals("singlesocket")))
 			ipdConnect();
@@ -63,19 +64,24 @@ public class IpdService implements Runnable {
 	 * 
 	 * @param data
 	 */
-	public void updateVersion(String area, String group, String machine, String version, String updateurl, String remark, String appraisal,
-			int serverId) {
-		UpdateServerInfo updateVers = new UpdateServerInfo();
-		updateVers.setArea(area);
-		updateVers.setGroup(group);
-		updateVers.setMachine(machine);
-		updateVers.setLine(Main.configuration.getConfiguration().getInt("id"));
-		updateVers.setVersion(version);
-		updateVers.setUpdateurl(updateurl);
-		updateVers.setRemark(remark);
-		updateVers.setAppraisal(appraisal);
-		updateVers.setServerId(serverId);
-		this.connector.send(updateVers);
+	public void updateServerInfo(String area, String group, int machineId, String version, String updateurl, String remark,
+			String appraisal) {
+		UpdateServerInfo dataInfo = new UpdateServerInfo();
+		dataInfo.setArea(area);
+		dataInfo.setGroup(group);
+		dataInfo.setMachineId(machineId);
+		dataInfo.setLine(Main.configuration.getConfiguration().getInt("id"));
+		dataInfo.setVersion(version);
+		dataInfo.setUpdateurl(updateurl);
+		dataInfo.setRemark(remark);
+		dataInfo.setAppraisal(appraisal);
+		
+        String ip = this.configuration.getString("publicserver");
+        int port = this.configuration.getInt("publicport");
+        String address = ip + ":" + port;
+        
+        dataInfo.setAddress(address);
+		this.connector.send(dataInfo);
 	}
 
 	public void run() {

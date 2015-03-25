@@ -86,13 +86,13 @@ public class ServerListService {
 	 *            版本号
 	 * @param serverid
 	 */
-	public synchronized void addServer(int id, String area, String group, int serverId, String version, String address, String updateurl,
+	public synchronized void addServer(int id, String area, String group, int machineId, String version, String address, String updateurl,
 			String appraisal, String bulletin) {
 		Map<String, Map<Integer, ServerInfo>> gMap = serverInfoMap.get(area);
 		if (null != gMap) {
 			Map<Integer, ServerInfo> sMap = gMap.get(group);
 			if (null != sMap) {
-				ServerInfo serverInfo = sMap.get(serverId);
+				ServerInfo serverInfo = sMap.get(machineId);
 				if (null != serverInfo) {
 					Map<Integer, LineInfo> lineMap = serverInfo.getLineMap();
 					LineInfo info;
@@ -107,13 +107,12 @@ public class ServerListService {
 					info.setId(id);
 					info.setArea(area);
 					info.setGroup(group);
-					info.setServerId(serverId);
+					info.setServerId(machineId);
 					info.setVersion(version);
 					info.setUpdateurl(updateurl);
 					info.setAppraisal(appraisal);
 					info.setAddress(address);
-
-					System.out.println("AddServer 地区: " + area + "serverId: " + serverId + "线:" + id);
+					System.out.println("AddServer 地区: " + area + ", machineId: " + machineId + ", 线:" + id);
 				}
 			}
 		}

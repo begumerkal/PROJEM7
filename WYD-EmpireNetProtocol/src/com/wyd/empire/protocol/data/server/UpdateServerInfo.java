@@ -2,102 +2,104 @@ package com.wyd.empire.protocol.data.server;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.empire.protocol.Protocol;
 /**
- * 更新服务器版本信息
+ * 更新服务器信息
+ * 
  * @see AbstractData
  * @author doter
  */
 public class UpdateServerInfo extends AbstractData {
-    private String area;
-    private String machine;
-    private int line;
+	private String area;
+	private int machineId;
+	private int line;
 	private String version;
 	private String updateurl;
 	private String remark;
 	private String appraisal;
-    private String group;
-    private int serverId;
-    public UpdateServerInfo(int sessionId, int serial) {
-        super(Protocol.MAIN_SERVER, Protocol.SERVER_UpdateServerInfo, sessionId, serial);
-    }
+	private String group;
+	private String address;
 
-    public UpdateServerInfo() {
-        super(Protocol.MAIN_SERVER, Protocol.SERVER_UpdateServerInfo);
-    }
+	public UpdateServerInfo(int sessionId, int serial) {
+		super(Protocol.MAIN_SERVER, Protocol.SERVER_UpdateServerInfo, sessionId, serial);
+	}
 
-    public String getArea() {
-        return area;
-    }
+	public UpdateServerInfo() {
+		super(Protocol.MAIN_SERVER, Protocol.SERVER_UpdateServerInfo);
+	}
 
-    public void setArea(String area) {
-        this.area = area;
-    }
+	public String getArea() {
+		return area;
+	}
 
-    public String getMachine() {
-        return machine;
-    }
+	public void setArea(String area) {
+		this.area = area;
+	}
 
-    public void setMachine(String machine) {
-        this.machine = machine;
-    }
+	public int getMachineId() {
+		return machineId;
+	}
 
-    public int getLine() {
-        return line;
-    }
+	public void setMachineId(int machineId) {
+		this.machineId = machineId;
+	}
 
-    public void setLine(int line) {
-        this.line = line;
-    }
+	public int getLine() {
+		return line;
+	}
 
-    public String getVersion() {
-        return version;
-    }
+	public void setLine(int line) {
+		this.line = line;
+	}
 
-    public void setVersion(String version) {
-        this.version = version;
-    }
+	public String getVersion() {
+		return version;
+	}
 
-    public String getUpdateurl() {
-        return updateurl;
-    }
+	public void setVersion(String version) {
+		this.version = version;
+	}
 
-    public void setUpdateurl(String updateurl) {
-        this.updateurl = updateurl;
-    }
+	public String getUpdateurl() {
+		return updateurl;
+	}
 
-    public String getRemark() {
-        return remark;
-    }
+	public void setUpdateurl(String updateurl) {
+		this.updateurl = updateurl;
+	}
 
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
+	public String getRemark() {
+		return remark;
+	}
 
-    public String getAppraisal() {
-        return appraisal;
-    }
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
 
-    public void setAppraisal(String appraisal) {
-        this.appraisal = appraisal;
-    }
+	public String getAppraisal() {
+		return appraisal;
+	}
 
-    public String getGroup() {
-        if (null == group) {
-            return "";
-        } else {
-            return group;
-        }
-    }
+	public void setAppraisal(String appraisal) {
+		this.appraisal = appraisal;
+	}
 
-    public void setGroup(String group) {
-        this.group = group;
-    }
+	public String getGroup() {
+		if (null == group) {
+			return "";
+		} else {
+			return group;
+		}
+	}
 
-    public int getServerId() {
-        return serverId;
-    }
+	public void setGroup(String group) {
+		this.group = group;
+	}
 
-    public void setServerId(int serverId) {
-        this.serverId = serverId;
-    }
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
 }
