@@ -16,7 +16,7 @@ public class UserInfoService {
 	 * @param version
 	 * @return
 	 */
-	public Map<String, Object> getLineInfo(ServerInfo serverInfo, String version, String channel) {
+	public Map<String, Object> getLineInfo(ServerInfo serverInfo, String version) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		LineInfo lineInfo = null;
 

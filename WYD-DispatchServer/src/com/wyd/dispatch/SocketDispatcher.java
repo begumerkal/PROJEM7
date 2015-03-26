@@ -168,19 +168,15 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		connector.setHandler(new ServerSessionHandler());
 		connector.setDefaultRemoteAddress(address);
 		ConnectFuture future = this.connector.connect();
-		try {
-			synchronized (this) {
-				this.wait(10000L);
-			}
-			if (this.serverSession == null || !this.serverSession.isConnected()) {
-				System.out.println("世界服务器连接失败!");
-				log.error("世界服务器连接失败!");
-			} else {
-				System.out.println("世界服务器连接成功!");
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		future.awaitUninterruptibly();
+		
+		if (this.serverSession == null || !this.serverSession.isConnected()) {
+			System.out.println("WorldServer 连接失败!");
+			log.error("WorldServer 连接失败!");
+		} else {
+			System.out.println("WorldServer 连接成功!");
 		}
+ 
 		return future;
 	}
 
@@ -338,7 +334,6 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		}
 		@Override
 		public void sessionOpened(IoSession session) {
-			System.out.println("worldServer 链接成功。");
 		}
 	}
 

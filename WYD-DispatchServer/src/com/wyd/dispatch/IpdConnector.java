@@ -40,7 +40,6 @@ public class IpdConnector extends Connector {
 	 */
 	@Override
 	protected void connected() {
-		System.out.println("dis lian   ipd ");
 	}
 
 }

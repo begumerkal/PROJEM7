@@ -2,6 +2,7 @@ package com.wyd.net;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+
 import org.apache.log4j.Logger;
 import org.apache.mina.core.future.ConnectFuture;
 import org.apache.mina.core.service.IoHandlerAdapter;
@@ -9,6 +10,7 @@ import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.transport.socket.SocketSessionConfig;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
+
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.handler.IDataHandler;
 public abstract class Connector implements ISession {
@@ -60,6 +62,7 @@ public abstract class Connector implements ISession {
 		ConnectFuture future = connector.connect(this.address);
 		// 等待连接创建完成
 		future.awaitUninterruptibly();
+		
 	}
 
 	public boolean isConnected() {

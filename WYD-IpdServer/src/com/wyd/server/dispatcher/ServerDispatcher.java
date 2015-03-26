@@ -61,7 +61,7 @@ public class ServerDispatcher {
 		server.addConnector(connector);
 		// 访问项目地址
 		Context root = new Context(server, "/", 1);
-		root.addServlet(new ServletHolder(new DispatcherServlet()), "/");
+		root.addServlet(new ServletHolder(new DispatcherServlet()), "/");//http://localhost:6887/?area=CN&group=1000_G1&serverid=0
 		root.addServlet(new ServletHolder(new ServerLoadServlet()), "/load/*");
 		/**
 		 * Get current online user of a specific server parameter:serverid add
