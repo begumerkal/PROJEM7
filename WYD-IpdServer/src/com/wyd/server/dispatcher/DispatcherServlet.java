@@ -52,7 +52,6 @@ public class DispatcherServlet extends HttpServlet {
             serverInfo = ServiceManager.getManager().getServerListService().getTestServerInfo(area,group);
         }
         if (serverInfo == null) {
-        	ConfigService sss = ServiceManager.getManager().getConfigService();
             if (ServiceManager.getManager().getConfigService().exisMachine(area, group, Integer.parseInt( serverid))) {
                 serverInfo = ServiceManager.getManager().getServerListService().getServerInfoMap().get(area).get(group).get(Integer.parseInt( serverid));
             } else {

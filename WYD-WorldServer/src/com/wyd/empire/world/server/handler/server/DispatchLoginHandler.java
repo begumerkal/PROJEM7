@@ -40,6 +40,7 @@ public class DispatchLoginHandler implements IDataHandler {
 				updateData = new UpdateServerInfo();
 				updateData.setArea(Server.config.getArea());
 				updateData.setGroup(Server.config.getGroup());
+				updateData.setLine(0);
 				updateData.setMachineId(Server.config.getMachineCode());
 				updateData.setVersion(VersionUtils.select("num"));
 				updateData.setUpdateurl(VersionUtils.select("updateurl"));

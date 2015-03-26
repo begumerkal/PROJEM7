@@ -220,7 +220,7 @@ public class TimeControlProcessor implements ControlProcessor, Runnable {
 	}
 
 	/**
-	 * 更新服务器版本
+	 * 更新服务器信息
 	 * 
 	 * @param data
 	 * @throws Exception

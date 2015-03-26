@@ -70,7 +70,7 @@ public class IpdService implements Runnable {
 		dataInfo.setArea(area);
 		dataInfo.setGroup(group);
 		dataInfo.setMachineId(machineId);
-		dataInfo.setLine(Main.configuration.getConfiguration().getInt("id"));
+		dataInfo.setLine(Main.configuration.getConfiguration().getInt("id"));//线id
 		dataInfo.setVersion(version);
 		dataInfo.setUpdateurl(updateurl);
 		dataInfo.setRemark(remark);
