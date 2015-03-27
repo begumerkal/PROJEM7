@@ -22,13 +22,13 @@ public class DataBeanDecoder {
             d = ProtocolFactory.getProtocolDataBean((byte) -1, (byte) -1);
             d.setType(type);
             d.setSubType(subType);
-            this.log.debug("***Recv Error Msg:" + ProtocolFactory.getProtocolDataBean(type, subType).getClass().getName());
+            this.log.debug("***数据异常:" + ProtocolFactory.getProtocolDataBean(type, subType).getClass().getName());
         } else {
             d = ProtocolFactory.getProtocolDataBean(type, subType);
             if (d == null)
-                this.log.warn("***UNKNOW TYPE —————— 0x" + Integer.toHexString(type) + ".0x" + Integer.toHexString(subType));
+                this.log.warn("***未定义的类型：" + Integer.toHexString(type) + ".0x" + Integer.toHexString(subType));
             else {
-                this.log.debug("***Recv Msg —————— " + d.getClass().getName());
+                this.log.debug("***接收消息： " + d.getClass().getName());
             }
         }
         if (d != null) {
