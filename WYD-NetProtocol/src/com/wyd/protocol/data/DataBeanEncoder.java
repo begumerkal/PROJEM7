@@ -32,6 +32,7 @@ public class DataBeanEncoder {
             }
             setValue(segment, f.getName(), ftype, value);
         }
+        
         //System.out.println("type:" + data.getType() + "------------SubType:" + data.getSubType());
         //this.log.info("Send Msg —————— " + data.getClass().getSimpleName() + " " + data.getType() + "," + data.getSubType());
         //System.out.println(sdf.format((new Date()))+"Send Msg —————— " + data.getClass().getSimpleName());

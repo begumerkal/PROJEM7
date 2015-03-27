@@ -255,7 +255,7 @@ public class S2SData implements INetData {
 
 	public String toString() {
 		StringBuffer sbuf = new StringBuffer();
-		sbuf.append("Type:").append(type).append("SubType:").append(subType);
+		sbuf.append("Type:").append(type).append(" SubType:").append(subType);
 		int tmppos = pos;
 		pos = 8;
 		for (int i = 0; i < numOfParameter; i++) {

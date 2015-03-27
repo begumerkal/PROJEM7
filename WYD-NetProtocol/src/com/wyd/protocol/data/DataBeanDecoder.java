@@ -2,8 +2,10 @@ package com.wyd.protocol.data;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
+
 import com.wyd.net.ProtocolFactory;
 import com.wyd.protocol.INetData;
 public class DataBeanDecoder {
@@ -40,6 +42,7 @@ public class DataBeanDecoder {
                     String ftype = f.getType().getSimpleName();
                     PropertyUtils.setProperty(d, f.getName(), getValue(data, f.getName(), ftype));
                 }
+                System.out.println("收到数据："+data.toString());
             } catch (Exception ex) {
                 System.out.println("type:" + type + "------------SubType:" + subType);
                 this.log.error("***Recv Error type:" + type + "------------SubType:" + subType);

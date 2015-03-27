@@ -169,14 +169,14 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		connector.setDefaultRemoteAddress(address);
 		ConnectFuture future = this.connector.connect();
 		future.awaitUninterruptibly();
-		
+
 		if (this.serverSession == null || !this.serverSession.isConnected()) {
 			System.out.println("WorldServer 连接失败!");
 			log.error("WorldServer 连接失败!");
 		} else {
 			System.out.println("WorldServer 连接成功!");
 		}
- 
+
 		return future;
 	}
 
@@ -309,10 +309,12 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		@Override
 		public void messageReceived(IoSession session, Object object) throws Exception {
 			Packet packet = (Packet) object;
-			if (packet.type == Packet.TYPE.BUFFER)
+			if (packet.type == Packet.TYPE.BUFFER) {
 				SocketDispatcher.this.dispatchToClient(packet);
-			else
+			} else {
 				SocketDispatcher.this.processControl(packet);
+				System.out.println("dis收到内部数据："+packet.data.toString());
+			}
 		}
 		@Override
 		public void sessionClosed(IoSession session) throws Exception {

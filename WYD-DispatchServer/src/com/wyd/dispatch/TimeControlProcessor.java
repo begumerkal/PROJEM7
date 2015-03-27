@@ -214,8 +214,7 @@ public class TimeControlProcessor implements ControlProcessor, Runnable {
 		log.info((new StringBuilder()).append("SyncTime[").append(System.currentTimeMillis() - c).append("] ONLINE[").append(current)
 				.append("] MAX[").append(maxPlayer).append("]").toString());
 		if (ipdService != null) {
-			boolean m = configuration.getConfiguration().getBoolean("maintance", true);
-			ipdService.connect(current, maxPlayer, m);
+			ipdService.connect(current, maxPlayer, configuration.getConfiguration().getBoolean("maintance", true));
 		}
 	}
 
