@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.FullServiceReward;
 import com.wyd.empire.world.bean.RewardItems;
 import com.wyd.empire.world.bean.Tips;
@@ -60,7 +60,7 @@ public class RewardItemsDao extends UniversalDaoHibernate implements IRewardItem
 	 */
 	@SuppressWarnings("unchecked")
 	public List<FullServiceReward> findAllFullServiceReward() {
-		return getList("FROM FullServiceReward WHERE areaId = ?", new Object[]{Server.config.getAreaId()});
+		return getList("FROM FullServiceReward WHERE areaId = ?", new Object[]{WorldServer.config.getAreaId()});
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class RewardItemsDao extends UniversalDaoHibernate implements IRewardItem
 	 */
 	@SuppressWarnings("unchecked")
 	public List<FullServiceReward> findFullServiceRewardByStatus() {
-		return getList("FROM FullServiceReward WHERE areaId = ? AND isAll = 'N' ", new Object[]{Server.config.getAreaId()});
+		return getList("FROM FullServiceReward WHERE areaId = ? AND isAll = 'N' ", new Object[]{WorldServer.config.getAreaId()});
 	}
 
 	@SuppressWarnings("unchecked")

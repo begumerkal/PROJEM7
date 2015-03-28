@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 
 import com.wyd.empire.protocol.data.server.UpdateServerInfo;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.common.util.VersionUtils;
 import com.wyd.empire.world.session.ConnectSession;
 import com.wyd.protocol.data.AbstractData;
@@ -133,9 +133,9 @@ public class ConnectService implements Runnable {
 //	 */
 //	public void UpdateVersion() {
 //		UpdateServerInfo updateVers = new UpdateServerInfo();
-//		updateVers.setArea(Server.config.getArea());
-//		updateVers.setGroup(Server.config.getGroup());
-//		updateVers.setMachine(Server.config.getMachineCode() + "");
+//		updateVers.setArea(WorldServer.config.getArea());
+//		updateVers.setGroup(WorldServer.config.getGroup());
+//		updateVers.setMachine(WorldServer.config.getMachineCode() + "");
 //		updateVers.setVersion(VersionUtils.select("num"));
 //		updateVers.setUpdateurl(VersionUtils.select("updateurl"));
 //		updateVers.setRemark(VersionUtils.select("remark"));

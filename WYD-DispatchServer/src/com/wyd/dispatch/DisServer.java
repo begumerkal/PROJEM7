@@ -6,8 +6,8 @@ import org.apache.mina.core.future.ConnectFuture;
 import com.wyd.empire.protocol.Protocol;
 import com.wyd.net.ProtocolFactory;
 
-public class Main {
-	private static final Logger log = Logger.getLogger(Main.class);
+public class DisServer {
+	private static final Logger log = Logger.getLogger(DisServer.class);
 	/** 配置信息 */
 	public static ConfigMenger configuration = null;
 	/** 分发服务 */
@@ -22,7 +22,7 @@ public class Main {
 	private IpdService ipdService = null;
 
 	public static void main(String[] args) throws Throwable {
-		Main main = new Main();
+		DisServer main = new DisServer();
 		main.launch();
 	}
 

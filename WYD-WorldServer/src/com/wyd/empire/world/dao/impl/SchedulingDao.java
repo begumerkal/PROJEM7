@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.LogActivitiesAward;
 import com.wyd.empire.world.dao.ISchedulingDao;
 
@@ -41,7 +41,7 @@ public class SchedulingDao extends UniversalDaoHibernate implements ISchedulingD
 		StringBuilder hql = new StringBuilder();
 		List<Object> values = new ArrayList<Object>();
 		hql.append(" SELECT activityName FROM " + LogActivitiesAward.class.getSimpleName() + " WHERE areaId=? ");
-		values.add(Server.config.getAreaId());
+		values.add(WorldServer.config.getAreaId());
 		hql.append(" AND playerId=? ");
 		values.add(playerId);
 		hql.append(" AND date(createTime)=date(?) ");

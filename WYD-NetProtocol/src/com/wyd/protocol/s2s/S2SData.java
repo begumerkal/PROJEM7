@@ -195,8 +195,9 @@ public class S2SData implements INetData {
 	}
 
 	public String readString() throws IllegalAccessException {
-		if (pos + 3 > data.length || data[pos] != 6)
+		if (pos + 3 > data.length || data[pos] != 6) {
 			throw new IllegalAccessException();
+		}
 		pos++;
 		int len = (int) getNumber(data, pos, 2);
 		pos += 2;
@@ -233,7 +234,7 @@ public class S2SData implements INetData {
 			try {
 				data = new String(bytearr, "utf-8");
 			} catch (UnsupportedEncodingException e) {
-				throw new IllegalAccessException();
+				throw new IllegalAccessException("type:" + type + " subType" + subType + " pos:" + pos);
 			}
 			ret[i] = data;
 		}
@@ -344,7 +345,7 @@ public class S2SData implements INetData {
 				continue;
 			} catch (Exception e) {
 				e.printStackTrace();
-				// sbuf.append(", ").append("参数错误num:").append(i).append(" type:").append(data[pos]);
+				sbuf.append(", ").append("参数错误num:").append(i).append(" type:").append(data[pos]);
 			}
 			break;
 		}

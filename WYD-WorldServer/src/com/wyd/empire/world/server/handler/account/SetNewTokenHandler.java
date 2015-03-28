@@ -3,7 +3,7 @@ package com.wyd.empire.world.server.handler.account;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 import com.wyd.empire.protocol.data.account.SetNewToken;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.common.util.CryptionUtil;
 import com.wyd.empire.world.common.util.HttpClientUtil;
 import com.wyd.empire.world.player.WorldPlayer;
@@ -38,7 +38,7 @@ public class SetNewTokenHandler implements IDataHandler {
 						.getManager()
 						.getHttpThreadPool()
 						.execute(
-								new setTokenThread(setToken.getUdid(), setToken.getToken(), Server.config.getAreaId(), player.getId(),
+								new setTokenThread(setToken.getUdid(), setToken.getToken(), WorldServer.config.getAreaId(), player.getId(),
 										setToken.getDeviceType()));
 			}
 		} catch (Exception ex) {

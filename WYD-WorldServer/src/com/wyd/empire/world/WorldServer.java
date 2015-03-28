@@ -51,15 +51,15 @@ import com.wyd.session.SessionHandler;
 import com.wyd.session.SessionRegistry;
 
 /**
- * 类 Server 游戏世界入口类。 创建游戏世界中各服务，创建监听端口、连接帐号服务器
+ * 类 WorldServer 游戏世界入口类。 创建游戏世界中各服务，创建监听端口、连接帐号服务器
  * 
  * @since JDK 1.7
  */
 
-public class Server {
-	private static final Logger log = Logger.getLogger(Server.class);
+public class WorldServer {
+	private static final Logger log = Logger.getLogger(WorldServer.class);
 	public IRequestService requestService;
-	public static Server instance = null;
+	public static WorldServer instance = null;
 	public static ServerConfig config;
 
 	/**
@@ -73,7 +73,7 @@ public class Server {
 		ProtocolFactory.init(Protocol.class, "com.wyd.empire.protocol.data", "com.wyd.empire.world.server.handler");
 		// 加载configWorld.properties配置,读取配置文件内最大等级限制
 		Configuration configuration = ServiceManager.getManager().getConfiguration();
-		Server.config = new ServerConfig(configuration);
+		WorldServer.config = new ServerConfig(configuration);
 		// 初始化基础数据
 		ServiceManager.getManager().initBaseData();
 		// 初始化进程
@@ -302,7 +302,7 @@ public class Server {
 
 	public static void main(String[] args) {
 		try {
-			instance = new Server();
+			instance = new WorldServer();
 			instance.launch();
 		} catch (Exception e) {
 			e.printStackTrace();

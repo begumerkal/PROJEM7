@@ -9,7 +9,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.util.StringUtils;
 import com.wyd.empire.protocol.data.admin.Add;
 import com.wyd.empire.protocol.data.admin.AddResult;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.ActivitiesAward;
 import com.wyd.empire.world.bean.BossmapReward;
 import com.wyd.empire.world.bean.Bulletin;
@@ -206,7 +206,7 @@ public class AddHandler implements IDataHandler {
 					for (int i = 0; i < keys.length; i++) {
 						PropertyUtils.setProperty(loginReward, keys[i], valueList.get(i));
 					}
-					loginReward.setAreaId(Server.config.getAreaId());
+					loginReward.setAreaId(WorldServer.config.getAreaId());
 					ServiceManager.getManager().getActivitiesAwardService().save(loginReward);
 					break;
 				case 13 :
@@ -214,7 +214,7 @@ public class AddHandler implements IDataHandler {
 					for (int i = 0; i < keys.length; i++) {
 						PropertyUtils.setProperty(inviteServiceInfo, keys[i], valueList.get(i));
 					}
-					inviteServiceInfo.setAreaId(Server.config.getAreaId());
+					inviteServiceInfo.setAreaId(WorldServer.config.getAreaId());
 					ServiceManager.getManager().getInviteService().getIInviteService().save(inviteServiceInfo);
 					break;
 				case 14 :
@@ -222,7 +222,7 @@ public class AddHandler implements IDataHandler {
 					for (int i = 0; i < keys.length; i++) {
 						PropertyUtils.setProperty(inviteReward, keys[i], valueList.get(i));
 					}
-					inviteReward.setAreaId(Server.config.getAreaId());
+					inviteReward.setAreaId(WorldServer.config.getAreaId());
 					ServiceManager.getManager().getInviteService().getIInviteService().save(inviteReward);
 					break;
 				case 15 :
@@ -434,7 +434,7 @@ public class AddHandler implements IDataHandler {
 					break;
 				case 37 :// button信息
 					ButtonInfo buttonInfo = new ButtonInfo();
-					buttonInfo.setAreaId(Server.config.getAreaId());
+					buttonInfo.setAreaId(WorldServer.config.getAreaId());
 					for (int i = 0; i < keys.length; i++) {
 						PropertyUtils.setProperty(buttonInfo, keys[i], valueList.get(i));
 					}

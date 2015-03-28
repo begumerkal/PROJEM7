@@ -22,12 +22,12 @@ import com.wyd.session.Session;
 import com.wyd.session.SessionHandler;
 import com.wyd.session.SessionRegistry;
 
-public class ServerDispatcher {
+public class IpdServer {
 	private PropertiesConfiguration configuration;
-	private static final Logger log = Logger.getLogger(ServerDispatcher.class);
+	private static final Logger log = Logger.getLogger(IpdServer.class);
 
 	public static void main(String[] args) {
-		new ServerDispatcher().launch();
+		new IpdServer().launch();
 	}
 
 	private void launch() {

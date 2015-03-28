@@ -19,7 +19,7 @@ import com.wyd.empire.protocol.data.battle.GameOver;
 import com.wyd.empire.protocol.data.battle.Pass;
 import com.wyd.empire.protocol.data.battle.PlayerLose;
 import com.wyd.empire.protocol.data.room.MakePairOk;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.battle.BattleTeam;
 import com.wyd.empire.world.battle.Combat;
 import com.wyd.empire.world.battle.CombatComparator;
@@ -307,7 +307,7 @@ public class BattleTeamService implements Runnable {
 					petIcon[i] = "";
 					petEffect[i] = "";
 				}
-				serverName[i] = Server.config.getServerName();
+				serverName[i] = WorldServer.config.getServerName();
 				playerId[i] = combat.getId();
 				zsleve[i] = combat.getPlayer().getPlayer().getZsLevel();
 				skillful[i] = combat.getProficiency();
@@ -1113,7 +1113,7 @@ public class BattleTeamService implements Runnable {
 												.getRiv().getDays(), combat.getRiv().getCount(), 12, null, 0, 0, 0);
 									}
 									if (combat.getExp() > 0
-											|| (0 == combat.getExp() && player.getLevel() >= Server.config.getMaxLevel(player.getPlayer()
+											|| (0 == combat.getExp() && player.getLevel() >= WorldServer.config.getMaxLevel(player.getPlayer()
 													.getZsLevel()))) {
 										if (battleTeam.getBattleMode() == 5) {
 											if (combat.isWin()) {
@@ -1549,7 +1549,7 @@ public class BattleTeamService implements Runnable {
 						mapmarryExp[i] = exp3;
 						combat.setExp(exp + exp1 + exp2 + exp3);
 						if (combat.getExp() > 0
-								&& combat.getLevel() == Server.config.getMaxLevel(combat.getPlayer().getPlayer().getZsLevel())) {
+								&& combat.getLevel() == WorldServer.config.getMaxLevel(combat.getPlayer().getPlayer().getZsLevel())) {
 							int sjexp = ServiceManager.getManager().getPlayerService()
 									.getUpgradeExp(combat.getLevel(), combat.getPlayer().getPlayer().getZsLevel());
 							int dqexp = combat.getExp() + combat.getExp();

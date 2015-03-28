@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 import com.wyd.empire.protocol.data.room.CreateRoom;
 import com.wyd.empire.protocol.data.room.EnterRoom;
 import com.wyd.empire.protocol.data.room.SoundRoom;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.exception.ErrorMessages;
 import com.wyd.empire.world.player.WorldPlayer;
 import com.wyd.empire.world.room.Room;
@@ -51,7 +51,7 @@ public class CreateRoomHandler implements IDataHandler {
 			// System.out.println("CreateRoom------------"+roomId);
 			// 发送语音房间相关协议
 			SoundRoom soundRoom = new SoundRoom();
-			soundRoom.setSeverId(Server.config.getServerId());
+			soundRoom.setSeverId(WorldServer.config.getServerId());
 			soundRoom.setRoomId(roomId);
 			soundRoom.setLocation(0);
 			soundRoom.setMark(0);

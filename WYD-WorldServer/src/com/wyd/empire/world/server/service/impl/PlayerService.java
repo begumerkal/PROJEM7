@@ -26,7 +26,7 @@ import com.wyd.empire.protocol.data.vip.VipReceiveInfo;
 import com.wyd.empire.protocol.data.wedding.RemoveEngagementOK;
 import com.wyd.empire.protocol.data.wedding.RemoveEngagementToCouple;
 import com.wyd.empire.world.Client;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.battle.BattleTeam;
 import com.wyd.empire.world.battle.PlayerRewardVo;
 import com.wyd.empire.world.bean.LoginReward;
@@ -425,7 +425,7 @@ public class PlayerService implements Runnable {
 		Player player = new Player();
 		player.setAccountId(accountId);
 		player.setStatus((byte) 1);
-		player.setAreaId(Server.config.getMachineCode());
+		player.setAreaId(WorldServer.config.getMachineCode());
 		player.setVipLevel(0);
 		player.setVipExp(0);
 		player.setName(playerName);
@@ -778,7 +778,7 @@ public class PlayerService implements Runnable {
 			savelog = "玩家增加经验：id=" + player.getId() + "---name=" + player.getName() + "---exp=" + exp + "-------当前经验:"
 					+ player.getPlayer().getExp() + "------当日胜利次数：" + player.getBattleNum() + "-----打折比例" + expRate;
 		} else {
-			if (player.getPlayer().getLevel() < Server.config.getMaxLevel(player.getPlayer().getZsLevel())) {
+			if (player.getPlayer().getLevel() < WorldServer.config.getMaxLevel(player.getPlayer().getZsLevel())) {
 				player.getPlayer().setLevel(level + 1);
 				player.getPlayer().setExp(dqexp - sjexp);
 				try {

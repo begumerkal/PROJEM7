@@ -8,7 +8,7 @@ import net.sf.json.JSONArray;
 
 import org.apache.log4j.Logger;
 
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.common.util.CryptionUtil;
 import com.wyd.empire.world.common.util.DateUtil;
 import com.wyd.empire.world.common.util.HttpClientUtil;
@@ -31,7 +31,7 @@ public class CheckRechargeService {
 		private List<PlayerBillVo> pbList = new ArrayList<PlayerBillVo>();
 
 		public CheckRechargeThread(List<Object> list) {
-			String area = Server.config.getAreaId();
+			String area = WorldServer.config.getAreaId();
 			area = area.split("_")[0];
 
 			Object[] pb;

@@ -19,7 +19,7 @@ import com.wyd.empire.protocol.data.server.NotifyMaintance;
 import com.wyd.empire.protocol.data.server.NotifyMaxPlayer;
 import com.wyd.empire.protocol.data.server.ShutDown;
 import com.wyd.empire.world.Client;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.player.WorldPlayer;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
@@ -317,7 +317,7 @@ public class ConnectSession extends Session {
 	public void notifyMaintanceStatus() {
 		if (this.maxPlayer != 0) {
 			NotifyMaintance seg = new NotifyMaintance();
-			seg.setMaintance(Server.config.isMaintance());
+			seg.setMaintance(WorldServer.config.isMaintance());
 			write(seg);
 		}
 	}
@@ -428,7 +428,7 @@ public class ConnectSession extends Session {
 		playerLoginOk.setPlayerId(player.getId());
 		playerLoginOk.setPlayerName(player.getName());
 		playerLoginOk.setTickets(player.getDiamond());
-		playerLoginOk.setMaxLevel(Server.config.getMaxLevel(player.getPlayer().getZsLevel()));
+		playerLoginOk.setMaxLevel(WorldServer.config.getMaxLevel(player.getPlayer().getZsLevel()));
 		playerLoginOk.setPlayerHp(player.getMaxHP());
 		playerLoginOk.setPlayerDefend(player.getDefend());
 		playerLoginOk.setPlayerDefense(player.getCrit());

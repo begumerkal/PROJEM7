@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.common.util.ServiceUtils;
 import com.wyd.empire.world.player.WorldPlayer;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
@@ -33,7 +33,7 @@ public class RobotService implements Runnable {
 	}
 
 	public void inint() {
-		MAXLEVEL = Server.config.getMaxLevel(1) + 2;
+		MAXLEVEL = WorldServer.config.getMaxLevel(1) + 2;
 		MAXFIGHT = 100001;
 		PlayerService playerService = ServiceManager.getManager().getPlayerService();
 		List<Object[]> playerInfoList = playerService.getService().getPlayerLevelAndFight();

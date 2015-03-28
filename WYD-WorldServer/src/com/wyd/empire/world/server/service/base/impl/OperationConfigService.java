@@ -10,7 +10,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.wyd.db.page.PageList;
 import com.wyd.db.service.impl.UniversalManagerImpl;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.ButtonInfo;
 import com.wyd.empire.world.bean.OperationConfig;
 import com.wyd.empire.world.dao.IOperationConfigDao;
@@ -90,7 +90,7 @@ public class OperationConfigService extends UniversalManagerImpl implements IOpe
 	 */
 	@Override
 	public Map<String, String> getCurAreaIdAndName() {
-		Object[] o = dao.getAreaIdAndName(Server.config.getAreaId()).get(0);
+		Object[] o = dao.getAreaIdAndName(WorldServer.config.getAreaId()).get(0);
 		Map<String, String> m = new HashMap<String, String>();
 		m.put("areaId", (String) o[0]);
 		m.put("areaName", (String) o[1]);

@@ -6,7 +6,7 @@ import java.util.Vector;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.ConsortiaContribute;
 import com.wyd.empire.world.bean.PlayerSinConsortia;
 import com.wyd.empire.world.common.util.Common;
@@ -465,11 +465,11 @@ public class PlayerSinConsortiaDao extends UniversalDaoHibernate implements IPla
 				+ "+(SELECT MIN(c.id) FROM tab_consortia c,tab_player tp where tp.id = c.presidentId and c.id != ? AND tp.areaId = ? )) AS id) AS t2 "
 				+ "WHERE t1.consortiaId = t2.id ");
 		values.add(consortiaId);
-		values.add(Server.config.getMachineCode());
+		values.add(WorldServer.config.getMachineCode());
 		values.add(consortiaId);
-		values.add(Server.config.getMachineCode());
+		values.add(WorldServer.config.getMachineCode());
 		values.add(consortiaId);
-		values.add(Server.config.getMachineCode());
+		values.add(WorldServer.config.getMachineCode());
 		try {
 			List<Integer> list = getListBySql(hql.toString(), values.toArray());
 			return list;

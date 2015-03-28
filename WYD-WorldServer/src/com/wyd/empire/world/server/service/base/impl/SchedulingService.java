@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.StringUtils;
 import com.wyd.db.service.impl.UniversalManagerImpl;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.ActivitiesAward;
 import com.wyd.empire.world.bean.LogActivitiesAward;
 import com.wyd.empire.world.bean.Mail;
@@ -100,7 +100,7 @@ public class SchedulingService extends UniversalManagerImpl implements IScheduli
 		ServiceUtils.sleepRandomTime();
 		System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + ":"
 				+ "SchedulingService sendItemsToPlayer runing...");
-		List<LogActivitiesAward> list = dao.findAllLogAward(Server.config.getAreaId(), Common.LOG_AWARD_STATUS_N);
+		List<LogActivitiesAward> list = dao.findAllLogAward(WorldServer.config.getAreaId(), Common.LOG_AWARD_STATUS_N);
 		WorldPlayer player = null;
 		LogActivitiesAward currentLogActivitiesAward = null;
 		try {
@@ -166,7 +166,7 @@ public class SchedulingService extends UniversalManagerImpl implements IScheduli
 		ServiceUtils.sleepRandomTime();
 		System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + ":"
 				+ "SchedulingService saveLogActivitiesAward runing...");
-		List<ActivitiesAward> list = ServiceManager.getManager().getActivitiesAwardService().findAllActivity(Server.config.getAreaId());
+		List<ActivitiesAward> list = ServiceManager.getManager().getActivitiesAwardService().findAllActivity(WorldServer.config.getAreaId());
 		if (list != null && list.size() > 0) {
 			StringBuilder sb = new StringBuilder();
 			Map<String, String> map = null;
@@ -452,7 +452,7 @@ public class SchedulingService extends UniversalManagerImpl implements IScheduli
 		LogActivitiesAward logActivitiesAward = new LogActivitiesAward();
 		logActivitiesAward.setPlayerId(Integer.parseInt(playerId));
 		logActivitiesAward.setPlayerBillId(playerBillId);
-		logActivitiesAward.setAreaId(Server.config.getAreaId());
+		logActivitiesAward.setAreaId(WorldServer.config.getAreaId());
 		logActivitiesAward.setActivityName(activitiesAward.getActivityName());
 		logActivitiesAward.setStartTime(activitiesAward.getStartTime());
 		logActivitiesAward.setEndTime(activitiesAward.getEndTime());
@@ -507,7 +507,7 @@ public class SchedulingService extends UniversalManagerImpl implements IScheduli
 		if (!activitiesAward.getPlayerIds().contains(playerId)) {
 			LogActivitiesAward logActivitiesAward = new LogActivitiesAward();
 			logActivitiesAward.setPlayerId(Integer.parseInt(playerId));
-			logActivitiesAward.setAreaId(Server.config.getAreaId());
+			logActivitiesAward.setAreaId(WorldServer.config.getAreaId());
 			logActivitiesAward.setActivityName(activitiesAward.getActivityName());
 			logActivitiesAward.setStartTime(activitiesAward.getStartTime());
 			logActivitiesAward.setEndTime(activitiesAward.getEndTime());
@@ -538,7 +538,7 @@ public class SchedulingService extends UniversalManagerImpl implements IScheduli
 			if (StringUtils.hasText(dailyActivityVo.getRewardItems())) {
 				LogActivitiesAward logActivitiesAward = new LogActivitiesAward();
 				logActivitiesAward.setPlayerId(playerId);
-				logActivitiesAward.setAreaId(Server.config.getAreaId());
+				logActivitiesAward.setAreaId(WorldServer.config.getAreaId());
 				logActivitiesAward.setActivityName(dailyActivityVo.getName());
 				logActivitiesAward.setStartTime(new Date());
 				logActivitiesAward.setEndTime(new Date());
@@ -564,7 +564,7 @@ public class SchedulingService extends UniversalManagerImpl implements IScheduli
 			if (StringUtils.hasText(dailyActivityVo.getRewardItems()) && !list.contains(dailyActivityVo.getName())) {
 				LogActivitiesAward logActivitiesAward = new LogActivitiesAward();
 				logActivitiesAward.setPlayerId(playerId);
-				logActivitiesAward.setAreaId(Server.config.getAreaId());
+				logActivitiesAward.setAreaId(WorldServer.config.getAreaId());
 				logActivitiesAward.setActivityName(dailyActivityVo.getName());
 				logActivitiesAward.setStartTime(date);
 				logActivitiesAward.setEndTime(date);

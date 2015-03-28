@@ -6,7 +6,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.wyd.empire.protocol.data.rebirth.RebirthResult;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.PlayerItemsFromShop;
 import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.exception.ErrorMessages;
@@ -43,7 +43,7 @@ public class RebirthHandler implements IDataHandler {
 						int needDiamonds = (int) (10 * Math.pow(99 - pLevel, 2));
 						if (player.getDiamond() >= needDiamonds) {
 							String zsOldLevel = player.getPlayer().getZsOldLevel();
-							zsOldLevel += "," + Server.config.getMaxLevel(0);
+							zsOldLevel += "," + WorldServer.config.getMaxLevel(0);
 							if (zsOldLevel.startsWith(","))
 								zsOldLevel = zsOldLevel.substring(1);
 							player.getPlayer().setZsOldLevel(zsOldLevel);

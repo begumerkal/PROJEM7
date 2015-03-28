@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import org.apache.log4j.Logger;
 import com.wyd.empire.protocol.data.room.MakePair;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.exception.ErrorMessages;
 import com.wyd.empire.world.logs.GameLogService;
 import com.wyd.empire.world.player.WorldPlayer;
@@ -88,7 +88,7 @@ public class MakePairHandler implements IDataHandler {
 			if (1 == room.getStartMode() && !room.isNewPlayerRoom()) {
 				RandomRoom randomRoom = new RandomRoom();
 				randomRoom.setRoom(room);
-				if (1 == room.getServiceMode() && Server.config.isCross()) {
+				if (1 == room.getServiceMode() && WorldServer.config.isCross()) {
 					ServiceManager.getManager().getCrossService().sendPairInfo(room);
 				} else {
 					ServiceManager.getManager().getPairService().addRandomRoom(randomRoom);

@@ -14,7 +14,7 @@ import com.wyd.empire.channel.service.impl.Access_VTC;
 import com.wyd.empire.protocol.data.friend.GetFriendList;
 import com.wyd.empire.protocol.data.player.PlayerButtonInfo;
 import com.wyd.empire.world.Client;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.BuffRecord;
 import com.wyd.empire.world.bean.ButtonInfo;
 import com.wyd.empire.world.bean.CardGroup;
@@ -2732,7 +2732,7 @@ public class WorldPlayer {
 			ServiceManager.getManager().getMarryService().deleteWeddingRoomPlayer(player);
 			// 记录玩家退出日志
 			GameLogService.logout(player.getId(), player.getLevel(), player.getOnLineTime());
-			String area = Server.config.getAreaId().toUpperCase();
+			String area = WorldServer.config.getAreaId().toUpperCase();
 			// 越南服玩家下线需回调第三方
 			if (Access_VTC.isVTC(player.getChannelId())) {
 				Client client = player.getClient();

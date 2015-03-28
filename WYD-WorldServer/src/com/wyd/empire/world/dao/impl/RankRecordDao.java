@@ -3,7 +3,7 @@ package com.wyd.empire.world.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.ChallengeRecord;
 import com.wyd.empire.world.bean.IntegralArea;
 import com.wyd.empire.world.bean.RankRecord;
@@ -112,7 +112,7 @@ public class RankRecordDao extends UniversalDaoHibernate implements IRankRecordD
 		StringBuilder hql = new StringBuilder();
 		List<Object> values = new ArrayList<Object>();
 		hql.append("From ChallengeRecord where serviceId = ? ");
-		values.add(Server.config.getMachineCode());
+		values.add(WorldServer.config.getMachineCode());
 		return getList(hql.toString(), values.toArray());
 	}
 
@@ -138,7 +138,7 @@ public class RankRecordDao extends UniversalDaoHibernate implements IRankRecordD
 		StringBuilder hql = new StringBuilder();
 		List<Object> values = new ArrayList<Object>();
 		hql.append("delete from ChallengeRecord where serviceId = ?");
-		values.add(Server.config.getMachineCode());
+		values.add(WorldServer.config.getMachineCode());
 		execute(hql.toString(), values.toArray());
 	}
 
@@ -149,7 +149,7 @@ public class RankRecordDao extends UniversalDaoHibernate implements IRankRecordD
 		StringBuilder hql = new StringBuilder();
 		List<Object> values = new ArrayList<Object>();
 		hql.append("update ChallengeRecord set lastIntegral = integral,winNum=0 where serviceId = ?");
-		values.add(Server.config.getMachineCode());
+		values.add(WorldServer.config.getMachineCode());
 		execute(hql.toString(), values.toArray());
 	}
 }

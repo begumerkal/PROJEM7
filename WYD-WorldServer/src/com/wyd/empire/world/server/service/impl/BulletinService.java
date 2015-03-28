@@ -2,7 +2,7 @@ package com.wyd.empire.world.server.service.impl;
 
 import java.util.List;
 
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.Bulletin;
 import com.wyd.empire.world.server.service.base.IBulletinService;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
@@ -58,7 +58,7 @@ public class BulletinService implements Runnable {
 
 	public void addBulletin(Bulletin bulletin, String areas) {
 		if (areas.equals(null) && areas.equals("")) {
-			bulletin.setAreaId(Server.config.getAreaId());
+			bulletin.setAreaId(WorldServer.config.getAreaId());
 			bulletin.setTimes(0);
 			bulletinService.save(bulletin);
 		} else {

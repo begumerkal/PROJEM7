@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.context.ApplicationContext;
 
 import com.wyd.db.service.impl.UniversalManagerImpl;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.common.util.KeywordsUtil;
 import com.wyd.empire.world.dao.IRandomNameDao;
@@ -56,7 +56,7 @@ public class RandomNameService extends UniversalManagerImpl implements IRandomNa
 	 * @return
 	 */
 	private boolean isJapan() {
-		String serverId = Server.config.getAreaId().toUpperCase();
+		String serverId = WorldServer.config.getAreaId().toUpperCase();
 		return serverId.startsWith("JA") || serverId.startsWith("JP");
 	}
 

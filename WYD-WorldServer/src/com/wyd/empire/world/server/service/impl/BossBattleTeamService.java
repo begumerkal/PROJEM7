@@ -20,7 +20,7 @@ import com.wyd.empire.protocol.data.bossmapbattle.GameOver;
 import com.wyd.empire.protocol.data.bossmapbattle.Pass;
 import com.wyd.empire.protocol.data.bossmapbattle.PlayerLose;
 import com.wyd.empire.protocol.data.bossmaproom.MakePairOk;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.battle.BossBattleTeam;
 import com.wyd.empire.world.battle.Combat;
 import com.wyd.empire.world.battle.CombatChara;
@@ -1232,7 +1232,7 @@ public class BossBattleTeamService implements Runnable {
 						if (combat.isWin()) {
 							isSuccess = true;
 							if (combat.getExp() > 0
-									|| (0 == combat.getExp() && player.getLevel() >= Server.config.getMaxLevel(player.getPlayer()
+									|| (0 == combat.getExp() && player.getLevel() >= WorldServer.config.getMaxLevel(player.getPlayer()
 											.getZsLevel()))) {
 								ServiceManager.getManager().getPlayerSinConsortiaService().updatePlayerContribute(player, num);
 								ServiceManager.getManager().getPlayerItemsFromShopService().updateItmeSkillful(player);
@@ -1626,7 +1626,7 @@ public class BossBattleTeamService implements Runnable {
 
 						}
 					}
-					if (combat.getExp() > 0 && combat.getLevel() == Server.config.getMaxLevel(combat.getPlayer().getPlayer().getZsLevel())) {
+					if (combat.getExp() > 0 && combat.getLevel() == WorldServer.config.getMaxLevel(combat.getPlayer().getPlayer().getZsLevel())) {
 						int sjexp = ServiceManager.getManager().getPlayerService()
 								.getUpgradeExp(combat.getLevel(), combat.getPlayer().getPlayer().getZsLevel());
 						int dqexp = combat.getExp() + combat.getExp();

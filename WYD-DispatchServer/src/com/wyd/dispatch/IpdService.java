@@ -44,6 +44,8 @@ public class IpdService implements Runnable {
 
 			if (this.connector.isConnected())
 				System.out.println("ipd 服务链接成功！");
+			else
+				System.out.println("ipd 服务链接失败！");
 		} catch (ConnectException e) {
 			log.warn("分配器连接失败！");
 		}
@@ -70,7 +72,7 @@ public class IpdService implements Runnable {
 		dataInfo.setArea(area);
 		dataInfo.setGroup(group);
 		dataInfo.setMachineId(machineId);
-		dataInfo.setLine(Main.configuration.getConfiguration().getInt("id"));//线id
+		dataInfo.setLine(DisServer.configuration.getConfiguration().getInt("id"));//线id
 		dataInfo.setVersion(version);
 		dataInfo.setUpdateurl(updateurl);
 		dataInfo.setRemark(remark);

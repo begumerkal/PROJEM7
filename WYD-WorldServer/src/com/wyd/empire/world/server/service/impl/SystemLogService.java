@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.battle.BattleTeam;
 import com.wyd.empire.world.bean.GoldCount;
 import com.wyd.empire.world.bean.Player;
@@ -204,7 +204,7 @@ public class SystemLogService {
 				if (null == npsw) {
 					npsw = new PlayerStaWeek();
 					npsw.setPlayerId(player.getId());
-					npsw.setAreaId(Server.config.getAreaId());
+					npsw.setAreaId(WorldServer.config.getAreaId());
 				}
 				level = player.getLevel();
 				exp = player.getExp();
@@ -216,7 +216,7 @@ public class SystemLogService {
 				if (null == opsw) {
 					opsw = new PlayerStaWeek();
 					opsw.setPlayerId(player.getId());
-					opsw.setAreaId(Server.config.getAreaId());
+					opsw.setAreaId(WorldServer.config.getAreaId());
 					opsw.setLevel(level);
 					opsw.setExp(exp);
 					opsw.setWinNum(winNum);

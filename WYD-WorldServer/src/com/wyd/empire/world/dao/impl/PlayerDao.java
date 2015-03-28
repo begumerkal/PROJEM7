@@ -9,7 +9,7 @@ import java.util.Vector;
 import org.springframework.util.StringUtils;
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.LoginReward;
 import com.wyd.empire.world.bean.Player;
 import com.wyd.empire.world.bean.PlayerInfo;
@@ -86,7 +86,7 @@ public class PlayerDao extends UniversalDaoHibernate implements IPlayerDao {
 		hsql.append(" and name = ? ");
 		values.add(name.trim());
 		hsql.append(" and areaId = ? ");
-		values.add(Server.config.getMachineCode());
+		values.add(WorldServer.config.getMachineCode());
 		return (Player) this.getClassObj(hsql.toString(), values.toArray());
 	}
 
@@ -104,7 +104,7 @@ public class PlayerDao extends UniversalDaoHibernate implements IPlayerDao {
 		hsql.append(" and id = ? ");
 		values.add(id);
 		hsql.append(" and areaId = ? ");
-		values.add(Server.config.getMachineCode());
+		values.add(WorldServer.config.getMachineCode());
 		return (Player) this.getClassObj(hsql.toString(), values.toArray());
 	}
 
@@ -151,7 +151,7 @@ public class PlayerDao extends UniversalDaoHibernate implements IPlayerDao {
 		List<Object> values = new Vector<Object>();
 		hsql.append(" FROM  " + Player.class.getSimpleName() + " WHERE 1 = 1 ");
 		hsql.append(" and areaId = ? ");
-		values.add(Server.config.getMachineCode());
+		values.add(WorldServer.config.getMachineCode());
 		hsql.append(" and not (name like 'GM-%') ");
 		hsql.append(" and money > 0 ");
 		hsql.append(" and status = ? ");
@@ -178,7 +178,7 @@ public class PlayerDao extends UniversalDaoHibernate implements IPlayerDao {
 		List<Object> values = new Vector<Object>();
 		hsql.append(" FROM  " + Player.class.getSimpleName() + " WHERE 1 = 1 ");
 		hsql.append(" and areaId = ? ");
-		values.add(Server.config.getMachineCode());
+		values.add(WorldServer.config.getMachineCode());
 		hsql.append(" and not (name like 'GM-%') ");
 		hsql.append(" and status = ? ");
 		values.add(Common.PLAYER_USESTATE_NORMAL);
@@ -207,7 +207,7 @@ public class PlayerDao extends UniversalDaoHibernate implements IPlayerDao {
 		values.add(Common.PLAYER_USESTATE_NORMAL);
 		hsql.append(" and not (name like 'GM-%') ");
 		hsql.append(" and status = ? ");
-		values.add(Server.config.getMachineCode());
+		values.add(WorldServer.config.getMachineCode());
 		hsql.append(" ORDER BY level DESC ");
 		List<Player> listPlayer = getList(hsql.toString(), values.toArray(), levelPlayers);
 		if (listPlayer != null && !listPlayer.isEmpty()) {
@@ -228,7 +228,7 @@ public class PlayerDao extends UniversalDaoHibernate implements IPlayerDao {
 		List<Object> values = new Vector<Object>();
 		hsql.append(" FROM  " + Player.class.getSimpleName() + " WHERE 1 = 1 ");
 		hsql.append(" AND areaId = ? ");
-		values.add(Server.config.getMachineCode());
+		values.add(WorldServer.config.getMachineCode());
 		return getList(hsql.toString(), values.toArray());
 	}
 
@@ -242,7 +242,7 @@ public class PlayerDao extends UniversalDaoHibernate implements IPlayerDao {
 		List<Object> values = new Vector<Object>();
 		hsql.append(" FROM  " + Player.class.getSimpleName() + " WHERE 1 = 1 ");
 		hsql.append(" AND areaId = ? ");
-		values.add(Server.config.getMachineCode());
+		values.add(WorldServer.config.getMachineCode());
 		hsql.append(" AND chatStatus != ? ");
 		values.add(ChatService.CHAT_STATUS1);
 		if (null != key && key.length() > 0) {
@@ -271,7 +271,7 @@ public class PlayerDao extends UniversalDaoHibernate implements IPlayerDao {
 		List<Object> values = new Vector<Object>();
 		hsql.append(" FROM  " + Player.class.getSimpleName() + " WHERE 1 = 1 ");
 		hsql.append(" AND areaId = ? ");
-		values.add(Server.config.getMachineCode());
+		values.add(WorldServer.config.getMachineCode());
 		if (ServiceUtils.isNumeric(key)) {
 			hsql.append(" AND id = ? ");
 			values.add(Integer.parseInt(key));
@@ -287,7 +287,7 @@ public class PlayerDao extends UniversalDaoHibernate implements IPlayerDao {
 		List<Object> values = new ArrayList<Object>();
 		hsql.append(" FROM  " + Player.class.getSimpleName() + " WHERE 1 = 1 ");
 		hsql.append(" AND areaId = ? ");
-		values.add(Server.config.getMachineCode());
+		values.add(WorldServer.config.getMachineCode());
 		hsql.append(" AND status = ? ");
 		values.add((byte) 0);
 		if (null != key && key.length() > 0) {
@@ -311,7 +311,7 @@ public class PlayerDao extends UniversalDaoHibernate implements IPlayerDao {
 		hsql.append("select count(*) from " + Player.class.getSimpleName() + " ");
 		if (isArea) {
 			hsql.append(" WHERE areaId = ? ");
-			values.add(Server.config.getMachineCode());
+			values.add(WorldServer.config.getMachineCode());
 		}
 		return (Long) getClassObj(hsql.toString(), values.toArray());
 	}
@@ -327,7 +327,7 @@ public class PlayerDao extends UniversalDaoHibernate implements IPlayerDao {
 		List<Object> values = new Vector<Object>();
 		hsql.append(" FROM  " + Player.class.getSimpleName() + " WHERE 1 = 1 ");
 		hsql.append(" AND areaId = ? ");
-		values.add(Server.config.getMachineCode());
+		values.add(WorldServer.config.getMachineCode());
 		String[] params = key.split("\\|");
 		for (int i = 0; i < params.length; i++) {
 			if (StringUtils.hasText(params[i])) {
@@ -380,7 +380,7 @@ public class PlayerDao extends UniversalDaoHibernate implements IPlayerDao {
 		values.add(name.trim());
 		if (isArea) {
 			hsql.append(" AND areaId = ? ");
-			values.add(Server.config.getMachineCode());
+			values.add(WorldServer.config.getMachineCode());
 		}
 		hsql.append(" AND status = ? ");
 		values.add(Common.PLAYER_USESTATE_NORMAL);
@@ -431,7 +431,7 @@ public class PlayerDao extends UniversalDaoHibernate implements IPlayerDao {
 				break;
 		}
 		sql.append(" as record from tab_player where areaId=? order by record desc");
-		List<Object[]> objList = this.getListBySql(sql.toString(), new Object[]{Server.config.getMachineCode()},
+		List<Object[]> objList = this.getListBySql(sql.toString(), new Object[]{WorldServer.config.getMachineCode()},
 				GetTopRecordHandler.MAX_COUNT);
 		List<Record> recordList = new ArrayList<Record>();
 		Record record;
@@ -455,27 +455,27 @@ public class PlayerDao extends UniversalDaoHibernate implements IPlayerDao {
 	public List<Player> getLoginPlayer() {
 		String hql = "from Player where areaId=? order by level desc";
 		List<Player> playerList = new ArrayList<Player>();
-		playerList.addAll(this.getList(hql, new Object[]{Server.config.getMachineCode()}, SystemLogService.RECORD_COUNT));
+		playerList.addAll(this.getList(hql, new Object[]{WorldServer.config.getMachineCode()}, SystemLogService.RECORD_COUNT));
 		hql = "from Player where areaId=? order by (winTimes1v1Athletics+winTimes1v1Champion+winTimes1v1Relive+winTimes2v2Athletics+winTimes2v2Champion+winTimes2v2Relive+winTimes3v3Athletics+winTimes3v3Champion+winTimes3v3Relive) desc";
-		playerList.addAll(this.getList(hql, new Object[]{Server.config.getMachineCode()}, SystemLogService.RECORD_COUNT));
+		playerList.addAll(this.getList(hql, new Object[]{WorldServer.config.getMachineCode()}, SystemLogService.RECORD_COUNT));
 		hql = "from Player where areaId=? order by moneyGold desc";
-		playerList.addAll(this.getList(hql, new Object[]{Server.config.getMachineCode()}, SystemLogService.RECORD_COUNT));
+		playerList.addAll(this.getList(hql, new Object[]{WorldServer.config.getMachineCode()}, SystemLogService.RECORD_COUNT));
 		hql = "from Player where areaId=? order by amount desc";
-		playerList.addAll(this.getList(hql, new Object[]{Server.config.getMachineCode()}, SystemLogService.RECORD_COUNT));
+		playerList.addAll(this.getList(hql, new Object[]{WorldServer.config.getMachineCode()}, SystemLogService.RECORD_COUNT));
 		hql = "from Player where areaId=? and level <= 10";
-		playerList.addAll(this.getList(hql, new Object[]{Server.config.getMachineCode()}, SystemLogService.RECORD_COUNT));
+		playerList.addAll(this.getList(hql, new Object[]{WorldServer.config.getMachineCode()}, SystemLogService.RECORD_COUNT));
 		return playerList;
 	}
 
 	@SuppressWarnings({"unchecked"})
 	public List<Object[]> getPlayerLevelAndFight() {
 		String sql = "SELECT id,level,fight FROM Player WHERE areaId=?";
-		return this.getList(sql, new Object[]{Server.config.getMachineCode()});
+		return this.getList(sql, new Object[]{WorldServer.config.getMachineCode()});
 	}
 
 	public int getMaxLevel() {
 		String hsql = "SELECT MAX(level) FROM Player WHERE areaId=?";
-		Object maxLevel = getClassObj(hsql, new Object[]{Server.config.getMachineCode()});
+		Object maxLevel = getClassObj(hsql, new Object[]{WorldServer.config.getMachineCode()});
 		if (null == maxLevel) {
 			return 0;
 		}
@@ -484,7 +484,7 @@ public class PlayerDao extends UniversalDaoHibernate implements IPlayerDao {
 
 	public int getMaxFight() {
 		String hsql = "SELECT MAX(fight) FROM Player WHERE areaId=?";
-		Object maxFight = getClassObj(hsql, new Object[]{Server.config.getMachineCode()});
+		Object maxFight = getClassObj(hsql, new Object[]{WorldServer.config.getMachineCode()});
 		if (null == maxFight) {
 			return 0;
 		}
@@ -500,7 +500,7 @@ public class PlayerDao extends UniversalDaoHibernate implements IPlayerDao {
 	 */
 	public LoginReward getRewardByLevel(int level) {
 		return (LoginReward) this.getUniqueResult("FROM " + LoginReward.class.getSimpleName()
-				+ " WHERE minLevel<=? AND maxLevel>=? AND areaId=?", new Object[]{level, level, Server.config.getAreaId()});
+				+ " WHERE minLevel<=? AND maxLevel>=? AND areaId=?", new Object[]{level, level, WorldServer.config.getAreaId()});
 	}
 
 	/**
@@ -519,7 +519,7 @@ public class PlayerDao extends UniversalDaoHibernate implements IPlayerDao {
 		List<Object> values = new Vector<Object>();
 		hsql.append(" FROM  " + LoginReward.class.getSimpleName() + " WHERE 1 = 1 ");
 		hsql.append(" AND areaId = ? ");
-		values.add(Server.config.getAreaId());
+		values.add(WorldServer.config.getAreaId());
 		hsql.append(" ORDER BY id desc ");
 		String hqlc = "SELECT COUNT(*) " + hsql.toString();
 		return getPageList(hsql.toString(), hqlc, values.toArray(), pageIndex, pageSize);

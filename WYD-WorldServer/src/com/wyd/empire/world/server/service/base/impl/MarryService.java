@@ -12,7 +12,7 @@ import org.springframework.context.ApplicationContext;
 import com.wyd.db.service.impl.UniversalManagerImpl;
 import com.wyd.empire.protocol.data.wedding.ExtWeddingOk;
 import com.wyd.empire.protocol.data.wedding.WeddingOver;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.MarryRecord;
 import com.wyd.empire.world.bean.WeddingHall;
 import com.wyd.empire.world.common.util.DateUtil;
@@ -258,7 +258,7 @@ public class MarryService extends UniversalManagerImpl implements IMarryService 
 		}
 		// 保存婚礼
 		WeddingHall wh = new WeddingHall();
-		wh.setAreaId(Server.config.getMachineCode());
+		wh.setAreaId(WorldServer.config.getMachineCode());
 		String timeString = ServiceManager.getManager().getVersionService().getWedTimeById(timeId);
 		if (timeString == null || timeString.length() == 0) {
 			wh.setEndTime(DateUtil.parseDate("23:59:59"));

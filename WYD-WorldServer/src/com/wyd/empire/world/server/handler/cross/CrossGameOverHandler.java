@@ -6,7 +6,7 @@ import java.util.Vector;
 import org.apache.log4j.Logger;
 import com.wyd.empire.protocol.data.battle.GameOver;
 import com.wyd.empire.protocol.data.cross.CrossGameOver;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.battle.BattleTeam;
 import com.wyd.empire.world.battle.Combat;
 import com.wyd.empire.world.bean.MarryRecord;
@@ -258,7 +258,7 @@ public class CrossGameOverHandler implements IDataHandler {
 												riv.getCount(), 12, null, 0, 0, 0);
 									}
 									if (addExpList.get(i) > 0
-											|| (0 == addExpList.get(i) && player.getLevel() >= Server.config.getMaxLevel(player.getPlayer()
+											|| (0 == addExpList.get(i) && player.getLevel() >= WorldServer.config.getMaxLevel(player.getPlayer()
 													.getZsLevel()))) {
 										playerSinConsortiaService.updatePlayerContribute(player, num);
 										playerItemsFromShopService.updateItmeSkillful(player);
@@ -391,7 +391,7 @@ public class CrossGameOverHandler implements IDataHandler {
 					addExp = -10;
 				}
 			}
-			if (huntTimes > 0 && player.getLevel() == Server.config.getMaxLevel(player.getPlayer().getZsLevel())) {
+			if (huntTimes > 0 && player.getLevel() == WorldServer.config.getMaxLevel(player.getPlayer().getZsLevel())) {
 				int sjexp = ServiceManager.getManager().getPlayerService()
 						.getUpgradeExp(player.getLevel(), player.getPlayer().getZsLevel());
 				int dqexp = player.getPlayer().getExp() + addExp;

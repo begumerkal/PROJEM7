@@ -5,7 +5,7 @@ import org.apache.log4j.Logger;
 import com.wyd.empire.protocol.data.bossmaproom.CreateRoom;
 import com.wyd.empire.protocol.data.bossmaproom.EnterRoom;
 import com.wyd.empire.protocol.data.room.SoundRoom;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.Map;
 import com.wyd.empire.world.bean.PlayerBossmap;
 import com.wyd.empire.world.exception.ErrorMessages;
@@ -58,7 +58,7 @@ public class CreateRoomHandler implements IDataHandler {
 
 			// 发送语音房间相关协议
 			SoundRoom soundRoom = new SoundRoom();
-			soundRoom.setSeverId(Server.config.getServerId());
+			soundRoom.setSeverId(WorldServer.config.getServerId());
 			soundRoom.setRoomId(roomId);
 			soundRoom.setLocation(0);
 			soundRoom.setMark(1);

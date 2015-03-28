@@ -196,7 +196,7 @@ public class PlayerBillDao extends UniversalDaoHibernate implements IPlayerBillD
 		hsql.append(" AND origin = 1 ");
 		hsql.append(" AND TO_DAYS(now()) - TO_DAYS(pb.createTime) = 1 ");
 		// hsql.append("AND tp.areaId = ? " );
-		// values.add(Server.config.getMachineCode());
+		// values.add(WorldServer.config.getMachineCode());
 		List<Object> list = getListBySql(hsql.toString(), values.toArray());
 		return list;
 	}

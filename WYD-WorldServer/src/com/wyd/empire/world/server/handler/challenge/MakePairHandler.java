@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.wyd.empire.protocol.data.challenge.MakePair;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.exception.ErrorMessages;
 import com.wyd.empire.world.player.WorldPlayer;
 import com.wyd.empire.world.room.RandomRoom;
@@ -58,7 +58,7 @@ public class MakePairHandler implements IDataHandler {
 
 				RandomRoom randomRoom = new RandomRoom();
 				randomRoom.setRoom(room);
-				if (1 == makePair.getServiceMode() && Server.config.isCross()) {
+				if (1 == makePair.getServiceMode() && WorldServer.config.isCross()) {
 					// System.out.println("跨服");
 					ServiceManager.getManager().getCrossService().sendPairInfo(room);
 				} else {

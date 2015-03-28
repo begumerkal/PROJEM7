@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import com.wyd.db.service.impl.UniversalManagerImpl;
 import com.wyd.empire.protocol.data.cache.UpdatePet;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.PetCulture;
 import com.wyd.empire.world.bean.PetItem;
 import com.wyd.empire.world.bean.PetRecord;
@@ -120,7 +120,7 @@ public class PlayerPetService extends UniversalManagerImpl implements IPlayerPet
 		int playerLevel = player.getLevel();
 		if (playerPet == null || playerPet.getId() == null)
 			return addLevel;
-		if (playerPet.getLevel() >= Server.config.getMaxLevel(0))
+		if (playerPet.getLevel() >= WorldServer.config.getMaxLevel(0))
 			return 0;
 		int quality = playerPet.getPet().getQuality();
 		PetTrain train = getTrainByLevel(playerPet.getLevel());
@@ -424,7 +424,7 @@ public class PlayerPetService extends UniversalManagerImpl implements IPlayerPet
 			startExps[i] = 0;
 			currExps[i] = playerPet.getPetExp();
 			needExps[i] = train.getUpLevelExp(pet.getQuality());
-			int maxLevel = Server.config.getMaxLevel(0);
+			int maxLevel = WorldServer.config.getMaxLevel(0);
 			// 达到最大级时候，经验不能超
 			if (maxLevel == petLevel) {
 				if (currExps[i] > needExps[i]) {
@@ -563,7 +563,7 @@ public class PlayerPetService extends UniversalManagerImpl implements IPlayerPet
 		startExps[i] = 0;
 		currExps[i] = playerPet.getPetExp();
 		needExps[i] = train.getUpLevelExp(pet.getQuality());
-		int maxLevel = Server.config.getMaxLevel(0);
+		int maxLevel = WorldServer.config.getMaxLevel(0);
 		// 达到最大级时候，经验不能超
 		if (maxLevel == petLevel) {
 			if (currExps[i] > needExps[i]) {

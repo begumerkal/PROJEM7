@@ -5,7 +5,7 @@ import org.apache.log4j.Logger;
 import com.wyd.empire.protocol.data.account.Login;
 import com.wyd.empire.protocol.data.server.LegacyLogin;
 import com.wyd.empire.world.Client;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.common.util.CryptionUtil;
 import com.wyd.empire.world.exception.ErrorMessages;
 import com.wyd.empire.world.exception.TipMessages;
@@ -48,7 +48,7 @@ public class LoginHandler implements IDataHandler {
 		String version = login.getVersion();
 		int channel = login.getChannel();
 		// 根据用户名是否为白名单
-		if (Server.config.isMaintance()) {
+		if (WorldServer.config.isMaintance()) {
 			String ms = ServiceManager.getManager().getConfiguration().getString("");
 			if ((ms == null) || (ms.trim().equals(""))) {
 				ms = TipMessages.LOGIN_SIM_MESSAGE;

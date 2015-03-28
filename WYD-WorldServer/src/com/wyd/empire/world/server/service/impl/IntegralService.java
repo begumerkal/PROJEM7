@@ -6,7 +6,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 import com.wyd.empire.protocol.data.challenge.SendRankList;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.InteRank;
 import com.wyd.empire.world.bean.Integral;
 import com.wyd.empire.world.bean.IntegralArea;
@@ -73,8 +73,8 @@ public class IntegralService {
 		info.setPlayerName(player.getName());
 		info.setIntegral(integral);
 		info.setFighting(player.getFighting());
-		info.setServiceId(Server.config.getMachineCode());
-		info.setServiceName(Server.config.getServerName());
+		info.setServiceId(WorldServer.config.getMachineCode());
+		info.setServiceName(WorldServer.config.getServerName());
 		ServiceManager.getManager().getHttpThreadPool().execute(createTask(info, INTEGRAL_UPDATE));
 	}
 
@@ -124,7 +124,7 @@ public class IntegralService {
 				switch (type) {
 					case INTEGRAL_GET_INFO :
 						url = postUrl + "/integralInfo";
-						data = CryptionUtil.Encrypt(Server.config.getMachineCode() + "", ServiceManager.getManager().getConfiguration()
+						data = CryptionUtil.Encrypt(WorldServer.config.getMachineCode() + "", ServiceManager.getManager().getConfiguration()
 								.getString("deckey"));
 						int i = 0;
 						boolean check = false;
@@ -146,7 +146,7 @@ public class IntegralService {
 							}
 						}
 						if (!check) {
-							integralLog.info("get integral config fall serverId:" + Server.config.getMachineCode()+ "  url:" + url);
+							integralLog.info("get integral config fall serverId:" + WorldServer.config.getMachineCode()+ "  url:" + url);
 						}
 						break;
 					case INTEGRAL_UPDATE :
@@ -159,7 +159,7 @@ public class IntegralService {
 						// 30秒内只刷新一次列表
 						if ((System.currentTimeMillis() - lastUpdateTime) > 30000) {
 							url = postUrl + "/topthirtylist";
-							data = CryptionUtil.Encrypt(Server.config.getMachineCode() + "", ServiceManager.getManager().getConfiguration()
+							data = CryptionUtil.Encrypt(WorldServer.config.getMachineCode() + "", ServiceManager.getManager().getConfiguration()
 									.getString("deckey"));
 							ret = HttpClientUtil.PostData(url, data);
 							jsonArray = JSONArray.fromObject(ret);
@@ -189,7 +189,7 @@ public class IntegralService {
 						break;
 					case INTEGRAL_TOP_THREE :
 						url = postUrl + "/topthreelist";
-						data = CryptionUtil.Encrypt(Server.config.getMachineCode() + "", ServiceManager.getManager().getConfiguration()
+						data = CryptionUtil.Encrypt(WorldServer.config.getMachineCode() + "", ServiceManager.getManager().getConfiguration()
 								.getString("deckey"));
 						ret = HttpClientUtil.PostData(url, data);
 						jsonArray = JSONArray.fromObject(ret);
@@ -209,7 +209,7 @@ public class IntegralService {
 						break;
 					case INTEGRAL_ALL_LIST :
 						url = postUrl + "/rankbyservice";
-						data = CryptionUtil.Encrypt(Server.config.getMachineCode() + "", ServiceManager.getManager().getConfiguration()
+						data = CryptionUtil.Encrypt(WorldServer.config.getMachineCode() + "", ServiceManager.getManager().getConfiguration()
 								.getString("deckey"));
 						i = 0;
 						check = false;
@@ -252,12 +252,12 @@ public class IntegralService {
 							}
 						}
 						if (!check) {
-							integralLog.info("send reward all fall serverId:" + Server.config.getMachineCode() + "  url:" + url);
+							integralLog.info("send reward all fall serverId:" + WorldServer.config.getMachineCode() + "  url:" + url);
 						}
 						break;
 					case INTEGRAL_CLEAN_UP :
 						url = postUrl + "/cleanupintegral";
-						data = CryptionUtil.Encrypt(Server.config.getMachineCode() + "", ServiceManager.getManager().getConfiguration()
+						data = CryptionUtil.Encrypt(WorldServer.config.getMachineCode() + "", ServiceManager.getManager().getConfiguration()
 								.getString("deckey"));
 						i = 0;
 						check = false;
@@ -277,7 +277,7 @@ public class IntegralService {
 							}
 						}
 						if (!check) {
-							integralLog.info("clean up integral fall serverId:" + Server.config.getMachineCode() + "  url:" + url);
+							integralLog.info("clean up integral fall serverId:" + WorldServer.config.getMachineCode() + "  url:" + url);
 						}
 						break;
 				}

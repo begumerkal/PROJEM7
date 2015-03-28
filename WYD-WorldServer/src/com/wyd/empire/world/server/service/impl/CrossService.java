@@ -34,7 +34,7 @@ import com.wyd.empire.protocol.data.cross.CrossStartLoading;
 import com.wyd.empire.protocol.data.cross.CrossStartNewTimer;
 import com.wyd.empire.protocol.data.cross.CrossUseFly;
 import com.wyd.empire.protocol.data.cross.CrossUsingFace;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.Tools;
 import com.wyd.empire.world.buff.Buff;
 import com.wyd.empire.world.common.util.ServiceUtils;
@@ -78,7 +78,7 @@ public class CrossService {
 		} else {
 			crossPair.setAverageFighting(room.getAvgIntegral());
 		}
-		crossPair.setVersion(Server.config.getVersion());
+		crossPair.setVersion(WorldServer.config.getVersion());
 		send(crossPair);
 	}
 
@@ -570,7 +570,7 @@ public class CrossService {
 	public void extBattle(int crossPlayerId, int roomId) {
 		PlayerInfo playerInfo = playerInfoMap.get(crossPlayerId);
 		if (null != playerInfo) {
-			if (playerInfo.getServerId() != Server.config.getServerId() || playerInfo.getRoomId() == roomId) {
+			if (playerInfo.getServerId() != WorldServer.config.getServerId() || playerInfo.getRoomId() == roomId) {
 				playerInfoMap.remove(crossPlayerId);
 				crossPlayerIdMap.remove(playerInfo.getServerId() + "-" + playerInfo.getPlayerId());
 			}
@@ -585,7 +585,7 @@ public class CrossService {
 	 */
 	public boolean isThisServerPlayer(int crossPlayerId) {
 		PlayerInfo playerInfo = playerInfoMap.get(crossPlayerId);
-		if (null != playerInfo && Server.config.getServerId() == playerInfo.getServerId()) {
+		if (null != playerInfo && WorldServer.config.getServerId() == playerInfo.getServerId()) {
 			return true;
 		} else {
 			return false;
@@ -601,7 +601,7 @@ public class CrossService {
 	public int getPlayerId(int crossPlayerId) {
 		int playerId = 0;
 		PlayerInfo playerInfo = playerInfoMap.get(crossPlayerId);
-		if (null != playerInfo && Server.config.getServerId() == playerInfo.getServerId()) {
+		if (null != playerInfo && WorldServer.config.getServerId() == playerInfo.getServerId()) {
 			playerId = playerInfo.getPlayerId();
 		}
 		return playerId;
@@ -631,7 +631,7 @@ public class CrossService {
 	public int getRoomId(int crossPlayerId) {
 		int roomId = 0;
 		PlayerInfo playerInfo = playerInfoMap.get(crossPlayerId);
-		if (null != playerInfo && Server.config.getServerId() == playerInfo.getServerId()) {
+		if (null != playerInfo && WorldServer.config.getServerId() == playerInfo.getServerId()) {
 			roomId = playerInfo.getRoomId();
 		}
 		return roomId;
@@ -644,7 +644,7 @@ public class CrossService {
 	 * @return
 	 */
 	public int getCrossPlayerId(int playerId) {
-		Integer crossPlayerId = crossPlayerIdMap.get(Server.config.getServerId() + "-" + playerId);
+		Integer crossPlayerId = crossPlayerIdMap.get(WorldServer.config.getServerId() + "-" + playerId);
 		if (null != crossPlayerId) {
 			return crossPlayerId;
 		} else {

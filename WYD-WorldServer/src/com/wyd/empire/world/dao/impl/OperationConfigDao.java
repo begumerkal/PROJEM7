@@ -16,7 +16,7 @@ import org.springframework.util.StringUtils;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.ButtonInfo;
 import com.wyd.empire.world.bean.OperationConfig;
 import com.wyd.empire.world.dao.IOperationConfigDao;
@@ -48,7 +48,7 @@ public class OperationConfigDao extends UniversalDaoHibernate implements IOperat
 	 */
 	@SuppressWarnings("unchecked")
 	public void initData() {
-		config = (OperationConfig) getClassObj("from OperationConfig where areaId=?", new Object[]{Server.config.getAreaId()});
+		config = (OperationConfig) getClassObj("from OperationConfig where areaId=?", new Object[]{WorldServer.config.getAreaId()});
 		String specialMark = config.getSpecialMark();
 		String[] markStr = specialMark.split(",");
 		Map<String, Integer> map = new HashMap<String, Integer>();
@@ -58,7 +58,7 @@ public class OperationConfigDao extends UniversalDaoHibernate implements IOperat
 			map.put(str[0], Integer.parseInt(str[1]));
 		}
 		this.map = map;
-		buttonList = getList("from ButtonInfo where areaId=?", new Object[]{Server.config.getAreaId()});
+		buttonList = getList("from ButtonInfo where areaId=?", new Object[]{WorldServer.config.getAreaId()});
 		Map<Integer, ButtonInfo> buttonMap = new HashMap<Integer, ButtonInfo>();
 		for (ButtonInfo buttonInfo : buttonList) {
 			buttonMap.put(buttonInfo.getButtonId(), buttonInfo);
@@ -283,7 +283,7 @@ public class OperationConfigDao extends UniversalDaoHibernate implements IOperat
 		List<Object> values = new Vector<Object>();
 		hsql.append(" FROM  " + ButtonInfo.class.getSimpleName() + " WHERE 1 = 1 ");
 		hsql.append(" AND areaId = ? ORDER BY buttonId DESC ");
-		values.add(Server.config.getAreaId());
+		values.add(WorldServer.config.getAreaId());
 		String hqlc = "SELECT COUNT(*) " + hsql.toString();
 		return getPageList(hsql.toString(), hqlc, values.toArray(), pageNum, pageSize);
 	}
@@ -299,7 +299,7 @@ public class OperationConfigDao extends UniversalDaoHibernate implements IOperat
 		List<Object> values = new Vector<Object>();
 		hsql.append(" FROM  " + ButtonInfo.class.getSimpleName() + " WHERE 1 = 1 ");
 		hsql.append(" AND areaId = ? ORDER BY buttonId ASC ");
-		values.add(Server.config.getAreaId());
+		values.add(WorldServer.config.getAreaId());
 		return getList(hsql.toString(), values.toArray());
 	}
 

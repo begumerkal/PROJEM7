@@ -12,7 +12,7 @@ import org.apache.commons.httpclient.NameValuePair;
 import org.apache.log4j.Logger;
 
 import com.wyd.empire.protocol.data.system.EarthPush;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.Mail;
 import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.common.util.HttpClientUtil;
@@ -197,7 +197,7 @@ public class PushService {
 			data.add(new NameValuePair("level", player.getLevel() + ""));
 			data.add(new NameValuePair("roleid", player.getId() + ""));
 			data.add(new NameValuePair("roleName", player.getName()));
-			data.add(new NameValuePair("serverCode", Server.config.getMachineCode() + ""));
+			data.add(new NameValuePair("serverCode", WorldServer.config.getMachineCode() + ""));
 			try {
 				HttpClientUtil.PostData(url, data);
 			} catch (HttpException e) {

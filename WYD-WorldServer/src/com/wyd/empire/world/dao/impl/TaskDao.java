@@ -8,7 +8,7 @@ import java.util.Map;
 import org.springframework.util.StringUtils;
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.ActiveReward;
 import com.wyd.empire.world.bean.DayTask;
 import com.wyd.empire.world.bean.PlayerGuide;
@@ -159,7 +159,7 @@ public class TaskDao extends UniversalDaoHibernate implements ITaskDao {
 	 */
 	public void deleteAllRecord() {
 		StringBuilder hql = new StringBuilder();
-		String areaId = Server.config.getAreaId();
+		String areaId = WorldServer.config.getAreaId();
 		hql.append("DELETE FROM Rewardrecord where receiveType = 1 and areaId = ?");
 		execute(hql.toString(), new Object[]{areaId});
 	}

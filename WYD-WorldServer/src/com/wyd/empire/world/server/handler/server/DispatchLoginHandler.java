@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 
 import com.wyd.empire.protocol.data.server.DispatchLogin;
 import com.wyd.empire.protocol.data.server.UpdateServerInfo;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.common.util.VersionUtils;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 import com.wyd.empire.world.session.ConnectSession;
@@ -38,10 +38,10 @@ public class DispatchLoginHandler implements IDataHandler {
 				session.setMaxPlayer(maxPlayer);
 				
 				updateData = new UpdateServerInfo();
-				updateData.setArea(Server.config.getArea());
-				updateData.setGroup(Server.config.getGroup());
+				updateData.setArea(WorldServer.config.getArea());
+				updateData.setGroup(WorldServer.config.getGroup());
 				updateData.setLine(0);
-				updateData.setMachineId(Server.config.getMachineCode());
+				updateData.setMachineId(WorldServer.config.getMachineCode());
 				updateData.setVersion(VersionUtils.select("num"));
 				updateData.setUpdateurl(VersionUtils.select("updateurl"));
 				updateData.setRemark(VersionUtils.select("remark"));

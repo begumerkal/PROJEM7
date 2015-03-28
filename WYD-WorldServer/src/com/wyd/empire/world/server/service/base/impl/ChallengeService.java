@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.ChallengeRecord;
 import com.wyd.empire.world.bean.IntegralArea;
 import com.wyd.empire.world.bean.Mail;
@@ -307,7 +307,7 @@ public class ChallengeService implements IChallengeService {
 		if (null == cr) {
 			cr = new ChallengeRecord();
 			cr.setPlayerId(player.getId());
-			cr.setServiceId(Server.config.getServerId());
+			cr.setServiceId(WorldServer.config.getServerId());
 			integralMap.put(player.getId(), cr);
 		}
 		cr.setIntegral(cr.getIntegral() + integral);

@@ -12,7 +12,7 @@ import com.wyd.empire.protocol.data.room.PlayerQuit;
 import com.wyd.empire.protocol.data.room.QuitRoomOk;
 import com.wyd.empire.protocol.data.room.SoundRoom;
 import com.wyd.empire.protocol.data.room.UpdateSeat;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.PlayerItemsFromShop;
 import com.wyd.empire.world.bean.WeapSkill;
 import com.wyd.empire.world.common.util.Common;
@@ -487,7 +487,7 @@ public class RoomService implements Runnable {
 			player.setRoomId(room.getRoomId());
 			// 发送语音房间相关协议
 			SoundRoom soundRoom = new SoundRoom();
-			soundRoom.setSeverId(Server.config.getServerId());
+			soundRoom.setSeverId(WorldServer.config.getServerId());
 			soundRoom.setRoomId(room.getRoomId());
 			soundRoom.setLocation(1);
 			soundRoom.setMark(0);
@@ -681,7 +681,7 @@ public class RoomService implements Runnable {
 				seat.getPlayer().sendData(quitRoomOk);
 				// 发送语音房间相关协议
 				SoundRoom soundRoom = new SoundRoom();
-				soundRoom.setSeverId(Server.config.getServerId());
+				soundRoom.setSeverId(WorldServer.config.getServerId());
 				soundRoom.setRoomId(roomId);
 				soundRoom.setLocation(2);
 				soundRoom.setMark(0);

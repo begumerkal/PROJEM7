@@ -5,7 +5,7 @@ import java.util.Vector;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.InviteReward;
 import com.wyd.empire.world.bean.InviteServiceInfo;
 import com.wyd.empire.world.dao.IInviteDao;
@@ -42,7 +42,7 @@ public class InviteDao extends UniversalDaoHibernate implements IInviteDao {
 		List<Object> values = new Vector<Object>();
 		hsql.append(" FROM  " + InviteServiceInfo.class.getSimpleName() + " WHERE 1 = 1 ");
 		hsql.append(" AND areaId = ? ");
-		values.add(Server.config.getAreaId());
+		values.add(WorldServer.config.getAreaId());
 		String hqlc = "SELECT COUNT(*) " + hsql.toString();
 		return getPageList(hsql.toString(), hqlc, values.toArray(), pageIndex, pageSize);
 	}
@@ -63,7 +63,7 @@ public class InviteDao extends UniversalDaoHibernate implements IInviteDao {
 		List<Object> values = new Vector<Object>();
 		hsql.append(" FROM  " + InviteReward.class.getSimpleName() + " WHERE 1 = 1 ");
 		hsql.append(" AND areaId = ? ");
-		values.add(Server.config.getAreaId());
+		values.add(WorldServer.config.getAreaId());
 		hsql.append(" ORDER BY rewardGrade desc  ");
 		String hqlc = "SELECT COUNT(*) " + hsql.toString();
 		return getPageList(hsql.toString(), hqlc, values.toArray(), pageIndex, pageSize);

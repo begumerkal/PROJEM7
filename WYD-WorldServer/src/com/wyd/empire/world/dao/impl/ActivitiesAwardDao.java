@@ -10,7 +10,7 @@ import org.springframework.util.StringUtils;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.ActivitiesAward;
 import com.wyd.empire.world.bean.LogActivitiesAward;
 import com.wyd.empire.world.common.util.Common;
@@ -53,7 +53,7 @@ public class ActivitiesAwardDao extends UniversalDaoHibernate implements IActivi
 			}
 		}
 		hsql.append(" AND areaId = ? ");
-		values.add(Server.config.getAreaId());
+		values.add(WorldServer.config.getAreaId());
 		String hqlc = "SELECT COUNT(*) " + hsql.toString();
 		return getPageList(hsql.toString(), hqlc, values.toArray(), pageIndex, pageSize);
 	}

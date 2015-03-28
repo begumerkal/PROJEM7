@@ -12,7 +12,7 @@ import com.wyd.db.service.impl.UniversalManagerImpl;
 import com.wyd.empire.protocol.data.task.GetRewardNum;
 import com.wyd.empire.protocol.data.task.GetTaskList;
 import com.wyd.empire.world.Client;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.ActiveReward;
 import com.wyd.empire.world.bean.DayTask;
 import com.wyd.empire.world.bean.PlayerGuide;
@@ -209,7 +209,7 @@ public class TaskService extends UniversalManagerImpl implements ITaskService {
 		rewardrecord.setTime(new Date());
 		rewardrecord.setPlayerId(playerId);
 		rewardrecord.setVipMark(vipMark);
-		rewardrecord.setAreaId(Server.config.getAreaId());
+		rewardrecord.setAreaId(WorldServer.config.getAreaId());
 		rewardrecord.setReceiveType(receiveType);
 		this.save(rewardrecord);
 	}
@@ -228,7 +228,7 @@ public class TaskService extends UniversalManagerImpl implements ITaskService {
 			rewardrecord.setTime(new Date());
 			rewardrecord.setPlayerId(playerId);
 			rewardrecord.setVipMark(VIPMARK);
-			rewardrecord.setAreaId(Server.config.getAreaId());
+			rewardrecord.setAreaId(WorldServer.config.getAreaId());
 			Map<String, Integer> promotionMap = new HashMap<String, Integer>();
 			promotionMap.put(item, 1);
 			json = JSONObject.fromObject(promotionMap);

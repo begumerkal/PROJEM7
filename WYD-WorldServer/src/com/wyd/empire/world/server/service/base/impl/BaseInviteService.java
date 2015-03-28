@@ -4,7 +4,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.wyd.db.page.PageList;
 import com.wyd.db.service.impl.UniversalManagerImpl;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.InviteReward;
 import com.wyd.empire.world.bean.InviteServiceInfo;
 import com.wyd.empire.world.dao.IInviteDao;
@@ -49,7 +49,7 @@ public class BaseInviteService extends UniversalManagerImpl implements IInviteSe
 	}
 
 	public InviteServiceInfo getInviteServiceInfo() {
-		return this.dao.getInviteServiceInfo(Server.config.getAreaId());
+		return this.dao.getInviteServiceInfo(WorldServer.config.getAreaId());
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class BaseInviteService extends UniversalManagerImpl implements IInviteSe
 	 * @return
 	 */
 	public InviteReward getInviteReward(int rewardGrade) {
-		return this.dao.getInviteReward(Server.config.getAreaId(), rewardGrade);
+		return this.dao.getInviteReward(WorldServer.config.getAreaId(), rewardGrade);
 	}
 
 	/**

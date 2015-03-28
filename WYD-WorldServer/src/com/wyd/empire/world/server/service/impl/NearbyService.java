@@ -3,7 +3,7 @@ package com.wyd.empire.world.server.service.impl;
 import com.wyd.empire.protocol.data.nearby.PlayerOffline;
 import com.wyd.empire.protocol.data.nearby.PlayerOnline;
 import com.wyd.empire.protocol.data.nearby.UpdatePlayerInfo;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.player.WorldPlayer;
 import com.wyd.empire.world.skeleton.NearbySkeleton;
 import com.wyd.protocol.data.AbstractData;
@@ -58,7 +58,7 @@ public class NearbyService {
 			updatePlayerInfo.setMyInfoId(nearbyId);
 			updatePlayerInfo.setLatitude(latitude);
 			updatePlayerInfo.setLongitude(longitude);
-			updatePlayerInfo.setServiceId(Server.config.getServerId());
+			updatePlayerInfo.setServiceId(WorldServer.config.getServerId());
 			updatePlayerInfo.setPlayerId(player.getId());
 			String[] pUrl = player.getPlayerPicture().getPictureUrlPass().split(",");
 			String avatarURL = "";

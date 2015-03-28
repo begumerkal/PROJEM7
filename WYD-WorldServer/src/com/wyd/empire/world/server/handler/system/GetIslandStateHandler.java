@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 
 import com.wyd.empire.protocol.data.system.GetIslandStateOk;
 import com.wyd.empire.world.Client;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.ButtonInfo;
 import com.wyd.empire.world.bean.OperationConfig;
 import com.wyd.empire.world.common.util.Common;
@@ -149,7 +149,7 @@ public class GetIslandStateHandler implements IDataHandler {
 			} else {
 				getIslandStateOk.setOpenTipLevel(15);
 			}
-			if (Server.config.isCross()) {
+			if (WorldServer.config.isCross()) {
 				getIslandStateOk.setCrossLevel(operationConfig.getCrossLevel());
 			} else {
 				getIslandStateOk.setCrossLevel(0);

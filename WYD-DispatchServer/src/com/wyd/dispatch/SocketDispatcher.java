@@ -312,8 +312,8 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 			if (packet.type == Packet.TYPE.BUFFER) {
 				SocketDispatcher.this.dispatchToClient(packet);
 			} else {
-				SocketDispatcher.this.processControl(packet);
 				System.out.println("dis收到内部数据："+packet.data.toString());
+				SocketDispatcher.this.processControl(packet);
 			}
 		}
 		@Override

@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.context.ApplicationContext;
 
 import com.wyd.db.service.impl.UniversalManagerImpl;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.Bulletin;
 import com.wyd.empire.world.bean.Push;
 import com.wyd.empire.world.dao.IBulletinDao;
@@ -76,7 +76,7 @@ public class BulletinService extends UniversalManagerImpl implements IBulletinSe
 	 */
 	public void addPush(int lostTime, String message, int isRepeat) {
 		Push push = new Push();
-		push.setAreaId(Server.config.getAreaId());
+		push.setAreaId(WorldServer.config.getAreaId());
 		push.setLostTime(lostTime);
 		push.setMessage(message);
 		push.setIsRepeat(isRepeat);
@@ -99,7 +99,7 @@ public class BulletinService extends UniversalManagerImpl implements IBulletinSe
 	 * @param push
 	 */
 	public void updatePush(Push push) {
-		push.setAreaId(Server.config.getAreaId());
+		push.setAreaId(WorldServer.config.getAreaId());
 		dao.update(push);
 	}
 

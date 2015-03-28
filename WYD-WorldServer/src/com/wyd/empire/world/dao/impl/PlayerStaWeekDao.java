@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.PlayerStaWeek;
 import com.wyd.empire.world.dao.IPlayerStaWeekDao;
 
@@ -55,7 +55,7 @@ public class PlayerStaWeekDao extends UniversalDaoHibernate implements IPlayerSt
 		StringBuffer hql = new StringBuffer();
 		hql.append("FROM PlayerStaWeek WHERE areaId = ? AND isWeek = ? AND wrmNum = ? AND " + property + ">0 ORDER BY " + orderBy + " DESC");
 		try {
-			List<PlayerStaWeek> psList = this.getList(hql.toString(), new Object[]{Server.config.getAreaId(), type, wrmNum}, max);
+			List<PlayerStaWeek> psList = this.getList(hql.toString(), new Object[]{WorldServer.config.getAreaId(), type, wrmNum}, max);
 			return psList;
 		} catch (Exception e) {
 			e.printStackTrace();

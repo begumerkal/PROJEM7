@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.apache.log4j.Logger;
 import com.wyd.empire.protocol.data.player.GetPlayerInfoNoviceOk;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.player.WorldPlayer;
 import com.wyd.empire.world.server.service.base.IShopItemService;
@@ -68,7 +68,7 @@ public class GetPlayerInfoNoviceHandler implements IDataHandler {
 		getPlayerInfoOk.setPlayerId(player.getId());
 		getPlayerInfoOk.setPlayerName(player.getName());
 		getPlayerInfoOk.setTickets(player.getDiamond());
-		getPlayerInfoOk.setMaxLevel(Server.config.getMaxLevel(player.getPlayer().getZsLevel()));
+		getPlayerInfoOk.setMaxLevel(WorldServer.config.getMaxLevel(player.getPlayer().getZsLevel()));
 		getPlayerInfoOk.setPlayerHp(player.getMaxHP());
 		getPlayerInfoOk.setPlayerDefend(player.getDefend());
 		getPlayerInfoOk.setPlayerDefense(player.getCrit());

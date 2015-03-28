@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.MarryRecord;
 import com.wyd.empire.world.bean.WeddingHall;
 import com.wyd.empire.world.dao.IMarryDao;
@@ -183,7 +183,7 @@ public class MarryDao extends UniversalDaoHibernate implements IMarryDao {
 		List<Object> values = new ArrayList<Object>();
 		StringBuffer hsql = new StringBuffer();
 		hsql.append("from WeddingHall where areaId = ? ");
-		values.add(Server.config.getMachineCode());
+		values.add(WorldServer.config.getMachineCode());
 		return this.getList(hsql.toString(), values.toArray());
 	}
 

@@ -8,7 +8,7 @@ import org.springframework.util.StringUtils;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.PlayerTaskTitle;
 import com.wyd.empire.world.bean.Task;
 import com.wyd.empire.world.bean.Title;
@@ -144,7 +144,7 @@ public class PlayerTaskTitleDao extends UniversalDaoHibernate implements IPlayer
 		hql.append(" SELECT COUNT(*) FROM VipRecord v,Player p WHERE v.player.id = p.id ");
 		hql.append(" AND v.vipExp >= ? ");
 		hql.append(" AND p.areaId = ? ");
-		return this.count(hql.toString(), new Object[]{exp, Server.config.getMachineCode()});
+		return this.count(hql.toString(), new Object[]{exp, WorldServer.config.getMachineCode()});
 	}
 
 	/**

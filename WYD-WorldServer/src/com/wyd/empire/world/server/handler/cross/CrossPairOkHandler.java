@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 
 import com.wyd.empire.protocol.data.cross.CrossPairOk;
 import com.wyd.empire.protocol.data.cross.CrossSendPlayerInfo;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.PlayerItemsFromShop;
 import com.wyd.empire.world.bean.PlayerPet;
 import com.wyd.empire.world.bean.Tools;
@@ -329,7 +329,7 @@ public class CrossPairOkHandler implements IDataHandler {
 				sendPlayerInfo.setPetEffect(petEffect);
 				sendPlayerInfo.setPetVersion(petVersion);
 				sendPlayerInfo.setRobot(robot);
-				sendPlayerInfo.setServerName(Server.config.getServerName());
+				sendPlayerInfo.setServerName(WorldServer.config.getServerName());
 				sendPlayerInfo.setForce(force);
 				sendPlayerInfo.setArmor(armor);
 				sendPlayerInfo.setFighting(fighting);

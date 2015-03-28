@@ -6,7 +6,7 @@ import java.util.Vector;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.BuffRecord;
 import com.wyd.empire.world.bean.Consortia;
 import com.wyd.empire.world.bean.ConsortiaBattle;
@@ -129,7 +129,7 @@ public class ConsortiaDao extends UniversalDaoHibernate implements IConsortiaDao
 	public void updateCommunityRank() {
 		StringBuilder hql = new StringBuilder();
 		hql.append("call updateCommunityRank(?)");
-		executeSql(hql.toString(), new Object[]{Server.config.getMachineCode()});
+		executeSql(hql.toString(), new Object[]{WorldServer.config.getMachineCode()});
 	}
 
 	/**
@@ -147,7 +147,7 @@ public class ConsortiaDao extends UniversalDaoHibernate implements IConsortiaDao
 		hql.append(" AND id != ? ");
 		values.add(consortiaId);
 		hql.append(" AND president.areaId = ? ");
-		values.add(Server.config.getMachineCode());
+		values.add(WorldServer.config.getMachineCode());
 		hql.append(" ORDER BY prestige DESC ");
 		return getList(hql.toString(), values.toArray());
 	}
@@ -162,7 +162,7 @@ public class ConsortiaDao extends UniversalDaoHibernate implements IConsortiaDao
 		List<Object> values = new ArrayList<Object>();
 		hql.append(" FROM " + Consortia.class.getSimpleName() + "  WHERE 1 = 1");
 		hql.append(" AND president.areaId = ? ");
-		values.add(Server.config.getMachineCode());
+		values.add(WorldServer.config.getMachineCode());
 		if (mark == 0) {
 			hql.append(" ORDER BY prestige DESC ,id ASC");
 		} else {
@@ -184,7 +184,7 @@ public class ConsortiaDao extends UniversalDaoHibernate implements IConsortiaDao
 		List<Object> values = new ArrayList<Object>();
 		hql.append(" FROM " + Consortia.class.getSimpleName() + "  WHERE 1 = 1");
 		hql.append(" AND president.areaId = ? ");
-		values.add(Server.config.getMachineCode());
+		values.add(WorldServer.config.getMachineCode());
 		hql.append(" ORDER BY prestige DESC ");
 		return getList(hql.toString(), values.toArray());
 	}
@@ -202,7 +202,7 @@ public class ConsortiaDao extends UniversalDaoHibernate implements IConsortiaDao
 		List<Object> values = new ArrayList<Object>();
 		hql.append("FROM " + Consortia.class.getSimpleName() + " WHERE 1 = 1 ");
 		hql.append(" AND president.areaId = ? ");
-		values.add(Server.config.getMachineCode());
+		values.add(WorldServer.config.getMachineCode());
 		hql.append(" AND id = ? ");
 		values.add(consortiaId);
 		// return (Consortia)getUniqueResult(hql.toString(), values.toArray());
@@ -425,7 +425,7 @@ public class ConsortiaDao extends UniversalDaoHibernate implements IConsortiaDao
 		List<Object> values = new ArrayList<Object>();
 		hql.append(" FROM " + Consortia.class.getSimpleName() + "  WHERE 1 = 1");
 		hql.append(" AND president.areaId = ? ");
-		values.add(Server.config.getMachineCode());
+		values.add(WorldServer.config.getMachineCode());
 		String countHql = "SELECT COUNT(id) " + hql.toString();
 		return getPageList(hql.toString(), countHql, values.toArray(), pageNum - 1, pageSize);
 	}
@@ -443,7 +443,7 @@ public class ConsortiaDao extends UniversalDaoHibernate implements IConsortiaDao
 		List<Object> values = new Vector<Object>();
 		hql.append(" FROM " + Consortia.class.getSimpleName() + "  WHERE 1 = 1");
 		hql.append(" AND president.areaId = ? ");
-		values.add(Server.config.getMachineCode());
+		values.add(WorldServer.config.getMachineCode());
 		if (ServiceUtils.isNumeric(key)) {
 			hql.append(" AND (id = ? OR name like '%" + key + "%') ");
 			values.add(Integer.parseInt(key));
@@ -465,7 +465,7 @@ public class ConsortiaDao extends UniversalDaoHibernate implements IConsortiaDao
 		hql.append(" AND prestige = (");
 		hql.append(" SELECT MAX(prestige) FROM " + Consortia.class.getSimpleName() + " WHERE 1 = 1 ");
 		hql.append(" AND president.areaId = ?) ");
-		values.add(Server.config.getMachineCode());
+		values.add(WorldServer.config.getMachineCode());
 		List<Object[]> obj = (List<Object[]>) this.getList(hql.toString(), values.toArray(), 1);
 		MaxPrestigeVo maxPrestigeVo = new MaxPrestigeVo();
 		if (obj != null && !obj.isEmpty()) {

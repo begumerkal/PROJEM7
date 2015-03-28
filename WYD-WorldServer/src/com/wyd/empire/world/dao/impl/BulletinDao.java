@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.Bulletin;
 import com.wyd.empire.world.bean.Push;
 import com.wyd.empire.world.dao.IBulletinDao;
@@ -21,13 +21,13 @@ public class BulletinDao extends UniversalDaoHibernate implements IBulletinDao {
 	public List<Bulletin> getBulletinList() {
 		String hsql = "from " + Bulletin.class.getSimpleName()
 				+ " where areaId = ? and ? BETWEEN startTime and endTime and isActivation = 'Y'";
-		return getList(hsql, new Object[]{Server.config.getAreaId(), new Date()});
+		return getList(hsql, new Object[]{WorldServer.config.getAreaId(), new Date()});
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Bulletin> getAllBulletinList() {
 		String hsql = "from " + Bulletin.class.getSimpleName() + " where areaId = ?";
-		return getList(hsql, new Object[]{Server.config.getAreaId()});
+		return getList(hsql, new Object[]{WorldServer.config.getAreaId()});
 	}
 
 	/**
@@ -43,6 +43,6 @@ public class BulletinDao extends UniversalDaoHibernate implements IBulletinDao {
 	@SuppressWarnings("unchecked")
 	public List<Push> getAllPushList() {
 		String hsql = "from " + Push.class.getSimpleName() + " where areaId = ?";
-		return getList(hsql, new Object[]{Server.config.getAreaId()});
+		return getList(hsql, new Object[]{WorldServer.config.getAreaId()});
 	}
 }

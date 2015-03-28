@@ -6,7 +6,7 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 
 import com.wyd.empire.protocol.data.pet.StartTrain;
-import com.wyd.empire.world.Server;
+import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.PetRecord;
 import com.wyd.empire.world.bean.PetTrain;
 import com.wyd.empire.world.bean.PlayerPet;
@@ -51,7 +51,7 @@ public class StartTrainHandler implements IDataHandler {
 				// 该宠物不存在
 				if (playerPet == null)
 					throw new ProtocolException(data, TipMessages.PETNOTEXIST);
-				if (playerPet.getLevel() >= Server.config.getMaxLevel(0))
+				if (playerPet.getLevel() >= WorldServer.config.getMaxLevel(0))
 					return;
 				int result = pay(player, playerPet.getLevel());
 				if (result == -1) {
