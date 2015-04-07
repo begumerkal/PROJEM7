@@ -57,13 +57,6 @@ public class ServerConfig {
 	}
 
 	/**
-	 * 服务器分区号
-	 * 
-	 * @return
-	 */
- 
-
-	/**
 	 * 服务器ID
 	 * 
 	 * @return

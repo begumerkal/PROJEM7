@@ -26,8 +26,7 @@ public class SessionService implements ISessionService {
     public ISession getSession(String name) {
         this.lock.readLock().lock();
         try {
-            ISession localISession = (ISession) this.name2sessions.get(name);
-            return localISession;
+        	return (ISession) this.name2sessions.get(name);
         } finally {
             this.lock.readLock().unlock();
         }

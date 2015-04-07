@@ -19,7 +19,7 @@ import com.wyd.protocol.handler.IDataHandler;
 public class RegisterHandler implements IDataHandler {
 	Logger log = Logger.getLogger(RegisterHandler.class);
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		WorldPlayer player = session.getPlayer(data.getSessionId());
 		Register register = (Register) data;
@@ -50,8 +50,10 @@ public class RegisterHandler implements IDataHandler {
 			if (player.getPlayer().getBindInviteCode() == null || player.getPlayer().getBindInviteCode().length() == 0)
 				player.getPlayer().setBindInviteCode(inviteAccount.toUpperCase());
 			ServiceManager.getManager().getAccountSkeleton().send(legacyRegister);
+			
 		} catch (Exception ex) {
 			log.error(ex, ex);
 		}
+		return null;
 	}
 }

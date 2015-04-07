@@ -221,6 +221,11 @@ public class WorldServer {
 		accountSkeleton.setUserName(config.getAreaId());
 		accountSkeleton.setPassword(ServiceManager.getManager().getConfiguration().getString("serverpassword"));
 		accountSkeleton.connect();
+		if(accountSkeleton.isConnected())
+			System.out.println("账号服务器链接成功！");
+		else
+			System.out.println("账号服务器链接失败！");
+		
 		log.info("Account auth connected");
 		ServiceManager.getManager().setAccountSkeleton(accountSkeleton);
 	}
