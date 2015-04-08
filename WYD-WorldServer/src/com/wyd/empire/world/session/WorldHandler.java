@@ -26,7 +26,7 @@ public abstract class WorldHandler extends SessionHandler {
 	}
 
 	/*
-	 * 处理ipd 转发过来的消息
+	 * 处理dis 转发过来的消息
 	 */
 	@Override
 	public void messageReceived(IoSession ioSession, Object msg) throws Exception {

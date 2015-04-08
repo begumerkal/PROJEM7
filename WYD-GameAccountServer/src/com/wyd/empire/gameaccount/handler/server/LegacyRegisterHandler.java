@@ -1,12 +1,13 @@
 package com.wyd.empire.gameaccount.handler.server;
 import org.apache.log4j.Logger;
+
 import com.wyd.empire.gameaccount.bean.Account;
 import com.wyd.empire.gameaccount.service.factory.ServiceFactory;
+import com.wyd.empire.gameaccount.session.AcceptSession;
 import com.wyd.empire.protocol.data.server.LegacyRegister;
 import com.wyd.empire.protocol.data.server.LegacyRegisterOk;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.handler.IDataHandler;
-import com.wyd.session.AcceptSession;
 /**
  * 玩家注册
  * 

@@ -17,13 +17,6 @@ public class SessionRegistry {
 	private AtomicInteger i = new AtomicInteger(1);
 
 	/**
-	 * 构造函数，
-	 */
-	public SessionRegistry() {
-
-	}
-
-	/**
 	 * 注册会话session 将参数中 session</tt>的<tt>IoSession</tt>与<tt>session</tt>本身存入哈希表中<br>
 	 * 将新的SessionId与数中<tt>session</tt>存入哈希表中
 	 * 
@@ -35,7 +28,6 @@ public class SessionRegistry {
 		int sessionId = i.incrementAndGet();
 		session.sessionId = sessionId;
 		this.sessionID2Session.put(sessionId, session);
-
 	}
 
 	/**

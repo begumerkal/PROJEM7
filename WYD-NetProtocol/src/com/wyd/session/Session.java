@@ -1,6 +1,7 @@
 package com.wyd.session;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
+
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.exception.ProtocolException;
 public abstract class Session {
@@ -33,6 +34,13 @@ public abstract class Session {
 
 	public void setIoSession(IoSession session) {
 		this.session = session;
+	}
+	
+	public boolean isConnected() {
+		if (this.session == null) {
+			return false;
+		}
+		return this.session.isConnected();
 	}
 
 	public void close() {

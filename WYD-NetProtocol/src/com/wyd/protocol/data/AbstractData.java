@@ -1,5 +1,5 @@
 package com.wyd.protocol.data;
-import com.wyd.net.ISession;
+import com.wyd.net.IConnector;
 import com.wyd.session.Session;
 /**
  * 抽象类 <code>AbstractData</code>对应前后台协议接口常量定义类Protocol传输时产生的对应协议抽象bean数据
@@ -9,7 +9,7 @@ import com.wyd.session.Session;
 public abstract class AbstractData {
     protected byte     type;
     protected byte     subType;
-    protected ISession source;
+    protected IConnector source;
     protected int      serial;
     protected int      sessionId;
     protected Session  handlerSource;
@@ -47,11 +47,11 @@ public abstract class AbstractData {
         this.subType = subType;
     }
 
-    public ISession getSource() {
+    public IConnector getSource() {
         return this.source;
     }
 
-    public void setSource(ISession session) {
+    public void setSource(IConnector session) {
         this.source = session;
     }
 

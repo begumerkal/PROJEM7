@@ -13,7 +13,7 @@ import org.apache.mina.transport.socket.nio.NioSocketConnector;
 
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.handler.IDataHandler;
-public abstract class Connector implements ISession {
+public abstract class Connector implements IConnector {
 	protected static final Logger log = Logger.getLogger(Connector.class);
 	protected InetSocketAddress address;
 	protected String userName = "";

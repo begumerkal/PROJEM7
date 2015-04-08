@@ -1,16 +1,18 @@
 package com.wyd.empire.gameaccount.handler.server;
 import java.util.Date;
+
 import org.apache.log4j.Logger;
+
 import com.wyd.empire.gameaccount.bean.Account;
 import com.wyd.empire.gameaccount.bean.Empireaccount;
 import com.wyd.empire.gameaccount.service.IEmpireaccountService;
 import com.wyd.empire.gameaccount.service.factory.ServiceFactory;
 import com.wyd.empire.gameaccount.service.impl.AccountService;
+import com.wyd.empire.gameaccount.session.AcceptSession;
 import com.wyd.empire.protocol.data.server.LegacyLogin;
 import com.wyd.empire.protocol.data.server.LegacyLoginOk;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.handler.IDataHandler;
-import com.wyd.session.AcceptSession;
 /**
  * 类 <code>LegacyLoginHandler</code>Protocol.SERVER_LegacyLogin 角色重新登录协议处理
  * @since JDK 1.6
