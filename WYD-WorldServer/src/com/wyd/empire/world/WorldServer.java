@@ -221,10 +221,12 @@ public class WorldServer {
 		accountSkeleton.setUserName(config.getAreaId());
 		accountSkeleton.setPassword(ServiceManager.getManager().getConfiguration().getString("serverpassword"));
 		accountSkeleton.connect();
+		
+		
 		if (accountSkeleton.isConnected())
-			System.out.println("账号服务器链接成功！");
+			System.out.println("账号服务器链接..成功！");
 		else
-			System.out.println("账号服务器链接失败！");
+			System.out.println("账号服务器链接..失败！");
 
 		log.info("Account auth connected");
 		ServiceManager.getManager().setAccountSkeleton(accountSkeleton);
@@ -328,12 +330,6 @@ public class WorldServer {
 		@Override
 		public Session createSession(IoSession session) {
 			return new AuthSession(session);
-		}
-
-		@Override
-		public void inputClosed(IoSession arg0) throws Exception {
-			// TODO Auto-generated method stub
-
 		}
 	}
 

@@ -68,7 +68,6 @@ public class WorldStub {
 
 		@Override
 		public Session createSession(IoSession ioSession) {
-			System.out.println("aaaaaaaaaaaaa");
 			AcceptSession s = new AcceptSession(ioSession);
 			return s;
 		}
