@@ -33,6 +33,7 @@ public abstract class SessionHandler implements IoHandler {
 
 	public void exceptionCaught(IoSession session, Throwable ex)
 			throws Exception {
+		session.close(true);
 		log.error(ex, ex);
 	}
 
@@ -85,16 +86,6 @@ public abstract class SessionHandler implements IoHandler {
 			this.registry.registry(s);
 			s.created();
 		}
-	}
-
-	public Session sessionCreated2(IoSession session) throws Exception {
-		Session s = createSession(session);
-		if (s != null) {
-			this.registry.registry(s);
-			s.created();
-			return s;
-		}
-		return null;
 	}
 
 	public void sessionIdle(IoSession session, IdleStatus status)
