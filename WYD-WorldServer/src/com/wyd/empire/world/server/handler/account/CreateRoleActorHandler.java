@@ -29,12 +29,12 @@ import com.wyd.protocol.handler.IDataHandler;
 public class CreateRoleActorHandler implements IDataHandler {
 	private Logger log = Logger.getLogger(CreateRoleActorHandler.class);
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		Client client = session.getClient(data.getSessionId());
 		CreateRoleActor createActor = (CreateRoleActor) data;
 		if ((client == null) || (client.getStatus() != Client.STATUS.LOGIN)) {
-			return;
+			return null;
 		} else {
 			client.setStatus(Client.STATUS.CREATEPLAYE);
 		}
@@ -91,6 +91,7 @@ public class CreateRoleActorHandler implements IDataHandler {
 			// 取角色列表
 			GetRoleActorListHandler getActorListHandler = new GetRoleActorListHandler();
 			getActorListHandler.handle(data);
+			return null;
 		} catch (CreatePlayerException ex) {
 			ServiceUtils.log(log, -1, data.getTypeString(), "CreateActor [" + createActor.getPlayerName() + "] failed");
 			if (!ex.getMessage().startsWith(Common.ERRORKEY)) {
@@ -102,5 +103,6 @@ public class CreateRoleActorHandler implements IDataHandler {
 		} finally {
 			client.setStatus(Client.STATUS.LOGIN);
 		}
+		return null;
 	}
 }

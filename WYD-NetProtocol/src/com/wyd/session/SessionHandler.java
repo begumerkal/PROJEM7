@@ -74,14 +74,12 @@ public abstract class SessionHandler implements IoHandler {
 
 	public void sessionClosed(IoSession session) throws Exception {
 		Session s = this.registry.removeSession(session);
-		System.out.println("关闭"+s.toString());
 		if (s != null)
 			s.closed();
 	}
 
 	public void sessionCreated(IoSession session) throws Exception {
 		Session s = createSession(session);
-		System.out.println("kai"+s.toString());
 		if (s != null) {
 			this.registry.registry(s);
 			s.created();
@@ -91,8 +89,10 @@ public abstract class SessionHandler implements IoHandler {
 	public void sessionIdle(IoSession session, IdleStatus status)
 			throws Exception {
 		Session s = this.registry.getSession(session);
-		if (s != null)
+		System.out.println("链接空闲－－"+session.toString());
+		if (s != null){
 			s.idle(status);
+		}
 	}
 
 	public void sessionOpened(IoSession session) throws Exception {

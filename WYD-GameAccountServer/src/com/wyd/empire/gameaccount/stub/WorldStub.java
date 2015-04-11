@@ -4,6 +4,7 @@ import java.net.InetSocketAddress;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.log4j.Logger;
+import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.executor.ExecutorFilter;
@@ -18,9 +19,9 @@ import com.wyd.session.Session;
 import com.wyd.session.SessionHandler;
 import com.wyd.session.SessionRegistry;
 /**
- * 分区服务
+ * 账号服务
  * 
- * @author sunzx
+ * @author doter
  *
  */
 public class WorldStub {
@@ -39,6 +40,7 @@ public class WorldStub {
 	public void start() throws IOException {
 		this.acceptor = new NioSocketAcceptor(Runtime.getRuntime().availableProcessors() + 1);
 		SocketSessionConfig cfg = acceptor.getSessionConfig();
+		cfg.setIdleTime(IdleStatus.BOTH_IDLE,30);
 		cfg.setTcpNoDelay(true);
 		cfg.setReuseAddress(true);
 		if (this.configuration.containsKey("receivebuffersize")) {
@@ -68,10 +70,8 @@ public class WorldStub {
 
 		@Override
 		public Session createSession(IoSession ioSession) {
-			AcceptSession s = new AcceptSession(ioSession);
-			return s;
+			return new AcceptSession(ioSession);
 		}
 
 	}
-
 }
