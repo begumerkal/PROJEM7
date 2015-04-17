@@ -11,7 +11,7 @@ import com.wyd.protocol.handler.IDataHandler;
 /**
  * 设置客户端IP
  * 
- * @author zengxc
+ * @author doter
  *
  */
 public class SetClientIPAddressHandler implements IDataHandler {

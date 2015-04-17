@@ -31,19 +31,17 @@ public abstract class SessionHandler implements IoHandler {
 		this.registry = registry;
 	}
 
-	public void exceptionCaught(IoSession session, Throwable ex)
-			throws Exception {
+	public void exceptionCaught(IoSession session, Throwable ex) throws Exception {
 		session.close(true);
 		log.error(ex, ex);
 	}
 
-	public void messageReceived(IoSession ioSession, Object msg)
-			throws Exception {
+	public void messageReceived(IoSession ioSession, Object msg) throws Exception {
 		AbstractData dataobj = (AbstractData) msg;
 		Session session = this.registry.getSession(ioSession);
 		if (session != null) {
 			IDataHandler handler = ProtocolFactory.getDataHandler(dataobj);
-//			System.out.println("handler>>>>>>>>>>>>>>: "+handler+"session: "+session);
+			// System.out.println("handler>>>>>>>>>>>>>>: "+handler+"session: "+session);
 			if (handler == null) {
 				session.handle(dataobj);
 			} else {
@@ -55,8 +53,10 @@ public abstract class SessionHandler implements IoHandler {
 					// dataobj.getClass().getName());
 					dataobj.setHandlerSource(session);
 					HandlerMonitorService.addMonitor(dataobj);
-					handler.handle(dataobj);
+					AbstractData abstractData = handler.handle(dataobj);
 					HandlerMonitorService.delMonitor(dataobj);
+					if (abstractData != null)
+						session.write(abstractData);
 				} catch (ProtocolException e) {
 					HandlerMonitorService.delMonitor(dataobj);
 					session.sendError(e);
@@ -86,11 +86,10 @@ public abstract class SessionHandler implements IoHandler {
 		}
 	}
 
-	public void sessionIdle(IoSession session, IdleStatus status)
-			throws Exception {
+	public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
 		Session s = this.registry.getSession(session);
-		System.out.println("链接空闲－－"+session.toString());
-		if (s != null){
+		System.out.println("链接空闲－－" + session.toString());
+		if (s != null) {
 			s.idle(status);
 		}
 	}
