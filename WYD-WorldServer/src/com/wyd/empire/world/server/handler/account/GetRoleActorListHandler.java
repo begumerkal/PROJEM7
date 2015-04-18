@@ -18,7 +18,7 @@ import com.wyd.protocol.exception.ProtocolException;
 import com.wyd.protocol.handler.IDataHandler;
 
 /**
- * 类 <code> GetActorListHandler</code>Protocol.ACCOUNT_SendActorList读取角色协议处理
+ * 获取角色列表
  * 
  * @since JDK 1.6
  */
@@ -26,11 +26,11 @@ public class GetRoleActorListHandler implements IDataHandler {
 	Logger log = Logger.getLogger(GetRoleActorListHandler.class);
 
 	// 读取角色列表，但是现在只处理了新加角色
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		Client client = session.getClient(data.getSessionId());
 		if ((client == null) || (!(client.isLogin())))
-			return;
+			return null;
 		try {
 			// long time = System.currentTimeMillis();
 			List<Player> list = ServiceManager.getManager().getPlayerService().getPlayerList(client.getGameAccountId());
@@ -140,6 +140,8 @@ public class GetRoleActorListHandler implements IDataHandler {
 					petMessage[i] = "";
 				}
 			}
+			
+			
 			sendActorList.setPlayerCount(playerCount);
 			sendActorList.setPlayerName(playerName);
 			sendActorList.setPlayerLevel(playerLevel);
@@ -159,8 +161,9 @@ public class GetRoleActorListHandler implements IDataHandler {
 			sendActorList.setWeapProf(weapProf);
 			sendActorList.setWeapLevel(weapLevel);
 			sendActorList.setWeapSkillType(weapSkillType);
-			session.write(sendActorList);
-			list = null;
+			return sendActorList;
+//			session.write(sendActorList);
+//			list = null;
 		} catch (Exception e) {
 			if (!e.getMessage().startsWith(Common.ERRORKEY)) {
 				this.log.error(e, e);

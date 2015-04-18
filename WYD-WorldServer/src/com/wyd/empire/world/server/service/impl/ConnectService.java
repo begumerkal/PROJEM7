@@ -4,9 +4,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 
-import com.wyd.empire.protocol.data.server.UpdateServerInfo;
-import com.wyd.empire.world.WorldServer;
-import com.wyd.empire.world.common.util.VersionUtils;
 import com.wyd.empire.world.session.ConnectSession;
 import com.wyd.protocol.data.AbstractData;
 

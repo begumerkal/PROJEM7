@@ -13,7 +13,7 @@ import org.apache.mina.transport.socket.nio.NioSocketConnector;
 
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.handler.IDataHandler;
-public abstract class Connector implements ISession {
+public abstract class Connector implements IConnector {
 	protected static final Logger log = Logger.getLogger(Connector.class);
 	protected InetSocketAddress address;
 	protected String userName = "";
@@ -62,11 +62,10 @@ public abstract class Connector implements ISession {
 		ConnectFuture future = connector.connect(this.address);
 		// 等待连接创建完成
 		future.awaitUninterruptibly();
-		
 	}
 
 	public boolean isConnected() {
-		if(this.session == null)
+		if (this.session == null)
 			return false;
 		return this.session.isConnected();
 	}
@@ -108,7 +107,7 @@ public abstract class Connector implements ISession {
 		}
 
 		public void sessionClosed(IoSession session) throws Exception {
-			//断线重连
+			// 断线重连
 			if (Connector.this.needRetry) {
 				while (true) {
 					if (Connector.this.isConnected())
@@ -125,16 +124,18 @@ public abstract class Connector implements ISession {
 			}
 		}
 
+		public void sessionCreated(IoSession session) throws Exception {
+			Connector.this.session = session;
+		}
 		public void sessionOpened(IoSession session) throws Exception {
 			Connector.this.session = session;
 			Connector.this.connected();
 		}
-
 		public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
 			super.sessionIdle(session, status);
 		}
 	}
-	
+
 	public String getUserName() {
 		return this.userName;
 	}

@@ -1,15 +1,18 @@
 package com.wyd.empire.gameaccount.handler.server;
 import java.util.Properties;
+
 import net.sf.json.JSONObject;
+
 import org.apache.log4j.Logger;
+
 import com.wyd.empire.gameaccount.bean.Account;
 import com.wyd.empire.gameaccount.bean.Empireaccount;
 import com.wyd.empire.gameaccount.service.factory.ServiceFactory;
+import com.wyd.empire.gameaccount.session.AcceptSession;
 import com.wyd.empire.protocol.data.server.UpdateAccountInfo;
 import com.wyd.empire.protocol.data.server.UpdateAccountInfoOk;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.handler.IDataHandler;
-import com.wyd.session.AcceptSession;
 public class UpdateAccountInfoHandler implements IDataHandler {
     private Logger log = Logger.getLogger(UpdateAccountInfoHandler.class);
 

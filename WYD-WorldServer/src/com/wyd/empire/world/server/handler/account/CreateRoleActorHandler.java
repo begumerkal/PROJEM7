@@ -22,19 +22,19 @@ import com.wyd.protocol.exception.ProtocolException;
 import com.wyd.protocol.handler.IDataHandler;
 
 /**
- * 类 <code> CreateActorHandler</code>Protocol.ACCOUNT_CreateActor 创建角色协议处理
- * 
+ * 创建角色协议处理
+ * @author doter
  * @since JDK 1.6
  */
 public class CreateRoleActorHandler implements IDataHandler {
 	private Logger log = Logger.getLogger(CreateRoleActorHandler.class);
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		Client client = session.getClient(data.getSessionId());
 		CreateRoleActor createActor = (CreateRoleActor) data;
 		if ((client == null) || (client.getStatus() != Client.STATUS.LOGIN)) {
-			return;
+			return null;
 		} else {
 			client.setStatus(Client.STATUS.CREATEPLAYE);
 		}
@@ -59,7 +59,7 @@ public class CreateRoleActorHandler implements IDataHandler {
 				mail.setType(1);
 				mail.setIsStick(Common.IS_STICK);
 				ServiceManager.getManager().getMailService().saveMail(mail, null);
-				if (null != createActor.getArea() && createActor.getArea().length() > 0) {
+				if (createActor.getArea() != null && createActor.getArea().length() > 0) {
 					String area = createActor.getArea().substring(1);
 					area = URLDecoder.decode(area, "UTF-8");
 					String[] infos = area.split("&");
@@ -79,6 +79,8 @@ public class CreateRoleActorHandler implements IDataHandler {
 						if (index > -1) {
 							systemVersion = systemVersion.substring(index + 1);
 						}
+
+						// 发送账号服务器
 						SetClientInfo setClientInfo = new SetClientInfo();
 						setClientInfo.setAccountId(client.getGameAccountId());
 						setClientInfo.setClientModel(clientModel);
@@ -91,6 +93,7 @@ public class CreateRoleActorHandler implements IDataHandler {
 			// 取角色列表
 			GetRoleActorListHandler getActorListHandler = new GetRoleActorListHandler();
 			getActorListHandler.handle(data);
+			return null;
 		} catch (CreatePlayerException ex) {
 			ServiceUtils.log(log, -1, data.getTypeString(), "CreateActor [" + createActor.getPlayerName() + "] failed");
 			if (!ex.getMessage().startsWith(Common.ERRORKEY)) {
@@ -102,5 +105,6 @@ public class CreateRoleActorHandler implements IDataHandler {
 		} finally {
 			client.setStatus(Client.STATUS.LOGIN);
 		}
+		return null;
 	}
 }

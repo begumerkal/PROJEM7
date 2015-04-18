@@ -72,20 +72,15 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		if (id != null) {
 			IoBuffer buffer = (IoBuffer) object;
 			if (checkProtocol(session, buffer.get(19), buffer.get(20))) {
-				// 回应客户端心跳协议
 				if (buffer.limit() >= 20 && buffer.get(19) == Protocol.MAIN_SYSTEM && buffer.get(20) == Protocol.SYSTEM_ShakeHands
-						&& 1 == buffer.getShort(16)) {// 一个包&长度大于20
+						&& 1 == buffer.getShort(16)) {// 回应客户端心跳协议// 一个包&长度大于20
 					IoBuffer byteBuffer = IoBuffer.wrap(ProtocolManager.makeSegment(shakeHands).getPacketByteArray());
 					session.write(byteBuffer.duplicate());
-				}
-				// 判断用户是否已经登录或者为登录协议
-				else if ((Boolean) session.getAttribute(LOGINMARK_KEY) || buffer.get(19) == Protocol.MAIN_ACCOUNT
-						|| buffer.get(19) == Protocol.MAIN_ERRORCODE || buffer.get(19) == Protocol.MAIN_SYSTEM) {
+				} else if ((Boolean) session.getAttribute(LOGINMARK_KEY) || buffer.get(19) == Protocol.MAIN_ACCOUNT
+						|| buffer.get(19) == Protocol.MAIN_ERRORCODE || buffer.get(19) == Protocol.MAIN_SYSTEM) {// 判断用户是否已经登录或者为登录协议
 					buffer.putInt(4, id.intValue());
 					this.serverSession.write(buffer.duplicate());
-				}
-				// 不是心跳，不是登录协议，并且用户未登录则断开socket连接
-				else {
+				}else {// 不是心跳，不是登录协议，并且用户未登录则断开socket连接
 					log.info("Kill Session LOGINMARK:" + session.getAttribute(LOGINMARK_KEY) + "---type:" + buffer.get(19) + "---subtype:"
 							+ buffer.get(20));
 					session.close(true);
@@ -227,7 +222,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		if (sessionId < 0) {
 			log.info("SessionId: " + sessionId);
 		}
-		session.getConfig().setIdleTime(IdleStatus.BOTH_IDLE, 60);
+		session.getConfig().setIdleTime(IdleStatus.BOTH_IDLE, 60);// 空闲时间60秒
 		session.setAttribute(ATTRIBUTE_STRING, sessionId);
 		session.setAttribute(LOGINMARK_KEY, LOGINMARK_UNLOG);
 		session.setAttribute(CLIENTINFO_KEY, new ClientInfo());
@@ -312,7 +307,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 			if (packet.type == Packet.TYPE.BUFFER) {
 				SocketDispatcher.this.dispatchToClient(packet);
 			} else {
-				System.out.println("dis收到内部数据："+packet.data.toString());
+				System.out.println("dis收到内部数据：" + packet.data.toString());
 				SocketDispatcher.this.processControl(packet);
 			}
 		}

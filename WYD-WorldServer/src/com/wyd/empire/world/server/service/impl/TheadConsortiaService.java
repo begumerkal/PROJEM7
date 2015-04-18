@@ -34,7 +34,7 @@ public class TheadConsortiaService implements Runnable {
 		SimpleDateFormat sdf = new SimpleDateFormat("HH");
 		while (true) {
 			try {
-				consortiaService.updateCommunityRank();
+//				consortiaService.updateCommunityRank();
 				String time = sdf.format(new Date());
 				if (0 == Integer.parseInt(time)) {
 					consortiaService.updateEverydayAddToZero();

@@ -14,12 +14,12 @@ import com.wyd.protocol.handler.IDataHandler;
 /**
  * 用户注册协议
  * 
- * @since JDK 1.6
+ * @since JDK 1.7
  */
 public class RegisterHandler implements IDataHandler {
 	Logger log = Logger.getLogger(RegisterHandler.class);
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		WorldPlayer player = session.getPlayer(data.getSessionId());
 		Register register = (Register) data;
@@ -37,6 +37,7 @@ public class RegisterHandler implements IDataHandler {
 				inviteAccount = CryptionUtil.Decrypt(register.getInviteAccount(),
 						ServiceManager.getManager().getConfiguration().getString("deckey")); // 邀请人（加密后的字符串）
 			}
+
 			LegacyRegister legacyRegister = new LegacyRegister();
 			legacyRegister.setAccountId(player.getClient().getAccountId());
 			legacyRegister.setPlayerId(player.getId());
@@ -50,8 +51,10 @@ public class RegisterHandler implements IDataHandler {
 			if (player.getPlayer().getBindInviteCode() == null || player.getPlayer().getBindInviteCode().length() == 0)
 				player.getPlayer().setBindInviteCode(inviteAccount.toUpperCase());
 			ServiceManager.getManager().getAccountSkeleton().send(legacyRegister);
+
 		} catch (Exception ex) {
 			log.error(ex, ex);
 		}
+		return null;
 	}
 }

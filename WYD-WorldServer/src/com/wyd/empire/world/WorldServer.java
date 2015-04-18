@@ -221,6 +221,13 @@ public class WorldServer {
 		accountSkeleton.setUserName(config.getAreaId());
 		accountSkeleton.setPassword(ServiceManager.getManager().getConfiguration().getString("serverpassword"));
 		accountSkeleton.connect();
+		
+		
+		if (accountSkeleton.isConnected())
+			System.out.println("账号服务器链接..成功！");
+		else
+			System.out.println("账号服务器链接..失败！");
+
 		log.info("Account auth connected");
 		ServiceManager.getManager().setAccountSkeleton(accountSkeleton);
 	}
@@ -324,12 +331,6 @@ public class WorldServer {
 		public Session createSession(IoSession session) {
 			return new AuthSession(session);
 		}
-
-		@Override
-		public void inputClosed(IoSession arg0) throws Exception {
-			// TODO Auto-generated method stub
-
-		}
 	}
 
 	static class AdminSessionHandler extends SessionHandler {
@@ -367,7 +368,7 @@ public class WorldServer {
 		 * 创建一个　Session　类
 		 * 
 		 * @param IoSession
-		 *            　 DIspatch的链接IoSession
+		 *            　 Dispatch的链接IoSession
 		 * @return ConnectSession
 		 */
 		@Override

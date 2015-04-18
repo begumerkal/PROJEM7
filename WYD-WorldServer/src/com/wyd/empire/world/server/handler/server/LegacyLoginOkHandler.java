@@ -22,18 +22,10 @@ import com.wyd.protocol.handler.IDataHandler;
  * @since JDK 1.6
  */
 public class LegacyLoginOkHandler implements IDataHandler {
-	Logger log;
-
-	/**
-	 * 初始化日志
-	 */
-	public LegacyLoginOkHandler() {
-		this.log = Logger.getLogger(LegacyLoginOkHandler.class);
-	}
-
+	Logger log = Logger.getLogger(LegacyLoginOkHandler.class);
 	static int i = 0;
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		// System.out.println("----------------------------"+i++);
 		LegacyLoginOk message = (LegacyLoginOk) data;
 		LoginRequest request = (LoginRequest) ServiceManager.getManager().getRequestService().remove(message.getSerial());
@@ -47,6 +39,8 @@ public class LegacyLoginOkHandler implements IDataHandler {
 		} catch (Exception e) {
 			log.info(e, e);
 		}
+		
+		return null;
 	}
 
 	/**

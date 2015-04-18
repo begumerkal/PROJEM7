@@ -23,14 +23,10 @@ import com.wyd.protocol.handler.IDataHandler;
  */
 public class LoginHandler implements IDataHandler {
 	@SuppressWarnings("unused")
-	private Logger log;
+	private Logger log = Logger.getLogger(LoginHandler.class);
 	private Logger logingLog = Logger.getLogger("logingLog");
 
-	public LoginHandler() {
-		this.log = Logger.getLogger(LoginHandler.class);
-	}
-
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		Login login = (Login) data;
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		String udid = CryptionUtil.Decrypt(login.getUdid(), ServiceManager.getManager().getConfiguration().getString("deckey"));
@@ -47,7 +43,7 @@ public class LoginHandler implements IDataHandler {
 		logingLog.info("account:" + accountName);
 		String version = login.getVersion();
 		int channel = login.getChannel();
-		// 根据用户名是否为白名单
+		// WorldServer 是否在维护
 		if (WorldServer.config.isMaintance()) {
 			String ms = ServiceManager.getManager().getConfiguration().getString("");
 			if ((ms == null) || (ms.trim().equals(""))) {
@@ -70,31 +66,9 @@ public class LoginHandler implements IDataHandler {
 			// 根据登陆请求的参数创建loginRequset对象，接着往GameAccount服务器发送验证请求,
 			// 根据serial值把loginRequset对象加入requestService里的map里
 			ServiceManager.getManager().getRequestService().add(legacyLogin.getSerial(), loginRequest);
+			// 发送至账号服务器
 			ServiceManager.getManager().getAccountSkeleton().send(legacyLogin);
 		}
-		// for (int i = 0; i < 5; i++) {
-		// MyThread myThread = new MyThread();
-		// myThread.start();
-		// }
+		return null;
 	}
-
-	// public class MyThread extends Thread {
-	// public void run() {
-	// String baseUdid = "0000000000000000000000000000000000";
-	// for (int i = 0; i < 100000; i++) {
-	// try {
-	// Thread.sleep(10);
-	// } catch (InterruptedException e) {
-	// e.printStackTrace();
-	// }
-	// String udid = baseUdid+ServiceUtils.getRandomNum(100000, 1000000);
-	// LegacyLogin legacyLogin = new LegacyLogin();
-	// legacyLogin.setUdid(udid);
-	// legacyLogin.setName(udid);
-	// legacyLogin.setPassword(udid);
-	// legacyLogin.setChannel(1001);
-	// ServiceManager.getManager().getAccountSkeleton().send(legacyLogin);
-	// }
-	// }
-	// }
 }
