@@ -466,7 +466,8 @@
 	</bean>
 	<bean id="RankRecordService" parent="worldBaseTransactionProxy">
 		<property name="target">
-			<bean class="com.wyd.empire.world.server.service.base.impl.RankRecordService">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.RankRecordService">
 				<property name="dao">
 					<bean class="com.wyd.empire.world.dao.impl.RankRecordDao">
 						<property name="sessionFactory" ref="sessionFactory" />
@@ -502,7 +503,8 @@
 	<!-- 下载奖励服务 -->
 	<bean id="DownloadRewardService" parent="worldBaseTransactionProxy">
 		<property name="target">
-			<bean class="com.wyd.empire.world.server.service.base.impl.DownloadRewardService">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.DownloadRewardService">
 				<property name="dao">
 					<bean class="com.wyd.empire.world.dao.impl.DownloadRewardDao">
 						<property name="sessionFactory" ref="sessionFactory" />
@@ -704,7 +706,7 @@
 		<property name="target">
 			<bean
 				class="com.wyd.empire.world.server.service.base.impl.PictureUploadService">
-			
+
 				<property name="dao">
 					<bean class="com.wyd.empire.world.dao.impl.PictureUploadDao">
 						<property name="sessionFactory" ref="sessionFactory" />
@@ -715,8 +717,9 @@
 	</bean>
 	<bean id="ChallengeService" parent="worldBaseTransactionProxy">
 		<property name="target">
-			<bean class="com.wyd.empire.world.server.service.base.impl.ChallengeService">
-   			    <property name="dao">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.ChallengeService">
+				<property name="dao">
 					<bean class="com.wyd.empire.world.dao.impl.RankRecordDao">
 						<property name="sessionFactory" ref="sessionFactory" />
 					</bean>
@@ -727,10 +730,11 @@
 	<!-- 任务称号 -->
 	<bean id="PlayerTaskTitleService" parent="worldBaseTransactionProxy">
 		<property name="target">
-			<bean class="com.wyd.empire.world.server.service.base.impl.PlayerTaskTitleService">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.PlayerTaskTitleService">
 				<property name="dao">
 					<bean class="com.wyd.empire.world.dao.impl.PlayerTaskTitleDao">
-						<property name="sessionFactory" ref="sessionFactory"/>
+						<property name="sessionFactory" ref="sessionFactory" />
 					</bean>
 				</property>
 			</bean>
@@ -751,10 +755,11 @@
 	<!-- BM付费包奖励 -->
 	<bean id="PayAppRewardService" parent="worldBaseTransactionProxy">
 		<property name="target">
-			<bean class="com.wyd.empire.world.server.service.base.impl.PayAppRewardService">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.PayAppRewardService">
 				<property name="dao">
 					<bean class="com.wyd.empire.world.dao.impl.PayAppRewardDao">
-						<property name="sessionFactory" ref="sessionFactory"/>
+						<property name="sessionFactory" ref="sessionFactory" />
 					</bean>
 				</property>
 			</bean>
@@ -763,56 +768,57 @@
 	<!-- 单人副本 -->
 	<bean id="SingleMapService" parent="worldBaseTransactionProxy">
 		<property name="target">
-			<bean class="com.wyd.empire.world.server.service.base.impl.SingleMapService">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.SingleMapService">
 				<property name="dao">
 					<bean class="com.wyd.empire.world.dao.impl.SingleMapDao">
-						<property name="sessionFactory" ref="sessionFactory"/>
+						<property name="sessionFactory" ref="sessionFactory" />
 					</bean>
 				</property>
 			</bean>
 		</property>
 	</bean>
-	<!-- 微博分享-->
+	<!-- 微博分享 -->
 	<bean id="ShareService" parent="worldBaseTransactionProxy">
 		<property name="target">
 			<bean class="com.wyd.empire.world.server.service.base.impl.ShareService">
 				<property name="dao">
 					<bean class="com.wyd.empire.world.dao.impl.ShareDao">
-						<property name="sessionFactory" ref="sessionFactory"/>
+						<property name="sessionFactory" ref="sessionFactory" />
 					</bean>
 				</property>
 			</bean>
 		</property>
-	</bean>	
-	<!-- 每日必做，我要变强-->
+	</bean>
+	<!-- 每日必做，我要变强 -->
 	<bean id="DoEveryDayService" parent="worldBaseTransactionProxy">
 		<property name="target">
-			<bean class="com.wyd.empire.world.server.service.base.impl.DoEveryDayService">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.DoEveryDayService">
 				<property name="dao">
 					<bean class="com.wyd.empire.world.dao.impl.DoEveryDayDao">
-						<property name="sessionFactory" ref="sessionFactory"/>
+						<property name="sessionFactory" ref="sessionFactory" />
 					</bean>
 				</property>
 			</bean>
 		</property>
-	</bean>	
-	<!-- 活力值-->
+	</bean>
+	<!-- 活力值 -->
 	<bean id="VigorService" parent="worldBaseTransactionProxy">
 		<property name="target">
 			<bean class="com.wyd.empire.world.server.service.base.impl.VigorService">
 				<property name="dao">
 					<bean class="com.wyd.empire.world.dao.impl.VigorPriceDao">
-						<property name="sessionFactory" ref="sessionFactory"/>
+						<property name="sessionFactory" ref="sessionFactory" />
 					</bean>
 				</property>
 			</bean>
 		</property>
-	</bean>	
+	</bean>
 	<!-- 星魂系统 -->
 	<bean id="StarSoulService" parent="worldBaseTransactionProxy">
 		<property name="target">
-			<bean
-				class="com.wyd.empire.world.server.service.base.impl.StarSoulService">
+			<bean class="com.wyd.empire.world.server.service.base.impl.StarSoulService">
 				<property name="dao">
 					<bean class="com.wyd.empire.world.dao.impl.StarSoulDao">
 						<property name="sessionFactory" ref="sessionFactory" />
@@ -824,8 +830,7 @@
 	<!-- 修炼系统 -->
 	<bean id="PracticeService" parent="worldBaseTransactionProxy">
 		<property name="target">
-			<bean
-				class="com.wyd.empire.world.server.service.base.impl.PracticeService">
+			<bean class="com.wyd.empire.world.server.service.base.impl.PracticeService">
 				<property name="dao">
 					<bean class="com.wyd.empire.world.dao.impl.PracticeDao">
 						<property name="sessionFactory" ref="sessionFactory" />
@@ -850,27 +855,29 @@
 	<!-- 本地推送列表 -->
 	<bean id="LocalPushListService" parent="worldBaseTransactionProxy">
 		<property name="target">
-			<bean class="com.wyd.empire.world.server.service.base.impl.LocalPushListService">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.LocalPushListService">
 				<property name="dao">
 					<bean class="com.wyd.empire.world.dao.impl.LocalPushListDao">
-						<property name="sessionFactory" ref="sessionFactory"/>
+						<property name="sessionFactory" ref="sessionFactory" />
 					</bean>
 				</property>
 			</bean>
 		</property>
-	</bean>	
+	</bean>
 	<!-- 月卡列表 -->
 	<bean id="MonthCardService" parent="worldBaseTransactionProxy">
 		<property name="target">
-			<bean class="com.wyd.empire.world.server.service.base.impl.MonthCardService">
+			<bean
+				class="com.wyd.empire.world.server.service.base.impl.MonthCardService">
 				<property name="dao">
 					<bean class="com.wyd.empire.world.dao.impl.MonthCardDao">
-						<property name="sessionFactory" ref="sessionFactory"/>
+						<property name="sessionFactory" ref="sessionFactory" />
 					</bean>
 				</property>
 			</bean>
 		</property>
-	</bean>	
+	</bean>
 	<!-- VIP等级限购物品系统 -->
 	<bean id="LimitedPriceService" parent="worldBaseTransactionProxy">
 		<property name="target">
