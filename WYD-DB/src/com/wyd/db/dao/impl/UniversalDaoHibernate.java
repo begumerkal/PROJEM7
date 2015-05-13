@@ -134,7 +134,7 @@ public class UniversalDaoHibernate extends BaseDaoSupport implements UniversalDa
      * @return
      */
     public List getLimitedList(String sql, int begin, int count) {
-        Query query = getSession().createQuery(sql);
+        Query query = getSessionFactory().openSession().createQuery(sql);
         query.setFirstResult(begin);
         query.setMaxResults(count);
         List localList = query.list();

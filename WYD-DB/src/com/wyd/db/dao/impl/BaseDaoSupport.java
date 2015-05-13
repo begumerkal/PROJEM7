@@ -11,9 +11,9 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.SessionFactoryUtils;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.hibernate4.HibernateCallback;
+import org.springframework.orm.hibernate4.SessionFactoryUtils;
+import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
 import com.wyd.db.dao.BaseDao;
 import com.wyd.db.page.PageList;
 /**
@@ -94,7 +94,7 @@ public class BaseDaoSupport extends HibernateDaoSupport implements BaseDao {
      * @return long
      */
     public long count(final String hsql, final Object[] values) {
-        return (Long) this.getHibernateTemplate().execute(new HibernateCallback() {
+        return (Long) this.getHibernateTemplate().execute(new HibernateCallback<Object>() {
             public Long doInHibernate(Session s) {
                 Query q = s.createQuery(hsql);
                 for (int i = 0; i < values.length; i++) {
@@ -130,7 +130,7 @@ public class BaseDaoSupport extends HibernateDaoSupport implements BaseDao {
      * @return <tt>Object</tt>
      */
     public Object getClassObj(final String hsql, final Object[] values) {
-        return (Object) this.getHibernateTemplate().execute(new HibernateCallback() {
+        return (Object) this.getHibernateTemplate().execute(new HibernateCallback<Object>() {
             public Object doInHibernate(Session s) {
                 Query ql = s.createQuery(hsql);
                 for (int i = 0; i < values.length; i++) {
@@ -151,7 +151,7 @@ public class BaseDaoSupport extends HibernateDaoSupport implements BaseDao {
      * @return <tt>Object</tt>
      */
     public Object getClassObj(final String hsql,final int index, final Object[] values) {
-        return (Object) this.getHibernateTemplate().execute(new HibernateCallback() {
+        return (Object) this.getHibernateTemplate().execute(new HibernateCallback<Object>() {
             public Object doInHibernate(Session s) {
             	try
         		{
@@ -196,7 +196,7 @@ public class BaseDaoSupport extends HibernateDaoSupport implements BaseDao {
      * @return <tt>Object</tt>
      */
     public Object getUniqueResult(final String hsql, final Object[] values) {
-        return (Object) this.getHibernateTemplate().execute(new HibernateCallback() {
+        return (Object) this.getHibernateTemplate().execute(new HibernateCallback<Object>() {
             public Object doInHibernate(Session s) {
                 Query ql = s.createQuery(hsql);
                 for (int i = 0; i < values.length; i++) {
@@ -217,7 +217,7 @@ public class BaseDaoSupport extends HibernateDaoSupport implements BaseDao {
      * @return <tt>Object</tt>
      */
     public Object getUniqueResultBySql(final String hsql, final Object[] values) {
-        return (Object) this.getHibernateTemplate().execute(new HibernateCallback() {
+        return (Object) this.getHibernateTemplate().execute(new HibernateCallback<Object>() {
             public Object doInHibernate(Session s) {
                 Query ql = s.createSQLQuery(hsql);
                 for (int i = 0; i < values.length; i++) {
@@ -244,7 +244,7 @@ public class BaseDaoSupport extends HibernateDaoSupport implements BaseDao {
      *            要进行保存或更新的列表
      */
     public void saveOrUpdateAll(Collection<Object> collection) {
-        this.getHibernateTemplate().saveOrUpdateAll(collection);
+//        this.getHibernateTemplate().saveOrUpdateAll(collection);
     }
     
     /**
@@ -264,12 +264,16 @@ public class BaseDaoSupport extends HibernateDaoSupport implements BaseDao {
      *            [] 参数数组
      */
     public void execute(final String hql, final Object[] values) {
-        this.getHibernateTemplate().execute(new HibernateCallback() {
-            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+        this.getHibernateTemplate().execute(new HibernateCallback<Object>() {
+            public Object doInHibernate(Session session) throws HibernateException {
                 Query q = session.createQuery(hql);
                 for (int i = 0; i < values.length; i++) {
                     q.setParameter(i, values[i]);
+                    System.out.println(values[i]+"==");
                 }
+                System.out.println(hql);
+                System.out.println(values);
+                System.out.println( q.getQueryString() );
                 q.executeUpdate();
                 session.flush();
                 return null;
@@ -295,8 +299,8 @@ public class BaseDaoSupport extends HibernateDaoSupport implements BaseDao {
      * @param max   返回最大值
      */
     public List getListBySql(final String sql, final Object[] values, final int max) {
-        return (List)this.getHibernateTemplate().execute(new HibernateCallback() {
-            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+        return (List)this.getHibernateTemplate().execute(new HibernateCallback<Object>() {
+            public Object doInHibernate(Session session) throws HibernateException {
                 Query q = session.createSQLQuery(sql);
                 if(max > 0){
                     q.setFirstResult(0);
@@ -321,8 +325,8 @@ public class BaseDaoSupport extends HibernateDaoSupport implements BaseDao {
      *            [] 参数数组
      */
     public Object getObjectBySql(final String sql, final Object[] values) {
-    	return this.getHibernateTemplate().execute(new HibernateCallback() {
-            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+    	return this.getHibernateTemplate().execute(new HibernateCallback<Object>() {
+            public Object doInHibernate(Session session) throws HibernateException {
                 Query q = session.createSQLQuery(sql);
                 for (int i = 0; i < values.length; i++) {
                     q.setParameter(i, values[i]);
@@ -343,8 +347,8 @@ public class BaseDaoSupport extends HibernateDaoSupport implements BaseDao {
      *            [] 参数数组
      */
     public Integer executeSql(final String sql, final Object[] values) {
-        return (Integer)this.getHibernateTemplate().execute(new HibernateCallback() {
-            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+        return (Integer)this.getHibernateTemplate().execute(new HibernateCallback<Object>() {
+            public Object doInHibernate(Session session) throws HibernateException {
                 Query q = session.createSQLQuery(sql);
                 for (int i = 0; i < values.length; i++) {
                     q.setParameter(i, values[i]);
@@ -367,7 +371,7 @@ public class BaseDaoSupport extends HibernateDaoSupport implements BaseDao {
      */
     public PageList getPageList(final String hsql, final String countHql, final Object[] values, final int pageIndex, final int pageSize) {
         final Long fullListSize = this.count(countHql, values);
-        return (PageList) this.getHibernateTemplate().execute(new HibernateCallback() {
+        return (PageList) this.getHibernateTemplate().execute(new HibernateCallback<Object>() {
             @SuppressWarnings("unchecked")
             public Object doInHibernate(Session s) {
                 Query ql = s.createQuery(hsql);
@@ -392,7 +396,7 @@ public class BaseDaoSupport extends HibernateDaoSupport implements BaseDao {
      */
     public PageList getPageList(final String hsql, final String countHql, final Map<String, Object> params, final int pageIndex, final int pageSize) {
         final Long fullListSize = this.count(countHql, params);
-        return (PageList) this.getHibernateTemplate().execute(new HibernateCallback() {
+        return (PageList) this.getHibernateTemplate().execute(new HibernateCallback<Object>() {
             @SuppressWarnings("unchecked")
             public PageList doInHibernate(Session s) {
                 Query queryObject = s.createQuery(hsql);
