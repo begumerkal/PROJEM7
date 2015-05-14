@@ -118,7 +118,7 @@ public class MarryService extends UniversalManagerImpl implements IMarryService 
 	 * @return
 	 */
 	public void deleteMarryRecordByCreateTime() {
-		dao.deleteMarryRecordByCreateTime();
+		//dao.deleteMarryRecordByCreateTime();
 	}
 
 	/**

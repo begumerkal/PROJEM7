@@ -240,7 +240,7 @@
 				<!-- 重置玩家的日常任务 -->
 				<ref bean="tasksServiceCronTrigger" />
 				<!-- 世界BOSS开启关闭任务 -->
-				<ref bean="worldBossServiceCronTrigger" />
+				<!-- ref bean="worldBossServiceCronTrigger" /-->
 				<!-- 排位赛相关 -->
 				<ref bean="rankRecordUpdateServiceCronTrigger" />
 				<ref bean="rankRecordServiceCronTrigger" />
