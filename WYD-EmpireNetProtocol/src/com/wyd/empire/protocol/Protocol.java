@@ -102,11 +102,7 @@ public class Protocol {
 	public static final byte ACCOUNT_GetRandomName = 24;
 	public static final byte ACCOUNT_GetRandomNameOk = 25;
 	public static final byte ACCOUNT_SetToken = 26;
-	public static final byte ACCOUNT_SetTokenOk = 27;
-	public static final byte ACCOUNT_ToBackGround = 28;
-	public static final byte ACCOUNT_FromBackGround = 29;
 	public static final byte ACCOUNT_LoginAgain = 30;
-	// public static final byte ACCOUNT_LoginAgainOk = 31;
 	public static final byte ACCOUNT_LoginFail = 32;
 	public static final byte ACCOUNT_RepeatLogin = 33;
 	public static final byte ACCOUNT_ModifyPassword = 50;

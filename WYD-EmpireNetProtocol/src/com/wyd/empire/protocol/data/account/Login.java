@@ -13,8 +13,6 @@ public class Login extends AbstractData {
     private byte[] 	passWord;
     private String 	version;		// 用版本字串来区分不同的主渠道
     private int 	channel;	    // 子渠道标示
-    private int     isChannelLogon; // 第三方用户体系(0:自己的用户体系,1:第三方用户体系)
-    private byte[]  oldUdid;        // 旧规则udid
     public Login(int sessionId, int serial) {
         super(Protocol.MAIN_ACCOUNT, Protocol.ACCOUNT_Login, sessionId, serial);
     }
@@ -63,19 +61,4 @@ public class Login extends AbstractData {
 		this.channel = channel;
 	}
 
-    public int getIsChannelLogon() {
-        return isChannelLogon;
-    }
-
-    public void setIsChannelLogon(int isChannelLogon) {
-        this.isChannelLogon = isChannelLogon;
-    }
-
-    public byte[] getOldUdid() {
-        return oldUdid;
-    }
-
-    public void setOldUdid(byte[] oldUdid) {
-        this.oldUdid = oldUdid;
-    }
 }

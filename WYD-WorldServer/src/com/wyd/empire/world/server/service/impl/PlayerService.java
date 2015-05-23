@@ -157,7 +157,6 @@ public class PlayerService implements Runnable {
 			return allid2player.get(player.getId());
 		} else {
 			WorldPlayer worldPlayer = new WorldPlayer(player);
-			worldPlayer.setActionTime(System.currentTimeMillis());
 			allid2player.put(worldPlayer.getId(), worldPlayer);
 			allname2player.put(worldPlayer.getName(), worldPlayer);
 			ServiceManager.getManager().getPlayerItemsFromShopService().loadPlayerItem(worldPlayer.getId());

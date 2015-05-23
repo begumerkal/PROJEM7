@@ -9,9 +9,6 @@ public class GameAccountServer {
 	public void launch() throws Exception {
 		ProtocolFactory.init(Protocol.class, "com.wyd.empire.protocol.data", "com.wyd.empire.gameaccount.handler");
 		ServiceFactory.getFactory().getWorldStub().start();
-
-		log.info("Server Binded.");
-		log.info("游戏分区帐号数据服务器启动...");
 		System.out.println("游戏分区帐号数据服务器启动...");
 	}
 

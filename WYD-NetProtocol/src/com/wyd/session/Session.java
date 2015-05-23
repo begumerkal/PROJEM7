@@ -4,6 +4,7 @@ import org.apache.mina.core.session.IoSession;
 
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.exception.ProtocolException;
+
 public abstract class Session {
 	protected IoSession session;
 	protected int sessionId;
@@ -35,7 +36,7 @@ public abstract class Session {
 	public void setIoSession(IoSession session) {
 		this.session = session;
 	}
-	
+
 	public boolean isConnected() {
 		if (this.session == null) {
 			return false;

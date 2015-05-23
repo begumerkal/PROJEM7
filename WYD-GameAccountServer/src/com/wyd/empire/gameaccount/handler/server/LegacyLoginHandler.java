@@ -24,14 +24,13 @@ public class LegacyLoginHandler implements IDataHandler {
 	public AbstractData handle(AbstractData data) {
 		LegacyLogin login = (LegacyLogin) data;
 		AcceptSession session = (AcceptSession) data.getSource();
-		String udid = "";
+		String udid = login.getUdid();
 		String name = login.getName();
 		String pwd = login.getPassword();
 		int channel = login.getChannel();
-		Account account = null;
 		try {
 			LegacyLoginOk loginOk = new LegacyLoginOk(data.getSessionId(), data.getSerial());
-			account = ServiceFactory.getFactory().getAccountService().getAccountByName(name);
+			Account account = ServiceFactory.getFactory().getAccountService().getAccountByName(name);
 			if (account == null) {
 				account = ServiceFactory.getFactory().getAccountService().createAccount(name, pwd, udid);
 			}
@@ -41,8 +40,23 @@ public class LegacyLoginHandler implements IDataHandler {
 				loginOk.setUdid(account.getUdid());
 				loginOk.setName(account.getUsername());
 				loginOk.setPassword(account.getPassword());
-				loginOk.setChannel(login.getChannel());
-				if (AccountService.ACCOUNT_STATUS_NORMAL != account.getStatus()) {
+				loginOk.setChannel(channel);
+				if (AccountService.ACCOUNT_STATUS_NORMAL == account.getStatus()) {
+					IEmpireaccountService empireaccountService = ServiceFactory.getFactory().getEmpireaccountService();
+					Empireaccount gameAccount = empireaccountService.login(account.getId(), login.getSource().getId());
+					if (gameAccount == null) {
+						String model = "Default";
+						String version = "1.0";
+						gameAccount = empireaccountService.createGameAccount(account.getId(), account.getUsername(), model, version,
+								new Date(), "", login.getSource().getId(), channel);
+					}else{
+						gameAccount.setLastLoginTime(new java.sql.Timestamp(new Date().getTime()));
+						gameAccount.setTotalLoginTimes(gameAccount.getTotalLoginTimes() + 1);
+						gameAccount.setName(loginOk.getName());
+						empireaccountService.updateGameAccount(gameAccount);
+					}
+					loginOk.setGameAccountId(gameAccount.getId());
+				} else {
 					loginOk.setStatus(2);
 				}
 			} else {

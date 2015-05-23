@@ -17,7 +17,7 @@ import com.wyd.protocol.handler.IDataHandler;
 public class SetTokenHandler implements IDataHandler {
 	private static Logger log = Logger.getLogger(SetTokenHandler.class);
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		WorldPlayer player = session.getPlayer(data.getSessionId());
 		SetToken setToken = (SetToken) data;
@@ -29,5 +29,6 @@ public class SetTokenHandler implements IDataHandler {
 			log.error(ex, ex);
 			ex.printStackTrace();
 		}
+		return null;
 	}
 }

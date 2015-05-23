@@ -60,6 +60,7 @@ public class WorldStub {
 		// 设置端口号
 		acceptor.setDefaultLocalAddress(new InetSocketAddress(this.configuration.getString("serverip"), this.configuration.getInt("port")));
 		acceptor.bind();
+		log.info("游戏分区帐号数据服务器启动..."+this.configuration.getString("serverip")+":"+this.configuration.getString("port"));
 	}
 
 	class ClientSessionHandler extends SessionHandler {

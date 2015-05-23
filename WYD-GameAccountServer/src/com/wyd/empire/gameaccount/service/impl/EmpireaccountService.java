@@ -67,7 +67,8 @@ public class EmpireaccountService extends UniversalManagerImpl implements IEmpir
      */
     public Empireaccount createGameAccount(int accountId, String name, String clientModel, String version, Date time, String ipAddress, String serverid, int channel) throws CreateGameAccountException {
         try {
-        	if(null!=this.empireaccountDao.getGameAccountByAccountId(accountId, serverid)){
+            Empireaccount temp = this.empireaccountDao.getGameAccountByAccountId(accountId, serverid);
+            if (temp != null) {
         		throw new CreateGameAccountException("GameAccount already exists");
         	}
             if (accountId < 0) throw new CreateGameAccountException("AsccountID can not be null");
@@ -87,10 +88,7 @@ public class EmpireaccountService extends UniversalManagerImpl implements IEmpir
             account.setMaxLevel(1);
             account.setMachinecode(Integer.parseInt(serverid.substring(serverid.indexOf("_")+1)));
             account.setChannel(channel);
-            Empireaccount temp = this.empireaccountDao.getGameAccountByAccountId(accountId, serverid);
-            if (temp == null) {
-                account = this.empireaccountDao.create(account);
-            }
+            account = this.empireaccountDao.create(account);
             return account;
         } catch (CreateGameAccountException e) {
             e.printStackTrace();

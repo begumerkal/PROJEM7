@@ -13,9 +13,9 @@ import com.wyd.protocol.exception.ProtocolException;
 import com.wyd.protocol.handler.IDataHandler;
 
 /**
- * 类 <code> PlayerLoginHandler</code>Protocol.ACCOUNT_PlayerLogin游戏角色登陆协议处理
+ * 游戏角色登陆协议处理
  * 
- * @since JDK 1.6
+ * @since JDK 1.7
  */
 public class RoleActorLoginHandler implements IDataHandler {
 	private Logger log;

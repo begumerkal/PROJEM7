@@ -47,7 +47,7 @@ public class SimpleWYDDecoderForSocket extends ProtocolDecoderAdapter {
 					session.setAttribute(CURRENT_DECODER, null);
 					throw new IOException("error protocol");
 				}
-				if (len + 1 <= size) {
+				if (size>=len + 1) {
 					byte[] data = new byte[len + 1];
 					buffer.reset();
 					buffer.get(data);

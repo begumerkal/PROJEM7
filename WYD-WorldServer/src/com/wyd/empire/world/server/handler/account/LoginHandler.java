@@ -29,11 +29,10 @@ public class LoginHandler implements IDataHandler {
 	public AbstractData handle(AbstractData data) throws Exception {
 		Login login = (Login) data;
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
-		String udid = CryptionUtil.Decrypt(login.getUdid(), ServiceManager.getManager().getConfiguration().getString("deckey"));
-		String accountName = CryptionUtil.Decrypt(login.getAccountName(), ServiceManager.getManager().getConfiguration()
-				.getString("deckey"));
-		String passWord = CryptionUtil.Decrypt(login.getPassWord(), ServiceManager.getManager().getConfiguration().getString("deckey"));
-		String oldUdid = CryptionUtil.Decrypt(login.getOldUdid(), ServiceManager.getManager().getConfiguration().getString("deckey"));
+		String deckey = ServiceManager.getManager().getConfiguration().getString("deckey");
+		String udid = CryptionUtil.Decrypt(login.getUdid(), deckey);
+		String accountName = CryptionUtil.Decrypt(login.getAccountName(), deckey);
+		String passWord = CryptionUtil.Decrypt(login.getPassWord(), deckey);
 		if (udid.equals(accountName)) {
 			if (!udid.equals(passWord)) {
 				throw new ProtocolException(ErrorMessages.LOGIN_FIELD_MESSAGE, data.getSerial(), data.getSessionId(), data.getType(),
@@ -45,10 +44,7 @@ public class LoginHandler implements IDataHandler {
 		int channel = login.getChannel();
 		// WorldServer 是否在维护
 		if (WorldServer.config.isMaintance()) {
-			String ms = ServiceManager.getManager().getConfiguration().getString("");
-			if ((ms == null) || (ms.trim().equals(""))) {
-				ms = TipMessages.LOGIN_SIM_MESSAGE;
-			}
+			String ms = TipMessages.LOGIN_SIM_MESSAGE;
 			throw new ProtocolException(ms, data.getSerial(), data.getSessionId(), data.getType(), data.getSubType());
 		}
 		// 根据session id创建客户端对象
@@ -59,8 +55,6 @@ public class LoginHandler implements IDataHandler {
 			legacyLogin.setName(accountName);
 			legacyLogin.setPassword(passWord);
 			legacyLogin.setChannel(channel);
-			legacyLogin.setIsChannelLogon(login.getIsChannelLogon());
-			legacyLogin.setOldUdid(oldUdid);
 			LoginRequest loginRequest = new LoginRequest(data.getSerial(), data.getSessionId(), session, accountName, passWord, version,
 					channel, false, null);
 			// 根据登陆请求的参数创建loginRequset对象，接着往GameAccount服务器发送验证请求,

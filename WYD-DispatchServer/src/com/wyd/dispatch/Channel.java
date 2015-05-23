@@ -26,7 +26,7 @@ public class Channel {
 	public boolean removeSession(IoSession session) {
 		return this.sessions.remove(session);
 	}
-
+	/* 广播 */
 	public void broadcast(IoBuffer buffer) {
 		for (IoSession session : this.sessions)
 			session.write(buffer.duplicate());

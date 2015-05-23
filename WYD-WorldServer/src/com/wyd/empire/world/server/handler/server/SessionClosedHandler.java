@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 
 import com.wyd.empire.protocol.data.server.SessionClosed;
 import com.wyd.empire.world.Client;
-import com.wyd.empire.world.server.service.factory.ServiceManager;
 import com.wyd.empire.world.session.ConnectSession;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.handler.IDataHandler;
@@ -16,7 +15,7 @@ public class SessionClosedHandler implements IDataHandler {
 		this.log = Logger.getLogger(SessionClosedHandler.class);
 	}
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		SessionClosed closed = (SessionClosed) data;
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		Client client = session.getClient(closed.getSession());
@@ -26,5 +25,6 @@ public class SessionClosedHandler implements IDataHandler {
 			// ServiceManager.getManager().getAbstractService().removeAllAbstractInfoById(session.getSessionId()
 			// + "-" + client.getSessionId());
 		}
+		return null;
 	}
 }

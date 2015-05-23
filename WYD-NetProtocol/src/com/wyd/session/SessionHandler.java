@@ -100,13 +100,12 @@ public abstract class SessionHandler implements IoHandler {
 			s.opened();
 	}
 
-	public SessionRegistry getSessionRegistry() {
-		return this.registry;
-	}
-
 	public void inputClosed(IoSession arg0) throws Exception {
 		// TODO Auto-generated method stub
 	}
 
+	public SessionRegistry getSessionRegistry() {
+		return this.registry;
+	}
 	public abstract Session createSession(IoSession paramIoSession);
 }

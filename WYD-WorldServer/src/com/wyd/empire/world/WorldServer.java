@@ -113,8 +113,8 @@ public class WorldServer {
 		AdminSessionHandler adminSessionHandler = new AdminSessionHandler(registry);
 		bindAdmin(adminSessionHandler);
 		openManagerServlet();
-		log.info("《弹弹岛》游戏世界服务器启动...");
-		System.out.println("《弹弹岛》游戏世界服务器启动...");
+		log.info("游戏世界服务器启动...");
+		System.out.println("游戏世界服务器启动...");
 		System.out.println("login time:" + ((System.currentTimeMillis() - time) / 1000) + "秒");
 		// 同步GM工具中的服务器信息
 		if (null != configuration.getString("adminurl")) {

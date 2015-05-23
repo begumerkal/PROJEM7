@@ -39,7 +39,7 @@ public class LegacyLoginOkHandler implements IDataHandler {
 		} catch (Exception e) {
 			log.info(e, e);
 		}
-		
+
 		return null;
 	}
 
@@ -61,10 +61,11 @@ public class LegacyLoginOkHandler implements IDataHandler {
 				Client client = session.getClient(request.getSessionId());
 				if ((client != null) && (client.getStatus() == Client.STATUS.INIT)) {
 					Client client1 = session.getClientByAccountId(accountId);
-					if (client1 != null) {
+					if (client1 != null) {// 主账号重复登录处理
 						RepeatLogin repeatLogin = new RepeatLogin(client1.getSessionId(), 0);
 						repeatLogin.setMessage(TipMessages.REPEATLOGIN);
-						ServiceManager.getManager().getConnectService().writeTo(repeatLogin, client1.getPlayerId());
+						session.write(repeatLogin);
+//						ServiceManager.getManager().getConnectService().writeTo(repeatLogin, client1.getPlayerId());
 						session.killSession(client1.getSessionId());
 						// ServiceManager.getManager().getConnectService().forceLogout(accountId);
 					}
@@ -78,6 +79,7 @@ public class LegacyLoginOkHandler implements IDataHandler {
 					client.setChannel(request.getSubChannel());
 					session.registerClientWithAccountId(client);
 					LoginOk loginOk = new LoginOk(request.getSessionId(), request.getId());
+					
 					session.write(loginOk);
 					this.log.info("AccountID[" + accountId + "][Login Ok]");
 				}
