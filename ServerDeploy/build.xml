@@ -95,7 +95,7 @@
 		<ant target="callEmpireNetProtocol" />
 		
 		<ant target="callGameAccountServer" />
-		<!--ant target="callIpdServer" /-->
+		<ant target="callIpdServer" />
 		<ant target="callWorldServer" />
 		<ant target="callDispatchServer" />
 		<echo message="job done!!" />
