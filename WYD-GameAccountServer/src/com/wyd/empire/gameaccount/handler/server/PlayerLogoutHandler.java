@@ -13,14 +13,14 @@ public class PlayerLogoutHandler implements IDataHandler {
     public PlayerLogoutHandler() {
     }
 
-    public void handle(AbstractData message) throws Exception {
+    public AbstractData handle(AbstractData message) throws Exception {
         PlayerLogout playerLogout = (PlayerLogout) message;
         Empireaccount account;
         try {
             IEmpireaccountService empireaccountService = ServiceFactory.getFactory().getEmpireaccountService();
             account = empireaccountService.getGameAccount(playerLogout.getAccountId());
             if (account == null) {
-                return;
+                return null;
             }
             Date lastLoginTime = account.getLastLoginTime();
             long between = (new Date().getTime() - lastLoginTime.getTime()) / 1000;// 除以1000是为了转换成秒
@@ -30,5 +30,6 @@ public class PlayerLogoutHandler implements IDataHandler {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        return null;
     }
 }

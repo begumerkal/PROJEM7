@@ -462,9 +462,5 @@ public class HttpSession implements IoSession {
 		return null;
 	}
 
-	@Override
-	public boolean isSecured() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+ 
 }

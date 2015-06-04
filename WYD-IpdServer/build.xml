@@ -42,13 +42,11 @@
 	</target>
 	<target name="cpotherfiles">
 		<echo
-			message="Copy other files from ${script.res.dir}, ${config.res.dir}, ${other.res.dir}." />
+			message="Copy other files from ${script.res.dir}, ${config.res.dir} ." />
 		<copy todir="${deploy.dir}">
 			<fileset dir="${script.res.dir}" defaultexcludes="true"
 				includes="**/*" />
 			<fileset dir="${config.res.dir}" defaultexcludes="true"
-				includes="**/*" />
-			<fileset dir="${other.res.dir}" defaultexcludes="true"
 				includes="**/*" />
 		</copy>
 	</target>

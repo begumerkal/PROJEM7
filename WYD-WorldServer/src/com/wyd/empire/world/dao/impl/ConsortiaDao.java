@@ -12,7 +12,6 @@ import com.wyd.empire.world.bean.Consortia;
 import com.wyd.empire.world.bean.ConsortiaBattle;
 import com.wyd.empire.world.bean.ConsortiaSkill;
 import com.wyd.empire.world.bean.PlayerSinConsortia;
-import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.common.util.DateUtil;
 import com.wyd.empire.world.common.util.ServiceUtils;
 import com.wyd.empire.world.consortia.MaxPrestigeVo;
@@ -80,7 +79,7 @@ public class ConsortiaDao extends UniversalDaoHibernate implements IConsortiaDao
 		hql.append(" AND pc.player.id = ? ");
 		values.add(playerId);
 		hql.append(" AND pc.identity = ? ");
-		values.add(Common.CONSORTIA_IDENTITY_ALREADY_APPROVAL);
+		values.add(1);
 		List<Consortia> list = getList(hql.toString(), values.toArray());
 		if (list != null && !list.isEmpty()) {
 			return list.get(0);
@@ -170,7 +169,7 @@ public class ConsortiaDao extends UniversalDaoHibernate implements IConsortiaDao
 		}
 
 		String countHql = "SELECT COUNT(id) " + hql.toString();
-		return getPageList(hql.toString(), countHql, values.toArray(), pageNum - 1, Common.PAGESIZE);
+		return getPageList(hql.toString(), countHql, values.toArray(), pageNum - 1, 1);
 	}
 
 	/**
@@ -404,7 +403,7 @@ public class ConsortiaDao extends UniversalDaoHibernate implements IConsortiaDao
 		hql.append(" AND pc.player.id = ? ");
 		values.add(playerId);
 		hql.append(" AND pc.identity = ? ");
-		values.add(Common.CONSORTIA_IDENTITY_ALREADY_APPROVAL);
+		values.add(1);
 		// return (Object[])getUniqueResult(hql.toString(), values.toArray());
 		// getUniqueResult 转 getList
 		List<Object[]> list = this.getList(hql.toString(), values.toArray());

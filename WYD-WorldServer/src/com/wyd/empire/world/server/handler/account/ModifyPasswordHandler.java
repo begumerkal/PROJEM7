@@ -18,7 +18,7 @@ import com.wyd.protocol.handler.IDataHandler;
 public class ModifyPasswordHandler implements IDataHandler {
 	Logger log = Logger.getLogger(ModifyPasswordHandler.class);
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		WorldPlayer player = session.getPlayer(data.getSessionId());
 		ModifyPassword modifyPassword = (ModifyPassword) data;
@@ -32,5 +32,6 @@ public class ModifyPasswordHandler implements IDataHandler {
 		} catch (Exception ex) {
 			log.error(ex, ex);
 		}
+		return null;
 	}
 }

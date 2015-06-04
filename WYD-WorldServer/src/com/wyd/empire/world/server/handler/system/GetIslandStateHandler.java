@@ -26,7 +26,7 @@ import com.wyd.protocol.handler.IDataHandler;
 public class GetIslandStateHandler implements IDataHandler {
 	Logger log = Logger.getLogger(GetIslandStateHandler.class);
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		WorldPlayer player = session.getPlayer(data.getSessionId());
 		try {
@@ -137,13 +137,13 @@ public class GetIslandStateHandler implements IDataHandler {
 				getIslandStateOk.setServiceMode(1);
 			}
 
-			if (ServiceManager.getManager().getChallengeSerService().isInTime()) {
-				getIslandStateOk.setChallengeStarted(true);
-			} else {
-				Calendar cal = Calendar.getInstance();
-				cal.add(Calendar.MINUTE, 10);
-				getIslandStateOk.setChallengeStarted(ServiceManager.getManager().getChallengeSerService().isInTime(cal.getTime()));
-			}
+//			if (ServiceManager.getManager().getChallengeSerService().isInTime()) {
+//				getIslandStateOk.setChallengeStarted(true);
+//			} else {
+//				Calendar cal = Calendar.getInstance();
+//				cal.add(Calendar.MINUTE, 10);
+//				getIslandStateOk.setChallengeStarted(ServiceManager.getManager().getChallengeSerService().isInTime(cal.getTime()));
+//			}
 			if (map.get("openTipLevel") != null) {
 				getIslandStateOk.setOpenTipLevel(map.get("openTipLevel"));
 			} else {
@@ -254,6 +254,7 @@ public class GetIslandStateHandler implements IDataHandler {
 			throw new ProtocolException(ErrorMessages.COMMUNITY_NOSUCCESS_MESSAGE, data.getSerial(), data.getSessionId(), data.getType(),
 					data.getSubType());
 		}
+		return null;
 	}
 
 	private String getMoreGame(WorldPlayer player, String moreGame) {

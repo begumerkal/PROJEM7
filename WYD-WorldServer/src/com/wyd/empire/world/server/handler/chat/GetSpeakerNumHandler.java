@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 
 import com.wyd.empire.protocol.data.chat.GetSpeakerNum;
 import com.wyd.empire.protocol.data.chat.GetSpeakerNumOk;
-import com.wyd.empire.world.bean.PlayerItemsFromShop;
 import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.exception.ErrorMessages;
 import com.wyd.empire.world.player.WorldPlayer;
@@ -25,12 +24,12 @@ import com.wyd.protocol.handler.IDataHandler;
 public class GetSpeakerNumHandler implements IDataHandler {
 	Logger log = Logger.getLogger(GetSpeakerNumHandler.class);
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		WorldPlayer player = session.getPlayer(data.getSessionId());
 		GetSpeakerNum getSpeakerNum = (GetSpeakerNum) data;
 		if (null == player) {
-			return;
+			return null;
 		}
 		int speakNum = 0;
 		int colorSpeakNum = 0;
@@ -39,15 +38,7 @@ public class GetSpeakerNumHandler implements IDataHandler {
 			itemIds.add(Common.HORNID);
 			itemIds.add(Common.COLOURHORNID);
 
-			List<PlayerItemsFromShop> list = ServiceManager.getManager().getPlayerItemsFromShopService()
-					.getPlayerItem(getSpeakerNum.getPlayerId(), itemIds);
-			for (PlayerItemsFromShop p : list) {
-				if (p.getShopItem().getId() == Common.HORNID) {
-					speakNum = p.getPLastNum();
-				} else if (p.getShopItem().getId() == Common.COLOURHORNID) {
-					colorSpeakNum = p.getPLastNum();
-				}
-			}
+		 
 
 			GetSpeakerNumOk getSpeakerNumOk = new GetSpeakerNumOk(data.getSessionId(), data.getSerial());
 			getSpeakerNumOk.setSpeakNum(speakNum);
@@ -60,5 +51,6 @@ public class GetSpeakerNumHandler implements IDataHandler {
 			throw new ProtocolException(ErrorMessages.CHAT_CHANNEL_MESSAGE, data.getSerial(), data.getSessionId(), data.getType(),
 					data.getSubType());
 		}
+		return null;
 	}
 }

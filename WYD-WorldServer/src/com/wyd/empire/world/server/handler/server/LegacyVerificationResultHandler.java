@@ -17,7 +17,7 @@ import com.wyd.protocol.handler.IDataHandler;
 public class LegacyVerificationResultHandler implements IDataHandler {
 	private Logger log = Logger.getLogger(LegacyVerificationResultHandler.class);
 
-	public void handle(AbstractData data) {
+	public AbstractData handle(AbstractData data) {
 		LegacyVerificationResult legacyVerificationResult = (LegacyVerificationResult) data;
 		try {
 			WorldPlayer player = ServiceManager.getManager().getPlayerService()
@@ -30,5 +30,6 @@ public class LegacyVerificationResultHandler implements IDataHandler {
 		} catch (Exception e) {
 			log.error(e, e);
 		}
+		return null;
 	}
 }

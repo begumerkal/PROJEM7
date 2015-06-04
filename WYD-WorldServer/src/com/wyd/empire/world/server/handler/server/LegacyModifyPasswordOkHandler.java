@@ -19,7 +19,7 @@ import com.wyd.protocol.handler.IDataHandler;
 public class LegacyModifyPasswordOkHandler implements IDataHandler {
 	private Logger log = Logger.getLogger(LegacyModifyPasswordOkHandler.class);
 
-	public void handle(AbstractData data) {
+	public AbstractData handle(AbstractData data) {
 		LegacyModifyPasswordOk legacyModifyPasswordOk = (LegacyModifyPasswordOk) data;
 		try {
 			WorldPlayer player = ServiceManager.getManager().getPlayerService().getOnlineWorldPlayer(legacyModifyPasswordOk.getPlayerId());
@@ -40,5 +40,6 @@ public class LegacyModifyPasswordOkHandler implements IDataHandler {
 		} catch (Exception e) {
 			log.error(e, e);
 		}
+		return null;
 	}
 }

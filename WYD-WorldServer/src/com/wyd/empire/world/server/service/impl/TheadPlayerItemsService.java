@@ -6,14 +6,8 @@ import java.util.Date;
 import com.wyd.empire.world.bean.Mail;
 import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.exception.TipMessages;
-import com.wyd.empire.world.server.service.base.IPlayerItemsFromShopService;
 
 public class TheadPlayerItemsService {
-	private IPlayerItemsFromShopService pifsService = null;
-
-	public TheadPlayerItemsService(IPlayerItemsFromShopService pifsService) {
-		this.pifsService = pifsService;
-	}
 
 	/**
 	 * 制作Mail对象
@@ -48,8 +42,6 @@ public class TheadPlayerItemsService {
 		return mail;
 	}
 
-	public IPlayerItemsFromShopService getPifsService() {
-		return pifsService;
-	}
+ 
 
 }

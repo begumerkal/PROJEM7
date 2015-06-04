@@ -23,14 +23,14 @@ public class GetRandomNameHandler implements IDataHandler {
 		this.log = Logger.getLogger(GetRandomNameHandler.class);
 	}
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		GetRandomName getRandomName = (GetRandomName) data;
 		try {
-			String name = ServiceManager.getManager().getRandomNameService().getName(getRandomName.getSex());
+			String name = "---";
 			GetRandomNameOk getRandomNameOk = new GetRandomNameOk(data.getSessionId(), data.getSerial());
 			getRandomNameOk.setName(name);
-			session.write(getRandomNameOk);
+			return getRandomNameOk;
 		} catch (Exception ex) {
 			if (null == ex.getMessage() || !ex.getMessage().startsWith(Common.ERRORKEY)) {
 				this.log.error(ex, ex);
@@ -39,6 +39,7 @@ public class GetRandomNameHandler implements IDataHandler {
 				throw new ProtocolException(ex.getMessage().replace(Common.ERRORKEY, ""), data.getSerial(), data.getSessionId(),
 						data.getType(), data.getSubType());
 		}
+		return null;
 	}
 
 }

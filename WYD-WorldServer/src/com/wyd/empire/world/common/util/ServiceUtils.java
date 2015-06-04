@@ -405,13 +405,7 @@ public class ServiceUtils {
 		for (String award : awards) {
 			String[] info = award.split(",");
 			try {
-				ShopItem item = ServiceManager.getManager().getShopItemService().getShopItemById(Integer.parseInt(info[0]));
-				RewardInfo rewardInfo = new RewardInfo();
-				rewardInfo.setItemId(item.getId());
-				rewardInfo.setCount(Integer.parseInt(info[1]));
-				rewardInfo.setAddDay(item.getUseType() == 1);
-				rewardInfo.setSex(item.getSex());
-				rewardInfoList.add(rewardInfo);
+
 			} catch (Exception e) {
 				log.error("奖励内容解释出错！");
 			}

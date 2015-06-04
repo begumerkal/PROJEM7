@@ -16,7 +16,7 @@ import com.wyd.protocol.handler.IDataHandler;
 public class UpdateAccountInfoHandler implements IDataHandler {
     private Logger log = Logger.getLogger(UpdateAccountInfoHandler.class);
 
-    public void handle(AbstractData data) throws Exception {
+    public AbstractData handle(AbstractData data) throws Exception {
         UpdateAccountInfo updateAccount = (UpdateAccountInfo) data;
         AcceptSession session = (AcceptSession) data.getSource();
         UpdateAccountInfoOk updateAccountInfoOk = new UpdateAccountInfoOk(data.getSessionId(), data.getSerial());
@@ -74,5 +74,6 @@ public class UpdateAccountInfoHandler implements IDataHandler {
         }
         updateAccountInfoOk.setContent(JSONObject.fromObject(properties).toString());
         session.send(updateAccountInfoOk);
+        return null;
     }
 }

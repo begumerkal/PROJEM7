@@ -20,7 +20,7 @@ import com.wyd.protocol.handler.IDataHandler;
 public class GetKeyProcessHandler implements IDataHandler {
 	Logger log = Logger.getLogger(GetKeyProcessHandler.class);
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		KeyProcessService service = KeyProcessService.getInstance();
 		List<KeyProcess> keyprocesses = service.getKeyProcesses();
@@ -35,5 +35,6 @@ public class GetKeyProcessHandler implements IDataHandler {
 		ok.setName(name);
 		ok.setValue(value);
 		session.write(ok);
+		return null;
 	}
 }

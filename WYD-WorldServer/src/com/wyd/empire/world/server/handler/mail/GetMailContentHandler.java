@@ -30,7 +30,7 @@ public class GetMailContentHandler implements IDataHandler {
 		this.log = Logger.getLogger(GetMailContentHandler.class);
 	}
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		GetMailContent getMailContent = (GetMailContent) data;
 		WorldPlayer player = session.getPlayer(data.getSessionId());
@@ -52,5 +52,6 @@ public class GetMailContentHandler implements IDataHandler {
 			throw new ProtocolException(ErrorMessages.MAIL_CONTENT_MESSAGE, data.getSerial(), data.getSessionId(), data.getType(),
 					data.getSubType());
 		}
+		return null;
 	}
 }

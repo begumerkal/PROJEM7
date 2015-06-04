@@ -32,7 +32,7 @@ public class SendMailHandler implements IDataHandler {
 		this.log = Logger.getLogger(SendMailHandler.class);
 	}
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		WorldPlayer player = session.getPlayer(data.getSessionId());
 		SendMail sendMail = (SendMail) data;
@@ -77,8 +77,8 @@ public class SendMailHandler implements IDataHandler {
 				throw new ProtocolException(ErrorMessages.MAIL_NOTRIGHT_MESSAGE, data.getSerial(), data.getSessionId(), data.getType(),
 						data.getSubType());
 			}
-			Friend friend = ServiceManager.getManager().getFriendService()
-					.checkPlayerIsFriend(sendMail.getReceivedId(), sendMail.getSendId());
+//			Friend friend = ServiceManager.getManager().getFriendService()
+//					.checkPlayerIsFriend(sendMail.getReceivedId(), sendMail.getSendId());
 			// 保存邮件
 			Mail mail = new Mail();
 			mail.setContent(content);
@@ -97,13 +97,13 @@ public class SendMailHandler implements IDataHandler {
 			}
 			mail.setType(sendMail.getMailType());
 			// 不是黑名单用户才能接收邮件
-			if (friend == null || !friend.getBlackList()) {
-				mail.setBlackMail(false);
-			} else {
-				mail.setBlackMail(true);// 是黑名单邮件
-			}
+//			if (friend == null || !friend.getBlackList()) {
+//				mail.setBlackMail(false);
+//			} else {
+//				mail.setBlackMail(true);// 是黑名单邮件
+//			}
 			mail.setIsStick(Common.IS_STICK);
-			ServiceManager.getManager().getMailService().saveMail(mail, friend);
+//			ServiceManager.getManager().getMailService().saveMail(mail, friend);
 			session.write(sendMailOk);
 		} catch (ProtocolException ex) {
 			throw ex;
@@ -112,5 +112,6 @@ public class SendMailHandler implements IDataHandler {
 			throw new ProtocolException(ErrorMessages.MAIL_FAIL_MESSAGE, data.getSerial(), data.getSessionId(), data.getType(),
 					data.getSubType());
 		}
+		return null;
 	}
 }

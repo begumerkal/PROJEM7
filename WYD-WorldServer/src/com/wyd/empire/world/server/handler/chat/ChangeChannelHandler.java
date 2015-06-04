@@ -20,8 +20,9 @@ import com.wyd.protocol.handler.IDataHandler;
 public class ChangeChannelHandler implements IDataHandler {
 	Logger log = Logger.getLogger(ChangeChannelHandler.class);
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		ServiceManager.getManager().getSimpleThreadPool().execute(createTask(data));
+		return null;
 	}
 
 	private Runnable createTask(AbstractData data) {
@@ -45,21 +46,21 @@ public class ChangeChannelHandler implements IDataHandler {
 				}
 				ChangeChannel changeChannel = (ChangeChannel) data;
 				int channelId = player.getChannelId();
-				Interface intf = (Interface) ServiceManager.getManager().getInterfaceService()
-						.get(Interface.class, changeChannel.getChannelId());
-				if (null != intf && 1 == intf.getIsmain()) {
-					ServiceManager.getManager().getChatService().changeMapChannel(player, channelId, changeChannel.getChannelId());
-					player.setChannelId(changeChannel.getChannelId());
-				}
-				if (Common.INTERFACE_ID_ACTIVE == channelId) {
-					player.updateButtonInfo(Common.BUTTON_ID_ACTIVE, false, 30);
-				}
-				ServiceManager.getManager().getTaskService().enterInterface(player, changeChannel.getChannelId());
+//				Interface intf = (Interface) ServiceManager.getManager().getInterfaceService()
+//						.get(Interface.class, changeChannel.getChannelId());
+//				if (null != intf && 1 == intf.getIsmain()) {
+//					ServiceManager.getManager().getChatService().changeMapChannel(player, channelId, changeChannel.getChannelId());
+//					player.setChannelId(changeChannel.getChannelId());
+//				}
+//				if (Common.INTERFACE_ID_ACTIVE == channelId) {
+//					player.updateButtonInfo(Common.BUTTON_ID_ACTIVE, false, 30);
+//				}
+//				ServiceManager.getManager().getTaskService().enterInterface(player, changeChannel.getChannelId());
 				// 记录界面停留日志
 				int interfaceId = player.getInterfaceId();
 				long inTime = player.getInTime();
-				player.setInterfaceId(changeChannel.getChannelId());
-				player.setInTime(System.currentTimeMillis());
+//				player.setInterfaceId(changeChannel.getChannelId());
+//				player.setInTime(System.currentTimeMillis());
 				GameLogService.remainInterface(player.getId(), player.getLevel(), interfaceId, player.getInTime() - inTime);
 				if (changeChannel.getChannelId() == 79) {
 					GameLogService.clickRecharge(player.getId(), player.getLevel(), interfaceId);

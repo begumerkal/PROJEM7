@@ -7,7 +7,6 @@ import com.wyd.empire.protocol.data.purchase.IOSSendProductCheckInfo;
 import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.player.WorldPlayer;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
-import com.wyd.empire.world.server.service.impl.RechargeService;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.handler.IDataHandler;
 
@@ -20,7 +19,7 @@ public class IOSSendProductCheckInfoHandler implements IDataHandler {
 	private Logger log = Logger.getLogger("orderInfoLog");
 	private Logger errorLog = Logger.getLogger(IOSSendProductCheckInfoHandler.class);
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		IOSSendProductCheckInfo iosSendProductCheckInfo = (IOSSendProductCheckInfo) data;
 		WorldPlayer player = ServiceManager.getManager().getPlayerService().getWorldPlayerById(iosSendProductCheckInfo.getPlayerId());
 		try {
@@ -38,7 +37,7 @@ public class IOSSendProductCheckInfoHandler implements IDataHandler {
 			errorLog.error(e, e);
 		}
 		if (iosSendProductCheckInfo.getKey() != null && iosSendProductCheckInfo.getKey().length() > 1000) {
-			ServiceManager.getManager().getPCRechargeService().addspci(player, data, RechargeService.IOSORDER);
+//			ServiceManager.getManager().getPCRechargeService().addspci(player, data, RechargeService.IOSORDER);
 		} else {
 			int code = Common.PURCHASE_BUY_TYPE_VERIFY_FAIL;
 			if (iosSendProductCheckInfo.getKey().equals("-1")) {
@@ -49,5 +48,7 @@ public class IOSSendProductCheckInfoHandler implements IDataHandler {
 			buyFailed.setCode(code);
 			player.sendData(buyFailed);
 		}
+		return null;
 	}
+	
 }

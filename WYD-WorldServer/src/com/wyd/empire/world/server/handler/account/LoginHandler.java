@@ -30,9 +30,9 @@ public class LoginHandler implements IDataHandler {
 		Login login = (Login) data;
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		String deckey = ServiceManager.getManager().getConfiguration().getString("deckey");
-		String udid = CryptionUtil.Decrypt(login.getUdid(), deckey);
-		String accountName = CryptionUtil.Decrypt(login.getAccountName(), deckey);
-		String passWord = CryptionUtil.Decrypt(login.getPassWord(), deckey);
+		String udid = login.getUdid()  ;
+		String accountName = login.getAccountName() ;
+		String passWord =  login.getPassWord() ;
 		if (udid.equals(accountName)) {
 			if (!udid.equals(passWord)) {
 				throw new ProtocolException(ErrorMessages.LOGIN_FIELD_MESSAGE, data.getSerial(), data.getSessionId(), data.getType(),

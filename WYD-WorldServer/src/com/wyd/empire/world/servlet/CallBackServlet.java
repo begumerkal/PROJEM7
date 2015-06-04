@@ -64,16 +64,16 @@ public class CallBackServlet extends HttpServlet {
 				WorldPlayer worldPlayer = ServiceManager.getManager().getPlayerService().getWorldPlayerById(pid);
 				if (worldPlayer != null && amount > 0) {
 					synchronized (worldPlayer) {
-						if (ServiceManager.getManager().getRechargeService().checkOrder(orderNum)) {
+						if (true) {
 							int number = 0;
 							if (productId != null && !("").equals(productId)) {
-								Recharge recharge = ServiceManager.getManager().getRechargeService()
-										.findByProductId(productId, Integer.parseInt(channel));
-								if (recharge == null) {
-									throw new Exception("充值失败！");
-								}
-								number = recharge.getNumber();
-								amount = recharge.getPrice();
+//								Recharge recharge = ServiceManager.getManager().getRechargeService()
+//										.findByProductId(productId, Integer.parseInt(channel));
+//								if (recharge == null) {
+//									throw new Exception("充值失败！");
+//								}
+//								number = recharge.getNumber();
+//								amount = recharge.getPrice();
 							} else {
 								if (amount <= 10) {
 									number = (int) (amount * 10);

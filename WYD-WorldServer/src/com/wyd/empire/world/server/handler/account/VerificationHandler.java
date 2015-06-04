@@ -23,7 +23,7 @@ public class VerificationHandler implements IDataHandler {
 		this.log = Logger.getLogger(VerificationHandler.class);
 	}
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		WorldPlayer player = session.getPlayer(data.getSessionId());
 		Verification verification = (Verification) data;
@@ -41,5 +41,6 @@ public class VerificationHandler implements IDataHandler {
 		} catch (Exception ex) {
 			log.error(ex, ex);
 		}
+		return null;
 	}
 }

@@ -23,26 +23,21 @@ public class GetInboxMailNewHandler implements IDataHandler {
 		this.log = Logger.getLogger(GetInboxMailNewHandler.class);
 	}
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		WorldPlayer player = session.getPlayer(data.getSessionId());
 		if (null == player)
-			return;
+			return null;
 		GetInboxMailNew getInboxMailNew = (GetInboxMailNew) data;
 		try {
 			int nearbyId = player.getPlayerInfo().getNearbyId();
-			if (nearbyId > 0 && ServiceManager.getManager().getNearbyService().isNearbyServiceOpen()) {
-				GetNearbyReceivedMailList gnrml = new GetNearbyReceivedMailList();
-				gnrml.setMyInfoId(nearbyId);
-				gnrml.setPageNum(getInboxMailNew.getPageNumber());
-				ServiceManager.getManager().getNearbyService().sendData(gnrml);
-			} else {
+ 
 				ServiceManager.getManager().getMailService().receivedMailList(player, getInboxMailNew.getPageNumber(), null);
-			}
 		} catch (Exception ex) {
 			this.log.error(ex, ex);
 			throw new ProtocolException(ErrorMessages.MAIL_LIST_MESSAGE, data.getSerial(), data.getSessionId(), data.getType(),
 					data.getSubType());
 		}
+		return null;
 	}
 }

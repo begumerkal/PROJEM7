@@ -1,6 +1,5 @@
 package com.wyd.empire.world.task;
 
-import com.wyd.empire.world.common.util.Common;
 
 /**
  * 保存玩家与任务关系中间信息
@@ -31,7 +30,7 @@ public class PlayerTask implements java.io.Serializable {
 	public PlayerTask(int taskId, byte taskType, int[] targetValue) {
 		this.taskId = taskId;
 		this.taskType = taskType;
-		this.status = Common.TASK_STATUS_UNTRIGGERED;
+		this.status = 1;
 		this.upLevel = 0;
 		this.targetValue = targetValue;
 		this.targetStatus = new int[targetValue.length];
@@ -49,7 +48,7 @@ public class PlayerTask implements java.io.Serializable {
 		this.taskId = taskId;
 		this.taskType = 2;
 		this.taskSubType = taskSubType;
-		this.status = Common.TASK_STATUS_UNTRIGGERED;
+		this.status = 1;
 		this.targetType = targetType;
 		this.upLevel = 0;
 		this.targetValue = targetValue;

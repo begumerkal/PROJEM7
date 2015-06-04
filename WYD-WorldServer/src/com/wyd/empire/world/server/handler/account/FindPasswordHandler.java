@@ -19,7 +19,7 @@ import com.wyd.protocol.handler.IDataHandler;
 public class FindPasswordHandler implements IDataHandler {
 	Logger log = Logger.getLogger(FindPasswordHandler.class);
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		WorldPlayer player = session.getPlayer(data.getSessionId());
 		FindPassword findPassword = (FindPassword) data;
@@ -37,5 +37,6 @@ public class FindPasswordHandler implements IDataHandler {
 		} catch (Exception ex) {
 			log.error(ex, ex);
 		}
+		return null;
 	}
 }

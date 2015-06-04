@@ -16,7 +16,7 @@ import com.wyd.protocol.handler.IDataHandler;
 public class LegacyRegisterHandler implements IDataHandler {
     private Logger log = Logger.getLogger(LegacyRegisterHandler.class);
 
-    public void handle(AbstractData data) {
+    public AbstractData handle(AbstractData data) {
         LegacyRegister legacyRegister = (LegacyRegister) data;
         AcceptSession session = (AcceptSession) data.getSource();
         try {
@@ -46,5 +46,7 @@ public class LegacyRegisterHandler implements IDataHandler {
         } catch (Exception e) {
             log.error(e, e);
         }
+        
+        return null;
     }
 }

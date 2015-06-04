@@ -9,6 +9,7 @@ import com.wyd.protocol.handler.IDataHandler;
  * @since JDK 1.6
  */
 public class ToBackGroundHandler implements IDataHandler {
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
+		return null;
 	}
 }

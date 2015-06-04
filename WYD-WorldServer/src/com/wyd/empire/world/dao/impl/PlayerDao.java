@@ -14,14 +14,11 @@ import com.wyd.empire.world.bean.LoginReward;
 import com.wyd.empire.world.bean.Player;
 import com.wyd.empire.world.bean.PlayerInfo;
 import com.wyd.empire.world.bean.PlayerOnline;
-import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.common.util.ServiceUtils;
 import com.wyd.empire.world.dao.IPlayerDao;
 import com.wyd.empire.world.player.Record;
-import com.wyd.empire.world.server.handler.player.GetTopRecordHandler;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 import com.wyd.empire.world.server.service.impl.ChatService;
-import com.wyd.empire.world.server.service.impl.SystemLogService;
 
 /**
  * The DAO class for the Player entity.
@@ -155,7 +152,7 @@ public class PlayerDao extends UniversalDaoHibernate implements IPlayerDao {
 		hsql.append(" and not (name like 'GM-%') ");
 		hsql.append(" and money > 0 ");
 		hsql.append(" and status = ? ");
-		values.add(Common.PLAYER_USESTATE_NORMAL);
+		values.add(1);
 		hsql.append(" ORDER BY money DESC ");
 		List<Player> listPlayer = getList(hsql.toString(), values.toArray(), moneyPlayers);
 		if (listPlayer != null && !listPlayer.isEmpty()) {
@@ -181,7 +178,7 @@ public class PlayerDao extends UniversalDaoHibernate implements IPlayerDao {
 		values.add(WorldServer.config.getMachineCode());
 		hsql.append(" and not (name like 'GM-%') ");
 		hsql.append(" and status = ? ");
-		values.add(Common.PLAYER_USESTATE_NORMAL);
+		values.add(1);
 		hsql.append(" ORDER BY killEnemy DESC ");
 		List<Player> listPlayer = getList(hsql.toString(), values.toArray(), killEnemyPlayers);
 		if (listPlayer != null && !listPlayer.isEmpty()) {
@@ -204,7 +201,7 @@ public class PlayerDao extends UniversalDaoHibernate implements IPlayerDao {
 		List<Object> values = new Vector<Object>();
 		hsql.append(" FROM  " + Player.class.getSimpleName() + " WHERE 1 = 1 ");
 		hsql.append(" and areaId = ? ");
-		values.add(Common.PLAYER_USESTATE_NORMAL);
+		values.add(1);
 		hsql.append(" and not (name like 'GM-%') ");
 		hsql.append(" and status = ? ");
 		values.add(WorldServer.config.getMachineCode());
@@ -383,7 +380,7 @@ public class PlayerDao extends UniversalDaoHibernate implements IPlayerDao {
 			values.add(WorldServer.config.getMachineCode());
 		}
 		hsql.append(" AND status = ? ");
-		values.add(Common.PLAYER_USESTATE_NORMAL);
+		values.add(1);
 		// return (Player) this.getUniqueResult(hsql.toString(),
 		// values.toArray());
 		// getUniqueResult 转 getList
@@ -432,7 +429,7 @@ public class PlayerDao extends UniversalDaoHibernate implements IPlayerDao {
 		}
 		sql.append(" as record from tab_player where areaId=? order by record desc");
 		List<Object[]> objList = this.getListBySql(sql.toString(), new Object[]{WorldServer.config.getMachineCode()},
-				GetTopRecordHandler.MAX_COUNT);
+				1);
 		List<Record> recordList = new ArrayList<Record>();
 		Record record;
 		for (Object[] objs : objList) {
@@ -455,15 +452,15 @@ public class PlayerDao extends UniversalDaoHibernate implements IPlayerDao {
 	public List<Player> getLoginPlayer() {
 		String hql = "from Player where areaId=? order by level desc";
 		List<Player> playerList = new ArrayList<Player>();
-		playerList.addAll(this.getList(hql, new Object[]{WorldServer.config.getMachineCode()}, SystemLogService.RECORD_COUNT));
+		playerList.addAll(this.getList(hql, new Object[]{WorldServer.config.getMachineCode()}, 1));
 		hql = "from Player where areaId=? order by (winTimes1v1Athletics+winTimes1v1Champion+winTimes1v1Relive+winTimes2v2Athletics+winTimes2v2Champion+winTimes2v2Relive+winTimes3v3Athletics+winTimes3v3Champion+winTimes3v3Relive) desc";
-		playerList.addAll(this.getList(hql, new Object[]{WorldServer.config.getMachineCode()}, SystemLogService.RECORD_COUNT));
+		playerList.addAll(this.getList(hql, new Object[]{WorldServer.config.getMachineCode()}, 1));
 		hql = "from Player where areaId=? order by moneyGold desc";
-		playerList.addAll(this.getList(hql, new Object[]{WorldServer.config.getMachineCode()}, SystemLogService.RECORD_COUNT));
+		playerList.addAll(this.getList(hql, new Object[]{WorldServer.config.getMachineCode()}, 1));
 		hql = "from Player where areaId=? order by amount desc";
-		playerList.addAll(this.getList(hql, new Object[]{WorldServer.config.getMachineCode()}, SystemLogService.RECORD_COUNT));
+		playerList.addAll(this.getList(hql, new Object[]{WorldServer.config.getMachineCode()}, 1));
 		hql = "from Player where areaId=? and level <= 10";
-		playerList.addAll(this.getList(hql, new Object[]{WorldServer.config.getMachineCode()}, SystemLogService.RECORD_COUNT));
+		playerList.addAll(this.getList(hql, new Object[]{WorldServer.config.getMachineCode()}, 1));
 		return playerList;
 	}
 

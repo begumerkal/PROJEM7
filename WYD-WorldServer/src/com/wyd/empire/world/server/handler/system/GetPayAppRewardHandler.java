@@ -30,7 +30,7 @@ import com.wyd.protocol.handler.IDataHandler;
 public class GetPayAppRewardHandler implements IDataHandler {
 	Logger log = Logger.getLogger(GetPayAppRewardHandler.class);
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		GetPayAppReward getPayAppReward = (GetPayAppReward) data;
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		WorldPlayer player = session.getPlayer(data.getSessionId());
@@ -68,6 +68,7 @@ public class GetPayAppRewardHandler implements IDataHandler {
 			}
 			GetPayAppRewardOk ok = new GetPayAppRewardOk();
 			session.write(ok);
+			return null;
 		}
 	}
 

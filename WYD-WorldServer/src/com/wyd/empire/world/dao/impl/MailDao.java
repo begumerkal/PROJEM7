@@ -9,7 +9,6 @@ import org.springframework.util.StringUtils;
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.db.page.PageList;
 import com.wyd.empire.world.bean.Mail;
-import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.dao.IMailDao;
 
 /**
@@ -24,17 +23,7 @@ public class MailDao extends UniversalDaoHibernate implements IMailDao {
 	 * 清除过期邮件(每隔30天清理一次)
 	 */
 	public void deleteOverDateMail(int days) {
-		StringBuilder hql = new StringBuilder();
-		List<Object> values = new ArrayList<Object>();
-		hql.append("DELETE FROM " + Mail.class.getSimpleName() + "  WHERE 1 = 1 ");
-		hql.append(" AND receivedId != 0 ");
-		hql.append(" AND TO_DAYS(now()) - TO_DAYS(sendTime) >= ? ");
-		values.add((long) days);
-		if (days == Common.MAIL_DEL_SYSTEM_MAIL) {
-			hql.append(" AND sendId = ? ");
-			values.add(Common.MAIL_TYPE_SYSTEM_MAIL);
-		}
-		execute(hql.toString(), values.toArray());
+ 
 	}
 
 	/**
@@ -55,18 +44,18 @@ public class MailDao extends UniversalDaoHibernate implements IMailDao {
 			hql.append(" AND receivedId = ? ");
 			values.add(playerId);
 			hql.append(" AND blackMail = ? ");
-			values.add(Common.MAIL_BLACK_NO);
+			values.add(1);
 		} else {
 			hql.append(" AND sendId = ? ");
 			values.add(playerId);
 			hql.append(" AND receivedId != ? ");
-			values.add(Common.MAIL_RECEIVED_ID);
+			values.add(1);
 		}
 		hql.append(" AND deleteMark != ? ");
 		values.add(playerId);
 		String countHql = "SELECT COUNT(id) " + hql.toString();
 		hql.append(" ORDER BY id DESC ");
-		return getPageList(hql.toString(), countHql, values.toArray(), pageNum - 1, Common.PAGESIZE);
+		return getPageList(hql.toString(), countHql, values.toArray(), pageNum - 1, 1);
 	}
 
 	/**
@@ -88,12 +77,12 @@ public class MailDao extends UniversalDaoHibernate implements IMailDao {
 			hql.append(" AND receivedId = ? ");
 			values.add(playerId);
 			hql.append(" AND blackMail = ? ");
-			values.add(Common.MAIL_BLACK_NO);
+			values.add(1);
 		} else {
 			hql.append(" AND sendId = ? ");
 			values.add(playerId);
 			hql.append(" AND receivedId != ? ");
-			values.add(Common.MAIL_RECEIVED_ID);
+			values.add(1);
 		}
 		hql.append(" AND deleteMark != ? ");
 		values.add(playerId);
@@ -111,7 +100,7 @@ public class MailDao extends UniversalDaoHibernate implements IMailDao {
 		StringBuilder hql = new StringBuilder();
 		List<Object> values = new ArrayList<Object>();
 		hql.append("UPDATE " + Mail.class.getSimpleName() + " SET isRead = ? WHERE 1 = 1 ");
-		values.add(Common.MAIL_IS_READ_YES);
+		values.add(1);
 		hql.append(" AND id = ? ");
 		values.add(id);
 		execute(hql.toString(), values.toArray());

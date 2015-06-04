@@ -31,7 +31,7 @@ public class LoginAgainHandler implements IDataHandler {
 		this.log = Logger.getLogger(LoginAgainHandler.class);
 	}
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		LoginAgain loginAgain = (LoginAgain) data;
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		String udid = CryptionUtil.Decrypt(loginAgain.getUdid(), ServiceManager.getManager().getConfiguration().getString("deckey"));
@@ -69,5 +69,6 @@ public class LoginAgainHandler implements IDataHandler {
 			ServiceManager.getManager().getRequestService().add(legacyLogin.getSerial(), loginRequest);
 			ServiceManager.getManager().getAccountSkeleton().send(legacyLogin);
 		}
+		return null;
 	}
 }

@@ -16,7 +16,7 @@ import com.wyd.protocol.handler.IDataHandler;
 public class LegacyModifyPasswordHandler implements IDataHandler {
     private Logger log = Logger.getLogger(LegacyModifyPasswordHandler.class);
 
-    public void handle(AbstractData data) {
+    public AbstractData handle(AbstractData data) {
         LegacyModifyPassword legacyModifyPassword = (LegacyModifyPassword) data;
         AcceptSession session = (AcceptSession) data.getSource();
         try {
@@ -42,5 +42,6 @@ public class LegacyModifyPasswordHandler implements IDataHandler {
         } catch (Exception e) {
             log.error(e, e);
         }
+	    return null;
     }
 }

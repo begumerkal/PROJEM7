@@ -57,7 +57,7 @@ public class CreateRoleActorHandler implements IDataHandler {
 				mail.setSendTime(new Date());
 				mail.setTheme(TipMessages.SYS_MAIL);
 				mail.setType(1);
-				mail.setIsStick(Common.IS_STICK);
+				mail.setIsStick(1);
 				ServiceManager.getManager().getMailService().saveMail(mail, null);
 				if (createActor.getArea() != null && createActor.getArea().length() > 0) {
 					String area = createActor.getArea().substring(1);

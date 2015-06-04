@@ -25,7 +25,7 @@ import com.wyd.protocol.handler.IDataHandler;
 public class GetPayAppRewardListHandler implements IDataHandler {
 	Logger log = Logger.getLogger(GetPayAppRewardHandler.class);
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		GetPayAppRewardList getPayAppRewardList = (GetPayAppRewardList) data;
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		WorldPlayer player = session.getPlayer(data.getSessionId());
@@ -69,6 +69,7 @@ public class GetPayAppRewardListHandler implements IDataHandler {
 		ok.setDays(days);
 		ok.setStrongLevel(strongLevel);
 		session.write(ok);
+		return null;
 	}
 
 	private String getAccountId(Client client) {

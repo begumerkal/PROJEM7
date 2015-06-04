@@ -49,7 +49,9 @@ public class HandlerUtil {
 				// System.out.println("<<<<<<<<<<<<<<<<<<<<<");
 
 				AbstractData sendData = handler.handle(dataobj);
-				session.write(sendData);
+				if(sendData != null){
+					session.write(sendData);
+				}
 				long time = System.currentTimeMillis() - sTime;
 				if (time > 1000)
 					timeLog.info(handler.getClass().getSimpleName() + "-----Time:" + time);

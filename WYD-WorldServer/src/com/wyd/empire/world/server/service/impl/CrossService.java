@@ -39,8 +39,6 @@ import com.wyd.empire.world.bean.Tools;
 import com.wyd.empire.world.buff.Buff;
 import com.wyd.empire.world.common.util.ServiceUtils;
 import com.wyd.empire.world.player.WorldPlayer;
-import com.wyd.empire.world.room.Room;
-import com.wyd.empire.world.room.Seat;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 import com.wyd.empire.world.skeleton.BattleSkeleton;
 import com.wyd.protocol.data.AbstractData;
@@ -62,25 +60,25 @@ public class CrossService {
 		}
 	}
 
-	/**
-	 * 跨服配对
-	 * 
-	 * @param room
-	 */
-	public void sendPairInfo(Room room) {
-		CrossPair crossPair = new CrossPair();
-		crossPair.setRoomId(room.getRoomId());
-		crossPair.setBattleMode(room.getBattleMode());
-		crossPair.setPlayerNum(room.getPlayerNum());
-		crossPair.setRoomChannel(room.getRoomChannel());
-		if (6 != room.getBattleMode()) {
-			crossPair.setAverageFighting(room.getAvgFighting());
-		} else {
-			crossPair.setAverageFighting(room.getAvgIntegral());
-		}
-		crossPair.setVersion(WorldServer.config.getVersion());
-		send(crossPair);
-	}
+//	/**
+//	 * 跨服配对
+//	 * 
+//	 * @param room
+//	 */
+//	public void sendPairInfo(Room room) {
+//		CrossPair crossPair = new CrossPair();
+//		crossPair.setRoomId(room.getRoomId());
+//		crossPair.setBattleMode(room.getBattleMode());
+//		crossPair.setPlayerNum(room.getPlayerNum());
+//		crossPair.setRoomChannel(room.getRoomChannel());
+//		if (6 != room.getBattleMode()) {
+//			crossPair.setAverageFighting(room.getAvgFighting());
+//		} else {
+//			crossPair.setAverageFighting(room.getAvgIntegral());
+//		}
+//		crossPair.setVersion(WorldServer.config.getVersion());
+//		send(crossPair);
+//	}
 
 	/**
 	 * 跨服加载
@@ -193,92 +191,7 @@ public class CrossService {
 	 * 
 	 * @param skillEquip
 	 */
-	public void skillEquip(SkillEquip skillEquip) {
-		int battleId = skillEquip.getBattleId();
-		int playerId = skillEquip.getPlayerId();
-		int itemcount = skillEquip.getItemcount();
-		int[] itmeIds = skillEquip.getItmeIds();
-		int tiredValue = 0;
-		int consumePower = 0;
-		int selfAddHP = 0;
-		List<Integer> playerIds = new ArrayList<Integer>();
-		List<Integer> allAddHP = new ArrayList<Integer>();
-		List<Tools> toolsList = ServiceManager.getManager().getToolsService().getToolsListByIds(itmeIds);
-		List<Integer> toolsType = new ArrayList<Integer>();
-		List<Integer> toolsSubType = new ArrayList<Integer>();
-		List<Integer> toolsParam1 = new ArrayList<Integer>();
-		List<Integer> toolsParam2 = new ArrayList<Integer>();
-		boolean completed = false;
-		if (isThisServerPlayer(playerId)) {
-			WorldPlayer player = ServiceManager.getManager().getPlayerService().getLoadPlayer(getPlayerId(playerId));
-			if (null == player) {
-				return;
-			}
-			Room room = ServiceManager.getManager().getRoomService().getRoom(getRoomId(playerId));
-			if (null == room) {
-				return;
-			}
-			Seat playerSeat = null;
-			for (Seat seat : room.getPlayerList()) {
-				if (null != seat.getPlayer()
-						&& ServiceManager.getManager().getCrossService().getCrossPlayerId(seat.getPlayer().getId()) == playerId) {
-					playerSeat = seat;
-				}
-			}
-			if (null == playerSeat) {
-				return;
-			}
-			for (Tools tools : toolsList) {
-				ServiceManager.getManager().getLogSerivce().updatePropsSkillLog(tools);
-				tiredValue += tools.getTireValue();
-				consumePower += tools.getConsumePower();
-				toolsType.add(tools.getType());
-				toolsSubType.add(tools.getSubtype());
-				toolsParam1.add(tools.getParam1());
-				toolsParam2.add(tools.getParam2());
-				if (1 == tools.getType().intValue()) {
-					switch (tools.getSubtype().intValue()) {
-						case 0 :
-							selfAddHP = tools.getParam1();
-							// 公会技能加成
-							selfAddHP = (int) ServiceManager.getManager().getBuffService().getAddition(player, selfAddHP, Buff.CTREAT);
-							selfAddHP = (int) ServiceManager.getManager().getBuffService().getAddition(player, selfAddHP, Buff.CADDHP);
-							break;
-						case 1 :
-							for (Seat seat : room.getPlayerList()) {
-								if (null != seat.getPlayer()) {
-									int chp = tools.getParam1();
-									chp = (int) ServiceManager.getManager().getBuffService()
-											.getAddition(seat.getPlayer(), chp, Buff.CTREAT);
-									chp = (int) ServiceManager.getManager().getBuffService()
-											.getAddition(seat.getPlayer(), chp, Buff.CADDHP);
-									playerIds.add(ServiceManager.getManager().getCrossService().getCrossPlayerId(seat.getPlayer().getId()));
-									allAddHP.add(chp);
-								}
-							}
-							break;
-					}
-				}
-			}
-			completed = true;
-		}
-		CrossSkillEquip cse = new CrossSkillEquip();
-		cse.setBattleId(battleId);
-		cse.setPlayerId(playerId);
-		cse.setItemcount(itemcount);
-		cse.setItmeIds(itmeIds);
-		cse.setTiredValue(tiredValue);
-		cse.setConsumePower(consumePower);
-		cse.setSelfAddHP(selfAddHP);
-		cse.setPlayerIds(ServiceUtils.getInts(playerIds.toArray()));
-		cse.setAllAddHP(ServiceUtils.getInts(allAddHP.toArray()));
-		cse.setCompleted(completed);
-		cse.setToolsType(ServiceUtils.getInts(toolsType.toArray()));
-		cse.setToolsSubType(ServiceUtils.getInts(toolsSubType.toArray()));
-		cse.setToolsParam1(ServiceUtils.getInts(toolsParam1.toArray()));
-		cse.setToolsParam2(ServiceUtils.getInts(toolsParam2.toArray()));
-		send(cse);
-	}
+	public void skillEquip(SkillEquip skillEquip) {}
 
 	/**
 	 * 使用大招
@@ -358,34 +271,7 @@ public class CrossService {
 	 * @param curPositionY
 	 */
 	public void fly(int battleId, int playerId, int speedx, int speedy, byte leftRight, int isEquip, int startx, int starty,
-			int playerCount, int[] playerIds, int[] curPositionX, int[] curPositionY) {
-		CrossFly crossFly = new CrossFly();
-		crossFly.setBattleId(battleId);
-		crossFly.setPlayerId(playerId);
-		crossFly.setSpeedx(speedx);
-		crossFly.setSpeedy(speedy);
-		crossFly.setLeftRight(leftRight);
-		crossFly.setIsEquip(isEquip);
-		crossFly.setStartx(startx);
-		crossFly.setStarty(starty);
-		crossFly.setPlayerCount(playerCount);
-		crossFly.setPlayerIds(playerIds);
-		crossFly.setCurPositionX(curPositionX);
-		crossFly.setCurPositionY(curPositionY);
-		send(crossFly);
-		if (isThisServerPlayer(playerId)) {
-			WorldPlayer player = ServiceManager.getManager().getPlayerService().getOnlineWorldPlayer(getPlayerId(playerId));
-			if (null == player)
-				return;
-			Seat seat = ServiceManager.getManager().getRoomService().getSeat(getRoomId(playerId), player.getId());
-			if (null == seat)
-				return;
-			if (!seat.isRobot()) {
-				ServiceManager.getManager().getTaskService().flySkill(player);
-				ServiceManager.getManager().getTitleService().flySkill(player);
-			}
-		}
-	}
+			int playerCount, int[] playerIds, int[] curPositionX, int[] curPositionY) {}
 
 	/**
 	 * 开始新一回合操作
@@ -433,17 +319,7 @@ public class CrossService {
 		cqb.setPlayerId(playerId);
 		send(cqb);
 		int id = getPlayerId(playerId);
-		if (0 != roomId && null != ServiceManager.getManager().getChallengeService().getRoom(roomId)) {
-			int index = ServiceManager.getManager().getChallengeService().getPlayerSeat(roomId, id);
-			ServiceManager.getManager().getChallengeService().exRoom(roomId, index);
-			WorldPlayer player = ServiceManager.getManager().getPlayerService().getLoadPlayer(id);
-			if (null != player) {
-				ServiceManager.getManager().getChallengeSerService().addIntegral(player, 0, false);
-			}
-		} else if (0 != roomId && null != ServiceManager.getManager().getRoomService().getRoom(roomId)) {
-			int index = ServiceManager.getManager().getRoomService().getPlayerSeat(roomId, id);
-			ServiceManager.getManager().getRoomService().exRoom(roomId, index, id);
-		}
+ 
 	}
 
 	/**
@@ -570,7 +446,7 @@ public class CrossService {
 	public void extBattle(int crossPlayerId, int roomId) {
 		PlayerInfo playerInfo = playerInfoMap.get(crossPlayerId);
 		if (null != playerInfo) {
-			if (playerInfo.getServerId() != WorldServer.config.getServerId() || playerInfo.getRoomId() == roomId) {
+			if (playerInfo.getServerId() != WorldServer.config.getMachineCode() || playerInfo.getRoomId() == roomId) {
 				playerInfoMap.remove(crossPlayerId);
 				crossPlayerIdMap.remove(playerInfo.getServerId() + "-" + playerInfo.getPlayerId());
 			}
@@ -585,7 +461,7 @@ public class CrossService {
 	 */
 	public boolean isThisServerPlayer(int crossPlayerId) {
 		PlayerInfo playerInfo = playerInfoMap.get(crossPlayerId);
-		if (null != playerInfo && WorldServer.config.getServerId() == playerInfo.getServerId()) {
+		if (null != playerInfo && WorldServer.config.getMachineCode() == playerInfo.getServerId()) {
 			return true;
 		} else {
 			return false;
@@ -601,7 +477,7 @@ public class CrossService {
 	public int getPlayerId(int crossPlayerId) {
 		int playerId = 0;
 		PlayerInfo playerInfo = playerInfoMap.get(crossPlayerId);
-		if (null != playerInfo && WorldServer.config.getServerId() == playerInfo.getServerId()) {
+		if (null != playerInfo && WorldServer.config.getMachineCode() == playerInfo.getServerId()) {
 			playerId = playerInfo.getPlayerId();
 		}
 		return playerId;
@@ -631,7 +507,7 @@ public class CrossService {
 	public int getRoomId(int crossPlayerId) {
 		int roomId = 0;
 		PlayerInfo playerInfo = playerInfoMap.get(crossPlayerId);
-		if (null != playerInfo && WorldServer.config.getServerId() == playerInfo.getServerId()) {
+		if (null != playerInfo && WorldServer.config.getMachineCode() == playerInfo.getServerId()) {
 			roomId = playerInfo.getRoomId();
 		}
 		return roomId;
@@ -644,7 +520,7 @@ public class CrossService {
 	 * @return
 	 */
 	public int getCrossPlayerId(int playerId) {
-		Integer crossPlayerId = crossPlayerIdMap.get(WorldServer.config.getServerId() + "-" + playerId);
+		Integer crossPlayerId = crossPlayerIdMap.get(WorldServer.config.getMachineCode() + "-" + playerId);
 		if (null != crossPlayerId) {
 			return crossPlayerId;
 		} else {

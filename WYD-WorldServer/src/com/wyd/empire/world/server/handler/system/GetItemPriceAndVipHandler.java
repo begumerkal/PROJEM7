@@ -14,7 +14,7 @@ import com.wyd.protocol.handler.IDataHandler;
 public class GetItemPriceAndVipHandler implements IDataHandler {
 	Logger log = Logger.getLogger(GetItemPriceAndVipHandler.class);
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		try {
 			GetItemPriceAndVipOk getItemPriceAndVipOk = new GetItemPriceAndVipOk(data.getSessionId(), data.getSerial());
@@ -29,5 +29,6 @@ public class GetItemPriceAndVipHandler implements IDataHandler {
 			throw new ProtocolException(ErrorMessages.COMMUNITY_NOSUCCESS_MESSAGE, data.getSerial(), data.getSessionId(), data.getType(),
 					data.getSubType());
 		}
+		return null;
 	}
 }

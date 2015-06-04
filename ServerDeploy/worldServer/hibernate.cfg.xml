@@ -10,12 +10,12 @@
 		<mapping class="com.wyd.empire.world.bean.Consortia" />
 		<mapping class="com.wyd.empire.world.bean.ConsortiaRight" />
 		<mapping class="com.wyd.empire.world.bean.OperationConfig" />
-		<mapping class="com.wyd.empire.world.bean.PlayerItemsFromShop" />
+ 
 		<mapping class="com.wyd.empire.world.bean.PlayerSinConsortia" />
 		<mapping class="com.wyd.empire.world.bean.ShopItemsPrice" />
 		<mapping class="com.wyd.empire.world.bean.ShopItem" />
 		<mapping class="com.wyd.empire.world.bean.Task" />
-		<mapping class="com.wyd.empire.world.bean.DayTask" />
+ 
 		<mapping class="com.wyd.empire.world.bean.Tools" />
 		<mapping class="com.wyd.empire.world.bean.RewardItems" />
 		<mapping class="com.wyd.empire.world.bean.RandomName" />
@@ -51,7 +51,6 @@
 		<mapping class="com.wyd.empire.world.bean.BuffRecord" />
 		<mapping class="com.wyd.empire.world.bean.Bulletin" />
 		<mapping class="com.wyd.empire.world.bean.Promotions" />
-		<mapping class="com.wyd.empire.world.bean.VipRecord" />
 		<mapping class="com.wyd.empire.world.bean.ExchangeItem" />
 		<mapping class="com.wyd.empire.world.bean.ExchangeRate" />
 		<mapping class="com.wyd.empire.world.bean.WeapSkill" />
@@ -71,13 +70,11 @@
 		<mapping class="com.wyd.empire.world.bean.LoginReward"/>
 		<mapping class="com.wyd.empire.world.bean.SpreeGift"/>
 		<mapping class="com.wyd.empire.world.bean.RankRecord"/>
-		<mapping class="com.wyd.empire.world.bean.PlayerReward"/>
 		<mapping class="com.wyd.empire.world.bean.Reward"/>
 		<mapping class="com.wyd.empire.world.bean.GetItem"/>
 		<mapping class="com.wyd.empire.world.bean.InviteServiceInfo"/>
 		<mapping class="com.wyd.empire.world.bean.InviteReward"/>
 		<mapping class="com.wyd.empire.world.bean.PlayerGuide"/>
-		<mapping class="com.wyd.empire.world.bean.PlayerAttribute"/>
 		<mapping class="com.wyd.empire.world.bean.Recommend"/>
 		<mapping class="com.wyd.empire.world.bean.Channel"/>
 		<mapping class="com.wyd.empire.world.bean.ConsortiaBattle" />
@@ -107,7 +104,6 @@
 		<mapping class="com.wyd.empire.world.bean.PetCulture"/>
 		<mapping class="com.wyd.empire.world.bean.PetBar"/>
 		<mapping class="com.wyd.empire.world.bean.PlayerPetBar"/>
-		<mapping class="com.wyd.empire.world.bean.MonthlyVIP"/>
 		<mapping class="com.wyd.empire.world.bean.PetRecord"/>
 		
 		<!-- 世界BOSS -->
@@ -136,16 +132,12 @@
 		<mapping class="com.wyd.empire.world.bean.PlayerSingleMap"/>
 		<!-- 微博分享 -->
 		<mapping class="com.wyd.empire.world.bean.Share"/>		
-		<!-- 每日必做 -->
-		<mapping class="com.wyd.empire.world.bean.DoEveryDay"/>
 		<!-- 活力值价格配置 -->
 		<mapping class="com.wyd.empire.world.bean.VigorPrice"/>	
 		<!-- 星魂配置 -->
 		<mapping class="com.wyd.empire.world.bean.StarSoul"/>
 		<!-- 修炼配置 -->
 		<mapping class="com.wyd.empire.world.bean.Practice"/>	
-		<!-- 卡阵 -->
-		<mapping class="com.wyd.empire.world.bean.PlayerCards"/>
 		<!-- 卡牌碎片合成 -->
 		<mapping class="com.wyd.empire.world.bean.DebirsMerge"/>
 		<!-- 卡牌熔炼 -->
@@ -164,6 +156,8 @@
 		<mapping class="com.wyd.empire.world.bean.MonthCard"/>		
 		<mapping class="com.wyd.empire.world.bean.WishItem"/>
 		<!-- VIP等级限购物品配置 -->
-		<mapping class="com.wyd.empire.world.bean.LimitedPrice"/>			
+		<mapping class="com.wyd.empire.world.bean.LimitedPrice"/>
+		<!-- 分包下载 -->
+		<mapping class="com.wyd.empire.world.bean.DownloadReward"/>				
 	</session-factory>
 </hibernate-configuration>

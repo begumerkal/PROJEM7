@@ -19,7 +19,7 @@ import com.wyd.protocol.handler.IDataHandler;
 public class LegacyRegisterOkHandler implements IDataHandler {
 	private Logger log = Logger.getLogger(LegacyRegisterOkHandler.class);
 
-	public void handle(AbstractData data) {
+	public AbstractData handle(AbstractData data) {
 		LegacyRegisterOk legacyRegisterOk = (LegacyRegisterOk) data;
 		try {
 			WorldPlayer player = ServiceManager.getManager().getPlayerService().getOnlineWorldPlayer(legacyRegisterOk.getPlayerId());
@@ -28,7 +28,7 @@ public class LegacyRegisterOkHandler implements IDataHandler {
 					RegisterOk registerOk = new RegisterOk();
 					player.sendData(registerOk);
 					// ServiceManager.getManager().getPlayerService().savePlayerData(player.getPlayer());
-					ServiceManager.getManager().getTaskService().bindAccount(player);
+//					ServiceManager.getManager().getTaskService().bindAccount(player);
 				} else {
 					RegisterFail registerFail = new RegisterFail();
 					if (1 == legacyRegisterOk.getStatus()) {
@@ -42,5 +42,6 @@ public class LegacyRegisterOkHandler implements IDataHandler {
 		} catch (Exception e) {
 			log.error(e, e);
 		}
+		return null;
 	}
 }

@@ -25,7 +25,7 @@ public class RoleActorLoginHandler implements IDataHandler {
 		this.log = Logger.getLogger(RoleActorLoginHandler.class);
 	}
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		RoleActorLogin login = (RoleActorLogin) data;
 		Client client = session.getClient(data.getSessionId());
@@ -74,5 +74,6 @@ public class RoleActorLoginHandler implements IDataHandler {
 				this.log.info("AccountId[" + client.getAccountId() + "]login.getPlayerName()[" + login.getPlayerName() + "]LOGIN ERROR");
 			}
 		}
+		return null;
 	}
 }

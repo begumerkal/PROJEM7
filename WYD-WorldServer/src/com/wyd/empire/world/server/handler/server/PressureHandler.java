@@ -10,7 +10,7 @@ import com.wyd.protocol.handler.IDataHandler;
  */
 public class PressureHandler implements IDataHandler {
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		// ConnectSession session = (ConnectSession) data.getHandlerSource();
 		// Pressure pressure = (Pressure) data;
 		// try {
@@ -144,5 +144,6 @@ public class PressureHandler implements IDataHandler {
 		// }
 		// } catch (Exception e) {
 		// }
+		return null;
 	}
 }

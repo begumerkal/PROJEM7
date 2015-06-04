@@ -1,3 +1,4 @@
+#id;password;ip
 CN_0;dandandao;192.168.1.100
 CN_1;dandandao;192.168.1.100
 CN_2;dandandao;192.168.1.100

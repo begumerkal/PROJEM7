@@ -16,7 +16,7 @@ import com.wyd.protocol.handler.IDataHandler;
 public class LegacyFindPasswordOkHandler implements IDataHandler {
 	private Logger log = Logger.getLogger(LegacyFindPasswordOkHandler.class);
 
-	public void handle(AbstractData data) {
+	public AbstractData handle(AbstractData data) {
 		LegacyFindPasswordOk legacyFindPasswordOk = (LegacyFindPasswordOk) data;
 		try {
 			String email = legacyFindPasswordOk.getEmail();
@@ -32,5 +32,6 @@ public class LegacyFindPasswordOkHandler implements IDataHandler {
 		} catch (Exception e) {
 			log.error(e, e);
 		}
+		return null;
 	}
 }

@@ -20,7 +20,6 @@ import com.wyd.empire.protocol.data.server.NotifyMaxPlayer;
 import com.wyd.empire.protocol.data.server.ShutDown;
 import com.wyd.empire.world.Client;
 import com.wyd.empire.world.WorldServer;
-import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.player.WorldPlayer;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 import com.wyd.empire.world.server.service.impl.ConnectService;
@@ -443,12 +442,12 @@ public class ConnectSession extends Session {
 		playerLoginOk.setMedalNum(player.getMedalNum());
 		playerLoginOk.setCritRate(player.getCrit());
 		playerLoginOk.setExplodeRadius(player.getExplodeRadius());
-		playerLoginOk.setProficiency(player.getProficiency());
-		playerLoginOk.setSuit_head(player.getSuit_head());
-		playerLoginOk.setSuit_face(player.getSuit_face());
-		playerLoginOk.setSuit_body(player.getSuit_body());
-		playerLoginOk.setSuit_weapon(player.getSuit_weapon());
-		playerLoginOk.setWeapon_type(player.getWeapon_type());
+		playerLoginOk.setProficiency(1);
+		playerLoginOk.setSuit_head("1");
+		playerLoginOk.setSuit_face("1");
+		playerLoginOk.setSuit_body("1");
+		playerLoginOk.setSuit_weapon("1");
+		playerLoginOk.setWeapon_type(1);
 		playerLoginOk.setUpgradeexp(ServiceManager.getManager().getPlayerService()
 				.getUpgradeExp(player.getLevel(), player.getPlayer().getZsLevel()));
 		playerLoginOk.setGuideLevel(ServiceManager.getManager().getVersionService().getVersion().getGuideLevel());
@@ -458,17 +457,17 @@ public class ConnectSession extends Session {
 		} else {
 			playerLoginOk.setVipLevel(0);
 		}
-		playerLoginOk.setSuit_wing(player.getSuit_wing());
+		playerLoginOk.setSuit_wing("1");
 		String[] markStr = player.getPlayer().getWbUserId().split(",");
 		playerLoginOk.setPlayer_title("");
-		playerLoginOk.setWeaponLevel(player.getWeaponLevel());
+		playerLoginOk.setWeaponLevel(1);
 		Map<String, String> map = new HashMap<String, String>();
 		String[] str;
 		for (String s : markStr) {
 			str = s.split("=");
 			map.put(str[0], str[1]);
 		}
-		playerLoginOk.setWbUserId(new String[]{map.get(Common.XLWB), map.get(Common.TXWB)});
+		playerLoginOk.setWbUserId(new String[]{"map.get(Common.XLWB)", "map.get(Common.TXWB)"});
 		playerLoginOk.setQualifyingLevel(player.getPlayer().getHonorLevel());
 		// System.out.println(ServiceManager.getManager().getPlayerService().getOnlinePlayerNum()+"----------------");
 		playerLoginOk.setZsleve(player.getPlayer().getZsLevel());
@@ -488,10 +487,9 @@ public class ConnectSession extends Session {
 		playerLoginOk.setVipMark(0);
 		playerLoginOk.setVipLastDay(0);
 
-		int heart = ServiceManager.getManager().getPlayerItemsFromShopService().getPlayerItemNum(player.getId(), Common.LOVEID);
-		playerLoginOk.setHeart(heart);
-		int petNum = ServiceManager.getManager().getPetItemService().getPlayerPetNum(player.getId());
-		playerLoginOk.setPetNum(petNum);
+		playerLoginOk.setHeart(1);
+//		int petNum = ServiceManager.getManager().getPetItemService().getPlayerPetNum(player.getId());
+		playerLoginOk.setPetNum(1);
 		return playerLoginOk;
 	}
 

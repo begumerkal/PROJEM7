@@ -1,5 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<services>
-	<info ip="0.0.0.0" port="6660" remark="测试服" type="0" app=""/>
-	<info ip="0.0.0.0" port="6661" remark="测试服" type="1" app="pay"/>
-</services>

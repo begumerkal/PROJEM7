@@ -16,7 +16,7 @@ import com.wyd.protocol.handler.IDataHandler;
 public class LegacyVerificationHandler implements IDataHandler {
     private Logger log = Logger.getLogger(LegacyVerificationHandler.class);
 
-    public void handle(AbstractData data) {
+    public AbstractData handle(AbstractData data) {
         LegacyVerification legacyVerification = (LegacyVerification) data;
         AcceptSession session = (AcceptSession) data.getSource();
         try {
@@ -35,5 +35,6 @@ public class LegacyVerificationHandler implements IDataHandler {
         } catch (Exception e) {
             log.error(e, e);
         }
+        return null;
     }
 }

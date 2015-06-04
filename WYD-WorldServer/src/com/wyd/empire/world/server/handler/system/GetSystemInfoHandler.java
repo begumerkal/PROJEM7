@@ -7,10 +7,11 @@ import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.handler.IDataHandler;
 
 public class GetSystemInfoHandler implements IDataHandler {
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		GetSystemInfoOk getSystemInfoOk = new GetSystemInfoOk(data.getSessionId(), data.getSerial());
 		getSystemInfoOk.setRechargeUrl(ServiceManager.getManager().getConfiguration().getString("rechargeurl"));
 		session.write(getSystemInfoOk);
+		return null;
 	}
 }

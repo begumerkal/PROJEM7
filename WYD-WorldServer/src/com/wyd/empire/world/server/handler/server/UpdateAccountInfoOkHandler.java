@@ -25,7 +25,7 @@ public class UpdateAccountInfoOkHandler implements IDataHandler {
 		this.log = Logger.getLogger(UpdateAccountInfoOkHandler.class);
 	}
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		UpdateAccountInfoOk updateAccountInfoOk = (UpdateAccountInfoOk) data;
 		UpdateAccountRequest request = (UpdateAccountRequest) ServiceManager.getManager().getRequestService()
 				.remove(updateAccountInfoOk.getSerial());
@@ -37,5 +37,6 @@ public class UpdateAccountInfoOkHandler implements IDataHandler {
 		} catch (Exception e) {
 			log.info(e, e);
 		}
+		return null;
 	}
 }

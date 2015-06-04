@@ -11,7 +11,7 @@ import com.wyd.protocol.handler.IDataHandler;
 public class SetClientInfoHandler implements IDataHandler {
     private Logger log = Logger.getLogger(SetClientInfoHandler.class);
 
-    public void handle(AbstractData message) {
+    public AbstractData handle(AbstractData message) {
         SetClientInfo setClientInfo = (SetClientInfo) message;
         try {
             int accountId = setClientInfo.getAccountId();
@@ -22,5 +22,6 @@ public class SetClientInfoHandler implements IDataHandler {
         } catch (Throwable e) {
             log.error(e);
         }
+        return null;
     }
 }

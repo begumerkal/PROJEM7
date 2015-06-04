@@ -19,19 +19,8 @@ import org.mortbay.jetty.servlet.ServletHolder;
 import com.wyd.empire.protocol.Protocol;
 import com.wyd.empire.world.common.util.HttpClientUtil;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
-import com.wyd.empire.world.servlet.BatchRunSendRewardServlet;
 import com.wyd.empire.world.servlet.CallBackServlet;
-import com.wyd.empire.world.servlet.CheckPlayerInfoServlet;
 import com.wyd.empire.world.servlet.ExportExcelOPServlet;
-import com.wyd.empire.world.servlet.GetGoldCountLogServlet;
-import com.wyd.empire.world.servlet.GetItemLogServlet;
-import com.wyd.empire.world.servlet.GetPlayerInfoServlet;
-import com.wyd.empire.world.servlet.GetStrongRecordLogServlet;
-import com.wyd.empire.world.servlet.GiftPetByGMServlet;
-import com.wyd.empire.world.servlet.ItemsGivenServlet;
-import com.wyd.empire.world.servlet.PointCallBackServlet;
-import com.wyd.empire.world.servlet.RechargeNewServlet;
-import com.wyd.empire.world.servlet.RechargeServlet;
 import com.wyd.empire.world.servlet.SynchronousServlet;
 import com.wyd.empire.world.servlet.TapzoyServlet;
 import com.wyd.empire.world.session.AdminSession;
@@ -78,14 +67,14 @@ public class WorldServer {
 		ServiceManager.getManager().initBaseData();
 		// 初始化进程
 		ServiceManager.getManager().init();
-		// 初始化游戏日志服务
-		ServiceManager.getManager().getLogSerivce().initialLogService();
-		// 初始化首冲奖励、抽奖列表
-		ServiceManager.getManager().getRechargeRewardService().findInitList();
-		// 初始化自定义推荐列表
-		ServiceManager.getManager().getShopItemService().getRecommendList();
-		// 初始化排行榜数据
-		ServiceManager.getManager().getLogSerivce().initialTopRecord();
+//		// 初始化游戏日志服务
+//		ServiceManager.getManager().getLogSerivce().initialLogService();
+//		// 初始化首冲奖励、抽奖列表
+//		ServiceManager.getManager().getRechargeRewardService().findInitList();
+//		// 初始化自定义推荐列表
+//		ServiceManager.getManager().getShopItemService().getRecommendList();
+//		// 初始化排行榜数据
+//		ServiceManager.getManager().getLogSerivce().initialTopRecord();
 		// 是否在维护
 		String maintance = null;
 		maintance = configuration.getString("maintance");
@@ -112,7 +101,7 @@ public class WorldServer {
 		// 启动游戏管理服务
 		AdminSessionHandler adminSessionHandler = new AdminSessionHandler(registry);
 		bindAdmin(adminSessionHandler);
-		openManagerServlet();
+//		openManagerServlet();
 		log.info("游戏世界服务器启动...");
 		System.out.println("游戏世界服务器启动...");
 		System.out.println("login time:" + ((System.currentTimeMillis() - time) / 1000) + "秒");
@@ -156,57 +145,57 @@ public class WorldServer {
 		}
 	}
 
-	/**
-	 * 后台管理服务
-	 * 
-	 * @throws Exception
-	 */
-	private void openManagerServlet() throws Exception {
-		org.mortbay.jetty.Server server = new org.mortbay.jetty.Server();
-		// // 设置jetty线程池
-		// BoundedThreadPool threadPool = new BoundedThreadPool();
-		// // 设置连接参数
-		// threadPool.setMinThreads(10);
-		// threadPool.setMaxThreads(50);
-		// 设置监听端口，ip地址
-		SelectChannelConnector connector = new SelectChannelConnector();
-		connector.setPort(ServiceManager.getManager().getConfiguration().getInt("http"));
-		connector.setHost(ServiceManager.getManager().getConfiguration().getString("localip"));
-		server.addConnector(connector);
-		// 访问项目地址
-		Context root = new Context(server, "/", 1);
-		// 网易的充值平台回调地址
-		root.addServlet(new ServletHolder(new CallBackServlet()), "/callback/*");
-		root.addServlet(new ServletHolder(new PointCallBackServlet()), "/pointcallback/*");
-
-		// 爱游戏平台服务器验证
-		root.addServlet(new ServletHolder(new SynchronousServlet()), "/synchronous/*");
-		// EFUN充值接入
-		root.addServlet(new ServletHolder(new RechargeServlet()), "/recharge/*");
-		// EFUN充值接入(新)
-		root.addServlet(new ServletHolder(new RechargeNewServlet()), "/rechargeNew/*");
-		// tapjoy接入
-		root.addServlet(new ServletHolder(new TapzoyServlet()), "/tapjoy/*");
-		// 第三方支付获取玩家信息接口
-		root.addServlet(new ServletHolder(new GetPlayerInfoServlet()), "/getPlayerInfo/*");
-		// 外部抽奖检查用户信息是否正确
-		root.addServlet(new ServletHolder(new CheckPlayerInfoServlet()), "/checkinfo/*");
-		// 外部抽奖发放奖励
-		root.addServlet(new ServletHolder(new ItemsGivenServlet()), "/itemsgiven/*");
-		// 批量发放奖励
-		root.addServlet(new ServletHolder(new BatchRunSendRewardServlet()), "/BatchRunSendReward/*");
-		// 批量发放宠物
-		root.addServlet(new ServletHolder(new GiftPetByGMServlet()), "/GiftPetByGM/*");
-		// 意见箱导出excel
-		root.addServlet(new ServletHolder(new ExportExcelOPServlet()), "/ExportExcelOP/*");
-		// 查询发放物品日志
-		root.addServlet(new ServletHolder(new GetItemLogServlet()), "/GetItemLog/*");
-		// 查询发放金币日志
-		root.addServlet(new ServletHolder(new GetGoldCountLogServlet()), "/GetGoldCountLog/*");
-		// 查询强化日志
-		root.addServlet(new ServletHolder(new GetStrongRecordLogServlet()), "/GetStrongRecordLog/*");
-		server.start();
-	}
+//	/**
+//	 * 后台管理服务
+//	 * 
+//	 * @throws Exception
+//	 */
+//	private void openManagerServlet() throws Exception {
+//		org.mortbay.jetty.Server server = new org.mortbay.jetty.Server();
+//		// // 设置jetty线程池
+//		// BoundedThreadPool threadPool = new BoundedThreadPool();
+//		// // 设置连接参数
+//		// threadPool.setMinThreads(10);
+//		// threadPool.setMaxThreads(50);
+//		// 设置监听端口，ip地址
+//		SelectChannelConnector connector = new SelectChannelConnector();
+//		connector.setPort(ServiceManager.getManager().getConfiguration().getInt("http"));
+//		connector.setHost(ServiceManager.getManager().getConfiguration().getString("localip"));
+//		server.addConnector(connector);
+//		// 访问项目地址
+//		Context root = new Context(server, "/", 1);
+//		// 网易的充值平台回调地址
+//		root.addServlet(new ServletHolder(new CallBackServlet()), "/callback/*");
+//		root.addServlet(new ServletHolder(new PointCallBackServlet()), "/pointcallback/*");
+//
+//		// 爱游戏平台服务器验证
+//		root.addServlet(new ServletHolder(new SynchronousServlet()), "/synchronous/*");
+//		// EFUN充值接入
+//		root.addServlet(new ServletHolder(new RechargeServlet()), "/recharge/*");
+//		// EFUN充值接入(新)
+//		root.addServlet(new ServletHolder(new RechargeNewServlet()), "/rechargeNew/*");
+//		// tapjoy接入
+//		root.addServlet(new ServletHolder(new TapzoyServlet()), "/tapjoy/*");
+//		// 第三方支付获取玩家信息接口
+//		root.addServlet(new ServletHolder(new GetPlayerInfoServlet()), "/getPlayerInfo/*");
+//		// 外部抽奖检查用户信息是否正确
+//		root.addServlet(new ServletHolder(new CheckPlayerInfoServlet()), "/checkinfo/*");
+//		// 外部抽奖发放奖励
+//		root.addServlet(new ServletHolder(new ItemsGivenServlet()), "/itemsgiven/*");
+//		// 批量发放奖励
+//		root.addServlet(new ServletHolder(new BatchRunSendRewardServlet()), "/BatchRunSendReward/*");
+//		// 批量发放宠物
+//		root.addServlet(new ServletHolder(new GiftPetByGMServlet()), "/GiftPetByGM/*");
+//		// 意见箱导出excel
+//		root.addServlet(new ServletHolder(new ExportExcelOPServlet()), "/ExportExcelOP/*");
+//		// 查询发放物品日志
+//		root.addServlet(new ServletHolder(new GetItemLogServlet()), "/GetItemLog/*");
+//		// 查询发放金币日志
+//		root.addServlet(new ServletHolder(new GetGoldCountLogServlet()), "/GetGoldCountLog/*");
+//		// 查询强化日志
+//		root.addServlet(new ServletHolder(new GetStrongRecordLogServlet()), "/GetStrongRecordLog/*");
+//		server.start();
+//	}
 
 	/**
 	 * 连接帐号服务
@@ -268,7 +257,7 @@ public class WorldServer {
 			nearbySkeleton.setPassword(ServiceManager.getManager().getConfiguration().getString("serverpassword"));
 			nearbySkeleton.connect();
 			log.info("Nearby auth connected");
-			ServiceManager.getManager().getNearbyService().setNearbySkeleton(nearbySkeleton);
+//			ServiceManager.getManager().getNearbyService().setNearbySkeleton(nearbySkeleton);
 		}
 	}
 

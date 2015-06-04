@@ -134,14 +134,9 @@ public class MailService extends UniversalManagerImpl implements IMailService {
 	 */
 	public void sendMailStatus(WorldPlayer receiver) {
 		if (null != receiver) {
-			int nearbyId = receiver.getPlayerInfo().getNearbyId();
-			if (nearbyId > 0 && ServiceManager.getManager().getNearbyService().isNearbyServiceOpen()) {
-				GetNearbyMailCount gnmc = new GetNearbyMailCount();
-				gnmc.setMyInfoId(nearbyId);
-				ServiceManager.getManager().getNearbyService().sendData(gnmc);
-			} else {
+		 
 				synMailCount(receiver, 0);
-			}
+ 
 		}
 	}
 

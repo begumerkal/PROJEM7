@@ -11,21 +11,13 @@ import org.apache.log4j.Logger;
 import com.wyd.empire.protocol.data.chat.ReceiveMessage;
 import com.wyd.empire.protocol.data.chat.SyncChannels;
 import com.wyd.empire.protocol.data.server.BroadCast;
-import com.wyd.empire.world.battle.BattleTeam;
-import com.wyd.empire.world.battle.BossBattleTeam;
-import com.wyd.empire.world.battle.Combat;
 import com.wyd.empire.world.bean.ChatRecord;
 import com.wyd.empire.world.bean.Friend;
-import com.wyd.empire.world.bean.PlayerItemsFromShop;
-import com.wyd.empire.world.bossmaproom.BossRoom;
-import com.wyd.empire.world.bossmaproom.BossSeat;
 import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.common.util.ServiceUtils;
 import com.wyd.empire.world.exception.ErrorMessages;
 import com.wyd.empire.world.exception.TipMessages;
 import com.wyd.empire.world.player.WorldPlayer;
-import com.wyd.empire.world.room.Room;
-import com.wyd.empire.world.room.Seat;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 import com.wyd.empire.world.session.ConnectSession;
 import com.wyd.protocol.ProtocolManager;
@@ -104,7 +96,7 @@ public class ChatService {
 			if (newMapId != Common.GAME_INTERFACE_HALL) {
 				sync.setAdd(new String[]{CHAT_CURRENT_CHANNEL + "_" + newMapId});
 			} else {
-				sync.setAdd(new String[]{CHAT_CURRENT_CHANNEL + "_" + newMapId + "" + player.getBattleChannel()});
+				sync.setAdd(new String[]{CHAT_CURRENT_CHANNEL + "_" + newMapId + "" + 1});
 			}
 		} else {
 			sync.setAdd(new String[0]);
@@ -113,7 +105,7 @@ public class ChatService {
 			if (oldMapId != Common.GAME_INTERFACE_HALL) {
 				sync.setRemove(new String[]{CHAT_CURRENT_CHANNEL + "_" + oldMapId});
 			} else {
-				sync.setRemove(new String[]{CHAT_CURRENT_CHANNEL + "_" + oldMapId + "" + player.getBattleChannel()});
+				sync.setRemove(new String[]{CHAT_CURRENT_CHANNEL + "_" + oldMapId + "" + 1});
 			}
 		} else {
 			sync.setRemove(new String[0]);
@@ -216,12 +208,7 @@ public class ChatService {
 		receiveMessage.setReveId(receivePlayer.getId());
 		receiveMessage.setReveName(receivePlayer.getName());
 		player.sendData(receiveMessage);
-		Friend friend = ServiceManager.getManager().getFriendService().checkPlayerIsFriend(receivePlayer.getId(), player.getId());
-		if (null != friend) {
-			if (friend.getBlackList())
-				return;
-			ServiceManager.getManager().getTaskService().friendChat(player);
-		}
+ 
 		receivePlayer.sendData(receiveMessage);
 	}
 
@@ -233,34 +220,14 @@ public class ChatService {
 	 */
 	public void sendMessageToWorld(ReceiveMessage receiveMessage, WorldPlayer player) {
 		receiveMessage.setTime(getTime());
-		int hornId = receiveMessage.getChannel() == CHANNEL_WOELD ? Common.HORNID : Common.COLOURHORNID;
-		PlayerItemsFromShop horn = ServiceManager.getManager().getPlayerItemsFromShopService().uniquePlayerItem(player.getId(), hornId);
-		int speakerCount = horn.getPLastNum();
-		if (horn == null || speakerCount < 1) {
+ 
 			receiveMessage.setChannel(CHANNEL_SYSTEM);
 			receiveMessage.setSendName(TipMessages.SYSNAME_MESSAGE);
 			receiveMessage.setReveId(player.getId());
 			receiveMessage.setReveName(player.getName());
 			receiveMessage.setMessage(ErrorMessages.CHAT_LABA);
 			player.sendData(receiveMessage);
-		} else {
-			speakerCount--;
-			ServiceManager.getManager().getPlayerItemsFromShopService().updatePlayerItemNum(player.getId(), hornId, speakerCount);
-			ServiceManager.getManager().getPlayerItemsFromShopService()
-					.saveGetItemRecord(player.getPlayer().getId(), hornId, -1, -1, -8, 1, null);
-			// 更新玩家拥有的物品
-			horn.setPLastNum(speakerCount);
-			ServiceManager.getManager().getPlayerItemsFromShopService().useItem(player, horn);
-			if (ChatService.CHAT_STATUS1 != player.getPlayer().getChatStatus()
-					&& player.getPlayer().getProhibitTime().getTime() > System.currentTimeMillis()) {
-				player.sendData(receiveMessage);
-			} else {
-				receiveMessage.setSendId(player.getId());
-				BroadCast broadCast = new BroadCast();
-				broadCast.setChannel(CHAT_WORLD_CHANNEL);
-				broadCast.setData(ProtocolManager.makeSegment(receiveMessage).getPacketByteArray());
-				ServiceManager.getManager().getConnectService().broadcast(broadCast);
-			}
+ 
 			try {
 				// 发世界聊天加经验
 				ServiceManager.getManager().getPlayerService()
@@ -268,10 +235,9 @@ public class ChatService {
 			} catch (Exception e) {
 				log.error(e, e);
 			}
-			ServiceManager.getManager().getTaskService().useSomething(player, hornId, 1);
-			ServiceManager.getManager().getTitleService().useSomething(player, hornId);
-			ServiceManager.getManager().getTaskService().chat(player, 1);
-		}
+//			ServiceManager.getManager().getTaskService().useSomething(player, hornId, 1);
+//			ServiceManager.getManager().getTitleService().useSomething(player, hornId);
+//			ServiceManager.getManager().getTaskService().chat(player, 1);
 	}
 
 	/**
@@ -367,69 +333,69 @@ public class ChatService {
 	 * @param player
 	 */
 	public void sendMessageToCurrent(ReceiveMessage receiveMessage, WorldPlayer player) {
-		receiveMessage.setTime(getTime());
-		receiveMessage.setSendId(player.getId());
-		if (ChatService.CHAT_STATUS1 != player.getPlayer().getChatStatus()
-				&& player.getPlayer().getProhibitTime().getTime() > System.currentTimeMillis()) {
-			player.sendData(receiveMessage);
-			return;
-		}
-		if (player.getBattleId() != 0) {
-			if (player.getBattleId() > 0) {
-				BattleTeam battleTeam = ServiceManager.getManager().getBattleTeamService().getBattleTeam(player.getBattleId());
-				if (null != battleTeam) {
-					for (Combat combat : battleTeam.getCombatList()) {
-						if (!combat.isRobot() && !combat.isLost() && null != combat.getPlayer()) {
-							combat.getPlayer().sendData(receiveMessage);
-						}
-					}
-				}
-			} else {
-				ServiceManager.getManager().getCrossService().sendMessage(player.getBattleId(), receiveMessage);
-			}
-		} else if (player.getBossmapBattleId() > 0) {
-			BossBattleTeam battleTeam = ServiceManager.getManager().getBossBattleTeamService().getBattleTeam(player.getBossmapBattleId());
-			if (null != battleTeam) {
-				Vector<Combat> combatList = battleTeam.getCombatList();
-				for (Combat combat : combatList) {
-					if (!combat.isRobot() && !combat.isLost() && null != combat.getPlayer()) {
-						combat.getPlayer().sendData(receiveMessage);
-					}
-				}
-			}
-		} else if (player.getRoomId() > 0) {
-			Room room = ServiceManager.getManager().getRoomService().getRoom(player.getRoomId());
-			if (null != room) {
-				Vector<Seat> seatList = room.getPlayerList();
-				for (Seat seat : seatList) {
-					if (null != seat.getPlayer() && !seat.isRobot()) {
-						seat.getPlayer().sendData(receiveMessage);
-					}
-				}
-			}
-		} else if (player.getBossmapRoomId() > 0) {
-			BossRoom bossmapRoom = ServiceManager.getManager().getBossRoomService().getRoom(player.getBossmapRoomId());
-			if (null != bossmapRoom) {
-				List<BossSeat> seatList = bossmapRoom.getPlayerList();
-				for (BossSeat seat : seatList) {
-					if (null != seat.getPlayer()) {
-						seat.getPlayer().sendData(receiveMessage);
-					}
-				}
-			}
-		} else {
-			StringBuffer channelContent = new StringBuffer(CHAT_CURRENT_CHANNEL);
-			channelContent.append("_");
-			channelContent.append(player.getChannelId());
-			if (Common.GAME_INTERFACE_HALL == player.getChannelId()) {// 玩家在游戏大厅做特殊处理
-				channelContent.append(player.getBattleChannel());
-			}
-			BroadCast broadCast = new BroadCast();
-			broadCast.setChannel(channelContent.toString());
-			broadCast.setData(ProtocolManager.makeSegment(receiveMessage).getPacketByteArray());
-			ServiceManager.getManager().getConnectService().broadcast(broadCast);
-		}
-		ServiceManager.getManager().getTaskService().chat(player, 2);
+//		receiveMessage.setTime(getTime());
+//		receiveMessage.setSendId(player.getId());
+//		if (ChatService.CHAT_STATUS1 != player.getPlayer().getChatStatus()
+//				&& player.getPlayer().getProhibitTime().getTime() > System.currentTimeMillis()) {
+//			player.sendData(receiveMessage);
+//			return;
+//		}
+//		if (player.getBattleId() != 0) {
+//			if (player.getBattleId() > 0) {
+//				BattleTeam battleTeam = ServiceManager.getManager().getBattleTeamService().getBattleTeam(player.getBattleId());
+//				if (null != battleTeam) {
+//					for (Combat combat : battleTeam.getCombatList()) {
+//						if (!combat.isRobot() && !combat.isLost() && null != combat.getPlayer()) {
+//							combat.getPlayer().sendData(receiveMessage);
+//						}
+//					}
+//				}
+//			} else {
+//				ServiceManager.getManager().getCrossService().sendMessage(player.getBattleId(), receiveMessage);
+//			}
+//		} else if (player.getBossmapBattleId() > 0) {
+//			BossBattleTeam battleTeam = ServiceManager.getManager().getBossBattleTeamService().getBattleTeam(player.getBossmapBattleId());
+//			if (null != battleTeam) {
+//				Vector<Combat> combatList = battleTeam.getCombatList();
+//				for (Combat combat : combatList) {
+//					if (!combat.isRobot() && !combat.isLost() && null != combat.getPlayer()) {
+//						combat.getPlayer().sendData(receiveMessage);
+//					}
+//				}
+//			}
+//		} else if (player.getRoomId() > 0) {
+//			Room room = ServiceManager.getManager().getRoomService().getRoom(player.getRoomId());
+//			if (null != room) {
+//				Vector<Seat> seatList = room.getPlayerList();
+//				for (Seat seat : seatList) {
+//					if (null != seat.getPlayer() && !seat.isRobot()) {
+//						seat.getPlayer().sendData(receiveMessage);
+//					}
+//				}
+//			}
+//		} else if (player.getBossmapRoomId() > 0) {
+//			BossRoom bossmapRoom = ServiceManager.getManager().getBossRoomService().getRoom(player.getBossmapRoomId());
+//			if (null != bossmapRoom) {
+//				List<BossSeat> seatList = bossmapRoom.getPlayerList();
+//				for (BossSeat seat : seatList) {
+//					if (null != seat.getPlayer()) {
+//						seat.getPlayer().sendData(receiveMessage);
+//					}
+//				}
+//			}
+//		} else {
+//			StringBuffer channelContent = new StringBuffer(CHAT_CURRENT_CHANNEL);
+//			channelContent.append("_");
+//			channelContent.append(player.getChannelId());
+//			if (Common.GAME_INTERFACE_HALL == player.getChannelId()) {// 玩家在游戏大厅做特殊处理
+//				channelContent.append(player.getBattleChannel());
+//			}
+//			BroadCast broadCast = new BroadCast();
+//			broadCast.setChannel(channelContent.toString());
+//			broadCast.setData(ProtocolManager.makeSegment(receiveMessage).getPacketByteArray());
+//			ServiceManager.getManager().getConnectService().broadcast(broadCast);
+//		}
+//		ServiceManager.getManager().getTaskService().chat(player, 2);
 	}
 
 	/**
@@ -458,7 +424,6 @@ public class ChatService {
 			broadCast.setChannel(CHAT_GUILD_CHANNEL + "_" + player.getGuildId());
 			broadCast.setData(ProtocolManager.makeSegment(receiveMessage).getPacketByteArray());
 			ServiceManager.getManager().getConnectService().broadcast(broadCast);
-			ServiceManager.getManager().getTaskService().chat(player, 3);
 		}
 	}
 
@@ -477,14 +442,7 @@ public class ChatService {
 				player.sendData(receiveMessage);
 				return;
 			}
-			Room room = ServiceManager.getManager().getRoomService().getRoom(player.getRoomId());
-			Vector<Seat> seatList = room.getPlayerList();
-			Seat playerSeat = seatList.get(ServiceManager.getManager().getRoomService().getPlayerSeat(room.getRoomId(), player.getId()));
-			for (Seat seat : seatList) {
-				if (null != seat.getPlayer() && seat.getCamp() == playerSeat.getCamp()) {
-					seat.getPlayer().sendData(receiveMessage);
-				}
-			}
+ 
 		}
 	}
 

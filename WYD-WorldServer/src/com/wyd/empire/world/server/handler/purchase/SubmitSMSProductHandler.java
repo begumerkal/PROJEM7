@@ -20,7 +20,7 @@ import com.wyd.protocol.handler.IDataHandler;
 public class SubmitSMSProductHandler implements IDataHandler {
 	Logger log = Logger.getLogger(SubmitSMSProductHandler.class);
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		SubmitSMSProduct submitSMSProduct = (SubmitSMSProduct) data;
 		WorldPlayer player = session.getPlayer(data.getSessionId());
@@ -69,11 +69,11 @@ public class SubmitSMSProductHandler implements IDataHandler {
 							} else {
 								count = billingPoint.getCount();
 							}
-							ServiceManager
-									.getManager()
-									.getPlayerItemsFromShopService()
-									.playerGetItem(player.getId(), billingPoint.getItemId(), -1, day, count, 20, order.getOrderNum(), 0, 0,
-											0);
+//							ServiceManager
+//									.getManager()
+//									.getPlayerItemsFromShopService()
+//									.playerGetItem(player.getId(), billingPoint.getItemId(), -1, day, count, 20, order.getOrderNum(), 0, 0,
+//											0);
 						}
 						order.setStatus(OrderDao.ORDER_STATUS_GRANT);
 					}
@@ -87,5 +87,6 @@ public class SubmitSMSProductHandler implements IDataHandler {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		return null;
 	}
 }

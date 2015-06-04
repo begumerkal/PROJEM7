@@ -27,30 +27,9 @@ public class LegacyLoginOkHandler implements IDataHandler {
 
 	public AbstractData handle(AbstractData data) throws Exception {
 		// System.out.println("----------------------------"+i++);
-		LegacyLoginOk message = (LegacyLoginOk) data;
-		LoginRequest request = (LoginRequest) ServiceManager.getManager().getRequestService().remove(message.getSerial());
+		LegacyLoginOk legacyLoginOk = (LegacyLoginOk) data;
+		LoginRequest request = (LoginRequest) ServiceManager.getManager().getRequestService().remove(legacyLoginOk.getSerial());
 		ConnectSession session = request.getConnectionSession();
-		try {
-			if (!request.isReglogin()) {
-				login(message, request, session);
-			} else {
-				relogin(message, request, session);
-			}
-		} catch (Exception e) {
-			log.info(e, e);
-		}
-
-		return null;
-	}
-
-	/**
-	 * 账号正常登录
-	 * 
-	 * @param legacyLoginOk
-	 * @param request
-	 * @param session
-	 */
-	private void login(LegacyLoginOk legacyLoginOk, LoginRequest request, ConnectSession session) {
 		try {
 			if (0 == legacyLoginOk.getStatus()) {
 				int accountId = legacyLoginOk.getAccountId();
@@ -89,55 +68,9 @@ public class LegacyLoginOkHandler implements IDataHandler {
 				session.write(loginFail);
 			}
 		} catch (Exception e) {
-			log.error(e, e);
+			log.info(e, e);
 		}
-	}
 
-	/**
-	 * 账号重新登录
-	 * 
-	 * @param legacyLoginOk
-	 * @param request
-	 * @param session
-	 * @throws Exception
-	 */
-	private void relogin(LegacyLoginOk legacyLoginOk, LoginRequest request, ConnectSession session) {
-		try {
-			int accountId = legacyLoginOk.getAccountId();
-			int gameAccountId = legacyLoginOk.getGameAccountId();
-			String name = legacyLoginOk.getName();
-			String password = legacyLoginOk.getPassword();
-			int tokenAmount = legacyLoginOk.getTokenAmount();
-			Client client = session.getClient(request.getSessionId());
-			if ((client != null) && (client.getStatus() == Client.STATUS.INIT)) {
-				Client client1 = session.getClientByAccountId(accountId);
-				if (client1 != null) {
-					RepeatLogin repeatLogin = new RepeatLogin(client1.getSessionId(), 0);
-					repeatLogin.setMessage(TipMessages.REPEATLOGIN);
-					ServiceManager.getManager().getConnectService().writeTo(repeatLogin, client1.getPlayerId());
-					session.killSession(client1.getSessionId());
-					// ServiceManager.getManager().getConnectService().forceLogout(accountId);
-				}
-				client.setStatus(Client.STATUS.LOGIN);
-				client.setAccountId(accountId);
-				client.setGameAccountId(gameAccountId);
-				client.setName(name);
-				client.setUdid(legacyLoginOk.getUdid());
-				client.setPassword(password);
-				client.setTokenAmount(tokenAmount);
-				session.registerClientWithAccountId(client);
-				// LoginOk loginOk = new LoginOk(request.getSessionId(),
-				// request.getId());
-				// session.write(loginOk);
-				RoleActorLogin roleActorLogin = new RoleActorLogin(request.getSessionId(), legacyLoginOk.getSerial());
-				roleActorLogin.setHandlerSource(session);
-				roleActorLogin.setPlayerName(request.getPlayerName());
-				RoleActorLoginHandler roleActorLoginHandler = new RoleActorLoginHandler();
-				roleActorLoginHandler.handle(roleActorLogin);
-				this.log.info("AccountID[" + accountId + "][Login Ok]");
-			}
-		} catch (Exception e) {
-			log.error(e, e);
-		}
+		return null;
 	}
 }

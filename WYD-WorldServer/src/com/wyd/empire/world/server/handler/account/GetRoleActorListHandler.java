@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import com.wyd.empire.protocol.data.account.SendRoleActorList;
 import com.wyd.empire.world.Client;
 import com.wyd.empire.world.bean.Player;
-import com.wyd.empire.world.bean.PlayerItemsFromShop;
 import com.wyd.empire.world.bean.PlayerPet;
 import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.exception.ErrorMessages;
@@ -58,11 +57,7 @@ public class GetRoleActorListHandler implements IDataHandler {
 			int[] weapProf = new int[playerCount];
 			byte[] weapLevel = new byte[playerCount];
 			byte[] weapSkillType = new byte[playerCount];
-			PlayerItemsFromShop item_head = null; // 头部装备
-			PlayerItemsFromShop item_face = null; // 脸部装备
-			PlayerItemsFromShop item_body = null; // 身体装备
-			PlayerItemsFromShop item_weapon = null; // 武器装备
-			PlayerItemsFromShop item_wing = null; // 翅膀装备
+ 
 			Player player;
 			for (int i = 0; i < playerCount; i++) {
 				player = list.get(i);
@@ -72,30 +67,10 @@ public class GetRoleActorListHandler implements IDataHandler {
 				playerDiamond[i] = player.getAmount();
 				playerGold[i] = player.getMoneyGold();
 				zsLevel[i] = player.getZsLevel();
-				List<PlayerItemsFromShop> playerItems = ServiceManager.getManager().getPlayerItemsFromShopService()
-						.getPlayerItemsFromShopByPlayerId(player.getId());
-				for (PlayerItemsFromShop item : playerItems) {
-					if (!item.getIsInUsed())
-						continue;
-					if (item.getShopItem().isWeapon()) {
-						item_weapon = item;
-					} else if (item.getShopItem().isBody()) {
-						item_body = item;
-					} else if (item.getShopItem().isWing()) {
-						item_wing = item;
-					} else if (item.getShopItem().isFace()) {
-						item_face = item;
-					} else if (item.getShopItem().isHead()) {
-						item_head = item;
-					}
-				}
-				PlayerItemsFromShop pifs = ServiceManager.getManager().getPlayerItemsFromShopService()
-						.uniquePlayerItem(player.getId(), Common.DOUBLEEXPID);
-				if (null != pifs && pifs.getPLastTime() > 0) {
-					doubleCard[i] = true;
-				} else {
+ 
+	 
 					doubleCard[i] = false;
-				}
+ 
 				if (null == player.getVipTime() || System.currentTimeMillis() > player.getVipTime().getTime()) {
 					vipLevel[i] = 0;
 				} else {
@@ -103,42 +78,16 @@ public class GetRoleActorListHandler implements IDataHandler {
 				}
 				playerRank[i] = player.getHonorLevel();
 
-				if (null != item_head) {
-					headMessage[i] = item_head.getShopItem().getAnimationIndexCode();
-				} else {
-					headMessage[i] = "";
-				}
-				if (null != item_face) {
-					faceMessage[i] = item_face.getShopItem().getAnimationIndexCode();
-				} else {
-					faceMessage[i] = "";
-				}
-				if (null != item_body) {
-					bodyMessage[i] = item_body.getShopItem().getAnimationIndexCode();
-				} else {
+				headMessage[i] = "";
+				faceMessage[i] = "";
+ 
 					bodyMessage[i] = "";
-				}
-				if (null != item_weapon) {
-					weapMessage[i] = item_weapon.getShopItem().getAnimationIndexCode();
-					weapSkillType[i] = item_weapon.getShopItem().getType();
-					if (null != item_weapon) {
-						weapProf[i] = item_weapon.getSkillful();
-						weapLevel[i] = (byte) item_weapon.getStrongLevel();
-					}
-				} else {
+ 
 					weapMessage[i] = "";
-				}
-				if (null != item_wing) {
-					wingMessage[i] = item_wing.getShopItem().getAnimationIndexCode();
-				} else {
+ 
 					wingMessage[i] = "";
-				}
-				PlayerPet playerPet = ServiceManager.getManager().getPlayerPetService().getInUsePet(player.getId());
-				if (null != playerPet && null != playerPet.getSkill()) {
-					petMessage[i] = playerPet.getSkill().getId().toString();
-				} else {
+ 
 					petMessage[i] = "";
-				}
 			}
 			
 			

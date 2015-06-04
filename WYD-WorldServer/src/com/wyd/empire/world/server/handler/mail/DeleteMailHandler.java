@@ -25,7 +25,7 @@ public class DeleteMailHandler implements IDataHandler {
 		this.log = Logger.getLogger(DeleteMailHandler.class);
 	}
 
-	public void handle(AbstractData data) throws Exception {
+	public AbstractData handle(AbstractData data) throws Exception {
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		DeleteMail deleteMail = (DeleteMail) data;
 		WorldPlayer player = session.getPlayer(data.getSessionId());
@@ -43,5 +43,6 @@ public class DeleteMailHandler implements IDataHandler {
 			throw new ProtocolException(ErrorMessages.MAIL_DETELE_MESSAGE, data.getSerial(), data.getSessionId(), data.getType(),
 					data.getSubType());
 		}
+		return null;
 	}
 }

@@ -13,7 +13,6 @@ import com.wyd.db.page.PageList;
 import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.bean.ActivitiesAward;
 import com.wyd.empire.world.bean.LogActivitiesAward;
-import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.common.util.ServiceUtils;
 import com.wyd.empire.world.dao.IActivitiesAwardDao;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
@@ -78,7 +77,7 @@ public class ActivitiesAwardDao extends UniversalDaoHibernate implements IActivi
 	@SuppressWarnings("unchecked")
 	public List<ActivitiesAward> findAllActivity(String areaId) {
 		return getList("FROM " + ActivitiesAward.class.getSimpleName() + " WHERE areaId=? AND isSend=?", new Object[]{areaId,
-				Common.LOG_AWARD_STATUS_N});
+				1});
 	}
 
 	/**
