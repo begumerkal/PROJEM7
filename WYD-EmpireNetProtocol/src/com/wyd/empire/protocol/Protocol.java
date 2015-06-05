@@ -42,7 +42,7 @@ public class Protocol {
 	public static final byte SERVER_NotifyMaxPlayer = 79;
 	public static final byte SERVER_NotifyMaintance = 80;
 	public static final byte SERVER_SendAddress = 81;
-	public static final byte SERVER_SyncLoad = 82;
+	public static final byte SERVER_SyncLoad = 82;//通知ｉｐｄ在线人数等情况
 	public static final byte SERVER_SetClientIPAddress = 83;
 	// 更新服务器信息 版本
 	public static final byte SERVER_UpdateServerInfo = 91;

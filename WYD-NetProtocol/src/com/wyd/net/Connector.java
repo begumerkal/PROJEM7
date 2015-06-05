@@ -97,6 +97,7 @@ public abstract class Connector implements IConnector {
 
 		public void messageReceived(IoSession session, Object message) throws Exception {
 			AbstractData data = (AbstractData) message;
+			System.out.println(data);
 			if (data == null) {
 				Connector.log.error("get a NULL data!");
 			} else {

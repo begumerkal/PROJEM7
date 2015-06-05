@@ -68,6 +68,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	}
 	/** 转发数据至 worldServer */
 	public void dispatchToServer(IoSession session, Object object) {
+		System.out.println("* 转发数据至 worldServer *");
 		Integer id = (Integer) session.getAttribute(ATTRIBUTE_STRING);
 		if (id != null) {
 			IoBuffer buffer = (IoBuffer) object;
@@ -299,6 +300,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	class ServerSessionHandler extends IoHandlerAdapter {
 		@Override
 		public void exceptionCaught(IoSession sesion, Throwable throwable) throws Exception {
+//			sesion.close(true);
 			SocketDispatcher.log.error(throwable, throwable);
 		}
 		@Override
@@ -341,10 +343,12 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		@Override
 		public void exceptionCaught(IoSession session, Throwable throwable) throws Exception {
 			SocketDispatcher.log.error(throwable, throwable);
+			System.out.println(throwable);
 			session.close(true);
 		}
 		@Override
 		public void messageReceived(IoSession session, Object object) throws Exception {
+			System.out.println("object----"+object);
 			SocketDispatcher.this.dispatchToServer(session, object);
 		}
 		@Override

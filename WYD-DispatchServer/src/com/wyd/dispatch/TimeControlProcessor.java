@@ -99,7 +99,7 @@ public class TimeControlProcessor implements ControlProcessor, Runnable {
 		try {
 			boolean maintance = data.readBoolean();
 			if (ipdService != null)
-				ipdService.connect(-1, -1, maintance);
+				ipdService.notifyIPD(-1, -1, maintance);
 			// configuration.setProperty("maintance",
 			// Boolean.valueOf(maintance));
 			log.info("maintance:" + maintance);
@@ -214,7 +214,7 @@ public class TimeControlProcessor implements ControlProcessor, Runnable {
 		log.info((new StringBuilder()).append("SyncTime[").append(System.currentTimeMillis() - c).append("] ONLINE[").append(current)
 				.append("] MAX[").append(maxPlayer).append("]").toString());
 		if (ipdService != null) {
-			ipdService.connect(current, maxPlayer, configuration.getConfiguration().getBoolean("maintance", true));
+			ipdService.notifyIPD(current, maxPlayer, configuration.getConfiguration().getBoolean("maintance", true));
 		}
 	}
 

@@ -31,48 +31,51 @@ public class SimpleWYDDecoderForSocket extends ProtocolDecoderAdapter {
 			if (size > 18) {
 				byte[] head = new byte[4];
 				buffer.get(head);
-				int version = compareHead(head);
+				int version = compareHead(head);// 验证版本
+
+				System.out.println(head);
+				System.out.println(buffer);
+
 				if (version == -1) {
 					session.setAttribute(CURRENT_DECODER, null);
-					throw new IOException("error protocol");
+					System.out.println("error protocol_1");
+					throw new IOException("error protocol_1");
 				}
 				buffer.skip(8);
-				int len = buffer.getInt();
-				int segNum = buffer.getShort();
+				int len = buffer.getInt();// 包长度
+				int segNum = buffer.getShort();// 包个数
 				if (segNum < 1) {
 					session.setAttribute(CURRENT_DECODER, null);
-					throw new IOException("error protocol");
+					System.out.println("error protocol_2");
+					throw new IOException("error protocol_2");
 				}
 				if ((len > 102400) || (len < 18)) {
 					session.setAttribute(CURRENT_DECODER, null);
-					throw new IOException("error protocol");
+					System.out.println("error protocol_3");
+					throw new IOException("error protocol_3");
 				}
-				if (size>=len + 1) {
+				if (size >= len + 1) {// 满足一个包的数据
+					buffer.reset();
+					buffer.skip(18);
+					if (buffer.remaining() < 7) {
+						session.setAttribute(CURRENT_DECODER, null);
+						System.out.println("error protocol_4");
+						throw new IOException("error protocol_4");
+					}
+					buffer.skip(3);
+					int dataLen = buffer.getInt();// 数据长度
+					if ((dataLen < 0) || (dataLen - 7 >= buffer.remaining())) {
+						session.setAttribute(CURRENT_DECODER, null);
+						System.out.println("error protocol_5");
+						throw new IOException("error protocol_5");
+					}
+
 					byte[] data = new byte[len + 1];
 					buffer.reset();
 					buffer.get(data);
-					byte verifyCode = data[data.length - 1];
-					byte[] value = Arrays.copyOfRange(data, 18, data.length - 1);
-					value = CryptionUtil.Decrypt(value, DisServer.configuration.getConfiguration().getString("deckey"));//解密
-					len = value.length + 18;
-					data = Arrays.copyOf(data, len + 1);
-					System.arraycopy(value, 0, data, 18, value.length);
-					data[data.length - 1] = verifyCode;
-					IoBuffer buffer2 = IoBuffer.wrap(data);
-					buffer2.putInt(12, len);
-					buffer2.skip(18);
-					if (buffer2.remaining() < 7) {
-						session.setAttribute(CURRENT_DECODER, null);
-						throw new IOException("error protocol");
-					}
-					buffer2.skip(3);
-					int dataLen = buffer2.getInt();
-					if ((dataLen < 0) || (dataLen - 7 >= buffer2.remaining())) {
-						session.setAttribute(CURRENT_DECODER, null);
-						throw new IOException("error protocol");
-					}
 					out.write(IoBuffer.wrap(data));
 					session.setAttribute(CURRENT_DECODER, null);
+					
 				} else {
 					buffer.reset();
 					byte[] bytes = new byte[size];

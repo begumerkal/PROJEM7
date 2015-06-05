@@ -50,8 +50,11 @@ public class IpdService implements Runnable {
 			log.warn("分配器连接失败！");
 		}
 	}
-
-	public void connect(int current, int maxPlayer, boolean maintance) throws Exception {
+	
+	/**
+	 * 通知ipd 在线人数等消息
+	 */
+	public void notifyIPD(int current, int maxPlayer, boolean maintance) throws Exception {
 		if ((this.connector != null) && (this.connector.isConnected())) {
 			SyncLoad notify = new SyncLoad();
 			notify.setCurrOnline(current);
@@ -66,23 +69,22 @@ public class IpdService implements Runnable {
 	 * 
 	 * @param data
 	 */
-	public void updateServerInfo(String area, String group, int machineId, String version, String updateurl, String remark,
-			String appraisal) {
+	public void updateServerInfo(String area, String group, int machineId, String version, String updateurl, String remark, String appraisal) {
 		UpdateServerInfo dataInfo = new UpdateServerInfo();
 		dataInfo.setArea(area);
 		dataInfo.setGroup(group);
 		dataInfo.setMachineId(machineId);
-		dataInfo.setLine(DisServer.configuration.getConfiguration().getInt("id"));//线id
+		dataInfo.setLine(DisServer.configuration.getConfiguration().getInt("id"));// 线id
 		dataInfo.setVersion(version);
 		dataInfo.setUpdateurl(updateurl);
 		dataInfo.setRemark(remark);
 		dataInfo.setAppraisal(appraisal);
-		
-        String ip = this.configuration.getString("publicserver");
-        int port = this.configuration.getInt("publicport");
-        String address = ip + ":" + port;
-        
-        dataInfo.setAddress(address);
+
+		String ip = this.configuration.getString("publicserver");
+		int port = this.configuration.getInt("publicport");
+		String address = ip + ":" + port;
+
+		dataInfo.setAddress(address);
 		this.connector.send(dataInfo);
 	}
 

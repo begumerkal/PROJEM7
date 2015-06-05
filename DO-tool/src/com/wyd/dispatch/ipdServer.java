@@ -48,15 +48,24 @@ public class ipdServer {
 	}
 	
 	public void sendData() {
-		System.out.println("发送测试数据");
+		System.out.println("发送登录数据");
 		Login login = new Login();
 		login.setUdid("xxx1-22-2-2-2-3");
 		login.setAccountName("doter");
 		login.setPassWord("123456");
 		login.setVersion("1.0.0.0");
 		login.setChannel(1000);
-		
 		this.connector.send(login);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	}
  
 }
