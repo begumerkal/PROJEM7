@@ -23,7 +23,7 @@ public class LegacyLoginHandler implements IDataHandler {
 
 	public AbstractData handle(AbstractData data) {
 		LegacyLogin login = (LegacyLogin) data;
-		AcceptSession session = (AcceptSession) data.getSource();
+		AcceptSession session = (AcceptSession) data.getHandlerSource();
 		String udid = login.getUdid();
 		String name = login.getName();
 		String pwd = login.getPassword();
@@ -43,7 +43,8 @@ public class LegacyLoginHandler implements IDataHandler {
 				loginOk.setChannel(channel);
 				if (AccountService.ACCOUNT_STATUS_NORMAL == account.getStatus()) {
 					IEmpireaccountService empireaccountService = ServiceFactory.getFactory().getEmpireaccountService();
-					Empireaccount gameAccount = empireaccountService.login(account.getId(), login.getSource().getId());
+					System.out.println(empireaccountService);
+					Empireaccount gameAccount = empireaccountService.login(account.getId(), session.sessionId());
 					if (gameAccount == null) {
 						String model = "Default";
 						String version = "1.0";
