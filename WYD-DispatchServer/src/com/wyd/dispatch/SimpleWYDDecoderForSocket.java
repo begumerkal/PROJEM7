@@ -32,10 +32,6 @@ public class SimpleWYDDecoderForSocket extends ProtocolDecoderAdapter {
 				byte[] head = new byte[4];
 				buffer.get(head);
 				int version = compareHead(head);// 验证版本
-
-				System.out.println(head);
-				System.out.println(buffer);
-
 				if (version == -1) {
 					session.setAttribute(CURRENT_DECODER, null);
 					System.out.println("error protocol_1");
@@ -75,7 +71,7 @@ public class SimpleWYDDecoderForSocket extends ProtocolDecoderAdapter {
 					buffer.get(data);
 					out.write(IoBuffer.wrap(data));
 					session.setAttribute(CURRENT_DECODER, null);
-					
+
 				} else {
 					buffer.reset();
 					byte[] bytes = new byte[size];

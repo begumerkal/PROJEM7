@@ -68,7 +68,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	}
 	/** 转发数据至 worldServer */
 	public void dispatchToServer(IoSession session, Object object) {
-		System.out.println("* 转发数据至 worldServer *");
+//		System.out.println("* 转发数据至 worldServer *");
 		Integer id = (Integer) session.getAttribute(ATTRIBUTE_STRING);
 		if (id != null) {
 			IoBuffer buffer = (IoBuffer) object;

@@ -49,7 +49,7 @@ public class LegacyLoginHandler implements IDataHandler {
 						String model = "Default";
 						String version = "1.0";
 						gameAccount = empireaccountService.createGameAccount(account.getId(), account.getUsername(), model, version,
-								new Date(), "", login.getSource().getId(), channel);
+								new Date(), "", session.getWorldServerId(), channel);
 					}else{
 						gameAccount.setLastLoginTime(new java.sql.Timestamp(new Date().getTime()));
 						gameAccount.setTotalLoginTimes(gameAccount.getTotalLoginTimes() + 1);

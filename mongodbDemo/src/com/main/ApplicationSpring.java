@@ -22,32 +22,32 @@ public class ApplicationSpring {
 
 		System.out.println("Bootstrapping HelloMongo111");
 		context = new ClassPathXmlApplicationContext("applicationContext.xml");
-//		UserDao  userDao = context.getBean(UserDao.class);
+		UserDao  userDao = context.getBean(UserDao.class);
 		
 		
-//		NameEntity ne = new NameEntity();
-//		ne.setNickname("nickname");
-//		ne.setUsername("username");
-//		
-//		UserEntity entity1 = new UserEntity();
-////		entity1.setId(1);
-//		entity1.setAge(111);
-//		entity1.setName(ne);
-//		entity1.setBirth(new Date());
-//		entity1.setPassword("asdfasdf");
-//		entity1.setRegionName("北京");
-//		entity1.setWorks(2);
-//		
-////		userDao.insert(entity1);
+		NameEntity ne = new NameEntity();
+		ne.setNickname("nickname");
+		ne.setUsername("username");
+		
+		UserEntity entity1 = new UserEntity();
+//		entity1.setId(1);
+		entity1.setAge(111);
+		entity1.setName(ne);
+		entity1.setBirth(new Date());
+		entity1.setPassword("asdfasdf");
+		entity1.setRegionName("北京");
+		entity1.setWorks(2);
+		
+		userDao.insert(entity1);
 //		userDao.save(entity1);
  
 		
-		try {
-			new ApplicationSpring().openSetverListServlet();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			new ApplicationSpring().openSetverListServlet();
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 
 	}
 	
