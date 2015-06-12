@@ -21,7 +21,6 @@ import org.springframework.util.StringUtils;
 
 import com.wyd.empire.protocol.Protocol;
 import com.wyd.empire.protocol.data.system.ShakeHands;
-import com.wyd.net.Connector;
 import com.wyd.protocol.ProtocolManager;
 import com.wyd.protocol.s2s.S2SSegment;
 
@@ -147,7 +146,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 			seg.setSessionId(-1);
 			this.serverSession.write(IoBuffer.wrap(seg.getPacketByteArray()));
 		} catch (NullPointerException e) {
-			System.out.println(serverSession+"--------");
+			 log.info("this.serverSession is null.");
 			 if(this.serverSession == null){
 				 this.connect();
 			 }
@@ -181,7 +180,6 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		future.awaitUninterruptibly();
 
 		if (this.serverSession == null || !this.serverSession.isConnected()) {
-			System.out.println("WorldServer 连接失败!");
 			log.error("WorldServer 连接失败!");
 		} else {
 			System.out.println("WorldServer 连接成功!");
