@@ -68,10 +68,7 @@ public class DisServer {
 			((SocketDispatcher) this.dispatcher).bind(new InetSocketAddress(ip, port), clientreceivebuffsize, clientwritebuffsize);
 			log.info("binded");
 			// 链接world
-			String worldIp = configuration.getConfiguration().getString("worldip");
-			int worldPort = configuration.getConfiguration().getInt("worldport");
-			ConnectFuture future = ((SocketDispatcher) this.dispatcher).connect(new InetSocketAddress(worldIp, worldPort),
-					worldreceivebuffsize, worldwritebuffsize);
+			ConnectFuture future = ((SocketDispatcher) this.dispatcher).connect();
 			// 阻塞数据，直到确定与world server连接成功
 			future.awaitUninterruptibly();
 			log.info("数据分发服务器启动完成  -- 端口:" + configuration.getConfiguration().getInt("port"));

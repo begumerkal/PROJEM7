@@ -44,7 +44,7 @@ public class LegacyLoginHandler implements IDataHandler {
 				if (AccountService.ACCOUNT_STATUS_NORMAL == account.getStatus()) {
 					IEmpireaccountService empireaccountService = ServiceFactory.getFactory().getEmpireaccountService();
 					System.out.println(empireaccountService);
-					Empireaccount gameAccount = empireaccountService.login(account.getId(), session.sessionId());
+					Empireaccount gameAccount = empireaccountService.login(account.getId(), session.getWorldServerId());
 					if (gameAccount == null) {
 						String model = "Default";
 						String version = "1.0";

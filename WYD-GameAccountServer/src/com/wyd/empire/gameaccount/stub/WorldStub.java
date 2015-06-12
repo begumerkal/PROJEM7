@@ -71,7 +71,7 @@ public class WorldStub {
 
 		@Override
 		public Session createSession(IoSession ioSession) {
-			System.out.println("有 WorldServer 链接过来..");
+//			System.out.println("有 WorldServer 链接过来..");
 			return new AcceptSession(ioSession);
 		}
 

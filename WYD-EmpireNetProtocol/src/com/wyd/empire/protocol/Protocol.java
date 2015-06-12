@@ -4,22 +4,24 @@ public class Protocol {
 	public static final byte ERROR_ProtocolError = -1;
 	/** 服务器间的消息协议 */
 	public static final byte MAIN_SERVER = 1;
-	public static final byte SERVER_ServerLogin = 1;
-	public static final byte SERVER_ServerLoginOk = 2;
-	public static final byte SERVER_ServerLoginFailed = 3;
+	public static final byte SERVER_WorldServerToAccountServer = 1;
+
+	public static final byte SERVER_ServerLogin = 2;
+	public static final byte SERVER_ServerLoginOk = 3;
+	public static final byte SERVER_ServerLoginFailed = 4;
 	// 用户层级登录（GameServer->GameAccountServer->AccountServer)
-	public static final byte SERVER_LegacyFindPasswordOk = 4;
-	public static final byte SERVER_LegacyFindPassword = 5;
-	public static final byte SERVER_LegacyModifyPassword = 6;
-	public static final byte SERVER_LegacyModifyPasswordOk = 7;
-	public static final byte SERVER_LegacyRegister = 8;
-	public static final byte SERVER_LegacyRegisterOk = 9;
-	public static final byte SERVER_LegacyLogin = 10;
-	public static final byte SERVER_LegacyLoginOk = 11;
-	public static final byte SERVER_LegacyLogout = 12; // 登出(暂没使用)
-	public static final byte SERVER_PlayerLogout = 13; // 玩家登出(主要用这个协议通知)
-	public static final byte SERVER_LegacyVerification = 14;
-	public static final byte SERVER_LegacyVerificationResult = 15;
+	public static final byte SERVER_LegacyFindPasswordOk = 5;
+	public static final byte SERVER_LegacyFindPassword = 6;
+	public static final byte SERVER_LegacyModifyPassword = 7;
+	public static final byte SERVER_LegacyModifyPasswordOk = 8;
+	public static final byte SERVER_LegacyRegister = 9;
+	public static final byte SERVER_LegacyRegisterOk = 10;
+	public static final byte SERVER_LegacyLogin = 11;
+	public static final byte SERVER_LegacyLoginOk = 12;
+	public static final byte SERVER_LegacyLogout = 13; // 登出(暂没使用)
+	public static final byte SERVER_PlayerLogout = 14; // 玩家登出(主要用这个协议通知)
+	public static final byte SERVER_LegacyVerification = 15;
+	public static final byte SERVER_LegacyVerificationResult = 16;
 	// 查询用户所在服务区信息
 	public static final byte SERVER_GetPlayerArea = 20;
 	public static final byte SERVER_GetPlayerAreaOk = 21;
@@ -42,7 +44,7 @@ public class Protocol {
 	public static final byte SERVER_NotifyMaxPlayer = 79;
 	public static final byte SERVER_NotifyMaintance = 80;
 	public static final byte SERVER_SendAddress = 81;
-	public static final byte SERVER_SyncLoad = 82;//通知ｉｐｄ在线人数等情况
+	public static final byte SERVER_SyncLoad = 82;// 通知ｉｐｄ在线人数等情况
 	public static final byte SERVER_SetClientIPAddress = 83;
 	// 更新服务器信息 版本
 	public static final byte SERVER_UpdateServerInfo = 91;

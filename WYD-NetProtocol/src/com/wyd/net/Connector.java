@@ -104,6 +104,8 @@ public abstract class Connector implements IConnector {
 				IDataHandler handler = ProtocolFactory.getDataHandler(data);
 				if (handler != null)
 					handler.handle(data);
+				else
+					Connector.log.error("get a NULL handler!");
 			}
 		}
 

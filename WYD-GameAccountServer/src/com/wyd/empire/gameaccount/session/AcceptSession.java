@@ -7,8 +7,16 @@ import org.apache.mina.core.session.IoSession;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.session.Session;
 public class AcceptSession extends Session {
-
+	protected String worldServerId;
 	protected boolean valid = false;
+
+	public String getWorldServerId() {
+		return worldServerId;
+	}
+
+	public void setWorldServerId(String worldServerId) {
+		this.worldServerId = worldServerId;
+	}
 
 	public AcceptSession(IoSession session) {
 		this.session = session;

@@ -21,6 +21,7 @@ import org.springframework.util.StringUtils;
 
 import com.wyd.empire.protocol.Protocol;
 import com.wyd.empire.protocol.data.system.ShakeHands;
+import com.wyd.net.Connector;
 import com.wyd.protocol.ProtocolManager;
 import com.wyd.protocol.s2s.S2SSegment;
 
@@ -142,8 +143,15 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 
 	/** 发数据到 worldServer */
 	public void sendControlSegment(S2SSegment seg) {
-		seg.setSessionId(-1);
-		this.serverSession.write(IoBuffer.wrap(seg.getPacketByteArray()));
+		try {
+			seg.setSessionId(-1);
+			this.serverSession.write(IoBuffer.wrap(seg.getPacketByteArray()));
+		} catch (NullPointerException e) {
+			System.out.println(serverSession+"--------");
+			 if(this.serverSession == null){
+				 this.connect();
+			 }
+		}
 	}
 
 	/**
@@ -155,7 +163,13 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	 *            配置信息
 	 * @return ConnectFuture 连接状态
 	 */
-	public ConnectFuture connect(InetSocketAddress address, int worldreceivebuffsize, int worldwritebuffsize) {
+	public ConnectFuture connect() {
+		int worldreceivebuffsize = this.configuration.getInt("worldreceivebuffsize");
+		int worldwritebuffsize = this.configuration.getInt("worldwritebuffsize");
+		String worldIp = this.configuration.getString("worldip");
+		int worldPort = this.configuration.getInt("worldport");
+		InetSocketAddress address = new InetSocketAddress(worldIp, worldPort);
+		
 		this.connector = new NioSocketConnector(Runtime.getRuntime().availableProcessors() + 1);
 		connector.getSessionConfig().setTcpNoDelay(true);
 		connector.getSessionConfig().setReceiveBufferSize(worldreceivebuffsize);
@@ -316,6 +330,20 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		@Override
 		public void sessionClosed(IoSession session) throws Exception {
 			serverSession = null;
+			//断线重连worldServer
+			while (true) {
+				if (serverSession.isConnected()){
+					SocketDispatcher.log.info("worldServer 断线重连成功。");
+					return;
+				}
+				try {
+					Thread.sleep(12000L);
+					SocketDispatcher.this.connect();
+					SocketDispatcher.log.info("worldServer 断线重连。。。");
+				} catch (Exception e) {
+					SocketDispatcher.log.error(e.getMessage());
+				}
+			}
 		}
 
 		// I/O processor线程触发
@@ -343,7 +371,6 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		@Override
 		public void exceptionCaught(IoSession session, Throwable throwable) throws Exception {
 			SocketDispatcher.log.error(throwable, throwable);
-			System.out.println(throwable);
 			session.close(true);
 		}
 		@Override
