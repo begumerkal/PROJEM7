@@ -1,214 +1,139 @@
 package com.wyd.empire.gameaccount.bean;
-import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.mongo.entity.IEntity;
 /**
  * The persistent class for the tab_account database table.
  * 
- * @author BEA Workshop
+ * @author doter
  */
-@Entity()
-@Table(name = "tab_account")
-public class Account implements Serializable {
+@Document(collection = "tab_account")
+public class Account extends IEntity{
     /**
-	 * 
+	 * 账号表
 	 */
 	private static final long serialVersionUID = 1L;
-	// default serial version id, required for serializable classes.
-    private Integer            id;
-    private String             udid;
+
     private String             username;
     private String             password;
-    private Integer            status;
-    private java.sql.Timestamp createtime;
-    private String             name;
-    private String             idnumber;
-    private Byte               sex;
-    private String             job;
-    private String             phone;
-    private String             address;
-    private String             interest;
-    private String			   token;
-    private String   		   areaId;
-
-	public Account() {
-    }
-
-    @Id()
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", unique = true, nullable = false, precision = 10)
-    public Integer getId() {
-        return this.id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    @Basic()
-    @Column(name = "address", length = 255)
-    public String getAddress() {
-        return this.address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    @Basic()
-    @Column(name = "createtime", nullable = false)
-    public java.sql.Timestamp getCreatetime() {
-        return this.createtime;
-    }
-
-    public void setCreatetime(java.sql.Timestamp createtime) {
-        this.createtime = createtime;
-    }
-
-    @Basic()
-    @Column(name = "idnumber", length = 20)
-    public String getIdnumber() {
-        return this.idnumber;
-    }
-
-    public void setIdnumber(String idnumber) {
-        this.idnumber = idnumber;
-    }
-
-    @Basic()
-    @Column(name = "interest", length = 255)
-    public String getInterest() {
-        return this.interest;
-    }
-
-    public void setInterest(String interest) {
-        this.interest = interest;
-    }
-
-    @Basic()
-    @Column(name = "job", length = 255)
-    public String getJob() {
-        return this.job;
-    }
-
-    public void setJob(String job) {
-        this.job = job;
-    }
-
-    @Basic()
-    @Column(name = "name", length = 255)
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Basic()
-    @Column(name = "password", length = 255)
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Basic()
-    @Column(name = "phone", length = 255)
-    public String getPhone() {
-        return this.phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    @Basic()
-    @Column(name = "sex", precision = 3)
-    public Byte getSex() {
-        return this.sex;
-    }
-
-    public void setSex(Byte sex) {
-        this.sex = sex;
-    }
-
-    @Basic()
-    @Column(name = "status", nullable = false, length = 1)
-    public Integer getStatus() {
-        return this.status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    @Basic()
-    @Column(name = "username", length = 255)
-    public String getUsername() {
-        return this.username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-	
-    @Basic()
-    @Column(name = "udid", length = 40)
-	public String getUdid() {
-		return udid;
+    private Integer            status;//状态
+    private Integer            createTime;
+    private String             version;//游戏版本
+    private Integer            totalLoginTimes;//总登录次数
+    private Integer            onLineTime;//在线时长
+    private Integer            lastLoginTime;//上次登录时间
+    private Integer            maxLevel;//该账号所有角色最高等级
+    private String             serverid;//所在游戏区名
+    private Integer            machinecode;//服务器码
+    private Integer            channel;//渠道号
+    private String             systemName;//客户端系统
+    private String             clientModel;//客户端型号
+    private String             systemVersion;//客户端系统版本
+    private String             ipAddress;//ip 地址
+    
+    
+	public String getUsername() {
+		return username;
 	}
-
-	public void setUdid(String udid) {
-		this.udid = udid;
+	public void setUsername(String username) {
+		this.username = username;
 	}
-
-	@Basic()
-    @Column(name = "token", length = 100)
-    public String getToken() {
-		return token;
+	public String getPassword() {
+		return password;
 	}
-
-	public void setToken(String token) {
-		this.token = token;
+	public void setPassword(String password) {
+		this.password = password;
 	}
-	
-	@Basic()
-    @Column(name = "areaId", length = 20)
-	public String getAreaId() {
-		return areaId;
+	public Integer getStatus() {
+		return status;
 	}
-
-	public void setAreaId(String areaId) {
-		this.areaId = areaId;
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
-
-	public boolean equals(Object other) {
-        if (this == other) {
-            return true;
-        }
-        if (!(other instanceof Account)) {
-            return false;
-        }
-        Account castOther = (Account) other;
-        return new EqualsBuilder().append(this.getId(), castOther.getId()).isEquals();
-    }
-
-    public int hashCode() {
-        return new HashCodeBuilder().append(getId()).toHashCode();
-    }
-
-    public String toString() {
-        return new ToStringBuilder(this).append("id", getId()).toString();
-    }
+	public Integer getCreateTime() {
+		return createTime;
+	}
+	public void setCreateTime(Integer createTime) {
+		this.createTime = createTime;
+	}
+	public String getVersion() {
+		return version;
+	}
+	public void setVersion(String version) {
+		this.version = version;
+	}
+	public Integer getTotalLoginTimes() {
+		return totalLoginTimes;
+	}
+	public void setTotalLoginTimes(Integer totalLoginTimes) {
+		this.totalLoginTimes = totalLoginTimes;
+	}
+	public Integer getOnLineTime() {
+		return onLineTime;
+	}
+	public void setOnLineTime(Integer onLineTime) {
+		this.onLineTime = onLineTime;
+	}
+	public Integer getLastLoginTime() {
+		return lastLoginTime;
+	}
+	public void setLastLoginTime(Integer lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
+	}
+	public Integer getMaxLevel() {
+		return maxLevel;
+	}
+	public void setMaxLevel(Integer maxLevel) {
+		this.maxLevel = maxLevel;
+	}
+	public String getServerid() {
+		return serverid;
+	}
+	public void setServerid(String serverid) {
+		this.serverid = serverid;
+	}
+	public Integer getMachinecode() {
+		return machinecode;
+	}
+	public void setMachinecode(Integer machinecode) {
+		this.machinecode = machinecode;
+	}
+	public Integer getChannel() {
+		return channel;
+	}
+	public void setChannel(Integer channel) {
+		this.channel = channel;
+	}
+	public String getSystemName() {
+		return systemName;
+	}
+	public void setSystemName(String systemName) {
+		this.systemName = systemName;
+	}
+	public String getClientModel() {
+		return clientModel;
+	}
+	public void setClientModel(String clientModel) {
+		this.clientModel = clientModel;
+	}
+	public String getSystemVersion() {
+		return systemVersion;
+	}
+	public void setSystemVersion(String systemVersion) {
+		this.systemVersion = systemVersion;
+	}
+	public String getIpAddress() {
+		return ipAddress;
+	}
+	public void setIpAddress(String ipAddress) {
+		this.ipAddress = ipAddress;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+     
+    
+    
+    
+    
 }

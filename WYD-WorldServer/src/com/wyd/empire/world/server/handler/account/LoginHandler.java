@@ -51,7 +51,6 @@ public class LoginHandler implements IDataHandler {
 		Client client = session.getAndCreateClient(data.getSessionId());
 		if (client.getStatus() == Client.STATUS.INIT) {
 			LegacyLogin legacyLogin = new LegacyLogin();
-			legacyLogin.setUdid(udid);
 			legacyLogin.setName(accountName);
 			legacyLogin.setPassword(passWord);
 			legacyLogin.setChannel(channel);

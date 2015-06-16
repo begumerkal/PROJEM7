@@ -2,14 +2,9 @@ package com.main;
 
 import java.util.Date;
 
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.nio.SelectChannelConnector;
-import org.mortbay.jetty.servlet.Context;
-import org.mortbay.jetty.servlet.ServletHolder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.action.WriteLog;
 import com.mongo.entity.NameEntity;
 import com.mongo.entity.UserEntity;
 import com.mongo.impl.UserDao;
@@ -41,35 +36,11 @@ public class ApplicationSpring {
 		userDao.insert(entity1);
 //		userDao.save(entity1);
  
-		
-//		try {
-//			new ApplicationSpring().openSetverListServlet();
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 
 	}
 	
 	
 	
 	
-	private void openSetverListServlet() throws Exception {
-		Server server = new Server();
-		// // 设置jetty线程池
-		// BoundedThreadPool threadPool = new BoundedThreadPool();
-		// // 设置连接参数
-		// threadPool.setMinThreads(50);
-		// threadPool.setMaxThreads(1000);
-		// 设置监听端口，ip地址
-		SelectChannelConnector connector = new SelectChannelConnector();
-		connector.setPort(8888);
-		connector.setHost("0.0.0.0");
-		server.addConnector(connector);
-		// 访问项目地址
-		Context root = new Context(server, "/", 1);
-		root.addServlet(new ServletHolder(new WriteLog()), "/log");//http://localhost:6887/?area=CN&group=1000_G1&serverid=0
-//		root.addServlet(new ServletHolder(new ServerLoadServlet()), "/load/*");
-		server.start();
-	}
+ 
 }

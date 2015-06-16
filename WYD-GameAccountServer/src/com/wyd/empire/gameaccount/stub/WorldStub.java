@@ -33,7 +33,7 @@ public class WorldStub {
 	private SessionRegistry registry;
 
 	public WorldStub(Configuration configuration, SessionRegistry registry) {
-		this.registry = new SessionRegistry();
+		this.registry = registry;
 		this.configuration = configuration;
 	}
 

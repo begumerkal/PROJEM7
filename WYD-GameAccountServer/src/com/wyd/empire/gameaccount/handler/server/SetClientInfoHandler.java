@@ -18,7 +18,7 @@ public class SetClientInfoHandler implements IDataHandler {
             String clientModel = setClientInfo.getClientModel();
             String systemName = setClientInfo.getSystemName();
             String systemVersion = setClientInfo.getSystemVersion();
-            ServiceFactory.getFactory().getEmpireaccountService().setClientInfo(accountId, clientModel, systemName, systemVersion);
+//            ServiceFactory.getFactory().getEmpireaccountService().setClientInfo(accountId, clientModel, systemName, systemVersion);
         } catch (Throwable e) {
             log.error(e);
         }

@@ -3,8 +3,6 @@ package com.mongo.entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.mongo.dao.IEntity;
-
 
 @Document(collection = "sequence")
 public class SequenceIdEntity extends IEntity{

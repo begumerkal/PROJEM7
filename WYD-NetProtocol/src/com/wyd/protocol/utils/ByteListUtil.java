@@ -85,7 +85,7 @@ public class ByteListUtil {
 			// System.out.println("ByteListUtil:87---str=null");
 			// }
 			//
-			// str = null == str ? "":str;
+			str = str == null ? "" : str;
 			byte[] data = str.getBytes("utf-8");
 			list.add((byte) (data.length >>> 8 & 0xFF));
 			list.add((byte) (data.length >>> 0 & 0xFF));

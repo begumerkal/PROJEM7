@@ -3,21 +3,22 @@ import java.io.File;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.PropertiesConfiguration;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import com.wyd.empire.gameaccount.service.IAccountService;
-import com.wyd.empire.gameaccount.service.IEmpireaccountService;
+import com.wyd.empire.gameaccount.service.impl.AccountService;
 import com.wyd.empire.gameaccount.stub.WorldStub;
 import com.wyd.session.SessionRegistry;
 
+@Service
 public class ServiceFactory {
-	protected static ServiceFactory instance = null;
-	ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+	@Autowired
+	private AccountService accountService;
 	private Configuration configuration;
 	private WorldStub worldStub;
 	private ClientListManager clientListManager;
 	private SessionRegistry registry;
+	private static ServiceFactory serviceFactory;
 
 	protected ServiceFactory() {
 		try {
@@ -25,18 +26,16 @@ public class ServiceFactory {
 			this.clientListManager = new ClientListManager(new File(Thread.currentThread().getContextClassLoader()
 					.getResource("clients.txt").getPath()));
 			this.registry = new SessionRegistry();
+			this.clientListManager.start();
+			
 			this.worldStub = new WorldStub(this.configuration, this.registry);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public IAccountService getAccountService() {
-		return (IAccountService) context.getBean("AccountService");
-	}
-
-	public IEmpireaccountService getEmpireaccountService() {
-		return (IEmpireaccountService) context.getBean("EmpireaccountService");
+	public AccountService getAccountService() {
+		return accountService;
 	}
 
 	public Configuration getConfiguration() {
@@ -51,18 +50,14 @@ public class ServiceFactory {
 		return clientListManager;
 	}
 
-	public static ServiceFactory getFactory() {
-		synchronized (ServiceFactory.class) {
-			if (null == instance) {
-				instance = new ServiceFactory();
-				instance.init();
-			}
-		}
-		return instance;
+	public static ServiceFactory getServiceFactory() {
+		return serviceFactory;
 	}
 
-	private void init() {
-		this.getEmpireaccountService().init();
-		this.clientListManager.start();
+	public void setServiceFactory(ServiceFactory serviceFactory) {
+		ServiceFactory.serviceFactory = serviceFactory;
 	}
+ 
+	
+	
 }

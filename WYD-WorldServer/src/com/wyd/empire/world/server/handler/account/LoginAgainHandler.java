@@ -59,7 +59,6 @@ public class LoginAgainHandler implements IDataHandler {
 		Client client = session.getAndCreateClient(data.getSessionId());
 		if (client.getStatus() == Client.STATUS.INIT) {
 			LegacyLogin legacyLogin = new LegacyLogin();
-			legacyLogin.setUdid(udid);
 			legacyLogin.setName(accountName);
 			legacyLogin.setPassword(passWord);
 			LoginRequest loginRequest = new LoginRequest(data.getSerial(), data.getSessionId(), session, accountName, passWord, version,

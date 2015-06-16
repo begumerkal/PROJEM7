@@ -51,7 +51,7 @@ public class ipdServer {
 		System.out.println("发送登录数据");
 		Login login = new Login();
 		login.setUdid("xxx1-22-2-2-2-3");
-		login.setAccountName("doter");
+		login.setAccountName("doter1");
 		login.setPassWord("123456");
 		login.setVersion("1.0.0.0");
 		login.setChannel(1000);

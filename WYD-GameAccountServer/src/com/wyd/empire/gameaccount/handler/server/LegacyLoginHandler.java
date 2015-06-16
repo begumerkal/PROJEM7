@@ -1,11 +1,7 @@
 package com.wyd.empire.gameaccount.handler.server;
-import java.util.Date;
-
 import org.apache.log4j.Logger;
 
 import com.wyd.empire.gameaccount.bean.Account;
-import com.wyd.empire.gameaccount.bean.Empireaccount;
-import com.wyd.empire.gameaccount.service.IEmpireaccountService;
 import com.wyd.empire.gameaccount.service.factory.ServiceFactory;
 import com.wyd.empire.gameaccount.service.impl.AccountService;
 import com.wyd.empire.gameaccount.session.AcceptSession;
@@ -24,39 +20,41 @@ public class LegacyLoginHandler implements IDataHandler {
 	public AbstractData handle(AbstractData data) {
 		LegacyLogin login = (LegacyLogin) data;
 		AcceptSession session = (AcceptSession) data.getHandlerSource();
-		String udid = login.getUdid();
 		String name = login.getName();
 		String pwd = login.getPassword();
 		int channel = login.getChannel();
+		String worldServerId = session.getWorldServerId();
+		String[] strArr = worldServerId.split("_");
+		int machinecode = Integer.valueOf(strArr[1]);
+
+		int nowTime = (int) (System.currentTimeMillis() / 100);
+		AccountService accountService = ServiceFactory.getServiceFactory().getAccountService();
 		try {
 			LegacyLoginOk loginOk = new LegacyLoginOk(data.getSessionId(), data.getSerial());
-			Account account = ServiceFactory.getFactory().getAccountService().getAccountByName(name);
+			Account account = accountService.login(name, session.getWorldServerId());
 			if (account == null) {
-				account = ServiceFactory.getFactory().getAccountService().createAccount(name, pwd, udid);
+				Account newAccount = new Account();
+				newAccount.setUsername(name);
+				newAccount.setPassword(pwd);
+				newAccount.setChannel(channel);
+				newAccount.setServerid(worldServerId);
+				newAccount.setCreateTime(nowTime);
+				newAccount.setMachinecode(machinecode);
+				newAccount.setStatus(1);
+				newAccount.setTotalLoginTimes(0);
+				account = accountService.createAccount(newAccount);
 			}
-
 			if (account != null) {
-				loginOk.setAccountId(account.getId());
-				loginOk.setUdid(account.getUdid());
+				loginOk.setAccountId((int) account.getId());
 				loginOk.setName(account.getUsername());
 				loginOk.setPassword(account.getPassword());
 				loginOk.setChannel(channel);
-				if (AccountService.ACCOUNT_STATUS_NORMAL == account.getStatus()) {
-					IEmpireaccountService empireaccountService = ServiceFactory.getFactory().getEmpireaccountService();
-					System.out.println(empireaccountService);
-					Empireaccount gameAccount = empireaccountService.login(account.getId(), session.getWorldServerId());
-					if (gameAccount == null) {
-						String model = "Default";
-						String version = "1.0";
-						gameAccount = empireaccountService.createGameAccount(account.getId(), account.getUsername(), model, version,
-								new Date(), "", session.getWorldServerId(), channel);
-					}else{
-						gameAccount.setLastLoginTime(new java.sql.Timestamp(new Date().getTime()));
-						gameAccount.setTotalLoginTimes(gameAccount.getTotalLoginTimes() + 1);
-						gameAccount.setName(loginOk.getName());
-						empireaccountService.updateGameAccount(gameAccount);
-					}
-					loginOk.setGameAccountId(gameAccount.getId());
+				if (account.getStatus() == AccountService.ACCOUNT_STATUS_NORMAL) {
+					account.setLastLoginTime(nowTime);
+					account.setTotalLoginTimes(account.getTotalLoginTimes() + 1);
+					accountService.saveAccount(account);
+					loginOk.setGameAccountId(account.getId());
+					loginOk.setStatus(0);
 				} else {
 					loginOk.setStatus(2);
 				}

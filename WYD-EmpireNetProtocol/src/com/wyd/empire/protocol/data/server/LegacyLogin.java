@@ -2,7 +2,7 @@ package com.wyd.empire.protocol.data.server;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.empire.protocol.Protocol;
 public class LegacyLogin extends AbstractData {
-	private String udid;
+
 	private String name;
 	private String password;
 	private int channel; // 渠道ID
@@ -16,13 +16,7 @@ public class LegacyLogin extends AbstractData {
 	}
 
 	
-	public String getUdid() {
-		return udid;
-	}
-
-	public void setUdid(String udid) {
-		this.udid = udid;
-	}
+ 
 
 	public String getName() {
 		return this.name;

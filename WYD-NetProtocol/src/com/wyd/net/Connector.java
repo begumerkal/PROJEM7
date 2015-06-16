@@ -116,10 +116,12 @@ public abstract class Connector implements IConnector {
 					if (Connector.this.isConnected())
 						return;
 					try {
-						Thread.sleep(12000L);
-						Connector.this.initConnector();
+						Thread.sleep(20000L);
+//						Connector.this.initConnector();
 						Connector.this.connect();
-						Connector.log.info("breaked");
+//						Connector.this.connector.connect(Connector.this.address);
+						System.out.println("断线尝试重连...");
+						Connector.log.info("log断线尝试重连...");
 					} catch (Exception e) {
 						Connector.log.error(e.getMessage());
 					}
