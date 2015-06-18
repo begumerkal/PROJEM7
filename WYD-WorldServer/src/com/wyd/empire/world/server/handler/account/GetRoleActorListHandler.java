@@ -32,7 +32,7 @@ public class GetRoleActorListHandler implements IDataHandler {
 			return null;
 		try {
 			// long time = System.currentTimeMillis();
-			List<Player> list = ServiceManager.getManager().getPlayerService().getPlayerList(client.getGameAccountId());
+			List<Player> list = ServiceManager.getManager().getPlayerService().getPlayerList(client.getAccountId());
 			// log.info("GetRoleActorList AccountId:"+client.getAccountId()+"-----------------time:"+(System.currentTimeMillis()-time));
 			SendRoleActorList sendActorList = new SendRoleActorList(data.getSessionId(), data.getSerial());
 			int playerCount = 0;

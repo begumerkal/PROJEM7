@@ -2,38 +2,31 @@ package com.wyd.empire.world.server.service.factory;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.PropertiesConfiguration;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import com.wyd.empire.world.server.service.impl.PlayerService;
-import com.wyd.empire.world.common.util.FundUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.wyd.empire.world.common.util.ThreadPool;
-import com.wyd.empire.world.server.service.base.IChatRecordService;
-import com.wyd.empire.world.server.service.base.IMailService;
-import com.wyd.empire.world.server.service.base.IOperationConfigService;
-import com.wyd.empire.world.server.service.base.IOrderService;
-import com.wyd.empire.world.server.service.base.IPayAppRewardService;
 import com.wyd.empire.world.server.service.base.IPlayerService;
-import com.wyd.empire.world.server.service.base.IThirdConfigService;
+import com.wyd.empire.world.server.service.base.impl.MailService;
 import com.wyd.empire.world.server.service.impl.AbstractService;
 import com.wyd.empire.world.server.service.impl.ChatService;
-import com.wyd.empire.world.server.service.impl.CheckRechargeService;
 import com.wyd.empire.world.server.service.impl.ConnectService;
 import com.wyd.empire.world.server.service.impl.CrossService;
 import com.wyd.empire.world.server.service.impl.ExtensionService;
-import com.wyd.empire.world.server.service.impl.MailService;
 import com.wyd.empire.world.server.service.impl.OrderSerialService;
+import com.wyd.empire.world.server.service.impl.PlayerService;
 import com.wyd.empire.world.server.service.impl.SendMailService;
 import com.wyd.empire.world.server.service.impl.TheadPlayerItemsService;
-import com.wyd.empire.world.server.service.impl.VersionService;
 import com.wyd.empire.world.skeleton.AccountSkeleton;
 import com.wyd.empire.world.skeleton.BattleSkeleton;
 import com.wyd.net.DefaultRequestService;
 import com.wyd.net.IRequestService;
 import com.wyd.session.HandlerMonitorService;
-
+@Service
 public class ServiceManager {
-	ApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"applicationContext.xml", "application-scheduling.xml"});
-	private static ServiceManager instance = null;
+	private static ServiceManager serviceManager;
+	private ThreadPool httpThreadPool;
+	private ThreadPool simpleThreadPool;
 	protected Configuration configuration = null;
 	private IRequestService requestService;
 	private AccountSkeleton accountSkeleton = null;
@@ -41,18 +34,23 @@ public class ServiceManager {
 	private ConnectService connectService;
 	private HandlerMonitorService msghandlerMonitor;
 	private TheadPlayerItemsService theadPlayerItemsService;
-	private VersionService versionService;
-	private ChatService chatService;
-    private PlayerService  playerService;
-	private MailService mailService;
-	private ExtensionService extensionService;
-	private SendMailService sendMailService;
+
+	@Autowired
+	private MailService mailService;// 邮件批量发送服务
+	@Autowired
+	private PlayerService playerService;// 游戏角色服务
+	@Autowired
+	private ChatService chatService;// 聊天服务管理对象
+	@Autowired
+	private ExtensionService extensionService;// 推广渠道激活服务
+	@Autowired
+	private SendMailService sendMailService;// 发送电子邮件服务
+	@Autowired
 	private OrderSerialService orderSerialService;
-	private CrossService crossService;
-	private ThreadPool httpThreadPool;
-	private ThreadPool simpleThreadPool;
-	private CheckRechargeService checkRechargeService;
-	private AbstractService abstractService;
+	@Autowired
+	private CrossService crossService;// 跨服对战相关服务
+	@Autowired
+	private AbstractService abstractService;// 协议处理线程
 
 	private ServiceManager() {
 		try {
@@ -66,8 +64,10 @@ public class ServiceManager {
 			this.playerService = new PlayerService();
 			// 消息处理监控线程
 			this.msghandlerMonitor = new HandlerMonitorService();
-			// 游戏版本管理对象
-			this.versionService = new VersionService((IOperationConfigService) context.getBean("OperationConfigService"));
+
+			// this.versionService = new
+			// VersionService((IOperationConfigService)
+			// context.getBean("OperationConfigService"));
 			// 聊天服务管理对象
 			this.chatService = new ChatService();
 			// 公告管理对象
@@ -75,8 +75,7 @@ public class ServiceManager {
 			this.mailService = new MailService();
 			// 推广渠道激活服务
 			this.extensionService = new ExtensionService();
-			// 充值对账
-			this.checkRechargeService = new CheckRechargeService();
+
 			// 发送电子邮件服务
 			this.sendMailService = new SendMailService();
 			this.orderSerialService = new OrderSerialService();
@@ -98,28 +97,16 @@ public class ServiceManager {
 		this.connectService.start();
 		this.msghandlerMonitor.start();
 		this.playerService.start();
-		this.mailService.start();
 		this.extensionService.start();
 		this.sendMailService.start();
 	}
 
 	public static ServiceManager getManager() {
-		synchronized (ServiceManager.class) {
-			if (null == instance) {
-				instance = new ServiceManager();
-			}
-		}
-		return instance;
+		return serviceManager;
 	}
 
-	/**
-	 * 初始化基础数据
-	 */
-	public void initBaseData() {
-		System.out.println("initData...");
-		ServiceManager.getManager().getVersionService().getService().initData();
-		ServiceManager.getManager().getOrderService().initData();
-		FundUtil.initMap();
+	public static void setServiceManager(ServiceManager serviceManager) {
+		ServiceManager.serviceManager = serviceManager;
 	}
 
 	public IRequestService getRequestService() {
@@ -166,25 +153,9 @@ public class ServiceManager {
 		return theadPlayerItemsService;
 	}
 
-	public VersionService getVersionService() {
-		return versionService;
-	}
-
-
-	public IMailService getMailService() {
-		return (IMailService) context.getBean("MailService");
-	}
-
-
 	public IPlayerService getIPlayerService() {
-		return (IPlayerService) context.getBean("PlayerService");
+		return (IPlayerService) playerService;
 	}
-
-
-	public IChatRecordService getChatRecordService() {
-		return (IChatRecordService) context.getBean("ChatRecordService");
-	}
-
 
 	/**
 	 * 邮件批量发送服务
@@ -202,11 +173,6 @@ public class ServiceManager {
 		return extensionService;
 	}
 
-	public CheckRechargeService getCheckRechargeService() {
-		return checkRechargeService;
-	}
-
-
 	/**
 	 * 发送电子邮件服务
 	 * 
@@ -214,24 +180,6 @@ public class ServiceManager {
 	 */
 	public SendMailService getEMailService() {
 		return sendMailService;
-	}
-
-	/**
-	 * 订单与计费点管理服务
-	 * 
-	 * @return
-	 */
-	public IOrderService getOrderService() {
-		return (IOrderService) context.getBean("OrderService");
-	}
-
-	/**
-	 * 第三方渠道配置表 by: zengxc
-	 * 
-	 * @return
-	 */
-	public IThirdConfigService getThirdConfigService() {
-		return (IThirdConfigService) context.getBean("ThirdConfigService");
 	}
 
 	public OrderSerialService getOrderSerialService() {
@@ -246,24 +194,9 @@ public class ServiceManager {
 		return simpleThreadPool;
 	}
 
-	public IOperationConfigService getOperationConfigService() {
-		return (IOperationConfigService) context.getBean("OperationConfigService");
-	}
-
-
 	public CrossService getCrossService() {
 		return crossService;
 	}
-
-	/**
-	 * BM付费包服务
-	 * 
-	 * @return
-	 */
-	public IPayAppRewardService getPayAppRewardService() {
-		return (IPayAppRewardService) context.getBean(IPayAppRewardService.SERVICE_BEAN_ID);
-	}
-
 
 	/**
 	 * 获取协议处理线程
@@ -273,5 +206,5 @@ public class ServiceManager {
 	public AbstractService getAbstractService() {
 		return abstractService;
 	}
- 
+
 }

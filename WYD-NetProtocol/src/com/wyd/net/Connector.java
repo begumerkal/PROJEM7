@@ -71,6 +71,10 @@ public abstract class Connector implements IConnector {
 	}
 
 	public void send(AbstractData data) {
+		if(this.isConnected()==false){
+			this.connector.connect(this.address);
+			log.info("重连.");
+		}
 		this.session.write(data);
 	}
 
@@ -118,8 +122,8 @@ public abstract class Connector implements IConnector {
 					try {
 						Thread.sleep(20000L);
 //						Connector.this.initConnector();
-						Connector.this.connect();
-//						Connector.this.connector.connect(Connector.this.address);
+//						Connector.this.connect();
+						Connector.this.connector.connect();
 						System.out.println("断线尝试重连...");
 						Connector.log.info("log断线尝试重连...");
 					} catch (Exception e) {
@@ -133,7 +137,7 @@ public abstract class Connector implements IConnector {
 			Connector.this.session = session;
 		}
 		public void sessionOpened(IoSession session) throws Exception {
-			Connector.this.session = session;
+//			Connector.this.session = session;
 			Connector.this.connected();
 		}
 		public void sessionIdle(IoSession session, IdleStatus status) throws Exception {

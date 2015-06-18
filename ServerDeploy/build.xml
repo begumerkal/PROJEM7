@@ -77,6 +77,11 @@
 		<echo message="build ExchangeServer.jar" />
 		<ant antfile="build.xml" dir="../WYD-ExchangeServer/" />
 	</target>
+	<target name="callChmod">
+		<chmod perm="777">
+		  <fileset dir="./" includes="**/*.sh"/>
+		</chmod>
+	</target>
 	<target name="all">
 		<ant target="copyLib" />
 		<ant target="callDB" />
@@ -98,6 +103,7 @@
 		<ant target="callIpdServer" />
 		<ant target="callWorldServer" />
 		<ant target="callDispatchServer" />
+		<ant target="callChmod" />
 		<echo message="job done!!" />
 	</target>
 </project>

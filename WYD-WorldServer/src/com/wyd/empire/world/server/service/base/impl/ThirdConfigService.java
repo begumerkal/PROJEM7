@@ -3,6 +3,7 @@ package com.wyd.empire.world.server.service.base.impl;
 import java.util.List;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Service;
 
 import com.wyd.db.service.impl.UniversalManagerImpl;
 import com.wyd.empire.world.bean.ThirdConfig;
@@ -14,6 +15,7 @@ import com.wyd.empire.world.server.service.base.IThirdConfigService;
  * 
  * @author zengxc
  */
+@Service
 public class ThirdConfigService extends UniversalManagerImpl implements IThirdConfigService {
 	/**
 	 * The dao instance injected by Spring.

@@ -68,7 +68,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	}
 	/** 转发数据至 worldServer */
 	public void dispatchToServer(IoSession session, Object object) {
-//		System.out.println("* 转发数据至 worldServer *");
+		// System.out.println("* 转发数据至 worldServer *");
 		Integer id = (Integer) session.getAttribute(ATTRIBUTE_STRING);
 		if (id != null) {
 			IoBuffer buffer = (IoBuffer) object;
@@ -81,7 +81,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 						|| buffer.get(19) == Protocol.MAIN_ERRORCODE || buffer.get(19) == Protocol.MAIN_SYSTEM) {// 判断用户是否已经登录或者为登录协议
 					buffer.putInt(4, id.intValue());
 					this.serverSession.write(buffer.duplicate());
-				}else {// 不是心跳，不是登录协议，并且用户未登录则断开socket连接
+				} else {// 不是心跳，不是登录协议，并且用户未登录则断开socket连接
 					log.info("Kill Session LOGINMARK:" + session.getAttribute(LOGINMARK_KEY) + "---type:" + buffer.get(19) + "---subtype:"
 							+ buffer.get(20));
 					session.close(true);
@@ -146,10 +146,10 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 			seg.setSessionId(-1);
 			this.serverSession.write(IoBuffer.wrap(seg.getPacketByteArray()));
 		} catch (NullPointerException e) {
-			 log.info("this.serverSession is null.");
-			 if(this.serverSession == null){
-				 this.connect();
-			 }
+			log.info("this.serverSession is null.");
+			if (this.serverSession == null) {
+				this.connect();
+			}
 		}
 	}
 
@@ -168,7 +168,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		String worldIp = this.configuration.getString("worldip");
 		int worldPort = this.configuration.getInt("worldport");
 		InetSocketAddress address = new InetSocketAddress(worldIp, worldPort);
-		
+
 		this.connector = new NioSocketConnector(Runtime.getRuntime().availableProcessors() + 1);
 		connector.getSessionConfig().setTcpNoDelay(true);
 		connector.getSessionConfig().setReceiveBufferSize(worldreceivebuffsize);
@@ -312,7 +312,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	class ServerSessionHandler extends IoHandlerAdapter {
 		@Override
 		public void exceptionCaught(IoSession sesion, Throwable throwable) throws Exception {
-//			sesion.close(true);
+			// sesion.close(true);
 			SocketDispatcher.log.error(throwable, throwable);
 		}
 		@Override
@@ -328,9 +328,9 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		@Override
 		public void sessionClosed(IoSession session) throws Exception {
 			serverSession = null;
-			//断线重连worldServer
+			// 断线重连worldServer
 			while (true) {
-				if (serverSession.isConnected()){
+				if (serverSession.isConnected()) {
 					SocketDispatcher.log.info("worldServer 断线重连成功。");
 					return;
 				}
@@ -373,7 +373,6 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		}
 		@Override
 		public void messageReceived(IoSession session, Object object) throws Exception {
-			System.out.println("object----"+object);
 			SocketDispatcher.this.dispatchToServer(session, object);
 		}
 		@Override
@@ -383,10 +382,14 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		}
 		@Override
 		public void sessionCreated(IoSession session) throws Exception {
+		}
+		@Override
+		public void sessionOpened(IoSession session) throws Exception {
 			InetSocketAddress address = (InetSocketAddress) session.getRemoteAddress();
 			SocketDispatcher.this.registerClient(session);
 			log.info("ok:" + address.getAddress().getHostAddress());
 		}
+
 		@Override
 		public void sessionIdle(IoSession session, IdleStatus idleStatus) throws Exception {
 			session.close(true);

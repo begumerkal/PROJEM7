@@ -4,6 +4,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
 
 import com.wyd.empire.world.exception.ErrorMessages;
 import com.wyd.empire.world.session.AbstractInfo;
@@ -16,6 +17,7 @@ import com.wyd.thread.ThreadPool;
 /*
  * 消息处理类
  */
+@Service
 public class AbstractService implements Runnable {
 	private Logger log = Logger.getLogger(AbstractService.class);
 	private HandlerThreadPool threadPool = new HandlerThreadPool(10, 100, 500);

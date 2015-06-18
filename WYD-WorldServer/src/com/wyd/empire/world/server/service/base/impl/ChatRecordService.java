@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Service;
 
 import com.wyd.db.service.impl.UniversalManagerImpl;
 import com.wyd.empire.world.bean.ChatRecord;
@@ -16,6 +17,7 @@ import com.wyd.empire.world.server.service.base.IChatRecordService;
 /**
  * The service class for the TabChatRecord entity.
  */
+@Service
 public class ChatRecordService extends UniversalManagerImpl implements IChatRecordService {
 	/**
 	 * The dao instance injected by Spring.

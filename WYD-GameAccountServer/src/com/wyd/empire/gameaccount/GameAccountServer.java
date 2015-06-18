@@ -8,9 +8,10 @@ import com.wyd.empire.protocol.Protocol;
 import com.wyd.net.ProtocolFactory;
 public class GameAccountServer {
 	private static final Logger log = Logger.getLogger(GameAccountServer.class);
+	private ApplicationContext context;
 
 	public void launch() throws Exception {
-		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		ProtocolFactory.init(Protocol.class, "com.wyd.empire.protocol.data", "com.wyd.empire.gameaccount.handler");
 		ServiceFactory  sf = context.getBean(ServiceFactory.class);
 		sf.setServiceFactory(sf);

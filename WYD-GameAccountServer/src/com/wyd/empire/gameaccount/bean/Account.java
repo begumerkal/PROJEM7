@@ -7,7 +7,7 @@ import com.mongo.entity.IEntity;
  * 
  * @author doter
  */
-@Document(collection = "tab_account")
+@Document(collection = "account")
 public class Account extends IEntity{
     /**
 	 * 账号表

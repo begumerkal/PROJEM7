@@ -3,11 +3,9 @@ package com.wyd.empire.world.server.handler.account;
 import org.apache.log4j.Logger;
 
 import com.wyd.empire.protocol.data.account.Login;
-import com.wyd.empire.protocol.data.server.LegacyLogin;
+import com.wyd.empire.protocol.data.server.AccountLogin;
 import com.wyd.empire.world.Client;
 import com.wyd.empire.world.WorldServer;
-import com.wyd.empire.world.common.util.CryptionUtil;
-import com.wyd.empire.world.exception.ErrorMessages;
 import com.wyd.empire.world.exception.TipMessages;
 import com.wyd.empire.world.request.LoginRequest;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
@@ -29,19 +27,11 @@ public class LoginHandler implements IDataHandler {
 	public AbstractData handle(AbstractData data) throws Exception {
 		Login login = (Login) data;
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
-		String deckey = ServiceManager.getManager().getConfiguration().getString("deckey");
-		String udid = login.getUdid()  ;
-		String accountName = login.getAccountName() ;
-		String passWord =  login.getPassWord() ;
-		if (udid.equals(accountName)) {
-			if (!udid.equals(passWord)) {
-				throw new ProtocolException(ErrorMessages.LOGIN_FIELD_MESSAGE, data.getSerial(), data.getSessionId(), data.getType(),
-						data.getSubType());
-			}
-		}
-		logingLog.info("account:" + accountName);
+		String accountName = login.getAccountName();
+		String passWord = login.getPassWord();
 		String version = login.getVersion();
 		int channel = login.getChannel();
+		logingLog.info("account:" + accountName);
 		// WorldServer 是否在维护
 		if (WorldServer.config.isMaintance()) {
 			String ms = TipMessages.LOGIN_SIM_MESSAGE;
@@ -50,17 +40,18 @@ public class LoginHandler implements IDataHandler {
 		// 根据session id创建客户端对象
 		Client client = session.getAndCreateClient(data.getSessionId());
 		if (client.getStatus() == Client.STATUS.INIT) {
-			LegacyLogin legacyLogin = new LegacyLogin();
-			legacyLogin.setName(accountName);
-			legacyLogin.setPassword(passWord);
-			legacyLogin.setChannel(channel);
+			AccountLogin accountLogin = new AccountLogin();
+			accountLogin.setName(accountName);
+			accountLogin.setPassword(passWord);
+			accountLogin.setChannel(channel);
+			accountLogin.setIp(client.getIp());
 			LoginRequest loginRequest = new LoginRequest(data.getSerial(), data.getSessionId(), session, accountName, passWord, version,
 					channel, false, null);
 			// 根据登陆请求的参数创建loginRequset对象，接着往GameAccount服务器发送验证请求,
 			// 根据serial值把loginRequset对象加入requestService里的map里
-			ServiceManager.getManager().getRequestService().add(legacyLogin.getSerial(), loginRequest);
+			ServiceManager.getManager().getRequestService().add(accountLogin.getSerial(), loginRequest);
 			// 发送至账号服务器
-			ServiceManager.getManager().getAccountSkeleton().send(legacyLogin);
+			ServiceManager.getManager().getAccountSkeleton().send(accountLogin);
 		}
 		return null;
 	}

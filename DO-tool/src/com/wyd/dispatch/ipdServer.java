@@ -50,7 +50,6 @@ public class ipdServer {
 	public void sendData() {
 		System.out.println("发送登录数据");
 		Login login = new Login();
-		login.setUdid("xxx1-22-2-2-2-3");
 		login.setAccountName("doter1");
 		login.setPassWord("123456");
 		login.setVersion("1.0.0.0");

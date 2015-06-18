@@ -62,10 +62,7 @@ public class ConnectSession extends Session {
 	 * 保存playerId与对应<tt>Client</tt>对象对应<tt>HashMap</tt>
 	 */
 	private ConcurrentHashMap<Integer, Client> playerId2Clients = new ConcurrentHashMap<Integer, Client>();
-	/**
-	 * 保存sessionId与对应长时间协议处理队列HashMap</tt>
-	 */
-	private Map<Integer, Integer> longTimeAbstractSize = new HashMap<Integer, Integer>();
+
 	// /**
 	// * 保存accountName与对应<tt>Client</tt>对象对应<tt>HashMap</tt>
 	// */
@@ -202,7 +199,7 @@ public class ConnectSession extends Session {
 		Client client = this.accountId2Clients.get(accountId);
 		if (client != null) {
 			removeClient(client);
-			// killSession(client.getSessionId());
+			killSession(client.getSessionId());
 		}
 	}
 
@@ -263,30 +260,15 @@ public class ConnectSession extends Session {
 	 * @param client
 	 */
 	public void removeClient(Client client) {
-		if (client.getSessionId() != -1) {
-			this.sessionId2Clients.remove(client.getSessionId());
-			// System.out.println("sessionId2Clients remove:" +
-			// client.getSessionId());
-			this.deleteLongTimeAbstract(client.getSessionId());
-		}
-		Client accountClient = this.accountId2Clients.get(client.getAccountId());
-		// 如果是同一个client则移除相关的登录信息
-		if (client.getAccountId() != -1 && null != accountClient && accountClient.getSessionId() == client.getSessionId()) {
-			this.accountId2Clients.remove(client.getAccountId());
-		}
-		Client playerClient = this.playerId2Clients.get(client.getPlayerId());
-		// 如果是同一个client则移除相关的登录信息
-		if (null != playerClient && playerClient.getSessionId() == client.getSessionId()) {
-			if (client.getPlayerId() != -1) {
-				this.playerId2Clients.remove(client.getPlayerId());
-				// System.out.println("playerId2Clients remove:" +
-				// client.getPlayerId());
-			}
-			if (client.getStatus() == Client.STATUS.PLAYERLOGIN) {
-				WorldPlayer player = this.playerService.getWorldPlayerById(client.getPlayerId());
-				if (player != null)
-					loginOut(player);
-			}
+
+		this.sessionId2Clients.remove(client.getSessionId());
+		this.accountId2Clients.remove(client.getAccountId());
+		this.playerId2Clients.remove(client.getPlayerId());
+		
+		if (client.getStatus() == Client.STATUS.PLAYERLOGIN) {
+			WorldPlayer player = this.playerService.getWorldPlayerById(client.getPlayerId());
+			if (player != null)
+				loginOut(player);
 		}
 	}
 
@@ -346,7 +328,7 @@ public class ConnectSession extends Session {
 	 */
 	public Client getClient(int sessionId) {
 		// System.out.println("Client Size:"+this.sessionId2Clients.size());
-		return (this.sessionId2Clients.get(sessionId));
+		return this.sessionId2Clients.get(sessionId);
 	}
 
 	/**
@@ -384,7 +366,7 @@ public class ConnectSession extends Session {
 	 */
 	public Client getClientByAccountId(int accountid) {
 		// System.out.println("AClient Size:"+this.accountId2Clients.size());
-		return (this.accountId2Clients.get(accountid));
+		return this.accountId2Clients.get(accountid);
 	}
 
 	/**
@@ -450,8 +432,8 @@ public class ConnectSession extends Session {
 		playerLoginOk.setWeapon_type(1);
 		playerLoginOk.setUpgradeexp(ServiceManager.getManager().getPlayerService()
 				.getUpgradeExp(player.getLevel(), player.getPlayer().getZsLevel()));
-		playerLoginOk.setGuideLevel(ServiceManager.getManager().getVersionService().getVersion().getGuideLevel());
-		playerLoginOk.setBlastLevel(ServiceManager.getManager().getVersionService().getVersion().getBlastLevel());
+		playerLoginOk.setGuideLevel(10);
+		playerLoginOk.setBlastLevel(1);
 		if (null != player.getPlayer().getVipTime() && System.currentTimeMillis() <= player.getPlayer().getVipTime().getTime()) {
 			playerLoginOk.setVipLevel(player.getPlayer().getVipLevel());
 		} else {
@@ -488,7 +470,8 @@ public class ConnectSession extends Session {
 		playerLoginOk.setVipLastDay(0);
 
 		playerLoginOk.setHeart(1);
-//		int petNum = ServiceManager.getManager().getPetItemService().getPlayerPetNum(player.getId());
+		// int petNum =
+		// ServiceManager.getManager().getPetItemService().getPlayerPetNum(player.getId());
 		playerLoginOk.setPetNum(1);
 		return playerLoginOk;
 	}
@@ -555,65 +538,4 @@ public class ConnectSession extends Session {
 		return this.maxPlayer;
 	}
 
-	/**
-	 * 是否有长时间协议队列数量
-	 */
-	public boolean isHaveLongTimeAbstract(int sessionId) {
-		synchronized (longTimeAbstractSize) {
-			Integer size = longTimeAbstractSize.get(sessionId);
-			// System.out.println("IsHaveLongTimeAbstract sessionId:" +
-			// sessionId + "---size:" + size);
-			if (null != size) {
-				return size > 0;
-			}
-			return false;
-		}
-	}
-
-	/**
-	 * 增加长时间协议队列数量
-	 */
-	public void addLongTimeAbstract(int sessionId) {
-		synchronized (longTimeAbstractSize) {
-			Integer size = longTimeAbstractSize.get(sessionId);
-			// System.out.println("AddLongTimeAbstract sessionId:" + sessionId +
-			// "---size:" + size);
-			if (null != size) {
-				longTimeAbstractSize.put(sessionId, ++size);
-			} else {
-				longTimeAbstractSize.put(sessionId, 1);
-			}
-		}
-	}
-
-	/**
-	 * 删减长时间协议队列数量
-	 */
-	public void removeLongTimeAbstract(int sessionId) {
-		synchronized (longTimeAbstractSize) {
-			Integer size = longTimeAbstractSize.get(sessionId);
-			// System.out.println("RemoveLongTimeAbstract sessionId:" +
-			// sessionId + "---size:" + size);
-			if (null != size) {
-				if (size > 1) {
-					longTimeAbstractSize.put(sessionId, --size);
-				} else {
-					longTimeAbstractSize.remove(sessionId);
-				}
-			}
-		}
-	}
-
-	/**
-	 * 移除长时间协议队列数量
-	 * 
-	 * @param sessionId
-	 */
-	public void deleteLongTimeAbstract(int sessionId) {
-		synchronized (longTimeAbstractSize) {
-			// System.out.println("deleteLongTimeAbstract sessionId:" +
-			// sessionId);
-			longTimeAbstractSize.remove(sessionId);
-		}
-	}
 }

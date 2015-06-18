@@ -7,7 +7,9 @@ import com.wyd.empire.world.Client;
 import com.wyd.empire.world.session.ConnectSession;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.handler.IDataHandler;
-
+/**
+ * 用户下线
+*/
 public class SessionClosedHandler implements IDataHandler {
 	Logger log;
 

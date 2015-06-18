@@ -6,7 +6,6 @@ import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 
 import com.wyd.empire.gameaccount.bean.Account;
-import com.wyd.empire.gameaccount.bean.Empireaccount;
 import com.wyd.empire.gameaccount.service.factory.ServiceFactory;
 import com.wyd.empire.gameaccount.session.AcceptSession;
 import com.wyd.empire.protocol.data.server.UpdateAccountInfo;

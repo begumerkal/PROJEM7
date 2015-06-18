@@ -8,7 +8,6 @@ import com.wyd.empire.protocol.Protocol;
  * @author doter
  */
 public class Login extends AbstractData {
-	private String 	udid;
 	private String 	accountName;
     private String 	passWord;
     private String 	version;		// 用版本字串来区分不同的主渠道
@@ -20,14 +19,6 @@ public class Login extends AbstractData {
     public Login() {
         super(Protocol.MAIN_ACCOUNT, Protocol.ACCOUNT_Login);
     }
-
-	public String getUdid() {
-		return udid;
-	}
-
-	public void setUdid(String udid) {
-		this.udid = udid;
-	}
 
 	public String getAccountName() {
 		return accountName;

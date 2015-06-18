@@ -3,9 +3,7 @@ package com.wyd.empire.world;
 public class Client {
 	private int sessionId = -1;
 	private int accountId = -1;
-	private int gameAccountId = -1;
 	private int playerId = -1;
-	private int tokenAmount = 0;
 	private String name;
 	private String udid;
 	private String password;
@@ -63,14 +61,6 @@ public class Client {
 		this.accountId = accountId;
 	}
 
-	public int getGameAccountId() {
-		return gameAccountId;
-	}
-
-	public void setGameAccountId(int gameAccountId) {
-		this.gameAccountId = gameAccountId;
-	}
-
 	public int getPlayerId() {
 		return playerId;
 	}
@@ -125,14 +115,6 @@ public class Client {
 
 	public void setChannel(int channel) {
 		this.channel = channel;
-	}
-
-	public void setTokenAmount(int tokenAmount) {
-		this.tokenAmount = tokenAmount;
-	}
-
-	public int getTokenAmount() {
-		return tokenAmount;
 	}
 
 	public String getUin() {

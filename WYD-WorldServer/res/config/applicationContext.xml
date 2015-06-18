@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd        
+        http://www.springframework.org/schema/data/mongo
+        http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd">
 
-<beans>
 	<!-- JDBC参数配置 -->
-	<bean
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
-		lazy-init="true">
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" lazy-init="true">
 		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
 		<property name="ignoreResourceNotFound" value="true" />
 		<property name="locations">
@@ -16,8 +20,7 @@
 	</bean>
 
 	<!-- 数据源配置 -->
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close">
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<!-- 设置JDBC驱动名称 -->
 		<property name="driverClassName" value="${jdbc.driver}" />
 		<!-- 设置JDBC连接URL -->
@@ -36,8 +39,7 @@
 		<property name="maxIdle" value="10" />
 	</bean>
 
-	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<!-- 配置Hibernate拦截器,自动填充数据的插入、更新时间 -->
 		<property name="dataSource" ref="dataSource" />
 		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
@@ -68,15 +70,13 @@
 	</bean>
 
 	<!-- world TransactionManager -->
-	<bean id="worldTransactionManager"
-		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+	<bean id="worldTransactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory">
 			<ref local="sessionFactory" />
 		</property>
 	</bean>
 
-	<bean id="worldBaseTransactionProxy"
-		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+	<bean id="worldBaseTransactionProxy" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
 		abstract="true">
 		<property name="transactionManager" ref="worldTransactionManager" />
 		<property name="transactionAttributes">
@@ -91,12 +91,43 @@
 			</props>
 		</property>
 	</bean>
+	<!-- mySql 配置结束 -->
+
+	<mongo:mongo host="127.0.0.1" port="27017" />
+	<!-- mongo的工厂，通过它来取得mongo实例,dbname为mongodb的数据库名，没有的话会自动创建 -->
+	<!-- mongo:db-factory dbname="log_msg" mongo-ref="mongo" username="test" password="123456"/ -->
+	<mongo:db-factory dbname="${mongodb.dbname}" mongo-ref="mongo" />
+
+	<!-- mongodb的主要操作对象，所有对mongodb的增删改查的操作都是通过它完成 -->
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
+	</bean>
+	<bean id="mongoRepositoryFactory" class="org.springframework.data.mongodb.repository.support.MongoRepositoryFactory">
+		<constructor-arg ref="mongoTemplate" />
+	</bean>
+
+	<!-- 映射转换器，扫描back-package目录下的文件，根据注释，把它们作为mongodb的一个collection的映射 -->
+	<mongo:mapping-converter base-package="com.mongo.entity,com.wyd.empire.world.bean" />
+	<!-- mongodb bean的仓库目录，会自动扫描扩展了MongoRepository接口的接口进行注入 -->
+	<mongo:repositories base-package="com.mongo.dao.impl,com.wyd.empire.world.dao.impl" />
+	<context:component-scan base-package="com.wyd.empire.world" />
+
+
+
+
+
+
+
+
+
+
+
+
 
 	<!-- world Service -->
 	<bean id="PlayerService" parent="worldBaseTransactionProxy">
 		<property name="target">
-			<bean
-				class="com.wyd.empire.world.server.service.base.impl.BasePlayerService">
+			<bean class="com.wyd.empire.world.server.service.base.impl.BasePlayerService">
 				<property name="playerDao">
 					<bean class="com.wyd.empire.world.dao.impl.PlayerDao">
 						<property name="sessionFactory" ref="sessionFactory" />
@@ -105,11 +136,10 @@
 			</bean>
 		</property>
 	</bean>
- 
+
 	<bean id="ChatRecordService" parent="worldBaseTransactionProxy">
 		<property name="target">
-			<bean
-				class="com.wyd.empire.world.server.service.base.impl.ChatRecordService">
+			<bean class="com.wyd.empire.world.server.service.base.impl.ChatRecordService">
 				<property name="dao">
 					<bean class="com.wyd.empire.world.dao.impl.ChatRecordDao">
 						<property name="sessionFactory" ref="sessionFactory" />
@@ -118,11 +148,10 @@
 			</bean>
 		</property>
 	</bean>
- 
+
 	<bean id="OperationConfigService" parent="worldBaseTransactionProxy">
 		<property name="target">
-			<bean
-				class="com.wyd.empire.world.server.service.base.impl.OperationConfigService">
+			<bean class="com.wyd.empire.world.server.service.base.impl.OperationConfigService">
 				<property name="dao">
 					<bean class="com.wyd.empire.world.dao.impl.OperationConfigDao">
 						<property name="sessionFactory" ref="sessionFactory" />
@@ -142,14 +171,13 @@
 			</bean>
 		</property>
 	</bean>
-  
- 
-   
+
+
+
 	<!-- 第三方渠道配置 by:zengxc -->
 	<bean id="ThirdConfigService" parent="worldBaseTransactionProxy">
 		<property name="target">
-			<bean
-				class="com.wyd.empire.world.server.service.base.impl.ThirdConfigService">
+			<bean class="com.wyd.empire.world.server.service.base.impl.ThirdConfigService">
 				<property name="dao">
 					<bean class="com.wyd.empire.world.dao.impl.ThirdConfigDao">
 						<property name="sessionFactory" ref="sessionFactory" />
@@ -159,6 +187,6 @@
 		</property>
 	</bean>
 
- 
- 
+
+
 </beans>

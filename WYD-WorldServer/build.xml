@@ -48,7 +48,6 @@
 				includes="**/*" />
 			<fileset dir="${config.res.dir}" defaultexcludes="true"
 				includes="**/*" />
-
 		</copy>
 	</target>
 	<target name="deploy">

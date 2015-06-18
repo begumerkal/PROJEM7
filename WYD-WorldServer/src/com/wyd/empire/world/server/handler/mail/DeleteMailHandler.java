@@ -35,8 +35,8 @@ public class DeleteMailHandler implements IDataHandler {
 				throw new Exception(Common.ERRORKEY + ErrorMessages.MAIL_DETELE_MESSAGE);
 			}
 			session.write(deleteMailOk);
-			ServiceManager.getManager().getMailService().deleteMail(player.getId(), deleteMail.getMailId(), player.getLevel());
-			ServiceManager.getManager().getMailService().sendMailStatus(player);
+//			ServiceManager.getManager().getEMailService().deleteMail(player.getId(), deleteMail.getMailId(), player.getLevel());
+//			ServiceManager.getManager().getEMailService().sendMailStatus(player);
 		} catch (Exception ex) {
 			if (null == ex.getMessage() || !ex.getMessage().startsWith(Common.ERRORKEY))
 				this.log.error(ex, ex);

@@ -8,9 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
+
 import com.wyd.empire.protocol.Protocol;
 import com.wyd.empire.protocol.data.bossmapbattle.OtherRewardOk;
 import com.wyd.empire.protocol.data.bossmapbattle.RewardOk;
@@ -58,6 +62,7 @@ import com.wyd.protocol.exception.ProtocolException;
  * 
  * @since JDK 1.6
  */
+@Service
 public class PlayerService implements Runnable {
 	public static final int DEFAULT_BAGSIZE = 45;
 	public static final int DEFAULT_BANKSIZE = 18;
@@ -501,11 +506,11 @@ public class PlayerService implements Runnable {
 			}
 			this.log.info("ID[" + worldPlayer.getId() + "]Level[" + worldPlayer.getLevel() + "] load from cache");
 		}
-		if (worldPlayer.getGameAccountId() == client.getGameAccountId()) {
+		if (worldPlayer.getGameAccountId() == client.getAccountId()) {
 			registry(worldPlayer);
 			return worldPlayer;
 		}
-		this.log.info("GAMEACCOUNTID[" + client.getGameAccountId() + "]FAIL TO LOGIN " + name);
+		this.log.info("GAMEACCOUNTID[" + client.getAccountId() + "]FAIL TO LOGIN " + name);
 		return null;
 	}
 
@@ -644,10 +649,7 @@ public class PlayerService implements Runnable {
 			} else {
 				player.getPlayer().setExp(dqexp);
 			}
-			String expRate = ServiceManager.getManager().getVersionService().getVersion().getExpRate();
-			savelog = "玩家增加经验：id=" + player.getId() + "---name=" + player.getName() + "---exp=" + exp + "-------当前经验:"
-					+ player.getPlayer().getExp() + "------当日胜利次数：" + player.getBattleNum() + "-----打折比例" + expRate;
-		} else {
+ 		} else {
 			if (player.getPlayer().getLevel() < WorldServer.config.getMaxLevel(player.getPlayer().getZsLevel())) {
 				player.getPlayer().setLevel(level + 1);
 				player.getPlayer().setExp(dqexp - sjexp);
@@ -1103,31 +1105,31 @@ public class PlayerService implements Runnable {
 		playerInfo.setPracticeAttributeExp((player.getPlayerInfo().getPracticeAttributeExp() == null || player.getPlayerInfo()
 				.getPracticeAttributeExp().equals("")) ? "0,0,0,0,0" : player.getPlayerInfo().getPracticeAttributeExp());
 		// 获得特殊标示
-		Map<String, Integer> map = ServiceManager.getManager().getVersionService().getSpecialMark();
-		// 使用勋章上限数
-		int useLimitNumber;
-		// 如果玩家配置每日使用勋章上限数默认为玩家当前等级
-		if (map.get("useLimitNumber") == null) {
-			useLimitNumber = player.getLevel();
-		} else {
-			useLimitNumber = map.get("useLimitNumber");
-		}
-		// 今日还可以使用勋章数
-		int useTodayNumber = 0;
-		// 每日重置今日勋章可用数
-		if (player.getPlayerInfo().getLastPracticeTime() == null
-				|| !DateUtil.isSameDate(player.getPlayerInfo().getLastPracticeTime(), new Date())) {
-			useTodayNumber = useLimitNumber;
-		} else {
-			useTodayNumber = player.getPlayerInfo().getUseTodayNumber();
-		}
-		playerInfo.setUseTodayNumber(useTodayNumber);
-		playerInfo.setUseLimitNumber(useLimitNumber);
-		// playerInfo.setPracticeStatus(player.getPlayerInfo().getPracticeStatus());
-		// 设置微博信息
-		setWeibo(player, playerInfo);
-		int petBarNum = 1;
-		playerInfo.setPetBarNum(petBarNum);
+//		Map<String, Integer> map = ServiceManager.getManager().getVersionService().getSpecialMark();
+//		// 使用勋章上限数
+//		int useLimitNumber;
+//		// 如果玩家配置每日使用勋章上限数默认为玩家当前等级
+//		if (map.get("useLimitNumber") == null) {
+//			useLimitNumber = player.getLevel();
+//		} else {
+//			useLimitNumber = map.get("useLimitNumber");
+//		}
+//		// 今日还可以使用勋章数
+//		int useTodayNumber = 0;
+//		// 每日重置今日勋章可用数
+//		if (player.getPlayerInfo().getLastPracticeTime() == null
+//				|| !DateUtil.isSameDate(player.getPlayerInfo().getLastPracticeTime(), new Date())) {
+//			useTodayNumber = useLimitNumber;
+//		} else {
+//			useTodayNumber = player.getPlayerInfo().getUseTodayNumber();
+//		}
+//		playerInfo.setUseTodayNumber(useTodayNumber);
+//		playerInfo.setUseLimitNumber(useLimitNumber);
+//		// playerInfo.setPracticeStatus(player.getPlayerInfo().getPracticeStatus());
+//		// 设置微博信息
+//		setWeibo(player, playerInfo);
+//		int petBarNum = 1;
+//		playerInfo.setPetBarNum(petBarNum);
 		player.sendData(playerInfo);
 	}
 

@@ -4,20 +4,29 @@ public class Protocol {
 	public static final byte ERROR_ProtocolError = -1;
 	/** 服务器间的消息协议 */
 	public static final byte MAIN_SERVER = 1;
-	public static final byte SERVER_WorldServerToAccountServer = 1;
-
-	public static final byte SERVER_ServerLogin = 2;
-	public static final byte SERVER_ServerLoginOk = 3;
-	public static final byte SERVER_ServerLoginFailed = 4;
+	public static final byte SERVER_WorldServerToAccountServer = 1;//world 链接账号服务
+	public static final byte SERVER_DispatchLogin = 2;//dis链接world
+	public static final byte SERVER_UpdateServerInfo = 3;//dis告知ipd 服务器信息-服务已开启
+	public static final byte SERVER_NotifyMaxPlayer = 4;//world告知dis人数
+	public static final byte SERVER_SyncLoad = 5;// dis告知ipd在线人数等情况
+	public static final byte SERVER_AccountLogin = 6;
+	public static final byte SERVER_AccountLoginOk = 7;
+	public static final byte SERVER_SessionClosed = 8;//dis告知world 用户下线
+	public static final byte SERVER_SetClientIPAddress = 9;//用户链接dis告知world 用户ip
+	
+	
+	
+	public static final byte SERVER_ServerLogin = 100;
+	public static final byte SERVER_ServerLoginOk = 100;
+	public static final byte SERVER_ServerLoginFailed = 100;
 	// 用户层级登录（GameServer->GameAccountServer->AccountServer)
-	public static final byte SERVER_LegacyFindPasswordOk = 5;
-	public static final byte SERVER_LegacyFindPassword = 6;
-	public static final byte SERVER_LegacyModifyPassword = 7;
+	public static final byte SERVER_LegacyFindPasswordOk = 100;
+	public static final byte SERVER_LegacyFindPassword = 100;
+	public static final byte SERVER_LegacyModifyPassword = 100;
 	public static final byte SERVER_LegacyModifyPasswordOk = 8;
 	public static final byte SERVER_LegacyRegister = 9;
 	public static final byte SERVER_LegacyRegisterOk = 10;
-	public static final byte SERVER_LegacyLogin = 11;
-	public static final byte SERVER_LegacyLoginOk = 12;
+
 	public static final byte SERVER_LegacyLogout = 13; // 登出(暂没使用)
 	public static final byte SERVER_PlayerLogout = 14; // 玩家登出(主要用这个协议通知)
 	public static final byte SERVER_LegacyVerification = 15;
@@ -39,20 +48,20 @@ public class Protocol {
 	public static final byte SERVER_AddRecommendBalance = 74;
 	public static final byte SERVER_ChangeStatus = 75;
 	public static final byte SERVER_ChangeStatusOk = 76;
-	public static final byte SERVER_SessionClosed = 77;
-	public static final byte SERVER_DispatchLogin = 78;
-	public static final byte SERVER_NotifyMaxPlayer = 79;
+	
+	
+	
 	public static final byte SERVER_NotifyMaintance = 80;
 	public static final byte SERVER_SendAddress = 81;
-	public static final byte SERVER_SyncLoad = 82;// 通知ｉｐｄ在线人数等情况
-	public static final byte SERVER_SetClientIPAddress = 83;
+	
+	
 	// 更新服务器信息 版本
-	public static final byte SERVER_UpdateServerInfo = 91;
+	
 	public static final byte SERVER_UpdateAccountInfo = 92;
 	public static final byte SERVER_UpdateAccountInfoOk = 93;
 
 	/** GM帐户协议和相关管理协议 */
-	public static final byte MAIN_ADMIN = 3;
+	public static final byte MAIN_ADMIN = 2;
 	public static final byte ADMIN_Login = 1;
 	public static final byte ADMIN_LoginResult = 2;
 	public static final byte ADMIN_GivenItems = 3;
@@ -88,17 +97,25 @@ public class Protocol {
 	public static final byte ADMIN_UpdateGPSServerConfigure = 33;
 	public static final byte ADMIN_UpdateGPSServerConfigureOk = 34;
 	/** 用户帐号相关协议（客户端共享） */
-	public static final byte MAIN_ACCOUNT = 10;
-	public static final byte ACCOUNT_Register = 1;
-	public static final byte ACCOUNT_RegisterOk = 2;
-	public static final byte ACCOUNT_RegisterFail = 3;
+	public static final byte MAIN_ACCOUNT = 3;
+	public static final byte ACCOUNT_Login = 1;//用户登录
+	public static final byte ACCOUNT_LoginOk = 2;//登录成功
+	public static final byte ACCOUNT_RepeatLogin = 3;//主账号重复登录
+
+	
+	
+	
+	
+	
+	public static final byte ACCOUNT_Register = 100;
+	public static final byte ACCOUNT_RegisterOk = 100;
+	public static final byte ACCOUNT_RegisterFail = 100;
 	public static final byte ACCOUNT_CreateRoleActor = 10;
 	public static final byte ACCOUNT_GetRoleActorList = 12;
 	public static final byte ACCOUNT_SendRoleActorList = 13;
 	public static final byte ACCOUNT_ChannelLogin = 15;
 	public static final byte ACCOUNT_ChannelLoginResult = 16;
-	public static final byte ACCOUNT_Login = 20;
-	public static final byte ACCOUNT_LoginOk = 21;
+
 	public static final byte ACCOUNT_RoleActorLogin = 22;
 	public static final byte ACCOUNT_RoleActorLoginOk = 23;
 	public static final byte ACCOUNT_GetRandomName = 24;
@@ -106,7 +123,6 @@ public class Protocol {
 	public static final byte ACCOUNT_SetToken = 26;
 	public static final byte ACCOUNT_LoginAgain = 30;
 	public static final byte ACCOUNT_LoginFail = 32;
-	public static final byte ACCOUNT_RepeatLogin = 33;
 	public static final byte ACCOUNT_ModifyPassword = 50;
 	public static final byte ACCOUNT_ModifyPasswordOk = 51;
 	public static final byte ACCOUNT_FindPassword = 52;

@@ -32,7 +32,7 @@ public class GetInboxMailNewHandler implements IDataHandler {
 		try {
 			int nearbyId = player.getPlayerInfo().getNearbyId();
  
-				ServiceManager.getManager().getMailService().receivedMailList(player, getInboxMailNew.getPageNumber(), null);
+//				ServiceManager.getManager().getMailService().receivedMailList(player, getInboxMailNew.getPageNumber(), null);
 		} catch (Exception ex) {
 			this.log.error(ex, ex);
 			throw new ProtocolException(ErrorMessages.MAIL_LIST_MESSAGE, data.getSerial(), data.getSessionId(), data.getType(),

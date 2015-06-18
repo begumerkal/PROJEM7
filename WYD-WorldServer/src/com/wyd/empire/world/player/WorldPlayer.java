@@ -1522,7 +1522,7 @@ public class WorldPlayer {
 	 * @return
 	 */
 	public boolean isNewPlayer() {
-		return player.getLevel() <= ServiceManager.getManager().getVersionService().getVersion().getNewPlayerLevel();
+		return false;
 	}
 
 	public long getLastSendMailTime() {

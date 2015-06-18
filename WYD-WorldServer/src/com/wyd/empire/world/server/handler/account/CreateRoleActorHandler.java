@@ -39,12 +39,12 @@ public class CreateRoleActorHandler implements IDataHandler {
 			client.setStatus(Client.STATUS.CREATEPLAYE);
 		}
 		try {
-			List<Player> list = ServiceManager.getManager().getPlayerService().getPlayerList(client.getGameAccountId());
+			List<Player> list = ServiceManager.getManager().getPlayerService().getPlayerList(client.getAccountId());
 			if (null == list || list.isEmpty()) {
 				Player player = ServiceManager
 						.getManager()
 						.getPlayerService()
-						.createPlayer(client.getGameAccountId(), createActor.getPlayerName(), createActor.getPlayerSex(),
+						.createPlayer(client.getAccountId(), createActor.getPlayerName(), createActor.getPlayerSex(),
 								client.getChannel(), client.getName());
 				Mail mail = new Mail();
 				mail.setBlackMail(false);
@@ -58,7 +58,8 @@ public class CreateRoleActorHandler implements IDataHandler {
 				mail.setTheme(TipMessages.SYS_MAIL);
 				mail.setType(1);
 				mail.setIsStick(1);
-				ServiceManager.getManager().getMailService().saveMail(mail, null);
+//				ServiceManager.getManager().getMailService().saveMail(mail, null);
+				
 				if (createActor.getArea() != null && createActor.getArea().length() > 0) {
 					String area = createActor.getArea().substring(1);
 					area = URLDecoder.decode(area, "UTF-8");
@@ -82,7 +83,7 @@ public class CreateRoleActorHandler implements IDataHandler {
 
 						// 发送账号服务器
 						SetClientInfo setClientInfo = new SetClientInfo();
-						setClientInfo.setAccountId(client.getGameAccountId());
+						setClientInfo.setAccountId(client.getAccountId());
 						setClientInfo.setClientModel(clientModel);
 						setClientInfo.setSystemName(systemName);
 						setClientInfo.setSystemVersion(systemVersion);

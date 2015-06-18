@@ -208,7 +208,7 @@ public class ChatService {
 		receiveMessage.setReveId(receivePlayer.getId());
 		receiveMessage.setReveName(receivePlayer.getName());
 		player.sendData(receiveMessage);
- 
+
 		receivePlayer.sendData(receiveMessage);
 	}
 
@@ -220,24 +220,19 @@ public class ChatService {
 	 */
 	public void sendMessageToWorld(ReceiveMessage receiveMessage, WorldPlayer player) {
 		receiveMessage.setTime(getTime());
- 
-			receiveMessage.setChannel(CHANNEL_SYSTEM);
-			receiveMessage.setSendName(TipMessages.SYSNAME_MESSAGE);
-			receiveMessage.setReveId(player.getId());
-			receiveMessage.setReveName(player.getName());
-			receiveMessage.setMessage(ErrorMessages.CHAT_LABA);
-			player.sendData(receiveMessage);
- 
-			try {
-				// 发世界聊天加经验
-				ServiceManager.getManager().getPlayerService()
-						.updatePlayerEXP(player, ServiceManager.getManager().getVersionService().getWorldChatExp());
-			} catch (Exception e) {
-				log.error(e, e);
-			}
-//			ServiceManager.getManager().getTaskService().useSomething(player, hornId, 1);
-//			ServiceManager.getManager().getTitleService().useSomething(player, hornId);
-//			ServiceManager.getManager().getTaskService().chat(player, 1);
+
+		receiveMessage.setChannel(CHANNEL_SYSTEM);
+		receiveMessage.setSendName(TipMessages.SYSNAME_MESSAGE);
+		receiveMessage.setReveId(player.getId());
+		receiveMessage.setReveName(player.getName());
+		receiveMessage.setMessage(ErrorMessages.CHAT_LABA);
+		player.sendData(receiveMessage);
+
+		// ServiceManager.getManager().getTaskService().useSomething(player,
+		// hornId, 1);
+		// ServiceManager.getManager().getTitleService().useSomething(player,
+		// hornId);
+		// ServiceManager.getManager().getTaskService().chat(player, 1);
 	}
 
 	/**
@@ -333,69 +328,78 @@ public class ChatService {
 	 * @param player
 	 */
 	public void sendMessageToCurrent(ReceiveMessage receiveMessage, WorldPlayer player) {
-//		receiveMessage.setTime(getTime());
-//		receiveMessage.setSendId(player.getId());
-//		if (ChatService.CHAT_STATUS1 != player.getPlayer().getChatStatus()
-//				&& player.getPlayer().getProhibitTime().getTime() > System.currentTimeMillis()) {
-//			player.sendData(receiveMessage);
-//			return;
-//		}
-//		if (player.getBattleId() != 0) {
-//			if (player.getBattleId() > 0) {
-//				BattleTeam battleTeam = ServiceManager.getManager().getBattleTeamService().getBattleTeam(player.getBattleId());
-//				if (null != battleTeam) {
-//					for (Combat combat : battleTeam.getCombatList()) {
-//						if (!combat.isRobot() && !combat.isLost() && null != combat.getPlayer()) {
-//							combat.getPlayer().sendData(receiveMessage);
-//						}
-//					}
-//				}
-//			} else {
-//				ServiceManager.getManager().getCrossService().sendMessage(player.getBattleId(), receiveMessage);
-//			}
-//		} else if (player.getBossmapBattleId() > 0) {
-//			BossBattleTeam battleTeam = ServiceManager.getManager().getBossBattleTeamService().getBattleTeam(player.getBossmapBattleId());
-//			if (null != battleTeam) {
-//				Vector<Combat> combatList = battleTeam.getCombatList();
-//				for (Combat combat : combatList) {
-//					if (!combat.isRobot() && !combat.isLost() && null != combat.getPlayer()) {
-//						combat.getPlayer().sendData(receiveMessage);
-//					}
-//				}
-//			}
-//		} else if (player.getRoomId() > 0) {
-//			Room room = ServiceManager.getManager().getRoomService().getRoom(player.getRoomId());
-//			if (null != room) {
-//				Vector<Seat> seatList = room.getPlayerList();
-//				for (Seat seat : seatList) {
-//					if (null != seat.getPlayer() && !seat.isRobot()) {
-//						seat.getPlayer().sendData(receiveMessage);
-//					}
-//				}
-//			}
-//		} else if (player.getBossmapRoomId() > 0) {
-//			BossRoom bossmapRoom = ServiceManager.getManager().getBossRoomService().getRoom(player.getBossmapRoomId());
-//			if (null != bossmapRoom) {
-//				List<BossSeat> seatList = bossmapRoom.getPlayerList();
-//				for (BossSeat seat : seatList) {
-//					if (null != seat.getPlayer()) {
-//						seat.getPlayer().sendData(receiveMessage);
-//					}
-//				}
-//			}
-//		} else {
-//			StringBuffer channelContent = new StringBuffer(CHAT_CURRENT_CHANNEL);
-//			channelContent.append("_");
-//			channelContent.append(player.getChannelId());
-//			if (Common.GAME_INTERFACE_HALL == player.getChannelId()) {// 玩家在游戏大厅做特殊处理
-//				channelContent.append(player.getBattleChannel());
-//			}
-//			BroadCast broadCast = new BroadCast();
-//			broadCast.setChannel(channelContent.toString());
-//			broadCast.setData(ProtocolManager.makeSegment(receiveMessage).getPacketByteArray());
-//			ServiceManager.getManager().getConnectService().broadcast(broadCast);
-//		}
-//		ServiceManager.getManager().getTaskService().chat(player, 2);
+		// receiveMessage.setTime(getTime());
+		// receiveMessage.setSendId(player.getId());
+		// if (ChatService.CHAT_STATUS1 != player.getPlayer().getChatStatus()
+		// && player.getPlayer().getProhibitTime().getTime() >
+		// System.currentTimeMillis()) {
+		// player.sendData(receiveMessage);
+		// return;
+		// }
+		// if (player.getBattleId() != 0) {
+		// if (player.getBattleId() > 0) {
+		// BattleTeam battleTeam =
+		// ServiceManager.getManager().getBattleTeamService().getBattleTeam(player.getBattleId());
+		// if (null != battleTeam) {
+		// for (Combat combat : battleTeam.getCombatList()) {
+		// if (!combat.isRobot() && !combat.isLost() && null !=
+		// combat.getPlayer()) {
+		// combat.getPlayer().sendData(receiveMessage);
+		// }
+		// }
+		// }
+		// } else {
+		// ServiceManager.getManager().getCrossService().sendMessage(player.getBattleId(),
+		// receiveMessage);
+		// }
+		// } else if (player.getBossmapBattleId() > 0) {
+		// BossBattleTeam battleTeam =
+		// ServiceManager.getManager().getBossBattleTeamService().getBattleTeam(player.getBossmapBattleId());
+		// if (null != battleTeam) {
+		// Vector<Combat> combatList = battleTeam.getCombatList();
+		// for (Combat combat : combatList) {
+		// if (!combat.isRobot() && !combat.isLost() && null !=
+		// combat.getPlayer()) {
+		// combat.getPlayer().sendData(receiveMessage);
+		// }
+		// }
+		// }
+		// } else if (player.getRoomId() > 0) {
+		// Room room =
+		// ServiceManager.getManager().getRoomService().getRoom(player.getRoomId());
+		// if (null != room) {
+		// Vector<Seat> seatList = room.getPlayerList();
+		// for (Seat seat : seatList) {
+		// if (null != seat.getPlayer() && !seat.isRobot()) {
+		// seat.getPlayer().sendData(receiveMessage);
+		// }
+		// }
+		// }
+		// } else if (player.getBossmapRoomId() > 0) {
+		// BossRoom bossmapRoom =
+		// ServiceManager.getManager().getBossRoomService().getRoom(player.getBossmapRoomId());
+		// if (null != bossmapRoom) {
+		// List<BossSeat> seatList = bossmapRoom.getPlayerList();
+		// for (BossSeat seat : seatList) {
+		// if (null != seat.getPlayer()) {
+		// seat.getPlayer().sendData(receiveMessage);
+		// }
+		// }
+		// }
+		// } else {
+		// StringBuffer channelContent = new StringBuffer(CHAT_CURRENT_CHANNEL);
+		// channelContent.append("_");
+		// channelContent.append(player.getChannelId());
+		// if (Common.GAME_INTERFACE_HALL == player.getChannelId()) {//
+		// 玩家在游戏大厅做特殊处理
+		// channelContent.append(player.getBattleChannel());
+		// }
+		// BroadCast broadCast = new BroadCast();
+		// broadCast.setChannel(channelContent.toString());
+		// broadCast.setData(ProtocolManager.makeSegment(receiveMessage).getPacketByteArray());
+		// ServiceManager.getManager().getConnectService().broadcast(broadCast);
+		// }
+		// ServiceManager.getManager().getTaskService().chat(player, 2);
 	}
 
 	/**
@@ -442,7 +446,7 @@ public class ChatService {
 				player.sendData(receiveMessage);
 				return;
 			}
- 
+
 		}
 	}
 
@@ -488,8 +492,7 @@ public class ChatService {
 	 * @param player
 	 */
 	public void wellcomVIP(WorldPlayer player) {
-		if (ServiceManager.getManager().getVersionService().isOpenWellcomVIPBulletin() && player.isVip()
-				&& player.getPlayer().getVipLevel() > 8) {
+		if (player.isVip() && player.getPlayer().getVipLevel() > 8) {
 			String[] contents = TipMessages.VIPONLINEBULLETIN.split("&");
 			String content = contents[ServiceUtils.getRandomNum(0, contents.length)];
 			content = content.replace("***", player.getPlayer().getVipLevel().toString());

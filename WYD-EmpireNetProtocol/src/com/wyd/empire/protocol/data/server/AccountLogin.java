@@ -1,22 +1,20 @@
 package com.wyd.empire.protocol.data.server;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.empire.protocol.Protocol;
-public class LegacyLogin extends AbstractData {
+public class AccountLogin extends AbstractData {
 
 	private String name;
 	private String password;
 	private int channel; // 渠道ID
+	private String ip;
 
-	public LegacyLogin(int sessionId, int serial) {
-		super(Protocol.MAIN_SERVER, Protocol.SERVER_LegacyLogin, sessionId, serial);
+	public AccountLogin(int sessionId, int serial) {
+		super(Protocol.MAIN_SERVER, Protocol.SERVER_AccountLogin, sessionId, serial);
 	}
 
-	public LegacyLogin() {
-		super(Protocol.MAIN_SERVER, Protocol.SERVER_LegacyLogin);
+	public AccountLogin() {
+		super(Protocol.MAIN_SERVER, Protocol.SERVER_AccountLogin);
 	}
-
-	
- 
 
 	public String getName() {
 		return this.name;
@@ -41,4 +39,14 @@ public class LegacyLogin extends AbstractData {
 	public void setChannel(int channel) {
 		this.channel = channel;
 	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+	
+	
 }
