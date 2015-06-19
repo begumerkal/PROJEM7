@@ -52,9 +52,9 @@ public abstract class SessionHandler implements IoHandler {
 					// System.out.println("receive data class name:" +
 					// dataobj.getClass().getName());
 					dataobj.setHandlerSource(session);
-					HandlerMonitorService.addMonitor(dataobj);
+//					HandlerMonitorService.addMonitor(dataobj);
 					AbstractData abstractData = handler.handle(dataobj);
-					HandlerMonitorService.delMonitor(dataobj);
+//					HandlerMonitorService.delMonitor(dataobj);
 					if (abstractData != null)
 						session.write(abstractData);
 				} catch (ProtocolException e) {

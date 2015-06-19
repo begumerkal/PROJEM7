@@ -56,27 +56,18 @@ public class WorldServer {
 		long time = System.currentTimeMillis();
 		// 加载协议BeanData和Handler类及对象
 		ProtocolFactory.init(Protocol.class, "com.wyd.empire.protocol.data", "com.wyd.empire.world.server.handler");
-
 		context = new ClassPathXmlApplicationContext(new String[]{"applicationContext.xml", "application-scheduling.xml"});
 		ServiceManager sm = context.getBean(ServiceManager.class);
 		ServiceManager.setServiceManager(sm);
 
 		// 加载configWorld.properties配置,读取配置文件内最大等级限制
 		Configuration configuration = ServiceManager.getManager().getConfiguration();
-		WorldServer.config = new ServerConfig(configuration);
+		config = new ServerConfig(configuration);
 		// 初始化基础数据
 		// ServiceManager.getManager().initBaseData();
 		// 初始化进程
 		ServiceManager.getManager().init();
-		// // 初始化游戏日志服务
-		// ServiceManager.getManager().getLogSerivce().initialLogService();
-		// // 初始化首冲奖励、抽奖列表
-		// ServiceManager.getManager().getRechargeRewardService().findInitList();
-		// // 初始化自定义推荐列表
-		// ServiceManager.getManager().getShopItemService().getRecommendList();
-		// // 初始化排行榜数据
-		// ServiceManager.getManager().getLogSerivce().initialTopRecord();
-		// 是否在维护
+ 		// 是否在维护
 		String maintance = null;
 		maintance = configuration.getString("maintance");
 		if (maintance == null) {

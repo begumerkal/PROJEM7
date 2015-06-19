@@ -48,7 +48,6 @@ public class RoleActorLoginHandler implements IDataHandler {
 					// 设置玩家首次登录的mac地址
 					if (null == player.getPlayer().getMac() || player.getPlayer().getMac().length() < 1) {
 						// 推广用户激活
-						ServiceManager.getManager().getExtensionService().add(login.getMacCode());
 						player.getPlayer().setMac(login.getMacCode());
 					}
 					// 返回loginPlayerOk

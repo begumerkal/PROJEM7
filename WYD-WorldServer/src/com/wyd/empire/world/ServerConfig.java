@@ -5,9 +5,8 @@ import org.apache.commons.configuration.Configuration;
 public class ServerConfig {
 	private boolean isMaintance = true;
 	private int maxLevel;
-	private int zsMaxLevel;
 	private String area;
-    private String  areaId;
+	private String areaId;
 	private int machineCode = 0;
 	private String group;
 	private boolean cross;
@@ -16,11 +15,10 @@ public class ServerConfig {
 
 	public ServerConfig(Configuration configuration) {
 		maxLevel = configuration.getInt("maxlevel", 99);
-		zsMaxLevel = configuration.getInt("zsMaxlevel", 219);
 		setArea(configuration.getString("area"));
 		setMachineCode(configuration.getInt("machinecode"));
 		setAreaId(getArea() + "_" + getMachineCode());
-		setGroup(configuration.getString("group", "group1"));
+		setGroup(configuration.getString("group"));
 		setVersion(configuration.getString("version"));
 		String battleip = configuration.getString("battleip");
 		String battleport = configuration.getString("battleport");
@@ -48,12 +46,8 @@ public class ServerConfig {
 	 * 
 	 * @return
 	 */
-	public int getMaxLevel(int zsLevel) {
-		if (zsLevel > 0) {
-			return zsMaxLevel;
-		} else {
-			return maxLevel;
-		}
+	public int getMaxLevel() {
+		return maxLevel;
 	}
 
 	/**
@@ -92,7 +86,6 @@ public class ServerConfig {
 	public void setGroup(String group) {
 		this.group = group;
 	}
-
 
 	/**
 	 * 是否开启跨服战斗

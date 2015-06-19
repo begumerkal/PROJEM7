@@ -11,7 +11,6 @@ public class ConnectService implements Runnable {
 	private ConnectSession[] connects = new ConnectSession[10];
 	private NioSocketAcceptor acceptor;
 	private AtomicInteger ids = new AtomicInteger(1);
-	public long lastOperationTime = 0L;
 
 	public void start() {
 		Thread t = new Thread(this);
@@ -107,12 +106,13 @@ public class ConnectService implements Runnable {
 			if (this.connects[i] != null)
 				this.connects[i].kick(playerId);
 	}
-
+	/**
+	 * 通知dispatcher server 服务器最大玩家人数信息
+	 */
 	public void run() {
 		while (true) {
-			lastOperationTime = System.currentTimeMillis();
 			try {
-				Thread.sleep(90000L);
+				Thread.sleep(120000L);
 			} catch (InterruptedException ex) {
 			}
 			try {
@@ -125,20 +125,20 @@ public class ConnectService implements Runnable {
 		}
 	}
 
-//	/**
-//	 * 更新服务器版本
-//	 */
-//	public void UpdateVersion() {
-//		UpdateServerInfo updateVers = new UpdateServerInfo();
-//		updateVers.setArea(WorldServer.config.getArea());
-//		updateVers.setGroup(WorldServer.config.getGroup());
-//		updateVers.setMachine(WorldServer.config.getMachineCode() + "");
-//		updateVers.setVersion(VersionUtils.select("num"));
-//		updateVers.setUpdateurl(VersionUtils.select("updateurl"));
-//		updateVers.setRemark(VersionUtils.select("remark"));
-//		updateVers.setAppraisal(VersionUtils.select("appraisal"));
-//		for (int i = 0; i < this.connects.length; ++i)
-//			if (this.connects[i] != null)
-//				this.connects[i].write(updateVers);
-//	}
+	// /**
+	// * 更新服务器版本
+	// */
+	// public void UpdateVersion() {
+	// UpdateServerInfo updateVers = new UpdateServerInfo();
+	// updateVers.setArea(WorldServer.config.getArea());
+	// updateVers.setGroup(WorldServer.config.getGroup());
+	// updateVers.setMachine(WorldServer.config.getMachineCode() + "");
+	// updateVers.setVersion(VersionUtils.select("num"));
+	// updateVers.setUpdateurl(VersionUtils.select("updateurl"));
+	// updateVers.setRemark(VersionUtils.select("remark"));
+	// updateVers.setAppraisal(VersionUtils.select("appraisal"));
+	// for (int i = 0; i < this.connects.length; ++i)
+	// if (this.connects[i] != null)
+	// this.connects[i].write(updateVers);
+	// }
 }

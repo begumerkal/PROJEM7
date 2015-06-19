@@ -1,5 +1,4 @@
 package com.wyd.empire.world.server.service.impl;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -10,45 +9,19 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import com.wyd.empire.protocol.Protocol;
-import com.wyd.empire.protocol.data.bossmapbattle.OtherRewardOk;
-import com.wyd.empire.protocol.data.bossmapbattle.RewardOk;
 import com.wyd.empire.protocol.data.cache.UpdatePlayer;
-import com.wyd.empire.protocol.data.exchange.ResponseRefresh;
-import com.wyd.empire.protocol.data.player.RechargeCritResultOk;
 import com.wyd.empire.protocol.data.player.UpdatePlayerLevel;
-import com.wyd.empire.protocol.data.purchase.BuyFailed;
-import com.wyd.empire.protocol.data.purchase.BuySuccess;
-import com.wyd.empire.protocol.data.trate.BuyResult;
-import com.wyd.empire.protocol.data.vip.VipReceiveInfo;
-import com.wyd.empire.protocol.data.wedding.RemoveEngagementOK;
-import com.wyd.empire.protocol.data.wedding.RemoveEngagementToCouple;
 import com.wyd.empire.world.Client;
 import com.wyd.empire.world.WorldServer;
-import com.wyd.empire.world.bean.LoginReward;
-import com.wyd.empire.world.bean.Mail;
-import com.wyd.empire.world.bean.MarryRecord;
-import com.wyd.empire.world.bean.OperationConfig;
 import com.wyd.empire.world.bean.Player;
-import com.wyd.empire.world.bean.PlayerBill;
-import com.wyd.empire.world.bean.PlayerInfo;
-import com.wyd.empire.world.bean.PlayerPet;
 import com.wyd.empire.world.bean.PlayerPicture;
-import com.wyd.empire.world.bean.PlayerSinConsortia;
-import com.wyd.empire.world.bean.RechargeCrit;
-import com.wyd.empire.world.bean.Rewardrecord;
-import com.wyd.empire.world.bean.ShopItem;
-import com.wyd.empire.world.bean.ShopItemsPrice;
 import com.wyd.empire.world.common.util.Common;
-import com.wyd.empire.world.common.util.DateUtil;
 import com.wyd.empire.world.common.util.KeywordsUtil;
 import com.wyd.empire.world.common.util.ServiceUtils;
-import com.wyd.empire.world.common.util.ServiceUtils.RewardInfo;
 import com.wyd.empire.world.exception.CreatePlayerException;
 import com.wyd.empire.world.exception.ErrorMessages;
 import com.wyd.empire.world.exception.TipMessages;
@@ -64,8 +37,6 @@ import com.wyd.protocol.exception.ProtocolException;
  */
 @Service
 public class PlayerService implements Runnable {
-	public static final int DEFAULT_BAGSIZE = 45;
-	public static final int DEFAULT_BANKSIZE = 18;
 	public static final int OUT_TIME = 60000; // 自动断线时间
 	private Logger log = Logger.getLogger(PlayerService.class);
 	private Logger onlineLog = Logger.getLogger("onlineLog");
@@ -650,7 +621,7 @@ public class PlayerService implements Runnable {
 				player.getPlayer().setExp(dqexp);
 			}
  		} else {
-			if (player.getPlayer().getLevel() < WorldServer.config.getMaxLevel(player.getPlayer().getZsLevel())) {
+			if (player.getPlayer().getLevel() < WorldServer.config.getMaxLevel()) {
 				player.getPlayer().setLevel(level + 1);
 				player.getPlayer().setExp(dqexp - sjexp);
 				try {

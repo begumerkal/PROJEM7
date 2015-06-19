@@ -12,7 +12,6 @@ import com.wyd.empire.world.server.service.impl.AbstractService;
 import com.wyd.empire.world.server.service.impl.ChatService;
 import com.wyd.empire.world.server.service.impl.ConnectService;
 import com.wyd.empire.world.server.service.impl.CrossService;
-import com.wyd.empire.world.server.service.impl.ExtensionService;
 import com.wyd.empire.world.server.service.impl.OrderSerialService;
 import com.wyd.empire.world.server.service.impl.PlayerService;
 import com.wyd.empire.world.server.service.impl.SendMailService;
@@ -21,7 +20,7 @@ import com.wyd.empire.world.skeleton.AccountSkeleton;
 import com.wyd.empire.world.skeleton.BattleSkeleton;
 import com.wyd.net.DefaultRequestService;
 import com.wyd.net.IRequestService;
-import com.wyd.session.HandlerMonitorService;
+
 @Service
 public class ServiceManager {
 	private static ServiceManager serviceManager;
@@ -32,7 +31,6 @@ public class ServiceManager {
 	private AccountSkeleton accountSkeleton = null;
 	private BattleSkeleton battleSkeleton = null;
 	private ConnectService connectService;
-	private HandlerMonitorService msghandlerMonitor;
 	private TheadPlayerItemsService theadPlayerItemsService;
 
 	@Autowired
@@ -41,8 +39,6 @@ public class ServiceManager {
 	private PlayerService playerService;// 游戏角色服务
 	@Autowired
 	private ChatService chatService;// 聊天服务管理对象
-	@Autowired
-	private ExtensionService extensionService;// 推广渠道激活服务
 	@Autowired
 	private SendMailService sendMailService;// 发送电子邮件服务
 	@Autowired
@@ -62,31 +58,10 @@ public class ServiceManager {
 			this.connectService = new ConnectService();
 			// 游戏角色服务
 			this.playerService = new PlayerService();
-			// 消息处理监控线程
-			this.msghandlerMonitor = new HandlerMonitorService();
-
-			// this.versionService = new
-			// VersionService((IOperationConfigService)
-			// context.getBean("OperationConfigService"));
-			// 聊天服务管理对象
-			this.chatService = new ChatService();
-			// 公告管理对象
-			// 邮件批量发送服务
-			this.mailService = new MailService();
-			// 推广渠道激活服务
-			this.extensionService = new ExtensionService();
-
-			// 发送电子邮件服务
-			this.sendMailService = new SendMailService();
-			this.orderSerialService = new OrderSerialService();
-			// 跨服对战相关服务
-			this.crossService = new CrossService();
 			// 包含http任务的线程池
 			this.httpThreadPool = new ThreadPool(20);
 			// 简单任务的线程池
 			this.simpleThreadPool = new ThreadPool(20);
-			// 协议处理线程
-			this.abstractService = new AbstractService();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -94,10 +69,8 @@ public class ServiceManager {
 	}
 
 	public void init() {
-		this.connectService.start();
-		this.msghandlerMonitor.start();
+		this.connectService.start();// 通知dispatcher server 服务器最大玩家人数信息
 		this.playerService.start();
-		this.extensionService.start();
 		this.sendMailService.start();
 	}
 
@@ -141,10 +114,6 @@ public class ServiceManager {
 		return this.configuration;
 	}
 
-	public HandlerMonitorService getHandlerMonitor() {
-		return msghandlerMonitor;
-	}
-
 	public ChatService getChatService() {
 		return chatService;
 	}
@@ -164,13 +133,6 @@ public class ServiceManager {
 	 */
 	public MailService getSendMailService() {
 		return mailService;
-	}
-
-	/**
-	 * 推广渠道激活服务
-	 */
-	public ExtensionService getExtensionService() {
-		return extensionService;
 	}
 
 	/**

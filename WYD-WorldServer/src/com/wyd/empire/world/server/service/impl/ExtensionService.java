@@ -8,6 +8,9 @@ import org.apache.commons.httpclient.NameValuePair;
 import com.wyd.empire.world.common.util.HttpClientUtil;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 
+/**
+ * 推广渠道激活服务
+ */
 public class ExtensionService implements Runnable {
 	// 激活验证地址
 	private static String extensionUrl = null;

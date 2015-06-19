@@ -409,7 +409,7 @@ public class ConnectSession extends Session {
 		playerLoginOk.setPlayerId(player.getId());
 		playerLoginOk.setPlayerName(player.getName());
 		playerLoginOk.setTickets(player.getDiamond());
-		playerLoginOk.setMaxLevel(WorldServer.config.getMaxLevel(player.getPlayer().getZsLevel()));
+		playerLoginOk.setMaxLevel(WorldServer.config.getMaxLevel());
 		playerLoginOk.setPlayerHp(player.getMaxHP());
 		playerLoginOk.setPlayerDefend(player.getDefend());
 		playerLoginOk.setPlayerDefense(player.getCrit());
