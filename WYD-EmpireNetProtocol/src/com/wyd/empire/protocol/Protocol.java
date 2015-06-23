@@ -4,18 +4,17 @@ public class Protocol {
 	public static final byte ERROR_ProtocolError = -1;
 	/** 服务器间的消息协议 */
 	public static final byte MAIN_SERVER = 1;
-	public static final byte SERVER_WorldServerToAccountServer = 1;//world 链接账号服务
-	public static final byte SERVER_DispatchLogin = 2;//dis链接world
-	public static final byte SERVER_UpdateServerInfo = 3;//dis告知ipd 服务器信息-服务已开启
-	public static final byte SERVER_NotifyMaxPlayer = 4;//world告知dis人数
-	public static final byte SERVER_SyncLoad = 5;// dis告知ipd在线人数等情况
-	public static final byte SERVER_AccountLogin = 6;
-	public static final byte SERVER_AccountLoginOk = 7;
-	public static final byte SERVER_SessionClosed = 8;//dis告知world 用户下线
-	public static final byte SERVER_SetClientIPAddress = 9;//用户链接dis告知world 用户ip
-	
-	
-	
+	public static final byte SERVER_Heartbeat = 1;// 服务器间心跳
+	public static final byte SERVER_WorldServerToAccountServer = 2;// world链接账号服务
+	public static final byte SERVER_DispatchLogin = 3;// dis链接world
+	public static final byte SERVER_UpdateServerInfo = 4;// dis告知ipd 服务器信息-服务已开启
+	public static final byte SERVER_NotifyMaxPlayer = 5;// world告知dis人数
+	public static final byte SERVER_SyncLoad = 6;// dis告知ipd在线人数等情况
+	public static final byte SERVER_AccountLogin = 7;
+	public static final byte SERVER_AccountLoginOk = 8;
+	public static final byte SERVER_SessionClosed = 9;// dis告知world 用户下线
+	public static final byte SERVER_SetClientIPAddress = 10;// 用户链接dis告知world用户ip
+
 	public static final byte SERVER_ServerLogin = 100;
 	public static final byte SERVER_ServerLoginOk = 100;
 	public static final byte SERVER_ServerLoginFailed = 100;
@@ -48,15 +47,12 @@ public class Protocol {
 	public static final byte SERVER_AddRecommendBalance = 74;
 	public static final byte SERVER_ChangeStatus = 75;
 	public static final byte SERVER_ChangeStatusOk = 76;
-	
-	
-	
+
 	public static final byte SERVER_NotifyMaintance = 80;
 	public static final byte SERVER_SendAddress = 81;
-	
-	
+
 	// 更新服务器信息 版本
-	
+
 	public static final byte SERVER_UpdateAccountInfo = 92;
 	public static final byte SERVER_UpdateAccountInfoOk = 93;
 
@@ -98,15 +94,10 @@ public class Protocol {
 	public static final byte ADMIN_UpdateGPSServerConfigureOk = 34;
 	/** 用户帐号相关协议（客户端共享） */
 	public static final byte MAIN_ACCOUNT = 3;
-	public static final byte ACCOUNT_Login = 1;//用户登录
-	public static final byte ACCOUNT_LoginOk = 2;//登录成功
-	public static final byte ACCOUNT_RepeatLogin = 3;//主账号重复登录
+	public static final byte ACCOUNT_Login = 1;// 用户登录
+	public static final byte ACCOUNT_LoginOk = 2;// 登录成功
+	public static final byte ACCOUNT_RepeatLogin = 3;// 主账号重复登录
 
-	
-	
-	
-	
-	
 	public static final byte ACCOUNT_Register = 100;
 	public static final byte ACCOUNT_RegisterOk = 100;
 	public static final byte ACCOUNT_RegisterFail = 100;
@@ -704,7 +695,7 @@ public class Protocol {
 	public static final byte SYSTEM_NOP = 1;
 	public static final byte SYSTEM_SYNC = 2;
 	public static final byte SYSTEM_HttpClose = 3;
-	public static final byte SYSTEM_ShakeHands = 4;
+	public static final byte SYSTEM_ShakeHands = 4;// 客户端对dis心跳
 	public static final byte SYSTEM_TopHands = 5;
 	public static final byte SYSTEM_GetIslandState = 7;
 	public static final byte SYSTEM_GetIslandStateOk = 8;

@@ -1,16 +1,15 @@
 package com.wyd.dispatch;
 import java.net.InetSocketAddress;
 
-import org.apache.commons.configuration.Configuration;
 import org.apache.log4j.Logger;
+import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 
-import com.wyd.empire.protocol.data.server.SendAddress;
+import com.wyd.empire.protocol.data.server.Heartbeat;
 import com.wyd.net.Connector;
 import com.wyd.protocol.data.DataBeanFilter;
 import com.wyd.protocol.s2s.S2SDecoder;
 import com.wyd.protocol.s2s.S2SEncoder;
-import com.wyd.protocol.utils.IpUtil;
 public class IpdConnector extends Connector {
 	private static final Logger log = Logger.getLogger(IpdConnector.class);
 
@@ -29,6 +28,7 @@ public class IpdConnector extends Connector {
 	 * 初始化过滤器
 	 */
 	public void init() {
+		this.config.setIdleTime(IdleStatus.BOTH_IDLE,120);
 		this.connector.getFilterChain().addLast("wyd2codec", new ProtocolCodecFilter(new S2SEncoder(), new S2SDecoder()));
 		this.connector.getFilterChain().addLast("wyd2databean", new DataBeanFilter());
 	}
@@ -40,6 +40,12 @@ public class IpdConnector extends Connector {
 	 */
 	@Override
 	protected void connected() {
+	}
+
+	@Override
+	protected void idle() {
+		Heartbeat heart = new Heartbeat();
+		send(heart);
 	}
 
 }

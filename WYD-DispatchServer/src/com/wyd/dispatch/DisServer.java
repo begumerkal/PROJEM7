@@ -47,7 +47,7 @@ public class DisServer {
 		String serverType = configuration.getConfiguration().getString("servertype");
 		// 加载允许访问ip段
 		this.trustIpService = new TrustIpService(serverType);
-		// 初始化ipd服务，启动Ipdservice ,作为客户端，连接ipd server
+		// 连接ipd server
 		this.ipdService = new IpdService(configuration.getConfiguration());
 		this.controlProcessor.setIpdService(this.ipdService);
 

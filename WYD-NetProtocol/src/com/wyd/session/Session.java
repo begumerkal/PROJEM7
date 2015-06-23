@@ -24,7 +24,7 @@ public abstract class Session {
 
 	public abstract void opened();
 
-	public abstract void idle(IdleStatus paramIdleStatus);
+	public abstract void idle(IoSession session, IdleStatus status);
 
 	public void defaultHandle() {
 	}

@@ -2,8 +2,10 @@ package com.wyd.empire.world.skeleton;
 
 import java.net.InetSocketAddress;
 
+import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 
+import com.wyd.empire.protocol.data.server.Heartbeat;
 import com.wyd.empire.protocol.data.server.WorldServerToAccountServer;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 import com.wyd.net.Connector;
@@ -21,6 +23,7 @@ public class AccountSkeleton extends Connector implements IDataHandler {
 
 	@Override
 	public void init() {
+		this.config.setIdleTime(IdleStatus.BOTH_IDLE,120);
 		this.connector.getFilterChain().addLast("uwap2codec", new ProtocolCodecFilter(new S2SEncoder(), new S2SDecoder()));
 		this.connector.getFilterChain().addLast("uwap2databean", new DataBeanFilter());
 	}
@@ -37,5 +40,9 @@ public class AccountSkeleton extends Connector implements IDataHandler {
 		wta.setWorldServerId(area+"_"+machinecode);
 		send(wta);
 	}
-	
+	@Override
+	protected void idle() {
+		Heartbeat heart = new Heartbeat();
+		send(heart);
+	}
 }

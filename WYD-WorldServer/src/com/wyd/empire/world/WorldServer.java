@@ -8,9 +8,11 @@ import java.util.List;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.log4j.Logger;
+import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.executor.ExecutorFilter;
+import org.apache.mina.transport.socket.SocketSessionConfig;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -81,11 +83,11 @@ public class WorldServer {
 		// 其包含IoSession接口，并持有所需服务的引用。
 		log.info("connect auth");
 		// 连接GameAccountServer服务器
-		connectAccountService(new AuthSessionHandler(registry));
+		connectAccountService();
 		log.info("AccountService connected");
-		connectBattleService(new AuthSessionHandler(registry));
+		connectBattleService();
 		log.info("BattleService connected");
-		connectNearbyService(new AuthSessionHandler(registry));
+		connectNearbyService();
 		log.info("NearbyService connected");
 		// 启动世界服务器
 		WorldHandler connectSessionHandler = new ConnectSessionHandler(registry);
@@ -142,7 +144,7 @@ public class WorldServer {
 	 * @param handler
 	 * @throws Exception
 	 */
-	private void connectAccountService(AuthSessionHandler handler) throws Exception {
+	private void connectAccountService() throws Exception {
 		String authip = ServiceManager.getManager().getConfiguration().getString("authip");
 		String authport = ServiceManager.getManager().getConfiguration().getString("authport");
 		AccountSkeleton accountSkeleton = new AccountSkeleton("accountskeleton", new InetSocketAddress(authip, Integer.parseInt(authport)));
@@ -167,14 +169,19 @@ public class WorldServer {
 	 */
 	private void bind(SessionRegistry registry, WorldHandler sessionHandler) throws Exception {
 		NioSocketAcceptor acceptor = new NioSocketAcceptor(Runtime.getRuntime().availableProcessors() + 1);
+		
+		SocketSessionConfig cfg = acceptor.getSessionConfig();
+		cfg.setIdleTime(IdleStatus.BOTH_IDLE,180);
+		cfg.setReuseAddress(true);
+		
 		// 添加IoHandler处理线程池
 		acceptor.getFilterChain().addFirst("uwap2databean", new DataBeanFilter());
 		acceptor.getFilterChain().addFirst("uwap2codec", new ProtocolCodecFilter(new S2SEncoder(), new S2SDecoder()));
 		acceptor.getFilterChain().addLast("threadPool", new ExecutorFilter(4, 16));
 		// 会话配置
-		acceptor.getSessionConfig().setReceiveBufferSize(ServiceManager.getManager().getConfiguration().getInt("receivebuffsize"));
-		acceptor.getSessionConfig().setSendBufferSize(ServiceManager.getManager().getConfiguration().getInt("writebuffsize"));
-		acceptor.getSessionConfig().setTcpNoDelay(ServiceManager.getManager().getConfiguration().getBoolean("tcpnodelay"));
+		cfg.setReceiveBufferSize(ServiceManager.getManager().getConfiguration().getInt("receivebuffsize"));
+		cfg.setSendBufferSize(ServiceManager.getManager().getConfiguration().getInt("writebuffsize"));
+		cfg.setTcpNoDelay(ServiceManager.getManager().getConfiguration().getBoolean("tcpnodelay"));
 		acceptor.setHandler(sessionHandler);
 		acceptor.setDefaultLocalAddress(new InetSocketAddress(ServiceManager.getManager().getConfiguration().getString("localip"),
 				ServiceManager.getManager().getConfiguration().getInt("port")));
@@ -264,7 +271,7 @@ public class WorldServer {
 	 * @param handler
 	 * @throws Exception
 	 */
-	private void connectBattleService(AuthSessionHandler handler) throws Exception {
+	private void connectBattleService() throws Exception {
 		String battleip = ServiceManager.getManager().getConfiguration().getString("battleip");
 		String battleport = ServiceManager.getManager().getConfiguration().getString("battleport");
 		if (null != battleip && null != battleport) {
@@ -284,7 +291,7 @@ public class WorldServer {
 	 * @param handler
 	 * @throws Exception
 	 */
-	private void connectNearbyService(AuthSessionHandler handler) throws Exception {
+	private void connectNearbyService() throws Exception {
 		String nearbyip = ServiceManager.getManager().getConfiguration().getString("nearbyip");
 		String nearbyport = ServiceManager.getManager().getConfiguration().getString("nearbyport");
 		if (null != nearbyip && null != nearbyport) {

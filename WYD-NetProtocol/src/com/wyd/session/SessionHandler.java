@@ -90,7 +90,7 @@ public abstract class SessionHandler implements IoHandler {
 		Session s = this.registry.getSession(session);
 		System.out.println("链接空闲－－" + session.toString());
 		if (s != null) {
-			s.idle(status);
+			s.idle(session,status);
 		}
 	}
 

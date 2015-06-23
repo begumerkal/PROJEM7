@@ -40,7 +40,7 @@ public class WorldStub {
 	public void start() throws IOException {
 		this.acceptor = new NioSocketAcceptor(Runtime.getRuntime().availableProcessors() + 1);
 		SocketSessionConfig cfg = acceptor.getSessionConfig();
-		cfg.setIdleTime(IdleStatus.BOTH_IDLE,30);
+		cfg.setIdleTime(IdleStatus.BOTH_IDLE,180);
 		cfg.setTcpNoDelay(true);
 		cfg.setReuseAddress(true);
 		if (this.configuration.containsKey("receivebuffersize")) {

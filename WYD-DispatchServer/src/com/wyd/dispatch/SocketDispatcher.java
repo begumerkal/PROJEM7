@@ -15,11 +15,13 @@ import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.executor.ExecutorFilter;
+import org.apache.mina.transport.socket.SocketSessionConfig;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 import org.springframework.util.StringUtils;
 
 import com.wyd.empire.protocol.Protocol;
+import com.wyd.empire.protocol.data.server.Heartbeat;
 import com.wyd.empire.protocol.data.system.ShakeHands;
 import com.wyd.protocol.ProtocolManager;
 import com.wyd.protocol.s2s.S2SSegment;
@@ -170,9 +172,11 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		InetSocketAddress address = new InetSocketAddress(worldIp, worldPort);
 
 		this.connector = new NioSocketConnector(Runtime.getRuntime().availableProcessors() + 1);
-		connector.getSessionConfig().setTcpNoDelay(true);
-		connector.getSessionConfig().setReceiveBufferSize(worldreceivebuffsize);
-		connector.getSessionConfig().setSendBufferSize(worldwritebuffsize);
+		SocketSessionConfig cfg = acceptor.getSessionConfig();
+		cfg.setIdleTime(IdleStatus.BOTH_IDLE,120);
+		cfg.setTcpNoDelay(true);
+		cfg.setReceiveBufferSize(worldreceivebuffsize);
+		cfg.setSendBufferSize(worldwritebuffsize);
 		connector.getFilterChain().addLast("codec", new ProtocolCodecFilter(new ServerWYDEncoder(), new ServerWYDDecoder()));
 		connector.setHandler(new ServerSessionHandler());
 		connector.setDefaultRemoteAddress(address);
@@ -184,7 +188,6 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		} else {
 			System.out.println("WorldServer 连接成功!");
 		}
-
 		return future;
 	}
 
@@ -203,6 +206,11 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	public void bind(SocketAddress address, int clientreceivebuffsize, int clientwritebuffsize) throws IOException {
 		this.address = address;
 		this.acceptor = new NioSocketAcceptor(Runtime.getRuntime().availableProcessors() + 1);
+		SocketSessionConfig cfg = acceptor.getSessionConfig();
+		cfg.setIdleTime(IdleStatus.BOTH_IDLE,60);
+		cfg.setTcpNoDelay(true);
+		cfg.setReuseAddress(true);
+		
 		acceptor.getSessionConfig().setTcpNoDelay(true);
 		acceptor.getSessionConfig().setReceiveBufferSize(clientreceivebuffsize);
 		acceptor.getSessionConfig().setSendBufferSize(clientwritebuffsize);
@@ -235,7 +243,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		if (sessionId < 0) {
 			log.info("SessionId: " + sessionId);
 		}
-		session.getConfig().setIdleTime(IdleStatus.BOTH_IDLE, 60);// 空闲时间60秒
+//		session.getConfig().setIdleTime(IdleStatus.BOTH_IDLE, 60);// 空闲时间60秒
 		session.setAttribute(ATTRIBUTE_STRING, sessionId);
 		session.setAttribute(LOGINMARK_KEY, LOGINMARK_UNLOG);
 		session.setAttribute(CLIENTINFO_KEY, new ClientInfo());
@@ -348,17 +356,19 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		@Override
 		public void sessionCreated(IoSession session) throws Exception {
 			serverSession = session;
+		}
+		@Override
+		public void sessionIdle(IoSession session, IdleStatus idleStatus) throws Exception {
+			S2SSegment seg = new S2SSegment(Protocol.MAIN_SERVER, Protocol.SERVER_Heartbeat);
+			SocketDispatcher.this.sendControlSegment(seg);
+		}
+		@Override
+		public void sessionOpened(IoSession session) {
 			S2SSegment seg = new S2SSegment(Protocol.MAIN_SERVER, Protocol.SERVER_DispatchLogin);
 			seg.writeString((String) SocketDispatcher.this.configuration.getProperty("area"));
 			seg.writeString((String) SocketDispatcher.this.configuration.getProperty("serverpassword"));
 			seg.writeInt(SocketDispatcher.this.configuration.getInt("maxplayer"));
 			SocketDispatcher.this.sendControlSegment(seg);
-		}
-		@Override
-		public void sessionIdle(IoSession session, IdleStatus idleStatus) throws Exception {
-		}
-		@Override
-		public void sessionOpened(IoSession session) {
 		}
 	}
 

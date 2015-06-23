@@ -1,17 +1,21 @@
 package com.wyd.server.dispatcher;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 import org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder;
+import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.executor.ExecutorFilter;
+import org.apache.mina.transport.socket.SocketSessionConfig;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.nio.SelectChannelConnector;
 import org.mortbay.jetty.servlet.Context;
 import org.mortbay.jetty.servlet.ServletHolder;
+
 import com.wyd.empire.protocol.Protocol;
 import com.wyd.net.ProtocolFactory;
 import com.wyd.protocol.data.DataBeanFilter;
@@ -82,6 +86,10 @@ public class IpdServer {
 		SessionRegistry registry = new SessionRegistry();
 		SessionHandler sessionHandler = new DispatchSessionHandler(registry);
 		NioSocketAcceptor acceptor = new NioSocketAcceptor(Runtime.getRuntime().availableProcessors() + 1);
+		SocketSessionConfig cfg = acceptor.getSessionConfig();
+		cfg.setIdleTime(IdleStatus.BOTH_IDLE,180);
+		cfg.setTcpNoDelay(true);
+		cfg.setReuseAddress(true);
 		DefaultIoFilterChainBuilder filterChainBuilder = acceptor.getFilterChain();
 		filterChainBuilder.addFirst("uwap2databean", new DataBeanFilter());
 		filterChainBuilder.addFirst("uwap2codec", new ProtocolCodecFilter(new S2SEncoder(), new S2SDecoder()));

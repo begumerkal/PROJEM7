@@ -14,6 +14,7 @@ import org.apache.mina.core.session.IoSession;
 
 import com.wyd.empire.protocol.data.account.RoleActorLoginOk;
 import com.wyd.empire.protocol.data.error.ProtocolError;
+import com.wyd.empire.protocol.data.server.Heartbeat;
 import com.wyd.empire.protocol.data.server.Kick;
 import com.wyd.empire.protocol.data.server.NotifyMaintance;
 import com.wyd.empire.protocol.data.server.NotifyMaxPlayer;
@@ -123,8 +124,9 @@ public class ConnectSession extends Session {
 	}
 
 	@Override
-	public void idle(IdleStatus paramIdleStatus) {
-
+	public void idle(IoSession session, IdleStatus status) {
+		System.out.println("关闭链接："+session);
+		session.close(true);
 	}
 
 	@Override

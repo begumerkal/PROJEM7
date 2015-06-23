@@ -74,8 +74,8 @@ public class AcceptSession extends Session {
 	}
 
 	@Override
-	public void idle(IdleStatus paramIdleStatus) {
-		// TODO Auto-generated method stub
-
+	public void idle(IoSession session, IdleStatus status) {
+		System.out.println("关闭链接："+session);
+		session.close(true);
 	}
 }

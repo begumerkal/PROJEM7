@@ -89,7 +89,7 @@ public class AdminSession extends ConnectSession {
 	}
 
 	@Override
-	public void idle(IdleStatus status) {
+	public void idle(IoSession session, IdleStatus status) {
 	}
 
 	@Override

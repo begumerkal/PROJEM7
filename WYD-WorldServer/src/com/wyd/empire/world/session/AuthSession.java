@@ -20,9 +20,7 @@ public class AuthSession extends Session {
 	public void created() {
 	}
 
-	@Override
-	public void idle(IdleStatus status) {
-	}
+ 
 
 	@Override
 	public void opened() {
@@ -30,5 +28,10 @@ public class AuthSession extends Session {
 
 	@Override
 	public void closed() {
+	}
+
+	@Override
+	public void idle(IoSession session, IdleStatus status) {
+		session.close(true);
 	}
 }

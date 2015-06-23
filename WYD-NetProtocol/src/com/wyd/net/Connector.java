@@ -18,7 +18,7 @@ public abstract class Connector implements IConnector {
 	protected InetSocketAddress address;
 	protected String userName = "";
 	protected String password = "";
-	protected boolean needRetry = true;
+	protected boolean needRetry = false;
 	protected NioSocketConnector connector;
 	protected SocketSessionConfig config;
 	protected int receiveBufferSize = 65534;
@@ -89,16 +89,18 @@ public abstract class Connector implements IConnector {
 	}
 
 	protected abstract void connected();
+	protected abstract void idle();
 
 	/**
 	 * 原始的会话处理
 	 *
 	 */
 	public class OriginalSessionHandler extends IoHandlerAdapter {
+		@Override
 		public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
 			Connector.log.info(cause, cause);
 		}
-
+		@Override
 		public void messageReceived(IoSession session, Object message) throws Exception {
 			AbstractData data = (AbstractData) message;
 			System.out.println(data);
@@ -112,8 +114,9 @@ public abstract class Connector implements IConnector {
 					Connector.log.error("get a NULL handler!");
 			}
 		}
-
+		@Override
 		public void sessionClosed(IoSession session) throws Exception {
+			super.sessionClosed(session);
 			// 断线重连
 			if (Connector.this.needRetry) {
 				while (true) {
@@ -132,16 +135,21 @@ public abstract class Connector implements IConnector {
 				}
 			}
 		}
-
+		@Override
 		public void sessionCreated(IoSession session) throws Exception {
+			super.sessionCreated(session);
 			Connector.this.session = session;
 		}
+		@Override
 		public void sessionOpened(IoSession session) throws Exception {
+			super.sessionOpened(session);
 //			Connector.this.session = session;
 			Connector.this.connected();
 		}
+		@Override
 		public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
 			super.sessionIdle(session, status);
+			Connector.this.idle();
 		}
 	}
 
