@@ -32,7 +32,7 @@ public abstract class SessionHandler implements IoHandler {
 	}
 
 	public void exceptionCaught(IoSession session, Throwable ex) throws Exception {
-		session.close(true);
+//		session.close(true);
 		log.error(ex, ex);
 	}
 

@@ -42,4 +42,10 @@ public class IpdConnector extends Connector {
 	protected void connected() {
 	}
 
+	@Override
+	protected void idle() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -44,8 +44,8 @@ public class DataBeanDecoder {
                 }
                 System.out.println("收到数据："+data.toString());
             } catch (Exception ex) {
-                System.out.println("type:" + type + "------------SubType:" + subType);
-                this.log.error("***Recv Error type:" + type + "------------SubType:" + subType);
+                System.out.println("解码错误，type:" + type + "------------SubType:" + subType);
+                this.log.error("解码错误，type:" + type + "------------SubType:" + subType);
                 throw new Exception(ex);
             }
         }

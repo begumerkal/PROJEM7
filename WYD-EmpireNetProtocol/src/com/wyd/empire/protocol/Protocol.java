@@ -22,9 +22,9 @@ public class Protocol {
 	public static final byte SERVER_LegacyFindPasswordOk = 100;
 	public static final byte SERVER_LegacyFindPassword = 100;
 	public static final byte SERVER_LegacyModifyPassword = 100;
-	public static final byte SERVER_LegacyModifyPasswordOk = 8;
-	public static final byte SERVER_LegacyRegister = 9;
-	public static final byte SERVER_LegacyRegisterOk = 10;
+	public static final byte SERVER_LegacyModifyPasswordOk = 100;
+	public static final byte SERVER_LegacyRegister = 100;
+	public static final byte SERVER_LegacyRegisterOk = 100;
 
 	public static final byte SERVER_LegacyLogout = 13; // 登出(暂没使用)
 	public static final byte SERVER_PlayerLogout = 14; // 玩家登出(主要用这个协议通知)
