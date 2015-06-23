@@ -9,7 +9,7 @@ import com.wyd.empire.protocol.data.chat.GetSpeakerNum;
 import com.wyd.empire.protocol.data.chat.GetSpeakerNumOk;
 import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.exception.ErrorMessages;
-import com.wyd.empire.world.player.WorldPlayer;
+import com.wyd.empire.world.model.player.WorldPlayer;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 import com.wyd.empire.world.session.ConnectSession;
 import com.wyd.protocol.data.AbstractData;

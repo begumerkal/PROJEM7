@@ -5,11 +5,11 @@ import java.util.List;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.bean.LogRechargeReward;
-import com.wyd.empire.world.bean.LotteryReward;
-import com.wyd.empire.world.bean.RechargeReward;
-import com.wyd.empire.world.bean.Successrate;
 import com.wyd.empire.world.dao.IRechargeRewardDao;
+import com.wyd.empire.world.entity.mysql.LogRechargeReward;
+import com.wyd.empire.world.entity.mysql.LotteryReward;
+import com.wyd.empire.world.entity.mysql.RechargeReward;
+import com.wyd.empire.world.entity.mysql.Successrate;
 
 /**
  * The DAO class for the TabConsortiaright entity.

@@ -3,8 +3,8 @@ package com.wyd.empire.world.dao.impl;
 import java.util.List;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
-import com.wyd.empire.world.bean.VigorPrice;
 import com.wyd.empire.world.dao.IVigorPriceDao;
+import com.wyd.empire.world.entity.mysql.VigorPrice;
 
 /**
  * The DAO class for the TabPlayeritemsfromshop entity.

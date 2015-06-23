@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
-import com.wyd.empire.world.bean.StarsInfo;
 import com.wyd.empire.world.dao.IStarsInfoDao;
+import com.wyd.empire.world.entity.mysql.StarsInfo;
 
 /**
  * The DAO class for the TabTool entity.

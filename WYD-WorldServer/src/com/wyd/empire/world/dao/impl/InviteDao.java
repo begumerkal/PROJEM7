@@ -6,9 +6,9 @@ import java.util.Vector;
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.db.page.PageList;
 import com.wyd.empire.world.WorldServer;
-import com.wyd.empire.world.bean.InviteReward;
-import com.wyd.empire.world.bean.InviteServiceInfo;
 import com.wyd.empire.world.dao.IInviteDao;
+import com.wyd.empire.world.entity.mysql.InviteReward;
+import com.wyd.empire.world.entity.mysql.InviteServiceInfo;
 
 /**
  * The DAO class for the TabConsortia entity.

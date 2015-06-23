@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.wyd.db.dao.UniversalDao;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.bean.Promotions;
+import com.wyd.empire.world.entity.mysql.Promotions;
 
 /**
  * The DAO interface for the TabConsortiaright entity.

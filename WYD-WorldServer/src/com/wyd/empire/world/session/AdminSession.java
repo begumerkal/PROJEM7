@@ -6,7 +6,7 @@ import org.apache.log4j.Logger;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 
-import com.wyd.empire.world.bean.Admin;
+import com.wyd.empire.world.entity.mysql.Admin;
 import com.wyd.protocol.data.AbstractData;
 
 /**

@@ -9,8 +9,8 @@ import org.springframework.util.StringUtils;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.bean.PlayerPicture;
 import com.wyd.empire.world.dao.IPictureUploadDao;
+import com.wyd.empire.world.entity.mysql.PlayerPicture;
 
 public class PictureUploadDao extends UniversalDaoHibernate implements IPictureUploadDao {
 

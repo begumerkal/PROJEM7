@@ -4,29 +4,32 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Service;
+
 import com.wyd.db.page.PageList;
 import com.wyd.db.service.impl.UniversalManagerImpl;
 import com.wyd.empire.protocol.data.mail.HasNewMail;
 import com.wyd.empire.protocol.data.mail.LoginCheckMailOk;
 import com.wyd.empire.protocol.data.mail.SendInboxMail;
 import com.wyd.empire.protocol.data.mail.SendOutboxMail;
-import com.wyd.empire.protocol.data.nearby.GetNearbyMailCount;
-import com.wyd.empire.world.bean.Friend;
-import com.wyd.empire.world.bean.Mail;
 import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.common.util.DateUtil;
 import com.wyd.empire.world.common.util.ServiceUtils;
 import com.wyd.empire.world.dao.IMailDao;
+import com.wyd.empire.world.entity.mysql.Friend;
+import com.wyd.empire.world.entity.mysql.Mail;
 import com.wyd.empire.world.exception.TipMessages;
 import com.wyd.empire.world.logs.GameLogService;
-import com.wyd.empire.world.player.WorldPlayer;
+import com.wyd.empire.world.model.player.WorldPlayer;
 import com.wyd.empire.world.server.service.base.IMailService;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 
 /**
  * The service class for the TabConsortia entity.
  */
+@Service
 public class MailService extends UniversalManagerImpl implements IMailService {
 	/**
 	 * The dao instance injected by Spring.

@@ -3,9 +3,10 @@ package com.wyd.empire.world.dao.impl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
-import com.wyd.empire.world.bean.DownloadReward;
 import com.wyd.empire.world.dao.IDownloadRewardDao;
+import com.wyd.empire.world.entity.mysql.DownloadReward;
 
 /**
  * The DAO class for the TabConsortiaright entity.

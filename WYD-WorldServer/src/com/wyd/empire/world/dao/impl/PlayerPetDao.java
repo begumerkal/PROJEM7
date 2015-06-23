@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.Vector;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
-import com.wyd.empire.world.bean.PetBar;
-import com.wyd.empire.world.bean.PetCulture;
-import com.wyd.empire.world.bean.PetTrain;
-import com.wyd.empire.world.bean.PlayerPet;
-import com.wyd.empire.world.bean.PlayerPetBar;
 import com.wyd.empire.world.dao.IPlayerPetDao;
+import com.wyd.empire.world.entity.mysql.PetBar;
+import com.wyd.empire.world.entity.mysql.PetCulture;
+import com.wyd.empire.world.entity.mysql.PetTrain;
+import com.wyd.empire.world.entity.mysql.PlayerPet;
+import com.wyd.empire.world.entity.mysql.PlayerPetBar;
 
 /**
  * The DAO class for the TabPlayeritemsfromshop entity.

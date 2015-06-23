@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.wyd.db.dao.UniversalDao;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.bean.StoneRate;
-import com.wyd.empire.world.bean.Successrate;
-import com.wyd.empire.world.bean.WeapSkill;
+import com.wyd.empire.world.entity.mysql.StoneRate;
+import com.wyd.empire.world.entity.mysql.Successrate;
+import com.wyd.empire.world.entity.mysql.WeapSkill;
 
 public interface IStrengthenDao extends UniversalDao {
 

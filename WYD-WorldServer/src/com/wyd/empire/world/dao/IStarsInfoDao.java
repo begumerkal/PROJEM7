@@ -3,7 +3,7 @@ package com.wyd.empire.world.dao;
 import java.util.Collection;
 
 import com.wyd.db.dao.UniversalDao;
-import com.wyd.empire.world.bean.StarsInfo;
+import com.wyd.empire.world.entity.mysql.StarsInfo;
 
 /**
  * The DAO interface for the TabTool entity.

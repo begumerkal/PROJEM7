@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.wyd.db.dao.UniversalDao;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.bean.LotteryReward;
-import com.wyd.empire.world.bean.RechargeReward;
+import com.wyd.empire.world.entity.mysql.LotteryReward;
+import com.wyd.empire.world.entity.mysql.RechargeReward;
 
 /**
  * The DAO interface for the TabConsortiaright entity.

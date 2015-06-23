@@ -3,7 +3,7 @@ package com.wyd.empire.world.dao;
 import java.util.List;
 
 import com.wyd.db.dao.UniversalDao;
-import com.wyd.empire.world.bean.PlayerStaWeek;
+import com.wyd.empire.world.entity.mysql.PlayerStaWeek;
 
 /**
  * The DAO interface for the TabConsortiaright entity.

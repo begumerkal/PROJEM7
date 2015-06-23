@@ -5,7 +5,7 @@ import org.apache.log4j.Logger;
 import com.wyd.empire.protocol.data.account.FindPassword;
 import com.wyd.empire.protocol.data.account.FindPasswordOk;
 import com.wyd.empire.protocol.data.server.LegacyFindPassword;
-import com.wyd.empire.world.player.WorldPlayer;
+import com.wyd.empire.world.model.player.WorldPlayer;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 import com.wyd.empire.world.session.ConnectSession;
 import com.wyd.protocol.data.AbstractData;

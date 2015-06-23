@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
-import com.wyd.empire.world.bean.Share;
 import com.wyd.empire.world.dao.IShareDao;
+import com.wyd.empire.world.entity.mysql.Share;
 
 /**
  * The DAO class for the TabPlayeritemsfromshop entity.

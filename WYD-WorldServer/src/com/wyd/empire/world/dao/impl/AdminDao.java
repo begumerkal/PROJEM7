@@ -8,11 +8,11 @@ import java.util.Map;
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.empire.world.admin.AdminUser;
 import com.wyd.empire.world.admin.Rights;
-import com.wyd.empire.world.bean.Admin;
-import com.wyd.empire.world.bean.AdminAndApp;
-import com.wyd.empire.world.bean.AllowIp;
-import com.wyd.empire.world.bean.Application;
 import com.wyd.empire.world.dao.IAdminDao;
+import com.wyd.empire.world.entity.mysql.Admin;
+import com.wyd.empire.world.entity.mysql.AdminAndApp;
+import com.wyd.empire.world.entity.mysql.AllowIp;
+import com.wyd.empire.world.entity.mysql.Application;
 
 /**
  * The DAO class for the TabConsortiaright entity.

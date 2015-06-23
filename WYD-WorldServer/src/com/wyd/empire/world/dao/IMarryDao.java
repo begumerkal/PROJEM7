@@ -3,8 +3,8 @@ package com.wyd.empire.world.dao;
 import java.util.List;
 
 import com.wyd.db.dao.UniversalDao;
-import com.wyd.empire.world.bean.MarryRecord;
-import com.wyd.empire.world.bean.WeddingHall;
+import com.wyd.empire.world.entity.mysql.MarryRecord;
+import com.wyd.empire.world.entity.mysql.WeddingHall;
 
 public interface IMarryDao extends UniversalDao {
 

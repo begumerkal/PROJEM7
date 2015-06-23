@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.util.List;
 
 import com.wyd.db.service.UniversalManager;
-import com.wyd.empire.world.bean.ChatRecord;
+import com.wyd.empire.world.entity.mysql.ChatRecord;
 
 /**
  * The service interface for the TabChatRecord entity.

@@ -7,15 +7,15 @@ import java.util.Vector;
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.db.page.PageList;
 import com.wyd.empire.world.WorldServer;
-import com.wyd.empire.world.bean.BuffRecord;
-import com.wyd.empire.world.bean.Consortia;
-import com.wyd.empire.world.bean.ConsortiaBattle;
-import com.wyd.empire.world.bean.ConsortiaSkill;
-import com.wyd.empire.world.bean.PlayerSinConsortia;
 import com.wyd.empire.world.common.util.DateUtil;
 import com.wyd.empire.world.common.util.ServiceUtils;
 import com.wyd.empire.world.consortia.MaxPrestigeVo;
 import com.wyd.empire.world.dao.IConsortiaDao;
+import com.wyd.empire.world.entity.mysql.BuffRecord;
+import com.wyd.empire.world.entity.mysql.Consortia;
+import com.wyd.empire.world.entity.mysql.ConsortiaBattle;
+import com.wyd.empire.world.entity.mysql.ConsortiaSkill;
+import com.wyd.empire.world.entity.mysql.PlayerSinConsortia;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 
 /**

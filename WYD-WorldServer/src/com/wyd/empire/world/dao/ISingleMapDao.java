@@ -3,10 +3,10 @@ package com.wyd.empire.world.dao;
 import java.util.List;
 
 import com.wyd.db.dao.UniversalDao;
-import com.wyd.empire.world.bean.Map;
-import com.wyd.empire.world.bean.PlayerSingleMap;
-import com.wyd.empire.world.bean.ShopItem;
-import com.wyd.empire.world.bean.SingleMapDrop;
+import com.wyd.empire.world.entity.mysql.Map;
+import com.wyd.empire.world.entity.mysql.PlayerSingleMap;
+import com.wyd.empire.world.entity.mysql.ShopItem;
+import com.wyd.empire.world.entity.mysql.SingleMapDrop;
 
 /**
  * The DAO interface for the TabPlayeritemsfromshop entity.
@@ -14,7 +14,7 @@ import com.wyd.empire.world.bean.SingleMapDrop;
 public interface ISingleMapDao extends UniversalDao {
 	public List<SingleMapDrop> getDropList(int dropId);
 
-	public com.wyd.empire.world.bean.Map getMapById(int id);
+	public com.wyd.empire.world.entity.mysql.Map getMapById(int id);
 
 	public List<PlayerSingleMap> findPlayerMapBy(int playerId);
 

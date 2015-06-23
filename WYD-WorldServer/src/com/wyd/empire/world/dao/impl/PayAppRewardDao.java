@@ -7,10 +7,10 @@ import org.springframework.util.StringUtils;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.bean.PayAppReward;
-import com.wyd.empire.world.bean.PlayerPayAppReward;
 import com.wyd.empire.world.common.util.ServiceUtils;
 import com.wyd.empire.world.dao.IPayAppRewardDao;
+import com.wyd.empire.world.entity.mysql.PayAppReward;
+import com.wyd.empire.world.entity.mysql.PlayerPayAppReward;
 
 /**
  * The DAO class for the TabConsortiaright entity.

@@ -3,10 +3,10 @@ package com.wyd.empire.world.dao.impl;
 import java.util.List;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
-import com.wyd.empire.world.bean.CardGroup;
-import com.wyd.empire.world.bean.CardMelt;
-import com.wyd.empire.world.bean.DebirsMerge;
 import com.wyd.empire.world.dao.IPlayerCardsDao;
+import com.wyd.empire.world.entity.mysql.CardGroup;
+import com.wyd.empire.world.entity.mysql.CardMelt;
+import com.wyd.empire.world.entity.mysql.DebirsMerge;
 
 /**
  * The DAO class for the TabPlayeritemsfromshop entity.

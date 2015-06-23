@@ -2,13 +2,14 @@ package com.wyd.empire.world.dao.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.empire.world.WorldServer;
-import com.wyd.empire.world.bean.ChallengeRecord;
-import com.wyd.empire.world.bean.IntegralArea;
-import com.wyd.empire.world.bean.RankRecord;
-import com.wyd.empire.world.bean.ShopItem;
 import com.wyd.empire.world.dao.IRankRecordDao;
+import com.wyd.empire.world.entity.mysql.ChallengeRecord;
+import com.wyd.empire.world.entity.mysql.IntegralArea;
+import com.wyd.empire.world.entity.mysql.RankRecord;
+import com.wyd.empire.world.entity.mysql.ShopItem;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 
 public class RankRecordDao extends UniversalDaoHibernate implements IRankRecordDao {

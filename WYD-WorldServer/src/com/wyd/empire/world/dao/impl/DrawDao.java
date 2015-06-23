@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
-import com.wyd.empire.world.bean.DrawItem;
-import com.wyd.empire.world.bean.DrawRate;
-import com.wyd.empire.world.bean.DrawReward;
-import com.wyd.empire.world.bean.DrawType;
-import com.wyd.empire.world.bean.PlayerDraw;
 import com.wyd.empire.world.common.util.ServiceUtils;
 import com.wyd.empire.world.dao.IDrawDao;
+import com.wyd.empire.world.entity.mysql.DrawItem;
+import com.wyd.empire.world.entity.mysql.DrawRate;
+import com.wyd.empire.world.entity.mysql.DrawReward;
+import com.wyd.empire.world.entity.mysql.DrawType;
+import com.wyd.empire.world.entity.mysql.PlayerDraw;
 
 /**
  * The DAO class for the TabConsortiaright entity.

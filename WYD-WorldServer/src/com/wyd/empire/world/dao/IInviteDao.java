@@ -2,8 +2,8 @@ package com.wyd.empire.world.dao;
 
 import com.wyd.db.dao.UniversalDao;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.bean.InviteReward;
-import com.wyd.empire.world.bean.InviteServiceInfo;
+import com.wyd.empire.world.entity.mysql.InviteReward;
+import com.wyd.empire.world.entity.mysql.InviteServiceInfo;
 
 /**
  * The DAO interface for the TabTool entity.

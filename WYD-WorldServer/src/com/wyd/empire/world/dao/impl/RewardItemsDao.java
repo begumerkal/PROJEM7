@@ -2,13 +2,14 @@ package com.wyd.empire.world.dao.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.db.page.PageList;
 import com.wyd.empire.world.WorldServer;
-import com.wyd.empire.world.bean.FullServiceReward;
-import com.wyd.empire.world.bean.RewardItems;
-import com.wyd.empire.world.bean.Tips;
 import com.wyd.empire.world.dao.IRewardItemsDao;
+import com.wyd.empire.world.entity.mysql.FullServiceReward;
+import com.wyd.empire.world.entity.mysql.RewardItems;
+import com.wyd.empire.world.entity.mysql.Tips;
 
 /**
  * The DAO class for the TabTask entity.

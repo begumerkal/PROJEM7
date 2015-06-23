@@ -3,11 +3,11 @@ package com.wyd.empire.world.dao;
 import java.util.List;
 
 import com.wyd.db.dao.UniversalDao;
-import com.wyd.empire.world.bean.PetBar;
-import com.wyd.empire.world.bean.PetCulture;
-import com.wyd.empire.world.bean.PetTrain;
-import com.wyd.empire.world.bean.PlayerPet;
-import com.wyd.empire.world.bean.PlayerPetBar;
+import com.wyd.empire.world.entity.mysql.PetBar;
+import com.wyd.empire.world.entity.mysql.PetCulture;
+import com.wyd.empire.world.entity.mysql.PetTrain;
+import com.wyd.empire.world.entity.mysql.PlayerPet;
+import com.wyd.empire.world.entity.mysql.PlayerPetBar;
 
 /**
  * The DAO interface for the TabPlayeritemsfromshop entity.

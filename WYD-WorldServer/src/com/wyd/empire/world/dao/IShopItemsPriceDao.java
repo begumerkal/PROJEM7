@@ -3,8 +3,8 @@ package com.wyd.empire.world.dao;
 import java.util.List;
 
 import com.wyd.db.dao.UniversalDao;
-import com.wyd.empire.world.bean.Exchange;
-import com.wyd.empire.world.bean.ShopItemsPrice;
+import com.wyd.empire.world.entity.mysql.Exchange;
+import com.wyd.empire.world.entity.mysql.ShopItemsPrice;
 
 /**
  * The DAO interface for the TabTool entity.

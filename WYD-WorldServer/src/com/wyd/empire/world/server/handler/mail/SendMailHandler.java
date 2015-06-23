@@ -6,14 +6,14 @@ import org.apache.log4j.Logger;
 
 import com.wyd.empire.protocol.data.mail.SendMail;
 import com.wyd.empire.protocol.data.mail.SendMailOk;
-import com.wyd.empire.world.bean.Friend;
-import com.wyd.empire.world.bean.Mail;
 import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.common.util.KeywordsUtil;
 import com.wyd.empire.world.common.util.ServiceUtils;
+import com.wyd.empire.world.entity.mysql.Friend;
+import com.wyd.empire.world.entity.mysql.Mail;
 import com.wyd.empire.world.exception.ErrorMessages;
 import com.wyd.empire.world.exception.TipMessages;
-import com.wyd.empire.world.player.WorldPlayer;
+import com.wyd.empire.world.model.player.WorldPlayer;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 import com.wyd.empire.world.session.ConnectSession;
 import com.wyd.protocol.data.AbstractData;

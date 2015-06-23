@@ -3,8 +3,8 @@ package com.wyd.empire.world.server.service.impl;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.wyd.empire.world.bean.Mail;
 import com.wyd.empire.world.common.util.Common;
+import com.wyd.empire.world.entity.mysql.Mail;
 import com.wyd.empire.world.exception.TipMessages;
 
 public class TheadPlayerItemsService {

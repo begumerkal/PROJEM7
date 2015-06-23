@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
-import com.wyd.empire.world.bean.Exchange;
-import com.wyd.empire.world.bean.ShopItemsPrice;
 import com.wyd.empire.world.dao.IShopItemsPriceDao;
+import com.wyd.empire.world.entity.mysql.Exchange;
+import com.wyd.empire.world.entity.mysql.ShopItemsPrice;
 
 /**
  * The DAO class for the TabShopitem entity.

@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
-import com.wyd.empire.world.bean.Probability;
 import com.wyd.empire.world.dao.IProbabilityDao;
+import com.wyd.empire.world.entity.mysql.Probability;
 
 /**
  * The DAO class for the TabConsortiaright entity.

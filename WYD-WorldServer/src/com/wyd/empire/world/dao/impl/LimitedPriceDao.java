@@ -3,8 +3,8 @@ package com.wyd.empire.world.dao.impl;
 import java.util.List;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
-import com.wyd.empire.world.bean.LimitedPrice;
 import com.wyd.empire.world.dao.ILimitedPriceDao;
+import com.wyd.empire.world.entity.mysql.LimitedPrice;
 
 /**
  * The DAO class for the TabPlayeritemsfromshop entity.

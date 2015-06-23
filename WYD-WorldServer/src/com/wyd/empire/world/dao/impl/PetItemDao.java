@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
-import com.wyd.empire.world.bean.PetItem;
-import com.wyd.empire.world.bean.PlayerPet;
 import com.wyd.empire.world.dao.IPetItemDao;
+import com.wyd.empire.world.entity.mysql.PetItem;
+import com.wyd.empire.world.entity.mysql.PlayerPet;
 
 /**
  * The DAO class for the TabPlayeritemsfromshop entity.

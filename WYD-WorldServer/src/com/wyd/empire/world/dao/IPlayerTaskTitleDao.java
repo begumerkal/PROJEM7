@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.wyd.db.dao.UniversalDao;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.bean.PlayerTaskTitle;
-import com.wyd.empire.world.bean.Task;
-import com.wyd.empire.world.bean.Title;
+import com.wyd.empire.world.entity.mysql.PlayerTaskTitle;
+import com.wyd.empire.world.entity.mysql.Task;
+import com.wyd.empire.world.entity.mysql.Title;
 
 /**
  * The DAO interface for the TabPlayerTaskTitle entity.

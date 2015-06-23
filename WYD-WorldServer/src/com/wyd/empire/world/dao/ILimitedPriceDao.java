@@ -1,7 +1,7 @@
 package com.wyd.empire.world.dao;
 
 import com.wyd.db.dao.UniversalDao;
-import com.wyd.empire.world.bean.LimitedPrice;
+import com.wyd.empire.world.entity.mysql.LimitedPrice;
 
 /**
  * The DAO interface for the TabPlayeritemsfromshop entity.

@@ -1,10 +1,11 @@
 package com.wyd.empire.world.dao;
 
 import java.util.List;
+
 import com.wyd.db.dao.UniversalDao;
-import com.wyd.empire.world.bean.CardGroup;
-import com.wyd.empire.world.bean.CardMelt;
-import com.wyd.empire.world.bean.DebirsMerge;
+import com.wyd.empire.world.entity.mysql.CardGroup;
+import com.wyd.empire.world.entity.mysql.CardMelt;
+import com.wyd.empire.world.entity.mysql.DebirsMerge;
 
 /**
  * The DAO interface for the TabPlayeritemsfromshop entity.

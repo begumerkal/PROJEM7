@@ -3,7 +3,7 @@ package com.wyd.empire.world.dao;
 import java.util.List;
 
 import com.wyd.db.dao.UniversalDao;
-import com.wyd.empire.world.bean.Magnification;
+import com.wyd.empire.world.entity.mysql.Magnification;
 
 /**
  * The DAO interface for the TabTask entity.

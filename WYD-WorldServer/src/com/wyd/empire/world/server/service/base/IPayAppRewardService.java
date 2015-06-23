@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.wyd.db.page.PageList;
 import com.wyd.db.service.UniversalManager;
-import com.wyd.empire.world.bean.PayAppReward;
-import com.wyd.empire.world.player.WorldPlayer;
+import com.wyd.empire.world.entity.mysql.PayAppReward;
+import com.wyd.empire.world.model.player.WorldPlayer;
 
 /**
  * The service interface for the TabConsortiaright entity.

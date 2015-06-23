@@ -1,8 +1,8 @@
 package com.wyd.empire.world.server.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.springframework.stereotype.Service;
 
 import com.wyd.empire.protocol.data.battle.Hurt;
 import com.wyd.empire.protocol.data.battle.PositionsInMap;
@@ -14,12 +14,10 @@ import com.wyd.empire.protocol.data.cross.CrossBigSkill;
 import com.wyd.empire.protocol.data.cross.CrossChat;
 import com.wyd.empire.protocol.data.cross.CrossEndCurRound;
 import com.wyd.empire.protocol.data.cross.CrossFinishLoading;
-import com.wyd.empire.protocol.data.cross.CrossFly;
 import com.wyd.empire.protocol.data.cross.CrossGetAttackSequence;
 import com.wyd.empire.protocol.data.cross.CrossHurt;
 import com.wyd.empire.protocol.data.cross.CrossLoadingPercent;
 import com.wyd.empire.protocol.data.cross.CrossOutOfScene;
-import com.wyd.empire.protocol.data.cross.CrossPair;
 import com.wyd.empire.protocol.data.cross.CrossPass;
 import com.wyd.empire.protocol.data.cross.CrossPlayerInfo;
 import com.wyd.empire.protocol.data.cross.CrossPlayerLose;
@@ -29,16 +27,11 @@ import com.wyd.empire.protocol.data.cross.CrossQuitBattle;
 import com.wyd.empire.protocol.data.cross.CrossRebornPosition;
 import com.wyd.empire.protocol.data.cross.CrossShakeHands;
 import com.wyd.empire.protocol.data.cross.CrossShoot;
-import com.wyd.empire.protocol.data.cross.CrossSkillEquip;
 import com.wyd.empire.protocol.data.cross.CrossStartLoading;
 import com.wyd.empire.protocol.data.cross.CrossStartNewTimer;
 import com.wyd.empire.protocol.data.cross.CrossUseFly;
 import com.wyd.empire.protocol.data.cross.CrossUsingFace;
 import com.wyd.empire.world.WorldServer;
-import com.wyd.empire.world.bean.Tools;
-import com.wyd.empire.world.buff.Buff;
-import com.wyd.empire.world.common.util.ServiceUtils;
-import com.wyd.empire.world.player.WorldPlayer;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 import com.wyd.empire.world.skeleton.BattleSkeleton;
 import com.wyd.protocol.data.AbstractData;
@@ -48,6 +41,7 @@ import com.wyd.protocol.data.AbstractData;
  * 
  * @author zguoqiu
  */
+@Service
 public class CrossService {
 
 	private ConcurrentHashMap<Integer, PlayerInfo> playerInfoMap = new ConcurrentHashMap<Integer, PlayerInfo>();

@@ -3,8 +3,8 @@ package com.wyd.empire.world.dao;
 import java.util.List;
 
 import com.wyd.db.dao.UniversalDao;
-import com.wyd.empire.world.bean.BillingPoint;
-import com.wyd.empire.world.bean.Order;
+import com.wyd.empire.world.entity.mysql.BillingPoint;
+import com.wyd.empire.world.entity.mysql.Order;
 
 /**
  * The DAO interface for the TabConsortiaright entity.

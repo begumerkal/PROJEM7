@@ -8,8 +8,8 @@ import java.util.Map;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.bean.Tools;
 import com.wyd.empire.world.dao.IToolsDao;
+import com.wyd.empire.world.entity.mysql.Tools;
 
 /**
  * The DAO class for the TabTool entity.

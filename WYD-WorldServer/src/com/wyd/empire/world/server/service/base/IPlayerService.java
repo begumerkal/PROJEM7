@@ -4,11 +4,11 @@ import java.util.List;
 
 import com.wyd.db.page.PageList;
 import com.wyd.db.service.UniversalManager;
-import com.wyd.empire.world.bean.LoginReward;
-import com.wyd.empire.world.bean.Player;
-import com.wyd.empire.world.bean.PlayerInfo;
-import com.wyd.empire.world.bean.PlayerOnline;
-import com.wyd.empire.world.player.Record;
+import com.wyd.empire.world.entity.mysql.LoginReward;
+import com.wyd.empire.world.entity.mysql.Player;
+import com.wyd.empire.world.entity.mysql.PlayerInfo;
+import com.wyd.empire.world.entity.mysql.PlayerOnline;
+import com.wyd.empire.world.model.player.Record;
 
 /**
  * The service interface for the Player entity.

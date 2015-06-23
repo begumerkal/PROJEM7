@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.wyd.db.page.PageList;
 import com.wyd.db.service.UniversalManager;
-import com.wyd.empire.world.bean.Friend;
-import com.wyd.empire.world.bean.Mail;
-import com.wyd.empire.world.player.WorldPlayer;
+import com.wyd.empire.world.entity.mysql.Friend;
+import com.wyd.empire.world.entity.mysql.Mail;
+import com.wyd.empire.world.model.player.WorldPlayer;
 
 /**
  * The service interface for the TabConsortia entity.

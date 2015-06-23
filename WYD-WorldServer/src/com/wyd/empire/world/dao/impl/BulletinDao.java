@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.empire.world.WorldServer;
-import com.wyd.empire.world.bean.Bulletin;
-import com.wyd.empire.world.bean.Push;
 import com.wyd.empire.world.dao.IBulletinDao;
+import com.wyd.empire.world.entity.mysql.Bulletin;
+import com.wyd.empire.world.entity.mysql.Push;
 
 /**
  * The DAO class for the TabConsortiaright entity.

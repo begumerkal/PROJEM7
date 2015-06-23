@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.wyd.db.dao.UniversalDao;
-import com.wyd.empire.world.bean.LogActivitiesAward;
+import com.wyd.empire.world.entity.mysql.LogActivitiesAward;
 
 /**
  * The DAO interface for the TabConsortiaright entity.

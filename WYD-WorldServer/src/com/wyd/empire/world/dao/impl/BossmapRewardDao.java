@@ -7,8 +7,8 @@ import org.springframework.util.StringUtils;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.bean.BossmapReward;
 import com.wyd.empire.world.dao.IBossmapRewardDao;
+import com.wyd.empire.world.entity.mysql.BossmapReward;
 
 /**
  * The DAO class for the TabBossmapReward entity.

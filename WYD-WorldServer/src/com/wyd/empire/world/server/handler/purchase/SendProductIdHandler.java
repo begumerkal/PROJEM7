@@ -3,7 +3,7 @@ package com.wyd.empire.world.server.handler.purchase;
 import org.apache.log4j.Logger;
 
 import com.wyd.empire.protocol.data.purchase.SendProductId;
-import com.wyd.empire.world.player.WorldPlayer;
+import com.wyd.empire.world.model.player.WorldPlayer;
 import com.wyd.empire.world.session.ConnectSession;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.handler.IDataHandler;

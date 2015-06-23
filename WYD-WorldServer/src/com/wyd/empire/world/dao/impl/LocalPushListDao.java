@@ -10,8 +10,8 @@ import org.springframework.util.StringUtils;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.bean.LocalPushList;
 import com.wyd.empire.world.dao.ILocalPushListDao;
+import com.wyd.empire.world.entity.mysql.LocalPushList;
 
 /**
  * The DAO class for the TabConsortiaright entity.

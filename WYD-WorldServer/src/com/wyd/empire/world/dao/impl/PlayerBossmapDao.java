@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
-import com.wyd.empire.world.bean.PlayerBossmap;
 import com.wyd.empire.world.dao.IPlayerBossmapDao;
+import com.wyd.empire.world.entity.mysql.PlayerBossmap;
 
 /**
  * The DAO class for the TabPlayerBossmap entity.

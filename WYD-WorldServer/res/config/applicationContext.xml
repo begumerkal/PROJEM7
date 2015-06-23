@@ -149,7 +149,7 @@
 		</property>
 	</bean>
 
-	<bean id="OperationConfigService" parent="worldBaseTransactionProxy">
+<!-- 	<bean id="OperationConfigService" parent="worldBaseTransactionProxy">
 		<property name="target">
 			<bean class="com.wyd.empire.world.server.service.base.impl.OperationConfigService">
 				<property name="dao">
@@ -159,7 +159,7 @@
 				</property>
 			</bean>
 		</property>
-	</bean>
+	</bean> -->
 	<bean id="OrderService" parent="worldBaseTransactionProxy">
 		<property name="target">
 			<bean class="com.wyd.empire.world.server.service.base.impl.OrderService">

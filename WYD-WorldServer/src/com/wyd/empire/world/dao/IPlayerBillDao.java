@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.wyd.db.dao.UniversalDao;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.bean.Player;
-import com.wyd.empire.world.bean.PlayerBill;
+import com.wyd.empire.world.entity.mysql.Player;
+import com.wyd.empire.world.entity.mysql.PlayerBill;
 
 /**
  * 接口 <code>FeeDAO</code>执行与Fee表相关数据库操作

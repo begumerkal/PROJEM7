@@ -7,10 +7,10 @@ import java.util.Map;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.bean.StoneRate;
-import com.wyd.empire.world.bean.Successrate;
-import com.wyd.empire.world.bean.WeapSkill;
 import com.wyd.empire.world.dao.IStrengthenDao;
+import com.wyd.empire.world.entity.mysql.StoneRate;
+import com.wyd.empire.world.entity.mysql.Successrate;
+import com.wyd.empire.world.entity.mysql.WeapSkill;
 
 public class StrengthenDao extends UniversalDaoHibernate implements IStrengthenDao {
 	private Map<Integer, WeapSkill> itemMap = null;

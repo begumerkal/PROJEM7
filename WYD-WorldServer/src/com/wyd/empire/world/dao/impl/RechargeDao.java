@@ -5,10 +5,10 @@ import java.util.List;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.bean.Channel;
-import com.wyd.empire.world.bean.Recharge;
-import com.wyd.empire.world.bean.RechargeCrit;
 import com.wyd.empire.world.dao.IRechargeDao;
+import com.wyd.empire.world.entity.mysql.Channel;
+import com.wyd.empire.world.entity.mysql.Recharge;
+import com.wyd.empire.world.entity.mysql.RechargeCrit;
 
 /**
  * The DAO class for the TabConsortiaright entity.

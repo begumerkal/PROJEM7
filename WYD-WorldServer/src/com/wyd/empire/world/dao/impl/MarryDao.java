@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.empire.world.WorldServer;
-import com.wyd.empire.world.bean.MarryRecord;
-import com.wyd.empire.world.bean.WeddingHall;
 import com.wyd.empire.world.dao.IMarryDao;
+import com.wyd.empire.world.entity.mysql.MarryRecord;
+import com.wyd.empire.world.entity.mysql.WeddingHall;
 
 public class MarryDao extends UniversalDaoHibernate implements IMarryDao {
 	public MarryDao() {

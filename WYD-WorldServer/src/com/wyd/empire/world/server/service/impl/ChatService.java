@@ -7,17 +7,18 @@ import java.util.List;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
 
 import com.wyd.empire.protocol.data.chat.ReceiveMessage;
 import com.wyd.empire.protocol.data.chat.SyncChannels;
 import com.wyd.empire.protocol.data.server.BroadCast;
-import com.wyd.empire.world.bean.ChatRecord;
-import com.wyd.empire.world.bean.Friend;
 import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.common.util.ServiceUtils;
+import com.wyd.empire.world.entity.mysql.ChatRecord;
+import com.wyd.empire.world.entity.mysql.Friend;
 import com.wyd.empire.world.exception.ErrorMessages;
 import com.wyd.empire.world.exception.TipMessages;
-import com.wyd.empire.world.player.WorldPlayer;
+import com.wyd.empire.world.model.player.WorldPlayer;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 import com.wyd.empire.world.session.ConnectSession;
 import com.wyd.protocol.ProtocolManager;
@@ -27,6 +28,7 @@ import com.wyd.protocol.ProtocolManager;
  * 
  * @author zgq
  */
+@Service
 public class ChatService {
 	Logger log = Logger.getLogger(ChatService.class);
 	/** 世界频道 */

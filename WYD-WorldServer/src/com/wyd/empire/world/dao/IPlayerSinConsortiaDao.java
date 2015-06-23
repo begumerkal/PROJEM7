@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.wyd.db.dao.UniversalDao;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.bean.ConsortiaContribute;
-import com.wyd.empire.world.bean.PlayerSinConsortia;
+import com.wyd.empire.world.entity.mysql.ConsortiaContribute;
+import com.wyd.empire.world.entity.mysql.PlayerSinConsortia;
 
 /**
  * The DAO interface for the TabPlayersinconsortia entity.

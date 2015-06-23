@@ -1,28 +1,16 @@
 package com.wyd.empire.world.server.service.impl;
 
-import java.util.Date;
-
-import net.sf.json.JSONObject;
-
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
 
-import com.wyd.empire.protocol.data.purchase.RequestSmsCodeSerialid;
-import com.wyd.empire.protocol.data.purchase.RequestSmsCodeSerialidOk;
-import com.wyd.empire.world.bean.BillingPoint;
-import com.wyd.empire.world.bean.Order;
-import com.wyd.empire.world.common.util.CryptionUtil;
-import com.wyd.empire.world.common.util.HttpClientUtil;
-import com.wyd.empire.world.dao.impl.OrderDao;
-import com.wyd.empire.world.order.SerialInfo;
-import com.wyd.empire.world.player.WorldPlayer;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
-import com.wyd.empire.world.session.ConnectSession;
 import com.wyd.protocol.data.AbstractData;
 
 /**
  * @author zguoqiu
  * @version 创建时间：2013-8-17 下午4:55:10 类说明
  */
+@Service
 public class OrderSerialService {
 	public String serialurl;
 	public String appenname;

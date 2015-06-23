@@ -3,15 +3,17 @@ package com.wyd.empire.world.server.service.impl;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
 
 import com.wyd.empire.world.common.util.SendMail;
-import com.wyd.empire.world.player.AcountMailVo;
+import com.wyd.empire.world.model.player.AcountMailVo;
 
 /**
  * 发送邮件服务
  * 
  * @author sunzx
  */
+@Service
 public class SendMailService implements Runnable {
 	private Logger log = Logger.getLogger(SendMailService.class);
 	public static final int SLEEP_TIME = 20000;

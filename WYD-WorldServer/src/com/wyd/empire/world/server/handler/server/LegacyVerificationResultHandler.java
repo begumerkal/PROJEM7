@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 
 import com.wyd.empire.protocol.data.account.VerificationResult;
 import com.wyd.empire.protocol.data.server.LegacyVerificationResult;
-import com.wyd.empire.world.player.WorldPlayer;
+import com.wyd.empire.world.model.player.WorldPlayer;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.handler.IDataHandler;

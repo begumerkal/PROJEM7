@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.empire.world.WorldServer;
-import com.wyd.empire.world.bean.PlayerStaWeek;
 import com.wyd.empire.world.dao.IPlayerStaWeekDao;
+import com.wyd.empire.world.entity.mysql.PlayerStaWeek;
 
 /**
  * The DAO class for the TabConsortiaright entity.

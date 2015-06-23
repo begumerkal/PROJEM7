@@ -6,7 +6,7 @@ import com.wyd.empire.protocol.data.account.ModifyPasswordFail;
 import com.wyd.empire.protocol.data.account.ModifyPasswordOk;
 import com.wyd.empire.protocol.data.server.LegacyModifyPasswordOk;
 import com.wyd.empire.world.exception.TipMessages;
-import com.wyd.empire.world.player.WorldPlayer;
+import com.wyd.empire.world.model.player.WorldPlayer;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.handler.IDataHandler;

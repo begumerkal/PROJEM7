@@ -1,7 +1,7 @@
 package com.wyd.empire.world.server.service.base;
 
 import com.wyd.db.service.UniversalManager;
-import com.wyd.empire.world.bean.ThirdConfig;
+import com.wyd.empire.world.entity.mysql.ThirdConfig;
 
 /**
  * 接口 <code>IThirdConfigService</code>第三方渠道配置信息业务逻辑层接口

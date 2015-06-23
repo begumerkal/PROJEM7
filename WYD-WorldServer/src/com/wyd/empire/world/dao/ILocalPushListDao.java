@@ -1,9 +1,10 @@
 package com.wyd.empire.world.dao;
 
 import java.util.List;
+
 import com.wyd.db.dao.UniversalDao;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.bean.LocalPushList;
+import com.wyd.empire.world.entity.mysql.LocalPushList;
 
 /**
  * The DAO interface for the TabConsortiaright entity.

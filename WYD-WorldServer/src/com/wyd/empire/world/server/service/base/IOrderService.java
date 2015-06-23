@@ -3,8 +3,8 @@ package com.wyd.empire.world.server.service.base;
 import java.util.List;
 
 import com.wyd.db.service.UniversalManager;
-import com.wyd.empire.world.bean.BillingPoint;
-import com.wyd.empire.world.bean.Order;
+import com.wyd.empire.world.entity.mysql.BillingPoint;
+import com.wyd.empire.world.entity.mysql.Order;
 
 /**
  * The service interface for the TabConsortiaright entity.

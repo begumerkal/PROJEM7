@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONObject;
 
 import com.wyd.empire.world.common.util.CryptionUtil;
-import com.wyd.empire.world.player.WorldPlayer;
+import com.wyd.empire.world.model.player.WorldPlayer;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 import com.wyd.empire.world.server.service.impl.TradeService;
 import com.wyd.empire.world.tapzoy.TapzoyInfo;

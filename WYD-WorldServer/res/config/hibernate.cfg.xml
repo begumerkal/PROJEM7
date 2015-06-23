@@ -6,158 +6,158 @@
 
 <hibernate-configuration>
 	<session-factory>
-		<mapping class="com.wyd.empire.world.bean.Player" />
-		<mapping class="com.wyd.empire.world.bean.Consortia" />
-		<mapping class="com.wyd.empire.world.bean.ConsortiaRight" />
-		<mapping class="com.wyd.empire.world.bean.OperationConfig" />
+		<mapping class="com.wyd.empire.world.entity.mysql.Player" />
+		<mapping class="com.wyd.empire.world.entity.mysql.Consortia" />
+		<mapping class="com.wyd.empire.world.entity.mysql.ConsortiaRight" />
+		<mapping class="com.wyd.empire.world.entity.mysql.OperationConfig" />
  
-		<mapping class="com.wyd.empire.world.bean.PlayerSinConsortia" />
-		<mapping class="com.wyd.empire.world.bean.ShopItemsPrice" />
-		<mapping class="com.wyd.empire.world.bean.ShopItem" />
-		<mapping class="com.wyd.empire.world.bean.Task" />
+		<mapping class="com.wyd.empire.world.entity.mysql.PlayerSinConsortia" />
+		<mapping class="com.wyd.empire.world.entity.mysql.ShopItemsPrice" />
+		<mapping class="com.wyd.empire.world.entity.mysql.ShopItem" />
+		<mapping class="com.wyd.empire.world.entity.mysql.Task" />
  
-		<mapping class="com.wyd.empire.world.bean.Tools" />
-		<mapping class="com.wyd.empire.world.bean.RewardItems" />
-		<mapping class="com.wyd.empire.world.bean.RandomName" />
-		<mapping class="com.wyd.empire.world.bean.Interface" />
-		<mapping class="com.wyd.empire.world.bean.Mail" />
-		<mapping class="com.wyd.empire.world.bean.Friend" />
-		<mapping class="com.wyd.empire.world.bean.Map" />
-		<mapping class="com.wyd.empire.world.bean.PlayerOnline" />
-		<mapping class="com.wyd.empire.world.bean.PropsSkillsUsed" />
-		<mapping class="com.wyd.empire.world.bean.BattleCount" />
-		<mapping class="com.wyd.empire.world.bean.GoldCount" />
-		<mapping class="com.wyd.empire.world.bean.PlayerLevel" />
-		<mapping class="com.wyd.empire.world.bean.PlayerInterface" />
-		<mapping class="com.wyd.empire.world.bean.TaskEveryday" />
-		<mapping class="com.wyd.empire.world.bean.ShoppingEveryday" />
-		<mapping class="com.wyd.empire.world.bean.Exchange" />
-		<mapping class="com.wyd.empire.world.bean.PlayerStaWeek" />
-		<mapping class="com.wyd.empire.world.bean.Admin" />
-		<mapping class="com.wyd.empire.world.bean.Application" />
-		<mapping class="com.wyd.empire.world.bean.AdminAndApp" />
-		<mapping class="com.wyd.empire.world.bean.AllowIp" />
-		<mapping class="com.wyd.empire.world.bean.Recharge" />
-		<mapping class="com.wyd.empire.world.bean.ChatRecord" />
-		<mapping class="com.wyd.empire.world.bean.PlayerBossmap" />
-		<mapping class="com.wyd.empire.world.bean.BossmapReward" />
-		<mapping class="com.wyd.empire.world.bean.Guai" />
-		<mapping class="com.wyd.empire.world.bean.Tips" />
-		<mapping class="com.wyd.empire.world.bean.ErrorCode" />
-		<mapping class="com.wyd.empire.world.bean.Rewardrecord" />
-		<mapping class="com.wyd.empire.world.bean.Successrate" />
-		<mapping class="com.wyd.empire.world.bean.PlayerBill" />
-		<mapping class="com.wyd.empire.world.bean.ConsortiaSkill" />
-		<mapping class="com.wyd.empire.world.bean.BuffRecord" />
-		<mapping class="com.wyd.empire.world.bean.Bulletin" />
-		<mapping class="com.wyd.empire.world.bean.Promotions" />
-		<mapping class="com.wyd.empire.world.bean.ExchangeItem" />
-		<mapping class="com.wyd.empire.world.bean.ExchangeRate" />
-		<mapping class="com.wyd.empire.world.bean.WeapSkill" />
-		<mapping class="com.wyd.empire.world.bean.MarryRecord" />
-		<mapping class="com.wyd.empire.world.bean.Title" />
-		<mapping class="com.wyd.empire.world.bean.Magnification" />
-		<mapping class="com.wyd.empire.world.bean.ConsortiaContribute" />
-		<mapping class="com.wyd.empire.world.bean.StrongeRecord" />
-		<mapping class="com.wyd.empire.world.bean.LotteryReward" />
-		<mapping class="com.wyd.empire.world.bean.RechargeReward" />
-		<mapping class="com.wyd.empire.world.bean.LogRechargeReward" />
-		<mapping class="com.wyd.empire.world.bean.ActivitiesAward" />
-		<mapping class="com.wyd.empire.world.bean.LogActivitiesAward" />
-		<mapping class="com.wyd.empire.world.bean.Push"/>
-		<mapping class="com.wyd.empire.world.bean.PlayerFund"/>
-		<mapping class="com.wyd.empire.world.bean.FundRecord"/>
-		<mapping class="com.wyd.empire.world.bean.LoginReward"/>
-		<mapping class="com.wyd.empire.world.bean.SpreeGift"/>
-		<mapping class="com.wyd.empire.world.bean.RankRecord"/>
-		<mapping class="com.wyd.empire.world.bean.Reward"/>
-		<mapping class="com.wyd.empire.world.bean.GetItem"/>
-		<mapping class="com.wyd.empire.world.bean.InviteServiceInfo"/>
-		<mapping class="com.wyd.empire.world.bean.InviteReward"/>
-		<mapping class="com.wyd.empire.world.bean.PlayerGuide"/>
-		<mapping class="com.wyd.empire.world.bean.Recommend"/>
-		<mapping class="com.wyd.empire.world.bean.Channel"/>
-		<mapping class="com.wyd.empire.world.bean.ConsortiaBattle" />
-		<mapping class="com.wyd.empire.world.bean.VipReward" />
-		<mapping class="com.wyd.empire.world.bean.VipRate" />
-		<mapping class="com.wyd.empire.world.bean.Probability"/>
-		<mapping class="com.wyd.empire.world.bean.StoneRate"/>
-		<mapping class="com.wyd.empire.world.bean.StarsInfo"/>
-		<mapping class="com.wyd.empire.world.bean.FullServiceReward"/>
-		<mapping class="com.wyd.empire.world.bean.BillingPoint"/>
-		<mapping class="com.wyd.empire.world.bean.Order"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.Tools" />
+		<mapping class="com.wyd.empire.world.entity.mysql.RewardItems" />
+		<mapping class="com.wyd.empire.world.entity.mysql.RandomName" />
+		<mapping class="com.wyd.empire.world.entity.mysql.Interface" />
+		<mapping class="com.wyd.empire.world.entity.mysql.Mail" />
+		<mapping class="com.wyd.empire.world.entity.mysql.Friend" />
+		<mapping class="com.wyd.empire.world.entity.mysql.Map" />
+		<mapping class="com.wyd.empire.world.entity.mysql.PlayerOnline" />
+		<mapping class="com.wyd.empire.world.entity.mysql.PropsSkillsUsed" />
+		<mapping class="com.wyd.empire.world.entity.mysql.BattleCount" />
+		<mapping class="com.wyd.empire.world.entity.mysql.GoldCount" />
+		<mapping class="com.wyd.empire.world.entity.mysql.PlayerLevel" />
+		<mapping class="com.wyd.empire.world.entity.mysql.PlayerInterface" />
+		<mapping class="com.wyd.empire.world.entity.mysql.TaskEveryday" />
+		<mapping class="com.wyd.empire.world.entity.mysql.ShoppingEveryday" />
+		<mapping class="com.wyd.empire.world.entity.mysql.Exchange" />
+		<mapping class="com.wyd.empire.world.entity.mysql.PlayerStaWeek" />
+		<mapping class="com.wyd.empire.world.entity.mysql.Admin" />
+		<mapping class="com.wyd.empire.world.entity.mysql.Application" />
+		<mapping class="com.wyd.empire.world.entity.mysql.AdminAndApp" />
+		<mapping class="com.wyd.empire.world.entity.mysql.AllowIp" />
+		<mapping class="com.wyd.empire.world.entity.mysql.Recharge" />
+		<mapping class="com.wyd.empire.world.entity.mysql.ChatRecord" />
+		<mapping class="com.wyd.empire.world.entity.mysql.PlayerBossmap" />
+		<mapping class="com.wyd.empire.world.entity.mysql.BossmapReward" />
+		<mapping class="com.wyd.empire.world.entity.mysql.Guai" />
+		<mapping class="com.wyd.empire.world.entity.mysql.Tips" />
+		<mapping class="com.wyd.empire.world.entity.mysql.ErrorCode" />
+		<mapping class="com.wyd.empire.world.entity.mysql.Rewardrecord" />
+		<mapping class="com.wyd.empire.world.entity.mysql.Successrate" />
+		<mapping class="com.wyd.empire.world.entity.mysql.PlayerBill" />
+		<mapping class="com.wyd.empire.world.entity.mysql.ConsortiaSkill" />
+		<mapping class="com.wyd.empire.world.entity.mysql.BuffRecord" />
+		<mapping class="com.wyd.empire.world.entity.mysql.Bulletin" />
+		<mapping class="com.wyd.empire.world.entity.mysql.Promotions" />
+		<mapping class="com.wyd.empire.world.entity.mysql.ExchangeItem" />
+		<mapping class="com.wyd.empire.world.entity.mysql.ExchangeRate" />
+		<mapping class="com.wyd.empire.world.entity.mysql.WeapSkill" />
+		<mapping class="com.wyd.empire.world.entity.mysql.MarryRecord" />
+		<mapping class="com.wyd.empire.world.entity.mysql.Title" />
+		<mapping class="com.wyd.empire.world.entity.mysql.Magnification" />
+		<mapping class="com.wyd.empire.world.entity.mysql.ConsortiaContribute" />
+		<mapping class="com.wyd.empire.world.entity.mysql.StrongeRecord" />
+		<mapping class="com.wyd.empire.world.entity.mysql.LotteryReward" />
+		<mapping class="com.wyd.empire.world.entity.mysql.RechargeReward" />
+		<mapping class="com.wyd.empire.world.entity.mysql.LogRechargeReward" />
+		<mapping class="com.wyd.empire.world.entity.mysql.ActivitiesAward" />
+		<mapping class="com.wyd.empire.world.entity.mysql.LogActivitiesAward" />
+		<mapping class="com.wyd.empire.world.entity.mysql.Push"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.PlayerFund"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.FundRecord"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.LoginReward"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.SpreeGift"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.RankRecord"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.Reward"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.GetItem"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.InviteServiceInfo"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.InviteReward"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.PlayerGuide"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.Recommend"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.Channel"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.ConsortiaBattle" />
+		<mapping class="com.wyd.empire.world.entity.mysql.VipReward" />
+		<mapping class="com.wyd.empire.world.entity.mysql.VipRate" />
+		<mapping class="com.wyd.empire.world.entity.mysql.Probability"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.StoneRate"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.StarsInfo"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.FullServiceReward"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.BillingPoint"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.Order"/>
 		<!-- 增加第三方渠道配置表 by:zengxc -->
-		<mapping class="com.wyd.empire.world.bean.ThirdConfig"/>
-		<mapping class="com.wyd.empire.world.bean.DailyActivity"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.ThirdConfig"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.DailyActivity"/>
 		
-		<mapping class="com.wyd.empire.world.bean.ItemPrice"/>
-		<mapping class="com.wyd.empire.world.bean.DrawReward"/>
-		<mapping class="com.wyd.empire.world.bean.DrawRate"/>
-		<mapping class="com.wyd.empire.world.bean.DrawType"/>
-		<mapping class="com.wyd.empire.world.bean.DrawItem"/>
-		<mapping class="com.wyd.empire.world.bean.PlayerDraw"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.ItemPrice"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.DrawReward"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.DrawRate"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.DrawType"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.DrawItem"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.PlayerDraw"/>
 		<!-- 宠物相关表 by:zengxc -->
-		<mapping class="com.wyd.empire.world.bean.PetItem"/>
-		<mapping class="com.wyd.empire.world.bean.PlayerPet"/>
-		<mapping class="com.wyd.empire.world.bean.PetSkill"/>
-		<mapping class="com.wyd.empire.world.bean.PetTrain"/>
-		<mapping class="com.wyd.empire.world.bean.PetCulture"/>
-		<mapping class="com.wyd.empire.world.bean.PetBar"/>
-		<mapping class="com.wyd.empire.world.bean.PlayerPetBar"/>
-		<mapping class="com.wyd.empire.world.bean.PetRecord"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.PetItem"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.PlayerPet"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.PetSkill"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.PetTrain"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.PetCulture"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.PetBar"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.PlayerPetBar"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.PetRecord"/>
 		
 		<!-- 世界BOSS -->
-		<mapping class="com.wyd.empire.world.bean.BossmapBuff"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.BossmapBuff"/>
 		<!-- 自定义称号 -->
-		<mapping class="com.wyd.empire.world.bean.PlayerDIYTitle"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.PlayerDIYTitle"/>
 		
-		<mapping class="com.wyd.empire.world.bean.ChallengeRecord"/>
-		<mapping class="com.wyd.empire.world.bean.IntegralArea"/>
-		<mapping class="com.wyd.empire.world.bean.PlayerTaskTitle"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.ChallengeRecord"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.IntegralArea"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.PlayerTaskTitle"/>
 		<!-- BM付费包奖励 -->
-		<mapping class="com.wyd.empire.world.bean.PayAppReward"/>
-		<mapping class="com.wyd.empire.world.bean.PlayerPayAppReward"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.PayAppReward"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.PlayerPayAppReward"/>
 		<!-- 2.0新增表 -->
-		<mapping class="com.wyd.empire.world.bean.PlayerInfo"/>
-		<mapping class="com.wyd.empire.world.bean.ActiveReward"/>
-		<mapping class="com.wyd.empire.world.bean.ButtonInfo"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.PlayerInfo"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.ActiveReward"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.ButtonInfo"/>
 		<!-- 2.1新增表 -->
-		<mapping class="com.wyd.empire.world.bean.StrenthPercent"/>
-		<mapping class="com.wyd.empire.world.bean.WeddingHall"/>
-		<mapping class="com.wyd.empire.world.bean.RechargeCrit"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.StrenthPercent"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.WeddingHall"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.RechargeCrit"/>
 		
-		<mapping class="com.wyd.empire.world.bean.PlayerPicture"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.PlayerPicture"/>
 		<!-- 单人副本 -->
-		<mapping class="com.wyd.empire.world.bean.SingleMapDrop"/>
-		<mapping class="com.wyd.empire.world.bean.PlayerSingleMap"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.SingleMapDrop"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.PlayerSingleMap"/>
 		<!-- 微博分享 -->
-		<mapping class="com.wyd.empire.world.bean.Share"/>		
+		<mapping class="com.wyd.empire.world.entity.mysql.Share"/>		
 		<!-- 活力值价格配置 -->
-		<mapping class="com.wyd.empire.world.bean.VigorPrice"/>	
+		<mapping class="com.wyd.empire.world.entity.mysql.VigorPrice"/>	
 		<!-- 星魂配置 -->
-		<mapping class="com.wyd.empire.world.bean.StarSoul"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.StarSoul"/>
 		<!-- 修炼配置 -->
-		<mapping class="com.wyd.empire.world.bean.Practice"/>	
+		<mapping class="com.wyd.empire.world.entity.mysql.Practice"/>	
 		<!-- 卡牌碎片合成 -->
-		<mapping class="com.wyd.empire.world.bean.DebirsMerge"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.DebirsMerge"/>
 		<!-- 卡牌熔炼 -->
-		<mapping class="com.wyd.empire.world.bean.CardMelt"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.CardMelt"/>
 		<!-- 套卡属性 -->
-		<mapping class="com.wyd.empire.world.bean.CardGroup"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.CardGroup"/>
 		<!-- 地图特殊事件 -->
-		<mapping class="com.wyd.empire.world.bean.MapEvent"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.MapEvent"/>
 		<!-- 卡牌兑换 -->
-		<mapping class="com.wyd.empire.world.bean.CardExchange"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.CardExchange"/>
 		<!-- 本地推送列表 -->
-		<mapping class="com.wyd.empire.world.bean.LocalPushList"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.LocalPushList"/>
 		<!-- 爱心许愿物品列表 -->
-		<mapping class="com.wyd.empire.world.bean.WishItem"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.WishItem"/>
 		<!-- 月卡列表 -->
-		<mapping class="com.wyd.empire.world.bean.MonthCard"/>		
-		<mapping class="com.wyd.empire.world.bean.WishItem"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.MonthCard"/>		
+		<mapping class="com.wyd.empire.world.entity.mysql.WishItem"/>
 		<!-- VIP等级限购物品配置 -->
-		<mapping class="com.wyd.empire.world.bean.LimitedPrice"/>
+		<mapping class="com.wyd.empire.world.entity.mysql.LimitedPrice"/>
 		<!-- 分包下载 -->
-		<mapping class="com.wyd.empire.world.bean.DownloadReward"/>				
+		<mapping class="com.wyd.empire.world.entity.mysql.DownloadReward"/>				
 	</session-factory>
 </hibernate-configuration>

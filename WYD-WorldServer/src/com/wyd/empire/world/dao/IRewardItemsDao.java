@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.wyd.db.dao.UniversalDao;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.bean.FullServiceReward;
-import com.wyd.empire.world.bean.RewardItems;
+import com.wyd.empire.world.entity.mysql.FullServiceReward;
+import com.wyd.empire.world.entity.mysql.RewardItems;
 
 /**
  * The DAO interface for the TabTask entity.

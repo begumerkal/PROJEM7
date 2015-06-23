@@ -12,7 +12,7 @@ import java.util.Random;
 
 import org.apache.log4j.Logger;
 
-import com.wyd.empire.world.bean.ShopItem;
+import com.wyd.empire.world.entity.mysql.ShopItem;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 
 public class ServiceUtils {

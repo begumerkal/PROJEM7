@@ -6,9 +6,9 @@ import org.apache.log4j.Logger;
 
 import com.wyd.empire.protocol.data.account.SendRoleActorList;
 import com.wyd.empire.world.Client;
-import com.wyd.empire.world.bean.Player;
-import com.wyd.empire.world.bean.PlayerPet;
 import com.wyd.empire.world.common.util.Common;
+import com.wyd.empire.world.entity.mysql.Player;
+import com.wyd.empire.world.entity.mysql.PlayerPet;
 import com.wyd.empire.world.exception.ErrorMessages;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 import com.wyd.empire.world.session.ConnectSession;

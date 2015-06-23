@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
-import com.wyd.empire.world.bean.Map;
-import com.wyd.empire.world.bean.PlayerSingleMap;
-import com.wyd.empire.world.bean.ShopItem;
-import com.wyd.empire.world.bean.SingleMapDrop;
 import com.wyd.empire.world.dao.ISingleMapDao;
+import com.wyd.empire.world.entity.mysql.Map;
+import com.wyd.empire.world.entity.mysql.PlayerSingleMap;
+import com.wyd.empire.world.entity.mysql.ShopItem;
+import com.wyd.empire.world.entity.mysql.SingleMapDrop;
 
 /**
  * The DAO class for the TabPlayeritemsfromshop entity.

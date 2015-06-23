@@ -3,9 +3,9 @@ package com.wyd.empire.world.dao.impl;
 import java.util.List;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
-import com.wyd.empire.world.bean.FundRecord;
-import com.wyd.empire.world.bean.PlayerFund;
 import com.wyd.empire.world.dao.IPlayerFundDao;
+import com.wyd.empire.world.entity.mysql.FundRecord;
+import com.wyd.empire.world.entity.mysql.PlayerFund;
 
 /**
  * The DAO class for the PlayerFund entity.

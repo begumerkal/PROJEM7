@@ -6,8 +6,8 @@ import java.util.List;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.empire.world.WorldServer;
-import com.wyd.empire.world.bean.LogActivitiesAward;
 import com.wyd.empire.world.dao.ISchedulingDao;
+import com.wyd.empire.world.entity.mysql.LogActivitiesAward;
 
 /**
  * The DAO class for the TabConsortiaright entity.

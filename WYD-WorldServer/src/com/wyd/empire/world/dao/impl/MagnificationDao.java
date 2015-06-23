@@ -3,8 +3,8 @@ package com.wyd.empire.world.dao.impl;
 import java.util.List;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
-import com.wyd.empire.world.bean.Magnification;
 import com.wyd.empire.world.dao.IMagnificationDao;
+import com.wyd.empire.world.entity.mysql.Magnification;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 
 /**

@@ -2,7 +2,7 @@ package com.wyd.empire.world.admin;
 
 import java.util.List;
 
-import com.wyd.empire.world.bean.Application;
+import com.wyd.empire.world.entity.mysql.Application;
 
 public class AdminLogin {
 	private int userId;

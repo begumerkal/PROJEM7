@@ -4,10 +4,10 @@ import java.util.List;
 
 import com.wyd.db.dao.UniversalDao;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.bean.BuffRecord;
-import com.wyd.empire.world.bean.Consortia;
-import com.wyd.empire.world.bean.ConsortiaSkill;
 import com.wyd.empire.world.consortia.MaxPrestigeVo;
+import com.wyd.empire.world.entity.mysql.BuffRecord;
+import com.wyd.empire.world.entity.mysql.Consortia;
+import com.wyd.empire.world.entity.mysql.ConsortiaSkill;
 
 /**
  * The DAO interface for the TabConsortia entity.

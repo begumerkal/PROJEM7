@@ -7,9 +7,9 @@ import org.springframework.util.StringUtils;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.bean.Promotions;
 import com.wyd.empire.world.common.util.ServiceUtils;
 import com.wyd.empire.world.dao.IPromotionsDao;
+import com.wyd.empire.world.entity.mysql.Promotions;
 
 /**
  * The DAO class for the TabConsortiaright entity.

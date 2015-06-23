@@ -5,8 +5,8 @@ import java.util.Map;
 
 import com.wyd.db.dao.UniversalDao;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.bean.ButtonInfo;
-import com.wyd.empire.world.bean.OperationConfig;
+import com.wyd.empire.world.entity.mysql.ButtonInfo;
+import com.wyd.empire.world.entity.mysql.OperationConfig;
 
 /**
  * The DAO interface for the TabOperationconfig entity.

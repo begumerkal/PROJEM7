@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
-import com.wyd.empire.world.bean.BossmapBuff;
 import com.wyd.empire.world.dao.IBossmapBuffDao;
+import com.wyd.empire.world.entity.mysql.BossmapBuff;
 
 /**
  * The DAO class for the TabGuai entity.

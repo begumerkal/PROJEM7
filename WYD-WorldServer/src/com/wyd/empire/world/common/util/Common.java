@@ -2,7 +2,8 @@ package com.wyd.empire.world.common.util;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.wyd.empire.world.bean.Successrate;
+
+import com.wyd.empire.world.entity.mysql.Successrate;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 public class Common {
     /** 喇叭ID */

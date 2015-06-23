@@ -3,7 +3,7 @@ package com.wyd.empire.world.server.handler.server;
 import org.apache.log4j.Logger;
 
 import com.wyd.empire.protocol.data.server.LegacyFindPasswordOk;
-import com.wyd.empire.world.player.AcountMailVo;
+import com.wyd.empire.world.model.player.AcountMailVo;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.handler.IDataHandler;

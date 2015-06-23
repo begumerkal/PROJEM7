@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.wyd.db.dao.UniversalDao;
 import com.wyd.empire.world.admin.AdminUser;
-import com.wyd.empire.world.bean.Admin;
-import com.wyd.empire.world.bean.Application;
+import com.wyd.empire.world.entity.mysql.Admin;
+import com.wyd.empire.world.entity.mysql.Application;
 
 /**
  * The DAO interface for the TabConsortiaright entity.

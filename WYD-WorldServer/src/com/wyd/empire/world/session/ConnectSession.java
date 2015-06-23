@@ -20,7 +20,7 @@ import com.wyd.empire.protocol.data.server.NotifyMaxPlayer;
 import com.wyd.empire.protocol.data.server.ShutDown;
 import com.wyd.empire.world.Client;
 import com.wyd.empire.world.WorldServer;
-import com.wyd.empire.world.player.WorldPlayer;
+import com.wyd.empire.world.model.player.WorldPlayer;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 import com.wyd.empire.world.server.service.impl.ConnectService;
 import com.wyd.empire.world.server.service.impl.PlayerService;

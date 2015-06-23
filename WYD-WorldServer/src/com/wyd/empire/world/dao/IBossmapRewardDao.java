@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.wyd.db.dao.UniversalDao;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.bean.BossmapReward;
+import com.wyd.empire.world.entity.mysql.BossmapReward;
 
 /**
  * The DAO interface for the TabBossmapReward entity.

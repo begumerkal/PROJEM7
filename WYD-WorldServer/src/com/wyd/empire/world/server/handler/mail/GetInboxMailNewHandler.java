@@ -1,10 +1,11 @@
 package com.wyd.empire.world.server.handler.mail;
 
 import org.apache.log4j.Logger;
+
 import com.wyd.empire.protocol.data.mail.GetInboxMailNew;
 import com.wyd.empire.protocol.data.nearby.GetNearbyReceivedMailList;
 import com.wyd.empire.world.exception.ErrorMessages;
-import com.wyd.empire.world.player.WorldPlayer;
+import com.wyd.empire.world.model.player.WorldPlayer;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 import com.wyd.empire.world.session.ConnectSession;
 import com.wyd.protocol.data.AbstractData;

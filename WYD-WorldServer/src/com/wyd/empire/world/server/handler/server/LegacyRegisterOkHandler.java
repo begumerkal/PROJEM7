@@ -6,7 +6,7 @@ import com.wyd.empire.protocol.data.account.RegisterFail;
 import com.wyd.empire.protocol.data.account.RegisterOk;
 import com.wyd.empire.protocol.data.server.LegacyRegisterOk;
 import com.wyd.empire.world.exception.TipMessages;
-import com.wyd.empire.world.player.WorldPlayer;
+import com.wyd.empire.world.model.player.WorldPlayer;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.handler.IDataHandler;

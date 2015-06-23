@@ -8,10 +8,10 @@ import org.springframework.util.StringUtils;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.bean.GetItem;
-import com.wyd.empire.world.bean.GoldCount;
-import com.wyd.empire.world.bean.StrongeRecord;
 import com.wyd.empire.world.dao.IGetLogDao;
+import com.wyd.empire.world.entity.mysql.GetItem;
+import com.wyd.empire.world.entity.mysql.GoldCount;
+import com.wyd.empire.world.entity.mysql.StrongeRecord;
 
 public class GetLogDao extends UniversalDaoHibernate implements IGetLogDao {
 

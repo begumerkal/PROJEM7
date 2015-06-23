@@ -3,8 +3,8 @@ package com.wyd.empire.world.dao;
 import java.util.List;
 
 import com.wyd.db.dao.UniversalDao;
-import com.wyd.empire.world.bean.Friend;
-import com.wyd.empire.world.bean.Player;
+import com.wyd.empire.world.entity.mysql.Friend;
+import com.wyd.empire.world.entity.mysql.Player;
 
 /**
  * The DAO interface for the TabConsortia entity.

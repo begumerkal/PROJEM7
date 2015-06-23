@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.db.page.PageList;
-import com.wyd.empire.world.bean.DailyActivity;
 import com.wyd.empire.world.dao.IDailyActivityDao;
+import com.wyd.empire.world.entity.mysql.DailyActivity;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 
 public class DailyActivityDao extends UniversalDaoHibernate implements IDailyActivityDao {

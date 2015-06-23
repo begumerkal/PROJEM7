@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
-import com.wyd.empire.world.bean.BillingPoint;
-import com.wyd.empire.world.bean.Order;
 import com.wyd.empire.world.dao.IOrderDao;
+import com.wyd.empire.world.entity.mysql.BillingPoint;
+import com.wyd.empire.world.entity.mysql.Order;
 
 /**
  * The DAO class for the TabConsortiaright entity.

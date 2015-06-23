@@ -10,8 +10,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import com.wyd.db.service.impl.UniversalManagerImpl;
-import com.wyd.empire.world.bean.ChatRecord;
 import com.wyd.empire.world.dao.IChatRecordDao;
+import com.wyd.empire.world.entity.mysql.ChatRecord;
 import com.wyd.empire.world.server.service.base.IChatRecordService;
 
 /**

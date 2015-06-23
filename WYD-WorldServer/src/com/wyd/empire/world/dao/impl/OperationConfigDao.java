@@ -16,9 +16,9 @@ import org.springframework.util.StringUtils;
 import com.wyd.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.db.page.PageList;
 import com.wyd.empire.world.WorldServer;
-import com.wyd.empire.world.bean.ButtonInfo;
-import com.wyd.empire.world.bean.OperationConfig;
 import com.wyd.empire.world.dao.IOperationConfigDao;
+import com.wyd.empire.world.entity.mysql.ButtonInfo;
+import com.wyd.empire.world.entity.mysql.OperationConfig;
 /**
  * The DAO class for the TabOperationconfig entity.
  */
