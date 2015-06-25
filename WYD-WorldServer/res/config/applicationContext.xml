@@ -109,7 +109,7 @@
 	<!-- 映射转换器，扫描back-package目录下的文件，根据注释，把它们作为mongodb的一个collection的映射 -->
 	<mongo:mapping-converter base-package="com.mongo.entity,com.wyd.empire.world.bean" />
 	<!-- mongodb bean的仓库目录，会自动扫描扩展了MongoRepository接口的接口进行注入 -->
-	<mongo:repositories base-package="com.mongo.dao.impl,com.wyd.empire.world.dao.impl" />
+	<mongo:repositories base-package="com.mongo.dao.impl,com.wyd.empire.world.dao.mysql.impl" />
 	<context:component-scan base-package="com.wyd.empire.world" />
 
 
@@ -129,7 +129,7 @@
 		<property name="target">
 			<bean class="com.wyd.empire.world.server.service.base.impl.BasePlayerService">
 				<property name="playerDao">
-					<bean class="com.wyd.empire.world.dao.impl.PlayerDao">
+					<bean class="com.wyd.empire.world.dao.mysql.impl.PlayerDao">
 						<property name="sessionFactory" ref="sessionFactory" />
 					</bean>
 				</property>
@@ -141,7 +141,7 @@
 		<property name="target">
 			<bean class="com.wyd.empire.world.server.service.base.impl.ChatRecordService">
 				<property name="dao">
-					<bean class="com.wyd.empire.world.dao.impl.ChatRecordDao">
+					<bean class="com.wyd.empire.world.dao.mysql.impl.ChatRecordDao">
 						<property name="sessionFactory" ref="sessionFactory" />
 					</bean>
 				</property>
@@ -153,7 +153,7 @@
 		<property name="target">
 			<bean class="com.wyd.empire.world.server.service.base.impl.OperationConfigService">
 				<property name="dao">
-					<bean class="com.wyd.empire.world.dao.impl.OperationConfigDao">
+					<bean class="com.wyd.empire.world.dao.mysql.impl.OperationConfigDao">
 						<property name="sessionFactory" ref="sessionFactory" />
 					</bean>
 				</property>
@@ -164,7 +164,7 @@
 		<property name="target">
 			<bean class="com.wyd.empire.world.server.service.base.impl.OrderService">
 				<property name="dao">
-					<bean class="com.wyd.empire.world.dao.impl.OrderDao">
+					<bean class="com.wyd.empire.world.dao.mysql.impl.OrderDao">
 						<property name="sessionFactory" ref="sessionFactory" />
 					</bean>
 				</property>
@@ -179,7 +179,7 @@
 		<property name="target">
 			<bean class="com.wyd.empire.world.server.service.base.impl.ThirdConfigService">
 				<property name="dao">
-					<bean class="com.wyd.empire.world.dao.impl.ThirdConfigDao">
+					<bean class="com.wyd.empire.world.dao.mysql.impl.ThirdConfigDao">
 						<property name="sessionFactory" ref="sessionFactory" />
 					</bean>
 				</property>

@@ -3,7 +3,7 @@ package com.wyd.empire.world.server.handler.server;
 import org.apache.log4j.Logger;
 
 import com.wyd.empire.protocol.data.server.SessionClosed;
-import com.wyd.empire.world.Client;
+import com.wyd.empire.world.model.Client;
 import com.wyd.empire.world.session.ConnectSession;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.handler.IDataHandler;

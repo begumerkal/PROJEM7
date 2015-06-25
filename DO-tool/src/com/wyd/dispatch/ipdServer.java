@@ -6,6 +6,7 @@ import java.net.InetSocketAddress;
 import org.apache.commons.configuration.Configuration;
 import org.apache.log4j.Logger;
 
+import com.wyd.empire.protocol.data.account.GetRoleList;
 import com.wyd.empire.protocol.data.account.Login;
 
 public class ipdServer {
@@ -44,11 +45,13 @@ public class ipdServer {
 			sendData();
 		} catch (ConnectException e) {
 			log.warn("分配器连接失败！");
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 	
-	public void sendData() {
-		System.out.println("发送登录数据");
+	public void sendData() throws InterruptedException {
+		System.out.println("发送登录数据...");
 		Login login = new Login();
 		login.setAccountName("doter1");
 		login.setPassWord("123456");
@@ -56,9 +59,10 @@ public class ipdServer {
 		login.setChannel(1000);
 		this.connector.send(login);
 		
-		
-		
-		
+		Thread.sleep(800);
+		System.out.println("发送获取角色列表数据...");
+		GetRoleList roleList = new GetRoleList();
+		this.connector.send(roleList);
 		
 		
 		

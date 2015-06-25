@@ -30,7 +30,7 @@ public class ServiceManager {
 	private IRequestService requestService;
 	private AccountSkeleton accountSkeleton = null;
 	private BattleSkeleton battleSkeleton = null;
-	private ConnectService connectService;
+	
 	private TheadPlayerItemsService theadPlayerItemsService;
 
 	@Autowired
@@ -47,15 +47,15 @@ public class ServiceManager {
 	private CrossService crossService;// 跨服对战相关服务
 	@Autowired
 	private AbstractService abstractService;// 协议处理线程
-
+	@Autowired
+	private ConnectService connectService;// 连接服务
+	
 	private ServiceManager() {
 		try {
 			// 加载游戏配置
 			this.configuration = new PropertiesConfiguration("configWorld.properties");
 			// 请求服务
 			this.requestService = new DefaultRequestService();
-			// 连接服务
-			this.connectService = new ConnectService();
 			// 游戏角色服务
 			this.playerService = new PlayerService();
 			// 包含http任务的线程池

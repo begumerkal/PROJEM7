@@ -14,7 +14,8 @@ public class Protocol {
 	public static final byte SERVER_AccountLoginOk = 8;
 	public static final byte SERVER_SessionClosed = 9;// dis告知world 用户下线
 	public static final byte SERVER_SetClientIPAddress = 10;// 用户链接dis告知world用户ip
-
+	public static final byte SERVER_Kick = 11;//踢用户下线
+	
 	public static final byte SERVER_ServerLogin = 100;
 	public static final byte SERVER_ServerLoginOk = 100;
 	public static final byte SERVER_ServerLoginFailed = 100;
@@ -37,7 +38,7 @@ public class Protocol {
 	// 用户管理（广播，踢下线等）
 	public static final byte SERVER_BroadCast = 60;
 	public static final byte SERVER_ForceBroadCast = 61;
-	public static final byte SERVER_Kick = 62;
+	
 	public static final byte SERVER_ShutDown = 63;
 	// 服务器维护相关（推荐流量最好的服务器）
 	public static final byte SERVER_AddBalance = 70;
@@ -56,8 +57,45 @@ public class Protocol {
 	public static final byte SERVER_UpdateAccountInfo = 92;
 	public static final byte SERVER_UpdateAccountInfoOk = 93;
 
+	/** 用户帐号相关协议（客户端共享） */
+	public static final byte MAIN_ACCOUNT = 2;
+	public static final byte ACCOUNT_Login = 1;// 用户登录
+	public static final byte ACCOUNT_LoginOk = 2;// 登录成功
+	public static final byte ACCOUNT_RepeatLogin = 3;// 主账号重复登录
+	public static final byte ACCOUNT_GetRoleList = 4;//获取角色列表
+
+	public static final byte ACCOUNT_Register = 100;
+	public static final byte ACCOUNT_RegisterOk = 100;
+	public static final byte ACCOUNT_RegisterFail = 100;
+	public static final byte ACCOUNT_CreateRoleActor = 10;
+
+	public static final byte ACCOUNT_SendRoleActorList = 13;
+	public static final byte ACCOUNT_ChannelLogin = 15;
+	public static final byte ACCOUNT_ChannelLoginResult = 16;
+
+	public static final byte ACCOUNT_RoleActorLogin = 22;
+	public static final byte ACCOUNT_RoleActorLoginOk = 23;
+	public static final byte ACCOUNT_GetRandomName = 24;
+	public static final byte ACCOUNT_GetRandomNameOk = 25;
+	public static final byte ACCOUNT_SetToken = 26;
+	public static final byte ACCOUNT_LoginAgain = 30;
+	public static final byte ACCOUNT_LoginFail = 32;
+	public static final byte ACCOUNT_ModifyPassword = 50;
+	public static final byte ACCOUNT_ModifyPasswordOk = 51;
+	public static final byte ACCOUNT_FindPassword = 52;
+	public static final byte ACCOUNT_FindPasswordOk = 53;
+	public static final byte ACCOUNT_ModifyPasswordFail = 56;
+	public static final byte ACCOUNT_Verification = 57;
+	public static final byte ACCOUNT_VerificationResult = 58;
+	public static final byte ACCOUNT_SetNewToken = 59;
+	public static final byte ACCOUNT_SetNewTokenOk = 60;
+	public static final byte ACCOUNT_GetPushList = 61;
+	public static final byte ACCOUNT_GetPushListOk = 62;
+	public static final byte ACCOUNT_GetDownloadRewardList = 63;
+	public static final byte ACCOUNT_GetDownloadRewardListOK = 64;
+
 	/** GM帐户协议和相关管理协议 */
-	public static final byte MAIN_ADMIN = 2;
+	public static final byte MAIN_ADMIN = 3;
 	public static final byte ADMIN_Login = 1;
 	public static final byte ADMIN_LoginResult = 2;
 	public static final byte ADMIN_GivenItems = 3;
@@ -92,41 +130,6 @@ public class Protocol {
 	public static final byte ADMIN_GetGPSServerConfigureOk = 32;
 	public static final byte ADMIN_UpdateGPSServerConfigure = 33;
 	public static final byte ADMIN_UpdateGPSServerConfigureOk = 34;
-	/** 用户帐号相关协议（客户端共享） */
-	public static final byte MAIN_ACCOUNT = 3;
-	public static final byte ACCOUNT_Login = 1;// 用户登录
-	public static final byte ACCOUNT_LoginOk = 2;// 登录成功
-	public static final byte ACCOUNT_RepeatLogin = 3;// 主账号重复登录
-
-	public static final byte ACCOUNT_Register = 100;
-	public static final byte ACCOUNT_RegisterOk = 100;
-	public static final byte ACCOUNT_RegisterFail = 100;
-	public static final byte ACCOUNT_CreateRoleActor = 10;
-	public static final byte ACCOUNT_GetRoleActorList = 12;
-	public static final byte ACCOUNT_SendRoleActorList = 13;
-	public static final byte ACCOUNT_ChannelLogin = 15;
-	public static final byte ACCOUNT_ChannelLoginResult = 16;
-
-	public static final byte ACCOUNT_RoleActorLogin = 22;
-	public static final byte ACCOUNT_RoleActorLoginOk = 23;
-	public static final byte ACCOUNT_GetRandomName = 24;
-	public static final byte ACCOUNT_GetRandomNameOk = 25;
-	public static final byte ACCOUNT_SetToken = 26;
-	public static final byte ACCOUNT_LoginAgain = 30;
-	public static final byte ACCOUNT_LoginFail = 32;
-	public static final byte ACCOUNT_ModifyPassword = 50;
-	public static final byte ACCOUNT_ModifyPasswordOk = 51;
-	public static final byte ACCOUNT_FindPassword = 52;
-	public static final byte ACCOUNT_FindPasswordOk = 53;
-	public static final byte ACCOUNT_ModifyPasswordFail = 56;
-	public static final byte ACCOUNT_Verification = 57;
-	public static final byte ACCOUNT_VerificationResult = 58;
-	public static final byte ACCOUNT_SetNewToken = 59;
-	public static final byte ACCOUNT_SetNewTokenOk = 60;
-	public static final byte ACCOUNT_GetPushList = 61;
-	public static final byte ACCOUNT_GetPushListOk = 62;
-	public static final byte ACCOUNT_GetDownloadRewardList = 63;
-	public static final byte ACCOUNT_GetDownloadRewardListOK = 64;
 
 	/** 公告协议 */
 	public static final byte MAIN_BULLETIN = 11;

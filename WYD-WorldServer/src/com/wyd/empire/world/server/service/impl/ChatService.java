@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import com.wyd.empire.world.model.player.WorldPlayer;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 import com.wyd.empire.world.session.ConnectSession;
 import com.wyd.protocol.ProtocolManager;
+import com.wyd.session.Session;
 
 /**
  * 聊天服务
@@ -162,16 +164,15 @@ public class ChatService {
 	 * @return 会放信息
 	 */
 	private ConnectSession getPlayerSession(int playerId) {
-		ConnectSession reSession = null;
 		ConnectService connectService = ServiceManager.getManager().getConnectService();
-		ConnectSession[] connectionSessions = connectService.getConnectSession();
-		for (ConnectSession session : connectionSessions) {
-			if ((session != null) && (session.getPlayerSessionId(playerId) != -1)) {
-				reSession = session;
-				break;
+		ConcurrentHashMap<Integer, Session> connectionSessions = connectService.getRegistry().getSessionID2Session();
+		for (Session session : connectionSessions.values()) {
+			ConnectSession connectSession = (ConnectSession) session;
+			if (connectSession.getPlayerSessionId(playerId) != -1) {
+				return connectSession;
 			}
 		}
-		return reSession;
+		return null;
 	}
 
 	/**

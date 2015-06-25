@@ -6,8 +6,8 @@ import com.wyd.empire.protocol.data.account.LoginFail;
 import com.wyd.empire.protocol.data.account.LoginOk;
 import com.wyd.empire.protocol.data.account.RepeatLogin;
 import com.wyd.empire.protocol.data.server.AccountLoginOk;
-import com.wyd.empire.world.Client;
 import com.wyd.empire.world.exception.TipMessages;
+import com.wyd.empire.world.model.Client;
 import com.wyd.empire.world.request.LoginRequest;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 import com.wyd.empire.world.session.ConnectSession;
@@ -55,7 +55,7 @@ public class AccountLoginOkHandler implements IDataHandler {
 			} else if (legacyLoginOk.getStatus()==1) {
 				LoginFail loginFail = new LoginFail(request.getSessionId(), request.getId());
 				loginFail.setMessage(TipMessages.LOGINFAIL);
-				session.write(loginFail);
+				return loginFail;
 			}
 		} catch (Exception e) {
 			log.info(e, e);

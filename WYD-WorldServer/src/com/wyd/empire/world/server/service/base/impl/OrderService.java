@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.context.ApplicationContext;
 
 import com.wyd.db.service.impl.UniversalManagerImpl;
-import com.wyd.empire.world.dao.IOrderDao;
+import com.wyd.empire.world.dao.mysql.IOrderDao;
 import com.wyd.empire.world.entity.mysql.BillingPoint;
 import com.wyd.empire.world.entity.mysql.Order;
 import com.wyd.empire.world.server.service.base.IOrderService;

@@ -17,7 +17,7 @@ import com.wyd.empire.protocol.data.mail.SendOutboxMail;
 import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.common.util.DateUtil;
 import com.wyd.empire.world.common.util.ServiceUtils;
-import com.wyd.empire.world.dao.IMailDao;
+import com.wyd.empire.world.dao.mysql.IMailDao;
 import com.wyd.empire.world.entity.mysql.Friend;
 import com.wyd.empire.world.entity.mysql.Mail;
 import com.wyd.empire.world.exception.TipMessages;

@@ -21,7 +21,6 @@ import org.apache.mina.transport.socket.nio.NioSocketConnector;
 import org.springframework.util.StringUtils;
 
 import com.wyd.empire.protocol.Protocol;
-import com.wyd.empire.protocol.data.server.Heartbeat;
 import com.wyd.empire.protocol.data.system.ShakeHands;
 import com.wyd.protocol.ProtocolManager;
 import com.wyd.protocol.s2s.S2SSegment;

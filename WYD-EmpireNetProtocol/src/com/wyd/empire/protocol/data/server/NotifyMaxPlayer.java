@@ -2,7 +2,7 @@ package com.wyd.empire.protocol.data.server;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.empire.protocol.Protocol;
 /**
- * 类 <code>NotifyMaxPlayer</code>继承抽象类<code>AbstractData</code>，实现接口主命令Protocol.MAIN_SERVER下子命令SERVER_NotifyMaxPlayer(通知服务器最大在线人数)对应数据封装。
+ * 通知服务器最大在线人数。
  * 
  * @see AbstractData
  * @author mazheng

@@ -61,6 +61,8 @@ public class WorldServer {
 		context = new ClassPathXmlApplicationContext(new String[]{"applicationContext.xml", "application-scheduling.xml"});
 		ServiceManager sm = context.getBean(ServiceManager.class);
 		ServiceManager.setServiceManager(sm);
+		SessionRegistry registry = new SessionRegistry();
+		sm.getConnectService().setRegistry(registry);
 
 		// 加载configWorld.properties配置,读取配置文件内最大等级限制
 		Configuration configuration = ServiceManager.getManager().getConfiguration();
@@ -69,7 +71,7 @@ public class WorldServer {
 		// ServiceManager.getManager().initBaseData();
 		// 初始化进程
 		ServiceManager.getManager().init();
- 		// 是否在维护
+		// 是否在维护
 		String maintance = null;
 		maintance = configuration.getString("maintance");
 		if (maintance == null) {
@@ -78,7 +80,7 @@ public class WorldServer {
 			config.setMaintance(false);
 		}
 		// 创建SessionRegistry会话注册类，用于快速查找IoSession与Session子类的映射关系。
-		SessionRegistry registry = new SessionRegistry();
+
 		// 创建ConnectSessionHandler，是IoHandler子类，并创建会话ConnectSession——
 		// 其包含IoSession接口，并持有所需服务的引用。
 		log.info("connect auth");
@@ -90,11 +92,9 @@ public class WorldServer {
 		connectNearbyService();
 		log.info("NearbyService connected");
 		// 启动世界服务器
-		WorldHandler connectSessionHandler = new ConnectSessionHandler(registry);
-		bind(registry, connectSessionHandler);
+		bind(new ConnectSessionHandler(registry));
 		// 启动游戏管理服务
-		AdminSessionHandler adminSessionHandler = new AdminSessionHandler(registry);
-		bindAdmin(adminSessionHandler);
+		bindAdmin(new AdminSessionHandler(registry));
 		// openManagerServlet();
 		log.info("游戏世界服务器启动...");
 		System.out.println("游戏世界服务器启动...");
@@ -167,13 +167,13 @@ public class WorldServer {
 	 * @param sessionHandler
 	 * @throws Exception
 	 */
-	private void bind(SessionRegistry registry, WorldHandler sessionHandler) throws Exception {
+	private void bind(WorldHandler sessionHandler) throws Exception {
 		NioSocketAcceptor acceptor = new NioSocketAcceptor(Runtime.getRuntime().availableProcessors() + 1);
-		
+
 		SocketSessionConfig cfg = acceptor.getSessionConfig();
-		cfg.setIdleTime(IdleStatus.BOTH_IDLE,180);
+		cfg.setIdleTime(IdleStatus.BOTH_IDLE, 180);
 		cfg.setReuseAddress(true);
-		
+
 		// 添加IoHandler处理线程池
 		acceptor.getFilterChain().addFirst("uwap2databean", new DataBeanFilter());
 		acceptor.getFilterChain().addFirst("uwap2codec", new ProtocolCodecFilter(new S2SEncoder(), new S2SDecoder()));
@@ -187,7 +187,6 @@ public class WorldServer {
 				ServiceManager.getManager().getConfiguration().getInt("port")));
 		// 监听
 		acceptor.bind();
-		ServiceManager.getManager().getConnectService().setAcceptor(acceptor);
 	}
 	private void bindAdmin(SessionHandler sessionHandler) throws Exception {
 		NioSocketAcceptor acceptor = new NioSocketAcceptor(Runtime.getRuntime().availableProcessors() + 1);
@@ -263,8 +262,6 @@ public class WorldServer {
 	// server.start();
 	// }
 
-
-
 	/**
 	 * 跨服对战服务
 	 * 
@@ -304,9 +301,6 @@ public class WorldServer {
 			// ServiceManager.getManager().getNearbyService().setNearbySkeleton(nearbySkeleton);
 		}
 	}
-
-
-
 
 	public static void main(String[] args) {
 		try {
@@ -375,14 +369,13 @@ public class WorldServer {
 		public Session createSession(IoSession session) {
 			ConnectSession connSession = new ConnectSession(session);
 			ServiceManager serviceManager = ServiceManager.getManager();
-			connSession.setConnectService(serviceManager.getConnectService());
 			connSession.setAccountSkeleton(serviceManager.getAccountSkeleton());
 			connSession.setPlayerService(serviceManager.getPlayerService());
 			return connSession;
 		}
 
-		public ConnectSessionHandler(SessionRegistry paramSessionRegistry) {
-			super(paramSessionRegistry);
+		public ConnectSessionHandler(SessionRegistry sessionRegistry) {
+			super(sessionRegistry);
 		}
 
 	}

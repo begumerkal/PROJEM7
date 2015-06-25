@@ -78,4 +78,12 @@ public class SessionRegistry {
 	public Session getSession(int sessionId) {
 		return this.sessionID2Session.get(sessionId);
 	}
+
+	public ConcurrentHashMap<IoSession, Session> getIoSession2Session() {
+		return ioSession2Session;
+	}
+
+	public ConcurrentHashMap<Integer, Session> getSessionID2Session() {
+		return sessionID2Session;
+	}
 }

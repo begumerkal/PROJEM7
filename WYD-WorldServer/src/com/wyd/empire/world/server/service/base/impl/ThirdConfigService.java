@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import com.wyd.db.service.impl.UniversalManagerImpl;
-import com.wyd.empire.world.dao.IThirdConfigDao;
+import com.wyd.empire.world.dao.mysql.IThirdConfigDao;
 import com.wyd.empire.world.entity.mysql.ThirdConfig;
 import com.wyd.empire.world.server.service.base.IThirdConfigService;
 

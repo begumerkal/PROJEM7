@@ -4,9 +4,9 @@ import org.apache.log4j.Logger;
 
 import com.wyd.empire.protocol.data.account.Login;
 import com.wyd.empire.protocol.data.server.AccountLogin;
-import com.wyd.empire.world.Client;
 import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.exception.TipMessages;
+import com.wyd.empire.world.model.Client;
 import com.wyd.empire.world.request.LoginRequest;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 import com.wyd.empire.world.session.ConnectSession;

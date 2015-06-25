@@ -8,13 +8,13 @@ import org.apache.log4j.Logger;
 
 import com.wyd.empire.protocol.data.account.CreateRoleActor;
 import com.wyd.empire.protocol.data.server.SetClientInfo;
-import com.wyd.empire.world.Client;
 import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.common.util.ServiceUtils;
 import com.wyd.empire.world.entity.mysql.Mail;
 import com.wyd.empire.world.entity.mysql.Player;
 import com.wyd.empire.world.exception.CreatePlayerException;
 import com.wyd.empire.world.exception.TipMessages;
+import com.wyd.empire.world.model.Client;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 import com.wyd.empire.world.session.ConnectSession;
 import com.wyd.protocol.data.AbstractData;
@@ -92,7 +92,7 @@ public class CreateRoleActorHandler implements IDataHandler {
 				}
 			}
 			// 取角色列表
-			GetRoleActorListHandler getActorListHandler = new GetRoleActorListHandler();
+			GetRoleListHandler getActorListHandler = new GetRoleListHandler();
 			getActorListHandler.handle(data);
 			return null;
 		} catch (CreatePlayerException ex) {

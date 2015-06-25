@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.wyd.db.page.PageList;
 import com.wyd.db.service.impl.UniversalManagerImpl;
-import com.wyd.empire.world.dao.IPlayerDao;
+import com.wyd.empire.world.dao.mysql.IPlayerDao;
 import com.wyd.empire.world.entity.mysql.LoginReward;
 import com.wyd.empire.world.entity.mysql.Player;
 import com.wyd.empire.world.entity.mysql.PlayerInfo;

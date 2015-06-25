@@ -19,8 +19,8 @@ import com.wyd.empire.protocol.data.server.Kick;
 import com.wyd.empire.protocol.data.server.NotifyMaintance;
 import com.wyd.empire.protocol.data.server.NotifyMaxPlayer;
 import com.wyd.empire.protocol.data.server.ShutDown;
-import com.wyd.empire.world.Client;
 import com.wyd.empire.world.WorldServer;
+import com.wyd.empire.world.model.Client;
 import com.wyd.empire.world.model.player.WorldPlayer;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 import com.wyd.empire.world.server.service.impl.ConnectService;
@@ -63,21 +63,6 @@ public class ConnectSession extends Session {
 	 * 保存playerId与对应<tt>Client</tt>对象对应<tt>HashMap</tt>
 	 */
 	private ConcurrentHashMap<Integer, Client> playerId2Clients = new ConcurrentHashMap<Integer, Client>();
-
-	// /**
-	// * 保存accountName与对应<tt>Client</tt>对象对应<tt>HashMap</tt>
-	// */
-	// private ConcurrentHashMap<String, Client> accountName2Clients = new
-	// ConcurrentHashMap<String, Client>();
-	// private ConcurrentHashMap<Integer, Object> listened = new
-	// ConcurrentHashMap<Integer, Object>();
-	// private Object NULL = new Object();
-	// private ConcurrentHashMap<Integer, Integer> listenedSession = new
-	// ConcurrentHashMap<Integer, Integer>();
-	/**
-	 * 连接服务
-	 */
-	private ConnectService connectService;
 	/**
 	 * 玩家服务
 	 */
@@ -92,13 +77,11 @@ public class ConnectSession extends Session {
 
 	@Override
 	public void created() {
-		this.connectService.addConnect(this);
 	}
 
 	@Override
 	public void closed() {
 		if (!(this.shutdown)) {
-			this.connectService.removeConnect(this);
 			List<Integer> list = new ArrayList<Integer>(this.playerids);
 			for (int i = 0; i < list.size(); ++i) {
 				try {
@@ -117,7 +100,7 @@ public class ConnectSession extends Session {
 			System.out.println("dispatch " + this.name + " closed");
 		}
 	}
-
+	
 	@Override
 	public <T> void handle(T paramT) {
 
@@ -125,7 +108,7 @@ public class ConnectSession extends Session {
 
 	@Override
 	public void idle(IoSession session, IdleStatus status) {
-		System.out.println("关闭链接："+session);
+		System.out.println("关闭链接：" + session);
 		session.close(true);
 	}
 
@@ -266,16 +249,12 @@ public class ConnectSession extends Session {
 		this.sessionId2Clients.remove(client.getSessionId());
 		this.accountId2Clients.remove(client.getAccountId());
 		this.playerId2Clients.remove(client.getPlayerId());
-		
+
 		if (client.getStatus() == Client.STATUS.PLAYERLOGIN) {
 			WorldPlayer player = this.playerService.getWorldPlayerById(client.getPlayerId());
 			if (player != null)
 				loginOut(player);
 		}
-	}
-
-	public void setConnectService(ConnectService connectService) {
-		this.connectService = connectService;
 	}
 
 	public void setAccountSkeleton(AccountSkeleton accountSkeleton) {

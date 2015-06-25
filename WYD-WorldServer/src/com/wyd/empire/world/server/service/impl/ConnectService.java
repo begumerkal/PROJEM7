@@ -1,16 +1,18 @@
 package com.wyd.empire.world.server.service.impl;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
+import org.apache.mina.core.session.IoSession;
+import org.springframework.stereotype.Service;
 
 import com.wyd.empire.world.session.ConnectSession;
 import com.wyd.protocol.data.AbstractData;
+import com.wyd.session.Session;
+import com.wyd.session.SessionRegistry;
 
+@Service
 public class ConnectService implements Runnable {
-	private ConnectSession[] connects = new ConnectSession[10];
-	private NioSocketAcceptor acceptor;
-	private AtomicInteger ids = new AtomicInteger(1);
+	private SessionRegistry registry;
 
 	public void start() {
 		Thread t = new Thread(this);
@@ -18,75 +20,48 @@ public class ConnectService implements Runnable {
 		t.start();
 	}
 
-	public void setAcceptor(NioSocketAcceptor acceptor) {
-		this.acceptor = acceptor;
-	}
-
-	public void stop() {
-		this.acceptor.unbind();
-	}
-
-	public void addConnect(ConnectSession session) {
-		int id = this.ids.incrementAndGet();
-		synchronized (this) {
-			for (int i = 0; i < this.connects.length; ++i)
-				if (this.connects[i] == null) {
-					this.connects[i] = session;
-					session.setId(id);
-					break;
-				}
+	/** 广播数据到所有的dis */
+	public void broadcast(AbstractData seg) {
+		ConcurrentHashMap<IoSession, Session> sessionMap = registry.getIoSession2Session();
+		for (Session session : sessionMap.values()) {
+			session.write(seg);
 		}
 	}
 
-	public void broadcast(AbstractData seg) {
-		for (int i = 0; i < this.connects.length; ++i)
-			if (this.connects[i] != null)
-				this.connects[i].write(seg);
-	}
-
 	/**
-	 * 发送对应数据包信息给所有注册链接服务器
+	 * 发送数据给指定玩家
 	 * 
 	 * @param seg
 	 * @param playerId
 	 */
 	public void writeTo(AbstractData seg, int playerId) {
-		for (int i = 0; i < this.connects.length; ++i)
-			if (this.connects[i] != null)
-				this.connects[i].write(seg, playerId);
-	}
-
-	public void removeConnect(ConnectSession session) {
-		synchronized (this) {
-			for (int i = 0; i < this.connects.length; ++i)
-				if (this.connects[i] == session)
-					this.connects[i] = null;
+		ConcurrentHashMap<IoSession, Session> sessionMap = registry.getIoSession2Session();
+		for (Session session : sessionMap.values()) {
+			((ConnectSession) session).write(seg, playerId);
 		}
 	}
-
-	public ConnectSession[] getConnectSession() {
-		return this.connects;
-	}
-
+	/** 重启dis */
 	public void shutdown() {
-		for (int i = 0; i < this.connects.length; ++i)
-			if (this.connects[i] != null)
-				this.connects[i].shutdown();
+		ConcurrentHashMap<IoSession, Session> sessionMap = registry.getIoSession2Session();
+		for (Session session : sessionMap.values()) {
+			((ConnectSession) session).shutdown();
+		}
 	}
 
 	public void logOnline() {
-		for (int i = 0; i < this.connects.length; ++i)
-			if (this.connects[i] != null)
-				this.connects[i].loginOnline();
+		ConcurrentHashMap<IoSession, Session> sessionMap = registry.getIoSession2Session();
+		for (Session session : sessionMap.values()) {
+			((ConnectSession) session).loginOnline();
+		}
 	}
 
 	public int getOnline() {
-		int ret = 0;
-		for (int i = 0; i < this.connects.length; ++i) {
-			if (this.connects[i] != null)
-				ret += this.connects[i].sessionSize();
+		int playerNum = 0;
+		ConcurrentHashMap<IoSession, Session> sessionMap = registry.getIoSession2Session();
+		for (Session session : sessionMap.values()) {
+			playerNum += ((ConnectSession) session).sessionSize();
 		}
-		return ret;
+		return playerNum;
 	}
 
 	/**
@@ -96,15 +71,17 @@ public class ConnectService implements Runnable {
 	 *            据账号id
 	 */
 	public void forceLogout(int accountId) {
-		for (int i = 0; i < this.connects.length; ++i)
-			if (this.connects[i] != null)
-				this.connects[i].forceLogout(accountId);
+		ConcurrentHashMap<IoSession, Session> sessionMap = registry.getIoSession2Session();
+		for (Session session : sessionMap.values()) {
+			((ConnectSession) session).forceLogout(accountId);
+		}
 	}
-
+	 /** 禁止玩家上线*/
 	public void kick(int playerId) {
-		for (int i = 0; i < this.connects.length; ++i)
-			if (this.connects[i] != null)
-				this.connects[i].kick(playerId);
+		ConcurrentHashMap<IoSession, Session> sessionMap = registry.getIoSession2Session();
+		for (Session session : sessionMap.values()) {
+			((ConnectSession) session).kick(playerId);
+		}
 	}
 	/**
 	 * 通知dispatcher server 服务器最大玩家人数信息
@@ -112,17 +89,26 @@ public class ConnectService implements Runnable {
 	public void run() {
 		while (true) {
 			try {
-				Thread.sleep(120000L);
+				Thread.sleep(60000L);
 			} catch (InterruptedException ex) {
 			}
 			try {
-				for (int i = 0; i < this.connects.length; ++i)
-					if (this.connects[i] != null)
-						this.connects[i].notifyMaxPlayer();
+				ConcurrentHashMap<IoSession, Session> sessionMap = registry.getIoSession2Session();
+				for (Session session : sessionMap.values()) {
+					((ConnectSession) session).notifyMaxPlayer();
+				}
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public void setRegistry(SessionRegistry registry) {
+		this.registry = registry;
+	}
+
+	public SessionRegistry getRegistry() {
+		return registry;
 	}
 
 	// /**

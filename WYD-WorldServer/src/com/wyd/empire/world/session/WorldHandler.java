@@ -31,8 +31,8 @@ public abstract class WorldHandler extends SessionHandler {
 	@Override
 	public void messageReceived(IoSession ioSession, Object msg) throws Exception {
 		AbstractData dataobj = (AbstractData) msg;
-		// System.out.println(dataobj.toString());
 		Session session = this.registry.getSession(ioSession);
+		System.out.println(dataobj.toString()+"<<<<<<<<<<<<<<<<<<<");
 		if (session != null)
 			ServiceManager.getManager().getAbstractService().addAbstractInfo(dataobj, session);
 	}

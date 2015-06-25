@@ -32,7 +32,7 @@ public abstract class SessionHandler implements IoHandler {
 	}
 
 	public void exceptionCaught(IoSession session, Throwable ex) throws Exception {
-//		session.close(true);
+		// session.close(true);
 		log.error(ex, ex);
 	}
 
@@ -41,7 +41,7 @@ public abstract class SessionHandler implements IoHandler {
 		Session session = this.registry.getSession(ioSession);
 		if (session != null) {
 			IDataHandler handler = ProtocolFactory.getDataHandler(dataobj);
-			System.out.println("handler: "+handler+" session: "+session);
+			System.out.println("handler: " + handler + " session: " + session);
 			if (handler == null) {
 				session.handle(dataobj);
 			} else {
@@ -52,9 +52,9 @@ public abstract class SessionHandler implements IoHandler {
 					// System.out.println("receive data class name:" +
 					// dataobj.getClass().getName());
 					dataobj.setHandlerSource(session);
-//					HandlerMonitorService.addMonitor(dataobj);
+					// HandlerMonitorService.addMonitor(dataobj);
 					AbstractData abstractData = handler.handle(dataobj);
-//					HandlerMonitorService.delMonitor(dataobj);
+					// HandlerMonitorService.delMonitor(dataobj);
 					if (abstractData != null)
 						session.write(abstractData);
 				} catch (ProtocolException e) {
@@ -90,7 +90,7 @@ public abstract class SessionHandler implements IoHandler {
 		Session s = this.registry.getSession(session);
 		System.out.println("链接空闲－－" + session.toString());
 		if (s != null) {
-			s.idle(session,status);
+			s.idle(session, status);
 		}
 	}
 
@@ -101,7 +101,6 @@ public abstract class SessionHandler implements IoHandler {
 	}
 
 	public void inputClosed(IoSession arg0) throws Exception {
-		// TODO Auto-generated method stub
 	}
 
 	public SessionRegistry getSessionRegistry() {
