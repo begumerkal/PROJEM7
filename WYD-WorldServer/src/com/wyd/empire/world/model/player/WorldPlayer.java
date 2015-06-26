@@ -18,8 +18,6 @@ import com.wyd.empire.world.entity.mysql.Consortia;
 import com.wyd.empire.world.entity.mysql.ExchangeCard;
 import com.wyd.empire.world.entity.mysql.Player;
 import com.wyd.empire.world.entity.mysql.PlayerInfo;
-import com.wyd.empire.world.entity.mysql.PlayerPet;
-import com.wyd.empire.world.entity.mysql.PlayerPicture;
 import com.wyd.empire.world.entity.mysql.Tools;
 import com.wyd.empire.world.logs.GameLogService;
 import com.wyd.empire.world.model.Client;
@@ -927,7 +925,7 @@ public class WorldPlayer {
 	}
 
 	private void initialLastOnLineTime() {
-		this.lastOnLineTime = ServiceManager.getManager().getPlayerService().getService().getPlayerLastOnLinTime(getId());
+		this.lastOnLineTime = ServiceManager.getManager().getPlayerService().getPlayerLastOnLinTime(getId());
 	}
 
 	public int getPushCount() {

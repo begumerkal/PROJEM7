@@ -38,8 +38,8 @@ public class AdminSession extends ConnectSession {
 	public void login(Admin admin) {
 		this.admin = admin;
 		// String[] auth = admin.getAuth().split("[|]");
-		// for (String a : auth)
-		// this.commandList.add(a.toLowerCase());
+		// for (String iPlayer : auth)
+		// this.commandList.add(iPlayer.toLowerCase());
 	}
 
 	/**

@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.sf.json.JSONArray;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wyd.empire.protocol.data.cache.UpdatePlayer;
@@ -19,7 +20,8 @@ import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.common.util.KeywordsUtil;
 import com.wyd.empire.world.common.util.ServiceUtils;
-import com.wyd.empire.world.entity.mysql.Player;
+import com.wyd.empire.world.dao.mongo.impl.PlayerDao;
+import com.wyd.empire.world.entity.mongo.Player;
 import com.wyd.empire.world.entity.mysql.PlayerPicture;
 import com.wyd.empire.world.exception.CreatePlayerException;
 import com.wyd.empire.world.exception.ErrorMessages;
@@ -27,7 +29,6 @@ import com.wyd.empire.world.exception.TipMessages;
 import com.wyd.empire.world.logs.GameLogService;
 import com.wyd.empire.world.model.Client;
 import com.wyd.empire.world.model.player.WorldPlayer;
-import com.wyd.empire.world.server.service.base.IPlayerService;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
 import com.wyd.protocol.exception.ProtocolException;
 /**
@@ -37,37 +38,26 @@ import com.wyd.protocol.exception.ProtocolException;
  */
 @Service
 public class PlayerService implements Runnable {
-	public static final int OUT_TIME = 60000; // 自动断线时间
 	private Logger log = Logger.getLogger(PlayerService.class);
 	private Logger onlineLog = Logger.getLogger("onlineLog");
 	private Logger vipExpLog = Logger.getLogger("vipExpLog");
+
+	@Autowired
+	private PlayerDao playerDao;
 	/**
 	 * 玩家playerID与WorldPlayer对应关系HashMap，原名players
 	 */
-	private ConcurrentHashMap<Integer, WorldPlayer> onlineplayer = new ConcurrentHashMap<Integer, WorldPlayer>();
-	/**
-	 * 所有玩家
-	 */
-	private ConcurrentHashMap<Integer, WorldPlayer> allid2player = new ConcurrentHashMap<Integer, WorldPlayer>();
-	/**
-	 * 所有玩家
-	 */
-	private ConcurrentHashMap<String, WorldPlayer> allname2player = new ConcurrentHashMap<String, WorldPlayer>();
+	private ConcurrentHashMap<Integer, WorldPlayer> players = new ConcurrentHashMap<Integer, WorldPlayer>();
 
 	@Override
 	public void run() {
-		int i = 0;
 		while (true) {
 			try {
 				Thread.sleep(60000L);
 				updatePlayerOnLineTime();
-				int onlineNum = onlineplayer.size();
+				int onlineNum = players.size();
 				this.onlineLog.info(TipMessages.ONLINE_PLAYER_NUM + onlineNum);
 				GameLogService.onlineNum(onlineNum);
-				i++;
-				if (i % 60 == 0) {
-					clearDeadPlayer();
-				}
 			} catch (Exception e) {
 				this.log.error(e, e);
 			}
@@ -79,28 +69,9 @@ public class PlayerService implements Runnable {
 		t.setName("PlayerService-Thread");
 		t.start();
 	}
-
-	// 清理超过两天未登录的用户
-	public void clearDeadPlayer() {
-		Collection<WorldPlayer> lostPlayer = getAllPlayer();
-		long time = System.currentTimeMillis();
-		for (WorldPlayer player : lostPlayer) {
-			try {
-//				int lostMinute = (int) ((time - player.getActionTime()) / 60000);
-//				if (lostMinute > 2880 && !player.isInRobotList()) {
-//					onlineplayer.remove(player.getId());
-//					allid2player.remove(player.getId());
-//					allname2player.remove(player.getName());
-//					ServiceManager.getManager().getPlayerItemsFromShopService().unLoadPlayerItem(player.getId());
-//				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
+	/** 更新玩家在线时间 */
 	private void updatePlayerOnLineTime() {
-		for (WorldPlayer player : this.onlineplayer.values()) {
+		for (WorldPlayer player : this.players.values()) {
 			try {
 				player.setOnLineTime(player.getOnLineTime() + 1);
 			} catch (Exception e) {
@@ -116,13 +87,12 @@ public class PlayerService implements Runnable {
 	 * @return
 	 */
 	private WorldPlayer createWorldPlayer(Player player) {
-		if (allid2player.containsKey(player.getId())) {
-			return allid2player.get(player.getId());
+		if (players.containsKey(player.getId())) {
+			return players.get(player.getId());
 		} else {
 			WorldPlayer worldPlayer = new WorldPlayer(player);
 			worldPlayer.setActionTime(System.currentTimeMillis());
-			allid2player.put(worldPlayer.getId(), worldPlayer);
-			allname2player.put(worldPlayer.getName(), worldPlayer);
+			players.put(worldPlayer.getId(), worldPlayer);
 			worldPlayer.initial();
 			return worldPlayer;
 		}
@@ -135,63 +105,19 @@ public class PlayerService implements Runnable {
 	 * @return
 	 */
 	public boolean playerIsOnline(int id) {
-		return this.onlineplayer.containsKey(id);
-	}
-
-	/**
-	 * 获取在线玩家
-	 * 
-	 * @param id
-	 *            玩家id号
-	 * @return <tt>WorldPlayer Object</tt>
-	 */
-	public WorldPlayer getOnlineWorldPlayer(int id) {
-		return (this.onlineplayer.get(id));
+		return this.players.containsKey(id);
 	}
 
 	/**
 	 * 获取已经加载的玩家
 	 * 
-	 * @param id
-	 * @return
-	 */
-	public WorldPlayer getLoadPlayer(int id) {
-		return (this.allid2player.get(id));
-	}
-
-	/**
-	 * 根据玩家id获取WorldPlayer对象包括在线和离线
-	 * 
 	 * @param playerId
 	 * @return
 	 */
-	public WorldPlayer getWorldPlayerById(int playerId) {
-		WorldPlayer worldPlayer = this.allid2player.get(playerId);
-		if (worldPlayer == null) {
-			Player player = getPlayerById(playerId);
-			if (null != player) {
-				worldPlayer = createWorldPlayer(player);
-			}
-		}
-		return worldPlayer;
+	public WorldPlayer getPlayer(int playerId) {
+		return this.players.get(playerId);
 	}
-
-	/**
-	 * 根据玩家name获取WorldPlayer对象包括在线和离线
-	 * 
-	 * @param actorName
-	 * @return
-	 */
-	public WorldPlayer getWorldPlayerByName(String actorName) {
-		WorldPlayer worldPlayer = this.allname2player.get(actorName);
-		if (worldPlayer == null) {
-			Player player = getPlayerByName(actorName);
-			if (null != player) {
-				worldPlayer = createWorldPlayer(player);
-			}
-		}
-		return worldPlayer;
-	}
+ 
 
 	/**
 	 * 根据角色名称从数据库中查询玩家信息
@@ -200,7 +126,7 @@ public class PlayerService implements Runnable {
 	 * @return
 	 */
 	public Player getPlayerByName(String actorName) {
-		return this.getService().getPlayerByName(actorName);
+		return playerDao.getPlayerByName(actorName);
 	}
 
 	/**
@@ -210,7 +136,7 @@ public class PlayerService implements Runnable {
 	 * @return
 	 */
 	public Player getPlayerById(int playerId) {
-		return this.getService().getPlayerById(playerId);
+		return playerDao.getPlayerById(playerId);
 	}
 
 	/**
@@ -220,7 +146,7 @@ public class PlayerService implements Runnable {
 	 * @return
 	 */
 	public List<Player> getPlayerList(int accountId) {
-		return this.getService().getPlayerList(accountId);
+		return playerDao.getPlayerListByAccountId(accountId);
 	}
 
 	/**
@@ -228,8 +154,8 @@ public class PlayerService implements Runnable {
 	 * 
 	 * @return
 	 */
-	public Collection<WorldPlayer> getOnlinePlayer() {
-		return onlineplayer.values();
+	public Collection<WorldPlayer> getplayers() {
+		return players.values();
 	}
 
 	/**
@@ -246,8 +172,8 @@ public class PlayerService implements Runnable {
 	 * 
 	 * @return
 	 */
-	public int getOnlinePlayerNum() {
-		return onlineplayer.size();
+	public int getplayersNum() {
+		return players.size();
 	}
 
 	/**
@@ -283,7 +209,7 @@ public class PlayerService implements Runnable {
 	 */
 	public void unRegistry(WorldPlayer player) {
 		player.logout();
-		this.onlineplayer.remove(player.getId());
+		this.players.remove(player.getId());
 	}
 
 	/**
@@ -293,7 +219,7 @@ public class PlayerService implements Runnable {
 	 */
 	public void registry(WorldPlayer player) {
 		player.login();
-		onlineplayer.put(player.getId(), player);
+		players.put(player.getId(), player);
 	}
 
 	/**
@@ -331,7 +257,7 @@ public class PlayerService implements Runnable {
 				throw new CreatePlayerException(ErrorMessages.PLAYER_CREATENAME);
 			if (!(ServiceUtils.checkString(name, false)))
 				throw new CreatePlayerException(ErrorMessages.PLAYER_NAME_WRONG);
-			if (name.matches("[a-zA-Z]+")) {
+			if (name.matches("[iPlayer-zA-Z]+")) {
 				if (name.length() > 16)
 					throw new CreatePlayerException(ErrorMessages.PLAYER_NAME_LONG_CHAR);
 			} else {
@@ -494,15 +420,17 @@ public class PlayerService implements Runnable {
 	 *            当天凌晨时间点
 	 */
 	public void updateTask(WorldPlayer worldPlayer) {
-//		try {
-//			if (null == worldPlayer.getTaskIngList() || worldPlayer.getTaskIngList().isEmpty() || null == worldPlayer.getTitleIngList()
-//					|| worldPlayer.getTitleIngList().isEmpty()) {
-//				worldPlayer.initialPlayerTaskTitle();
-//			}
-//
-//		} catch (Exception ex) {
-//			ex.printStackTrace();
-//		}
+		// try {
+		// if (null == worldPlayer.getTaskIngList() ||
+		// worldPlayer.getTaskIngList().isEmpty() || null ==
+		// worldPlayer.getTitleIngList()
+		// || worldPlayer.getTitleIngList().isEmpty()) {
+		// worldPlayer.initialPlayerTaskTitle();
+		// }
+		//
+		// } catch (Exception ex) {
+		// ex.printStackTrace();
+		// }
 	}
 
 	/**
@@ -530,7 +458,7 @@ public class PlayerService implements Runnable {
 		player.setBossmapRoomId(0);
 		player.setBattleId(0);
 		player.setBossmapBattleId(0);
-//		player.outSingleMap();
+		// player.outSingleMap();
 	}
 
 	/**
@@ -580,15 +508,6 @@ public class PlayerService implements Runnable {
 	}
 
 	/**
-	 * 获取玩家数据表操作对象
-	 * 
-	 * @return
-	 */
-	public IPlayerService getService() {
-		return ServiceManager.getManager().getIPlayerService();
-	}
-
-	/**
 	 * 更新玩家对战历史记录
 	 * 
 	 * @param player
@@ -596,7 +515,8 @@ public class PlayerService implements Runnable {
 	 * @param pnMode
 	 * @param win
 	 */
-	public void updateBattleHistory(Player player, int battleMode, int pnMode, boolean win) { }
+	public void updateBattleHistory(Player player, int battleMode, int pnMode, boolean win) {
+	}
 
 	/**
 	 * 增加玩家经验
@@ -620,7 +540,7 @@ public class PlayerService implements Runnable {
 			} else {
 				player.getPlayer().setExp(dqexp);
 			}
- 		} else {
+		} else {
 			if (player.getPlayer().getLevel() < WorldServer.config.getMaxLevel()) {
 				player.getPlayer().setLevel(level + 1);
 				player.getPlayer().setExp(dqexp - sjexp);
@@ -982,10 +902,9 @@ public class PlayerService implements Runnable {
 	 * @throws ProtocolException
 	 */
 	public void useTicket(WorldPlayer worldPlayer, int amount, int origin, int[] itemId, int[] itemPriceId, String remark)
-			throws ProtocolException {}
+			throws ProtocolException {
+	}
 
- 
-	
 	/**
 	 * 踢玩家下线
 	 * 
@@ -999,10 +918,6 @@ public class PlayerService implements Runnable {
 			worldPlayer.getConnectSession().removeClient(worldPlayer.getClient());
 		}
 	}
-
-
- 
- 
 
 	/**
 	 * 推送玩家信息到客户端
@@ -1076,35 +991,37 @@ public class PlayerService implements Runnable {
 		playerInfo.setPracticeAttributeExp((player.getPlayerInfo().getPracticeAttributeExp() == null || player.getPlayerInfo()
 				.getPracticeAttributeExp().equals("")) ? "0,0,0,0,0" : player.getPlayerInfo().getPracticeAttributeExp());
 		// 获得特殊标示
-//		Map<String, Integer> map = ServiceManager.getManager().getVersionService().getSpecialMark();
-//		// 使用勋章上限数
-//		int useLimitNumber;
-//		// 如果玩家配置每日使用勋章上限数默认为玩家当前等级
-//		if (map.get("useLimitNumber") == null) {
-//			useLimitNumber = player.getLevel();
-//		} else {
-//			useLimitNumber = map.get("useLimitNumber");
-//		}
-//		// 今日还可以使用勋章数
-//		int useTodayNumber = 0;
-//		// 每日重置今日勋章可用数
-//		if (player.getPlayerInfo().getLastPracticeTime() == null
-//				|| !DateUtil.isSameDate(player.getPlayerInfo().getLastPracticeTime(), new Date())) {
-//			useTodayNumber = useLimitNumber;
-//		} else {
-//			useTodayNumber = player.getPlayerInfo().getUseTodayNumber();
-//		}
-//		playerInfo.setUseTodayNumber(useTodayNumber);
-//		playerInfo.setUseLimitNumber(useLimitNumber);
-//		// playerInfo.setPracticeStatus(player.getPlayerInfo().getPracticeStatus());
-//		// 设置微博信息
-//		setWeibo(player, playerInfo);
-//		int petBarNum = 1;
-//		playerInfo.setPetBarNum(petBarNum);
+		// Map<String, Integer> map =
+		// ServiceManager.getManager().getVersionService().getSpecialMark();
+		// // 使用勋章上限数
+		// int useLimitNumber;
+		// // 如果玩家配置每日使用勋章上限数默认为玩家当前等级
+		// if (map.get("useLimitNumber") == null) {
+		// useLimitNumber = player.getLevel();
+		// } else {
+		// useLimitNumber = map.get("useLimitNumber");
+		// }
+		// // 今日还可以使用勋章数
+		// int useTodayNumber = 0;
+		// // 每日重置今日勋章可用数
+		// if (player.getPlayerInfo().getLastPracticeTime() == null
+		// || !DateUtil.isSameDate(player.getPlayerInfo().getLastPracticeTime(),
+		// new Date())) {
+		// useTodayNumber = useLimitNumber;
+		// } else {
+		// useTodayNumber = player.getPlayerInfo().getUseTodayNumber();
+		// }
+		// playerInfo.setUseTodayNumber(useTodayNumber);
+		// playerInfo.setUseLimitNumber(useLimitNumber);
+		// //
+		// playerInfo.setPracticeStatus(player.getPlayerInfo().getPracticeStatus());
+		// // 设置微博信息
+		// setWeibo(player, playerInfo);
+		// int petBarNum = 1;
+		// playerInfo.setPetBarNum(petBarNum);
 		player.sendData(playerInfo);
 	}
 
- 
 	private void setPictureUrl(PlayerPicture privateInfo, com.wyd.empire.protocol.data.cache.PlayerInfo playerInfo) {
 		String[] testArry = privateInfo.getPictureUrlTest().equals("") ? new String[0] : privateInfo.getPictureUrlTest().split(",");
 		String testUrl = "";
@@ -1133,8 +1050,6 @@ public class PlayerService implements Runnable {
 		playerInfo.setPictureUrl(passUrl);
 		playerInfo.setPendingUrl(testUrl);
 	}
-
- 
 
 	public void sendUpdatePlayer(Map<String, String> info, WorldPlayer player) {
 		int size = info.size();
@@ -1221,7 +1136,7 @@ public class PlayerService implements Runnable {
 	 * 供定时器调用，用于定时所有在线玩家增加活力
 	 */
 	public void sysPlayersVigorUp() {
-		Collection<WorldPlayer> playerList = getOnlinePlayer();
+		Collection<WorldPlayer> playerList = getplayers();
 		Calendar cal = Calendar.getInstance();
 		for (WorldPlayer player : playerList) {
 			player.vigorUp(1);

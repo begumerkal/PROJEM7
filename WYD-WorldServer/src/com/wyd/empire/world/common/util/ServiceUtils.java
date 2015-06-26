@@ -269,7 +269,7 @@ public class ServiceUtils {
 	/**
 	 * 随机获取传入的两个参数中的一个
 	 * 
-	 * @param a
+	 * @param iPlayer
 	 * @param b
 	 * @return
 	 */

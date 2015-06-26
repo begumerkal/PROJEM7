@@ -6,7 +6,7 @@ import org.apache.log4j.Logger;
 
 import com.wyd.empire.protocol.data.account.SendRoleActorList;
 import com.wyd.empire.world.common.util.Common;
-import com.wyd.empire.world.entity.mysql.Player;
+import com.wyd.empire.world.entity.mongo.Player;
 import com.wyd.empire.world.entity.mysql.PlayerPet;
 import com.wyd.empire.world.exception.ErrorMessages;
 import com.wyd.empire.world.model.Client;
@@ -57,40 +57,27 @@ public class GetRoleListHandler implements IDataHandler {
 			int[] weapProf = new int[playerCount];
 			byte[] weapLevel = new byte[playerCount];
 			byte[] weapSkillType = new byte[playerCount];
- 
+
 			Player player;
 			for (int i = 0; i < playerCount; i++) {
 				player = list.get(i);
 				playerName[i] = player.getName();
 				playerLevel[i] = player.getLevel();
-				playerSex[i] = player.getSex().intValue();
-				playerDiamond[i] = player.getAmount();
-				playerGold[i] = player.getMoneyGold();
-				zsLevel[i] = player.getZsLevel();
- 
-	 
-					doubleCard[i] = false;
- 
-				if (null == player.getVipTime() || System.currentTimeMillis() > player.getVipTime().getTime()) {
-					vipLevel[i] = 0;
-				} else {
-					vipLevel[i] = player.getVipLevel();
-				}
-				playerRank[i] = player.getHonorLevel();
-
+				playerSex[i] = 1;
+				playerDiamond[i] = 1;
+				playerGold[i] = 1;
+				zsLevel[i] = 1;
+				doubleCard[i] = false;
+				vipLevel[i] = player.getVipLevel();
+				playerRank[i] = 1;
 				headMessage[i] = "";
 				faceMessage[i] = "";
- 
-					bodyMessage[i] = "";
- 
-					weapMessage[i] = "";
- 
-					wingMessage[i] = "";
- 
-					petMessage[i] = "";
+				bodyMessage[i] = "";
+				weapMessage[i] = "";
+				wingMessage[i] = "";
+				petMessage[i] = "";
 			}
-			
-			
+
 			sendActorList.setPlayerCount(playerCount);
 			sendActorList.setPlayerName(playerName);
 			sendActorList.setPlayerLevel(playerLevel);
@@ -111,8 +98,7 @@ public class GetRoleListHandler implements IDataHandler {
 			sendActorList.setWeapLevel(weapLevel);
 			sendActorList.setWeapSkillType(weapSkillType);
 			return sendActorList;
-//			session.write(sendActorList);
-//			list = null;
+			// session.write(sendActorList);
 		} catch (Exception e) {
 			if (!e.getMessage().startsWith(Common.ERRORKEY)) {
 				this.log.error(e, e);

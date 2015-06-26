@@ -56,8 +56,6 @@ public class ServiceManager {
 			this.configuration = new PropertiesConfiguration("configWorld.properties");
 			// 请求服务
 			this.requestService = new DefaultRequestService();
-			// 游戏角色服务
-			this.playerService = new PlayerService();
 			// 包含http任务的线程池
 			this.httpThreadPool = new ThreadPool(20);
 			// 简单任务的线程池

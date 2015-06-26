@@ -340,7 +340,7 @@ public class SendMail {
 	 */
 	public static void main(String[] args) {
 		// 以下发送邮件代码
-		String mailbody = "<div align=center><a href=http://www.csdn.net> 测试邮件 </a></div>";
+		String mailbody = "<div align=center><iPlayer href=http://www.csdn.net> 测试邮件 </iPlayer></div>";
 		SendMail themail = new SendMail();
 		if (themail.setSubject("标题") == false)
 			return;

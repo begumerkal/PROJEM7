@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 
 @Document(collection = "sequence")
-public class SequenceIdEntity extends IEntity{
+public class SequenceIdEntity{
 
 	@Id
 	private String objectId;
