@@ -54,6 +54,7 @@ public class WorldServer {
 	 * 
 	 * @throws Exception
 	 */
+	
 	public void launch() throws Exception {
 		long time = System.currentTimeMillis();
 		// 加载协议BeanData和Handler类及对象
