@@ -6,6 +6,7 @@ import org.mortbay.jetty.servlet.ServletHolder;
 import org.mortbay.thread.BoundedThreadPool;
 import com.wyd.rolequery.server.factory.ServiceManager;
 import com.wyd.rolequery.servlet.GetRoleInfoServlet;
+
 /**
  * @author zguoqiu
  * @version 创建时间：2013-4-16 下午2:36:29 类说明
