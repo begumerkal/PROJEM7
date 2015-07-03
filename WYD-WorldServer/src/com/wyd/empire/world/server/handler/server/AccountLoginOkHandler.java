@@ -31,7 +31,6 @@ public class AccountLoginOkHandler implements IDataHandler {
 				String name = legacyLoginOk.getName();
 				String password = legacyLoginOk.getPassword();
 				Client client = session.getClient(request.getSessionId());
-				
 				if ((client != null) && (client.getStatus() == Client.STATUS.INIT)) {
 					Client client1 = session.getClientByAccountId(accountId);
 					if (client1 != null) {// 主账号重复登录处理
@@ -50,6 +49,8 @@ public class AccountLoginOkHandler implements IDataHandler {
 					LoginOk loginOk = new LoginOk(request.getSessionId(), request.getId());
 					session.write(loginOk);
 					this.log.info("AccountID[" + accountId + "][Login Ok]");
+				}else{
+					this.log.info("AccountID[" + accountId + "][Login Fail]");
 				}
 
 			} else if (legacyLoginOk.getStatus()==1) {

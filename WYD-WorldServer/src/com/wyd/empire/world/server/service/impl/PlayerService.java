@@ -163,7 +163,8 @@ public class PlayerService implements Runnable {
 				return false;
 			clearPlayer(worldPlayer);
 			savePlayerData(worldPlayer.getPlayer());
-			writeLog("注销保存玩家信息：id=" + worldPlayer.getPlayer().getId() + "---name=" + worldPlayer.getName() + "---level=" + worldPlayer.getPlayer().getLv());
+			writeLog("注销保存玩家信息：id=" + worldPlayer.getPlayer().getId() + "---name=" + worldPlayer.getName() + "---level="
+					+ worldPlayer.getPlayer().getLv());
 		}
 		return false;
 	}
@@ -265,7 +266,7 @@ public class PlayerService implements Runnable {
 	}
 
 	/**
-	 * 根据角色名称，账号id 读取角色相关信息
+	 * 根据角色名称，账号id 读取角色相关信息 没有则创建新角色
 	 * 
 	 * @param name
 	 *            角色名称

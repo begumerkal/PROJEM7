@@ -44,22 +44,12 @@ public class ConnectSession extends Session {
 	private int id;
 	private int maxPlayer;
 	private String name;
-	/**
-	 * 保存playerId与对应sessionID对象对应<tt>HashMap</tt>,原名sessionIds
-	 */
-	private ConcurrentHashMap<Integer, Integer> playerid2sessionid = new ConcurrentHashMap<Integer, Integer>();
-	/**
-	 * 保存accountId与对应<tt>Client</tt>对象对应<tt>HashMap</tt>
-	 */
-	private ConcurrentHashMap<Integer, Client> accountId2Clients = new ConcurrentHashMap<Integer, Client>();
-	/**
-	 * 保存sessionId与对应<tt>Client</tt>对象对应<tt>HashMap</tt>
-	 */
+
 	private ConcurrentHashMap<Integer, Client> sessionId2Clients = new ConcurrentHashMap<Integer, Client>();
-	/**
-	 * 保存playerId与对应<tt>Client</tt>对象对应<tt>HashMap</tt>
-	 */
+	private ConcurrentHashMap<Integer, Client> accountId2Clients = new ConcurrentHashMap<Integer, Client>();
+	private ConcurrentHashMap<Integer, Integer> playerid2sessionid = new ConcurrentHashMap<Integer, Integer>();
 	private ConcurrentHashMap<Integer, Client> playerId2Clients = new ConcurrentHashMap<Integer, Client>();
+
 	/**
 	 * 玩家服务
 	 */
@@ -363,79 +353,82 @@ public class ConnectSession extends Session {
 		worldplayer.setAccountClient(client);
 		worldplayer.setConnectSession((ConnectSession) data.getHandlerSource());
 		addWorldPlayer(client, worldplayer, data.getSessionId());
-		
-		
-		
-		
-//		RoleActorLoginOk playerLoginOk = new RoleActorLoginOk(data.getSessionId(), data.getSerial());
-//		playerLoginOk.setPlayerId(player.getId());
-//		playerLoginOk.setPlayerName(player.getName());
-//		playerLoginOk.setTickets(player.getDiamond());
-//		playerLoginOk.setMaxLevel(WorldServer.config.getMaxLevel());
-//		playerLoginOk.setPlayerHp(player.getMaxHP());
-//		playerLoginOk.setPlayerDefend(player.getDefend());
-//		playerLoginOk.setPlayerDefense(player.getCrit());
-//		playerLoginOk.setPlayerPhysical(player.getMaxPF());
-//		playerLoginOk.setPlayerGold(player.getPlayer().getMoneyGold());
-//		playerLoginOk.setPlayerHonor(player.getPlayer().getHonor());
-//		playerLoginOk.setPlayerSex(player.getPlayer().getSex());
-//		playerLoginOk.setLevel(player.getLevel());
-//		playerLoginOk.setAttack(player.getAttack());
-//		playerLoginOk.setExp(player.getPlayer().getExp());
-//		playerLoginOk.setGuildName(player.getGuildName());
-//		playerLoginOk.setMedalNum(player.getMedalNum());
-//		playerLoginOk.setCritRate(player.getCrit());
-//		playerLoginOk.setExplodeRadius(player.getExplodeRadius());
-//		playerLoginOk.setProficiency(1);
-//		playerLoginOk.setSuit_head("1");
-//		playerLoginOk.setSuit_face("1");
-//		playerLoginOk.setSuit_body("1");
-//		playerLoginOk.setSuit_weapon("1");
-//		playerLoginOk.setWeapon_type(1);
-//		playerLoginOk.setUpgradeexp(ServiceManager.getManager().getPlayerService()
-//				.getUpgradeExp(player.getLevel(), player.getPlayer().getZsLevel()));
-//		playerLoginOk.setGuideLevel(10);
-//		playerLoginOk.setBlastLevel(1); 
-//		if (null != player.getPlayer().getVipTime() && System.currentTimeMillis() <= player.getPlayer().getVipTime().getTime()) {
-//			playerLoginOk.setVipLevel(player.getPlayer().getVipLevel());
-//		} else {
-//			playerLoginOk.setVipLevel(0);
-//		}
-//		playerLoginOk.setSuit_wing("1");
-//		String[] markStr = player.getPlayer().getWbUserId().split(",");
-//		playerLoginOk.setPlayer_title("");
-//		playerLoginOk.setWeaponLevel(1);
-//		Map<String, String> map = new HashMap<String, String>();
-//		String[] str;
-//		for (String s : markStr) {
-//			str = s.split("=");
-//			map.put(str[0], str[1]);
-//		}
-//		playerLoginOk.setWbUserId(new String[]{"map.get(Common.XLWB)", "map.get(Common.TXWB)"});
-//		playerLoginOk.setQualifyingLevel(player.getPlayer().getHonorLevel());
-//		// System.out.println(ServiceManager.getManager().getPlayerService().getOnlinePlayerNum()+"----------------");
-//		playerLoginOk.setZsleve(player.getPlayer().getZsLevel());
-//		playerLoginOk.setInjuryFree(player.getInjuryFree());
-//		playerLoginOk.setWreckDefense(player.getWreckDefense());
-//		playerLoginOk.setReduceCrit(player.getReduceCrit());
-//		playerLoginOk.setReduceBury(player.getReduceBury());
-//		playerLoginOk.setForce(player.getForce());
-//		playerLoginOk.setArmor(player.getArmor());
-//		playerLoginOk.setAgility(player.getAgility());
-//		playerLoginOk.setPhysique(player.getPhysique());
-//		playerLoginOk.setLuck(player.getLuck());
-//		playerLoginOk.setDoubleCard(player.isHasDoubleCard());
-//		playerLoginOk.setFighting(player.getFighting());
-//		playerLoginOk.setGuildId(player.getGuildId());
-//		playerLoginOk.setSteps(player.getPlayer().getSteps());
-//		playerLoginOk.setVipMark(0);
-//		playerLoginOk.setVipLastDay(0);
-//
-//		playerLoginOk.setHeart(1);
-//		// int petNum =
-//		// ServiceManager.getManager().getPetItemService().getPlayerPetNum(player.getId());
-//		playerLoginOk.setPetNum(1);
-//		return playerLoginOk;
+
+		// RoleActorLoginOk playerLoginOk = new
+		// RoleActorLoginOk(data.getSessionId(), data.getSerial());
+		// playerLoginOk.setPlayerId(player.getId());
+		// playerLoginOk.setPlayerName(player.getName());
+		// playerLoginOk.setTickets(player.getDiamond());
+		// playerLoginOk.setMaxLevel(WorldServer.config.getMaxLevel());
+		// playerLoginOk.setPlayerHp(player.getMaxHP());
+		// playerLoginOk.setPlayerDefend(player.getDefend());
+		// playerLoginOk.setPlayerDefense(player.getCrit());
+		// playerLoginOk.setPlayerPhysical(player.getMaxPF());
+		// playerLoginOk.setPlayerGold(player.getPlayer().getMoneyGold());
+		// playerLoginOk.setPlayerHonor(player.getPlayer().getHonor());
+		// playerLoginOk.setPlayerSex(player.getPlayer().getSex());
+		// playerLoginOk.setLevel(player.getLevel());
+		// playerLoginOk.setAttack(player.getAttack());
+		// playerLoginOk.setExp(player.getPlayer().getExp());
+		// playerLoginOk.setGuildName(player.getGuildName());
+		// playerLoginOk.setMedalNum(player.getMedalNum());
+		// playerLoginOk.setCritRate(player.getCrit());
+		// playerLoginOk.setExplodeRadius(player.getExplodeRadius());
+		// playerLoginOk.setProficiency(1);
+		// playerLoginOk.setSuit_head("1");
+		// playerLoginOk.setSuit_face("1");
+		// playerLoginOk.setSuit_body("1");
+		// playerLoginOk.setSuit_weapon("1");
+		// playerLoginOk.setWeapon_type(1);
+		// playerLoginOk.setUpgradeexp(ServiceManager.getManager().getPlayerService()
+		// .getUpgradeExp(player.getLevel(), player.getPlayer().getZsLevel()));
+		// playerLoginOk.setGuideLevel(10);
+		// playerLoginOk.setBlastLevel(1);
+		// if (null != player.getPlayer().getVipTime() &&
+		// System.currentTimeMillis() <=
+		// player.getPlayer().getVipTime().getTime()) {
+		// playerLoginOk.setVipLevel(player.getPlayer().getVipLevel());
+		// } else {
+		// playerLoginOk.setVipLevel(0);
+		// }
+		// playerLoginOk.setSuit_wing("1");
+		// String[] markStr = player.getPlayer().getWbUserId().split(",");
+		// playerLoginOk.setPlayer_title("");
+		// playerLoginOk.setWeaponLevel(1);
+		// Map<String, String> map = new HashMap<String, String>();
+		// String[] str;
+		// for (String s : markStr) {
+		// str = s.split("=");
+		// map.put(str[0], str[1]);
+		// }
+		// playerLoginOk.setWbUserId(new String[]{"map.get(Common.XLWB)",
+		// "map.get(Common.TXWB)"});
+		// playerLoginOk.setQualifyingLevel(player.getPlayer().getHonorLevel());
+		// //
+		// System.out.println(ServiceManager.getManager().getPlayerService().getOnlinePlayerNum()+"----------------");
+		// playerLoginOk.setZsleve(player.getPlayer().getZsLevel());
+		// playerLoginOk.setInjuryFree(player.getInjuryFree());
+		// playerLoginOk.setWreckDefense(player.getWreckDefense());
+		// playerLoginOk.setReduceCrit(player.getReduceCrit());
+		// playerLoginOk.setReduceBury(player.getReduceBury());
+		// playerLoginOk.setForce(player.getForce());
+		// playerLoginOk.setArmor(player.getArmor());
+		// playerLoginOk.setAgility(player.getAgility());
+		// playerLoginOk.setPhysique(player.getPhysique());
+		// playerLoginOk.setLuck(player.getLuck());
+		// playerLoginOk.setDoubleCard(player.isHasDoubleCard());
+		// playerLoginOk.setFighting(player.getFighting());
+		// playerLoginOk.setGuildId(player.getGuildId());
+		// playerLoginOk.setSteps(player.getPlayer().getSteps());
+		// playerLoginOk.setVipMark(0);
+		// playerLoginOk.setVipLastDay(0);
+		//
+		// playerLoginOk.setHeart(1);
+		// // int petNum =
+		// //
+		// ServiceManager.getManager().getPetItemService().getPlayerPetNum(player.getId());
+		// playerLoginOk.setPetNum(1);
+		// return playerLoginOk;
 	}
 
 	/**
@@ -446,7 +439,7 @@ public class ConnectSession extends Session {
 	 * @param sessionId
 	 */
 	private void addWorldPlayer(Client client, WorldPlayer player, int sessionId) {
-		this.playerId2Clients.put(client.getPlayerId(), client);
+		this.playerId2Clients.put(player.getPlayer().getId(), client);
 		this.playerid2sessionid.put(player.getPlayer().getId(), sessionId);
 	}
 
