@@ -21,7 +21,7 @@ public class IOSSendProductCheckInfoHandler implements IDataHandler {
 
 	public AbstractData handle(AbstractData data) throws Exception {
 		IOSSendProductCheckInfo iosSendProductCheckInfo = (IOSSendProductCheckInfo) data;
-		WorldPlayer player = ServiceManager.getManager().getPlayerService().getWorldPlayerById(iosSendProductCheckInfo.getPlayerId());
+		WorldPlayer player = ServiceManager.getManager().getPlayerService().getPlayer(iosSendProductCheckInfo.getPlayerId());
 		try {
 			StringBuffer sb = new StringBuffer();
 			sb.append("playerId:");

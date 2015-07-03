@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 
 import com.wyd.empire.protocol.data.chat.ChangeChannel;
 import com.wyd.empire.world.common.util.Common;
+import com.wyd.empire.world.entity.mongo.Player;
 import com.wyd.empire.world.entity.mysql.Interface;
 import com.wyd.empire.world.logs.GameLogService;
 import com.wyd.empire.world.model.player.WorldPlayer;
@@ -40,10 +41,11 @@ public class ChangeChannelHandler implements IDataHandler {
 		public void run() {
 			try {
 				ConnectSession session = (ConnectSession) data.getHandlerSource();
-				WorldPlayer player = session.getPlayer(data.getSessionId());
-				if (null == player) {
+				WorldPlayer worldPlayer = session.getPlayer(data.getSessionId());
+				if (null == worldPlayer) {
 					return;
 				}
+				Player player= worldPlayer.getPlayer();
 				ChangeChannel changeChannel = (ChangeChannel) data;
 				int channelId = player.getChannelId();
 //				Interface intf = (Interface) ServiceManager.getManager().getInterfaceService()
@@ -57,14 +59,14 @@ public class ChangeChannelHandler implements IDataHandler {
 //				}
 //				ServiceManager.getManager().getTaskService().enterInterface(player, changeChannel.getChannelId());
 				// 记录界面停留日志
-				int interfaceId = player.getInterfaceId();
-				long inTime = player.getInTime();
+//				int interfaceId = player.getInterfaceId();
+//				long inTime = player.getInTime();
 //				player.setInterfaceId(changeChannel.getChannelId());
 //				player.setInTime(System.currentTimeMillis());
-				GameLogService.remainInterface(player.getId(), player.getLevel(), interfaceId, player.getInTime() - inTime);
-				if (changeChannel.getChannelId() == 79) {
-					GameLogService.clickRecharge(player.getId(), player.getLevel(), interfaceId);
-				}
+//				GameLogService.remainInterface(player.getId(), player.getLevel(), interfaceId, player.getInTime() - inTime);
+//				if (changeChannel.getChannelId() == 79) {
+//					GameLogService.clickRecharge(player.getId(), player.getLevel(), interfaceId);
+//				}
 			} catch (Exception ex) {
 				log.error(ex, ex);
 			}

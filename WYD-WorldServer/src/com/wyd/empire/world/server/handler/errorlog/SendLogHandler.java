@@ -21,11 +21,11 @@ public class SendLogHandler implements IDataHandler {
 
 	public AbstractData handle(AbstractData data) throws Exception {
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
-		WorldPlayer player = session.getPlayer(data.getSessionId());
+		WorldPlayer worldPlayer = session.getPlayer(data.getSessionId());
 		SendLog sendLog = (SendLog) data;
 		try {
-			log.info("id:" + player.getId() + "-----player:" + player.getName() + "-----文件名称：" + sendLog.getLogfilename()
-					+ "---------------------------------");
+			log.info("id:" + worldPlayer.getPlayer().getId() + "-----player:" + worldPlayer.getPlayer().getNickname() + "-----文件名称："
+					+ sendLog.getLogfilename() + "---------------------------------");
 			for (String count : sendLog.getLogs()) {
 				count = CryptionUtil.Decrypt(CryptionUtil.getByteFromHexString(count), ServiceManager.getManager().getConfiguration()
 						.getString("deckey"));

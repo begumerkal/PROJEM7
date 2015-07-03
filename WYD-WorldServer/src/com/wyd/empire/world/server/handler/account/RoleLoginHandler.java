@@ -34,7 +34,7 @@ public class RoleLoginHandler implements IDataHandler {
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		RoleLogin login = (RoleLogin) data;
 		String nickname = login.getNickname();
-		
+
 		Client client = session.getClient(data.getSessionId());
 		if ((client != null) && (client.isLogin())) {
 			if (session.isFull()) {
@@ -44,7 +44,7 @@ public class RoleLoginHandler implements IDataHandler {
 			}
 			WorldPlayer worldPlayer = null;
 			try {
-				worldPlayer = ServiceManager.getManager().getPlayerService().loadWorldPlayer(client.getAccountId(),nickname);
+				worldPlayer = ServiceManager.getManager().getPlayerService().loadWorldPlayer(client.getAccountId(), nickname);
 			} catch (PlayerDataException ex) {
 				session.removeClient(client);
 				this.log.error(ex, ex);
@@ -55,24 +55,32 @@ public class RoleLoginHandler implements IDataHandler {
 					// 返回loginPlayerOk
 					long nTime = System.currentTimeMillis();
 					Player player = worldPlayer.getPlayer();
-					Date bsTime = player.getBsTime(); 
-					Date beTime = player.getBeTime(); 
+					Date bsTime = player.getBsTime();
+					Date beTime = player.getBeTime();
 					byte status = player.getStatus();
-					if(status ==0){
+					if (status == 0) {
 						throw new ProtocolException(ErrorMessages.LOGIN_FREEZE_MESSAGE, data.getSerial(), data.getSessionId(),
 								data.getType(), data.getSubType());
 					}
-					if(bsTime!=null && beTime != null && nTime >=bsTime.getTime() && nTime <= beTime.getTime()){
+					if (bsTime != null && beTime != null && nTime >= bsTime.getTime() && nTime <= beTime.getTime()) {
 						throw new ProtocolException(ErrorMessages.LOGIN_FREEZE_MESSAGE, data.getSerial(), data.getSessionId(),
 								data.getType(), data.getSubType());
 					}
-					
+					// 角色登录成功
 					session.loginPlayer(worldPlayer, data, client);
 					RoleActorLoginOk playerLoginOk = new RoleActorLoginOk(data.getSessionId(), data.getSerial());
- 
-					 
+					playerLoginOk.setId(player.getId());
+					playerLoginOk.setNickname(player.getNickname());
+					playerLoginOk.setLv(player.getLv());
+					playerLoginOk.setLvExp(player.getLvExp());
+					playerLoginOk.setVipLv(player.getVipLv());
+					playerLoginOk.setVipExp(player.getVipExp());
+					playerLoginOk.setMoney(player.getMoney());
+					playerLoginOk.setProperty(player.getProperty());
+					playerLoginOk.setFight(player.getFight());
 					logedLog.info("udid:" + client.getName());
-		 
+
+					return playerLoginOk;
 				} catch (ProtocolException ex) {
 					ServiceManager.getManager().getPlayerService().release(worldPlayer);
 					throw ex;
@@ -82,7 +90,7 @@ public class RoleLoginHandler implements IDataHandler {
 					throw new ProtocolException(ex.getMessage(), data.getSerial(), data.getSessionId(), data.getType(), data.getSubType());
 				}
 			} else {
-				this.log.info("AccountId[" + client.getAccountId() + "]login.getPlayerName()[" + login.getNickname()+ "]LOGIN ERROR");
+				this.log.info("AccountId[" + client.getAccountId() + "]login.getPlayerName()[" + login.getNickname() + "]LOGIN ERROR");
 			}
 		}
 		return null;

@@ -124,17 +124,6 @@ public class WorldPlayer {
 	}
 
 	/**
-	 * 获取玩家显示的称号
-	 * 
-	 * @return
-	 */
-	public String getPlayerTitle() {
-		String title = "";
-
-		return title;
-	}
-
-	/**
 	 * 初始化玩家成就及任务列表
 	 */
 	@SuppressWarnings("unchecked")

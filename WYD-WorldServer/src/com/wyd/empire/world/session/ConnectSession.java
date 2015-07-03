@@ -395,7 +395,7 @@ public class ConnectSession extends Session {
 //		playerLoginOk.setUpgradeexp(ServiceManager.getManager().getPlayerService()
 //				.getUpgradeExp(player.getLevel(), player.getPlayer().getZsLevel()));
 //		playerLoginOk.setGuideLevel(10);
-//		playerLoginOk.setBlastLevel(1);
+//		playerLoginOk.setBlastLevel(1); 
 //		if (null != player.getPlayer().getVipTime() && System.currentTimeMillis() <= player.getPlayer().getVipTime().getTime()) {
 //			playerLoginOk.setVipLevel(player.getPlayer().getVipLevel());
 //		} else {

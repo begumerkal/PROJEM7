@@ -19,10 +19,10 @@ public class SendProductIdHandler implements IDataHandler {
 	// 商品列表
 	public AbstractData handle(AbstractData data) throws Exception {
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
-		WorldPlayer player = session.getPlayer(data.getSessionId());
+		WorldPlayer worldPlayer = session.getPlayer(data.getSessionId());
 		SendProductId sendProductId = (SendProductId) data;
 		try {
-			log.info("player:" + player.getId() + "-----------productid:" + sendProductId.getProductId());
+			log.info("player:" + worldPlayer.getPlayer().getId() + "-----------productid:" + sendProductId.getProductId());
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

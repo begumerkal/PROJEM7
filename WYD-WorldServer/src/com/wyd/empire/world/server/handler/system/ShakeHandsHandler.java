@@ -6,7 +6,7 @@ import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.handler.IDataHandler;
 
 /**
- * 类 <code>ShakeHandsHandler</code>客户端网络握手协议。保持中间环节线路通畅<li>实现IDataHandler接口</li>
+ *  客户端网络握手协议。保持中间环节线路通畅 
  * 
  * @see com.sumsharp.protocol.handler.IDataHandler
  * @author mazheng

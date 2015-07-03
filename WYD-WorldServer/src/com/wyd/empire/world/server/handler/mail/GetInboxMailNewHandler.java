@@ -31,7 +31,7 @@ public class GetInboxMailNewHandler implements IDataHandler {
 			return null;
 		GetInboxMailNew getInboxMailNew = (GetInboxMailNew) data;
 		try {
-			int nearbyId = player.getPlayerInfo().getNearbyId();
+//			int nearbyId = player.getPlayerInfo().getNearbyId();
  
 //				ServiceManager.getManager().getMailService().receivedMailList(player, getInboxMailNew.getPageNumber(), null);
 		} catch (Exception ex) {

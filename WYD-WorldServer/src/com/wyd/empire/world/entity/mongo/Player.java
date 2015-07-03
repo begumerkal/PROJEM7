@@ -17,6 +17,7 @@ public class Player extends IEntity {
 	private Integer accountId; // 玩家帐号ID
 	private Integer areaId; // 玩家分区ID
 	private Integer lv; // 玩家等级
+	private Integer lvExp; // 玩家等级
 	private Integer money; // 玩家金币数量
 	private String nickname; // 玩家角色名称
 	private Byte status; // 玩家状态：0封号，1正常
@@ -35,6 +36,8 @@ public class Player extends IEntity {
 	private String clientModel;// 手机型号
 	private String systemName;// 系统名称
 	private String systemVersion;// 系统版本
+	private String property;// 属性
+	private int channelId;// 渠道id
 
 	public Integer getAccountId() {
 		return accountId;
@@ -53,6 +56,12 @@ public class Player extends IEntity {
 	}
 	public void setLv(Integer lv) {
 		this.lv = lv;
+	}
+	public Integer getLvExp() {
+		return lvExp;
+	}
+	public void setLvExp(Integer lvExp) {
+		this.lvExp = lvExp;
 	}
 	public Integer getMoney() {
 		return money;
@@ -120,12 +129,6 @@ public class Player extends IEntity {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-	public int getFight() {
-		return fight;
-	}
-	public void setFight(int fight) {
-		this.fight = fight;
-	}
 	public Date getLoginTime() {
 		return loginTime;
 	}
@@ -137,6 +140,12 @@ public class Player extends IEntity {
 	}
 	public void setLoginOutTime(Date loginOutTime) {
 		this.loginOutTime = loginOutTime;
+	}
+	public int getFight() {
+		return fight;
+	}
+	public void setFight(int fight) {
+		this.fight = fight;
 	}
 	public int getOnLineTime() {
 		return onLineTime;
@@ -161,6 +170,18 @@ public class Player extends IEntity {
 	}
 	public void setSystemVersion(String systemVersion) {
 		this.systemVersion = systemVersion;
+	}
+	public String getProperty() {
+		return property;
+	}
+	public void setProperty(String property) {
+		this.property = property;
+	}
+	public int getChannelId() {
+		return channelId;
+	}
+	public void setChannelId(int channelId) {
+		this.channelId = channelId;
 	}
 
 }
