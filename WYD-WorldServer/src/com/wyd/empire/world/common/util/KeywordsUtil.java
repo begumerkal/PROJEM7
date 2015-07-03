@@ -80,7 +80,7 @@ public class KeywordsUtil {
 	public static boolean isInvalidName(String name) {
 		for (int i = 0; i < patterns.length; ++i) {
 			if (patterns[i].matcher(name).matches()) {
-				System.out.println(patterns[i]);
+//				System.out.println(patterns[i]);
 				return true;
 			}
 		}

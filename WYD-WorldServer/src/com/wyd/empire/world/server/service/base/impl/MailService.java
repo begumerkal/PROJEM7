@@ -78,40 +78,40 @@ public class MailService extends UniversalManagerImpl implements IMailService {
 	 * @param mail
 	 */
 	public void saveMail(Mail mail, Friend friend) {
-		try {
-			mail = (Mail) dao.save(mail);
-
-			if (!mail.getBlackMail()) {
-				if (friend == null || !friend.getBlackList()) {
-					HasNewMail remindSendMailOk = new HasNewMail();
-					// 提醒收件玩家
-					WorldPlayer player = ServiceManager.getManager().getPlayerService().getOnlineWorldPlayer(mail.getReceivedId());
-					if (player != null && player.isOnline()) {
-						player.sendData(remindSendMailOk);
-					}
-				}
-			}
-			// 推送接收人邮件状态
-			sendMailStatusToReceiver(mail.getReceivedId());
-			// 记录日志
-			int sendLevel = 0;
-			int receiveLevel = 0;
-			WorldPlayer wp = ServiceManager.getManager().getPlayerService().getLoadPlayer(mail.getSendId());
-			if (null != wp)
-				sendLevel = wp.getLevel();
-			wp = ServiceManager.getManager().getPlayerService().getLoadPlayer(mail.getReceivedId());
-			if (null != wp)
-				receiveLevel = wp.getLevel();
-			if (mail.getSendId() == null) {
-				mail.setSendId(-1);
-			}
-			if (mail.getReceivedId() == null) {
-				mail.setReceivedId(-1);
-			}
-			GameLogService.sendMail(mail.getSendId(), sendLevel, mail.getReceivedId(), receiveLevel, mail.getContent());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try {
+//			mail = (Mail) dao.save(mail);
+//
+//			if (!mail.getBlackMail()) {
+//				if (friend == null || !friend.getBlackList()) {
+//					HasNewMail remindSendMailOk = new HasNewMail();
+//					// 提醒收件玩家
+//					WorldPlayer player = ServiceManager.getManager().getPlayerService().getOnlineWorldPlayer(mail.getReceivedId());
+//					if (player != null && player.isOnline()) {
+//						player.sendData(remindSendMailOk);
+//					}
+//				}
+//			}
+//			// 推送接收人邮件状态
+//			sendMailStatusToReceiver(mail.getReceivedId());
+//			// 记录日志
+//			int sendLevel = 0;
+//			int receiveLevel = 0;
+//			WorldPlayer wp = ServiceManager.getManager().getPlayerService().getLoadPlayer(mail.getSendId());
+//			if (null != wp)
+//				sendLevel = wp.getLevel();
+//			wp = ServiceManager.getManager().getPlayerService().getLoadPlayer(mail.getReceivedId());
+//			if (null != wp)
+//				receiveLevel = wp.getLevel();
+//			if (mail.getSendId() == null) {
+//				mail.setSendId(-1);
+//			}
+//			if (mail.getReceivedId() == null) {
+//				mail.setReceivedId(-1);
+//			}
+//			GameLogService.sendMail(mail.getSendId(), sendLevel, mail.getReceivedId(), receiveLevel, mail.getContent());
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	/**
@@ -120,14 +120,14 @@ public class MailService extends UniversalManagerImpl implements IMailService {
 	 * @param receivedId
 	 */
 	private void sendMailStatusToReceiver(Integer receivedId) {
-		if (receivedId == null) {
-			return;
-		}
-		WorldPlayer receiver = ServiceManager.getManager().getPlayerService().getOnlineWorldPlayer(receivedId);
-		if (receiver == null) {
-			return;
-		}
-		sendMailStatus(receiver);
+//		if (receivedId == null) {
+//			return;
+//		}
+//		WorldPlayer receiver = ServiceManager.getManager().getPlayerService().getOnlineWorldPlayer(receivedId);
+//		if (receiver == null) {
+//			return;
+//		}
+//		sendMailStatus(receiver);
 	}
 
 	/**
@@ -151,11 +151,11 @@ public class MailService extends UniversalManagerImpl implements IMailService {
 	 *            附近好友邮件数量
 	 */
 	public void synMailCount(WorldPlayer player, int count) {
-		count += checkMailRead(player.getId());
-		LoginCheckMailOk loginCheckMailOk = new LoginCheckMailOk();
-		loginCheckMailOk.setCheckMail(true);
-		loginCheckMailOk.setMailNum(count);
-		player.sendData(loginCheckMailOk);
+//		count += checkMailRead(player.getId());
+//		LoginCheckMailOk loginCheckMailOk = new LoginCheckMailOk();
+//		loginCheckMailOk.setCheckMail(true);
+//		loginCheckMailOk.setMailNum(count);
+//		player.sendData(loginCheckMailOk);
 	}
 
 	/**
@@ -342,113 +342,113 @@ public class MailService extends UniversalManagerImpl implements IMailService {
 	 * 发送玩家收件列表
 	 */
 	public void receivedMailList(WorldPlayer player, int pageIndex, List<Mail> nMailList) {
-		List<Mail> mailList = dao.getMailList(player.getId(), true);
-		if (null != nMailList && nMailList.size() > 0) {
-			mailList.addAll(nMailList);
-		}
-		double size = mailList.size();
-		Mail mail;
-		int readIndex = -1;
-		for (int index = 0; index < size; index++) {
-			mail = mailList.get(index);
-			if (0 > readIndex && mail.getIsRead()) {
-				readIndex = index;
-			}
-			if (!mail.getIsRead() && 0 <= readIndex) {
-				mailList.remove(index);
-				mailList.add(readIndex, mail);
-				readIndex++;
-			}
-		}
-		List<Integer> mailId = new ArrayList<Integer>();
-		List<String> theme = new ArrayList<String>();
-		List<String> senderName = new ArrayList<String>();
-		List<String> time = new ArrayList<String>();
-		List<Integer> mailType = new ArrayList<Integer>();
-		List<Boolean> isRead = new ArrayList<Boolean>();
-		int s = (pageIndex - 1) * Common.PAGESIZE;
-		int e = pageIndex * Common.PAGESIZE;
-		s = s < 0 ? 0 : s;
-		e = e > size ? (int) size : e;
-		for (int i = s; i < e; i++) {
-			mail = mailList.get(i);
-			mailId.add(mail.getId());
-			theme.add(mail.getTheme());
-			if (mail.getSendId() == 0) {
-				senderName.add(TipMessages.SYSNAME_MESSAGE);
-			} else {
-				senderName.add(mail.getSendName());
-			}
-			time.add(DateUtil.format(mail.getSendTime(), "MM-dd HH:mm"));
-			mailType.add(mail.getType());
-			isRead.add(mail.getIsRead());
-		}
-		SendInboxMail sendMailList = new SendInboxMail();
-		sendMailList.setMailId(ServiceUtils.getInts(mailId.toArray()));
-		sendMailList.setTheme(theme.toArray(new String[]{}));
-		sendMailList.setSenderName(senderName.toArray(new String[]{}));
-		sendMailList.setTime(time.toArray(new String[]{}));
-		sendMailList.setMailType(ServiceUtils.getInts(mailType.toArray()));
-		sendMailList.setIsRead(ServiceUtils.getBooleans(isRead.toArray()));
-		sendMailList.setPageNumber(pageIndex);// 服务器页数从零开始，客户端页数从一开始
-		sendMailList.setTotalPage((int) Math.ceil(size / Common.PAGESIZE));
-		player.sendData(sendMailList);
+//		List<Mail> mailList = dao.getMailList(player.getId(), true);
+//		if (null != nMailList && nMailList.size() > 0) {
+//			mailList.addAll(nMailList);
+//		}
+//		double size = mailList.size();
+//		Mail mail;
+//		int readIndex = -1;
+//		for (int index = 0; index < size; index++) {
+//			mail = mailList.get(index);
+//			if (0 > readIndex && mail.getIsRead()) {
+//				readIndex = index;
+//			}
+//			if (!mail.getIsRead() && 0 <= readIndex) {
+//				mailList.remove(index);
+//				mailList.add(readIndex, mail);
+//				readIndex++;
+//			}
+//		}
+//		List<Integer> mailId = new ArrayList<Integer>();
+//		List<String> theme = new ArrayList<String>();
+//		List<String> senderName = new ArrayList<String>();
+//		List<String> time = new ArrayList<String>();
+//		List<Integer> mailType = new ArrayList<Integer>();
+//		List<Boolean> isRead = new ArrayList<Boolean>();
+//		int s = (pageIndex - 1) * Common.PAGESIZE;
+//		int e = pageIndex * Common.PAGESIZE;
+//		s = s < 0 ? 0 : s;
+//		e = e > size ? (int) size : e;
+//		for (int i = s; i < e; i++) {
+//			mail = mailList.get(i);
+//			mailId.add(mail.getId());
+//			theme.add(mail.getTheme());
+//			if (mail.getSendId() == 0) {
+//				senderName.add(TipMessages.SYSNAME_MESSAGE);
+//			} else {
+//				senderName.add(mail.getSendName());
+//			}
+//			time.add(DateUtil.format(mail.getSendTime(), "MM-dd HH:mm"));
+//			mailType.add(mail.getType());
+//			isRead.add(mail.getIsRead());
+//		}
+//		SendInboxMail sendMailList = new SendInboxMail();
+//		sendMailList.setMailId(ServiceUtils.getInts(mailId.toArray()));
+//		sendMailList.setTheme(theme.toArray(new String[]{}));
+//		sendMailList.setSenderName(senderName.toArray(new String[]{}));
+//		sendMailList.setTime(time.toArray(new String[]{}));
+//		sendMailList.setMailType(ServiceUtils.getInts(mailType.toArray()));
+//		sendMailList.setIsRead(ServiceUtils.getBooleans(isRead.toArray()));
+//		sendMailList.setPageNumber(pageIndex);// 服务器页数从零开始，客户端页数从一开始
+//		sendMailList.setTotalPage((int) Math.ceil(size / Common.PAGESIZE));
+//		player.sendData(sendMailList);
 	}
 
 	/**
 	 * 发送玩家发件列表
 	 */
 	public void sendMailList(WorldPlayer player, int pageIndex, List<Mail> nMailList) {
-		List<Mail> mailList = dao.getMailList(player.getId(), false);
-		if (null != nMailList && nMailList.size() > 0) {
-			mailList.addAll(nMailList);
-		}
-		double size = mailList.size();
-		Mail mail;
-		int readIndex = -1;
-		for (int index = 0; index < size; index++) {
-			mail = mailList.get(index);
-			if (0 > readIndex && mail.getIsRead()) {
-				readIndex = index;
-			}
-			if (!mail.getIsRead() && 0 <= readIndex) {
-				mailList.remove(index);
-				mailList.add(readIndex, mail);
-				readIndex++;
-			}
-		}
-		List<Integer> mailId = new ArrayList<Integer>();
-		List<String> theme = new ArrayList<String>();
-		List<String> receciverName = new ArrayList<String>();
-		List<String> time = new ArrayList<String>();
-		List<Integer> mailType = new ArrayList<Integer>();
-		List<Boolean> isRead = new ArrayList<Boolean>();
-		int s = (pageIndex - 1) * Common.PAGESIZE;
-		int e = pageIndex * Common.PAGESIZE;
-		s = s < 0 ? 0 : s;
-		e = e > size ? (int) size : e;
-		for (int i = s; i < e; i++) {
-			mail = mailList.get(i);
-			mailId.add(mail.getId());
-			theme.add(mail.getTheme());
-			if (mail.getReceivedId() == 0) {
-				receciverName.add(TipMessages.SYSNAME_MESSAGE);
-			} else {
-				receciverName.add(mail.getReceivedName());
-			}
-			time.add(DateUtil.format(mail.getSendTime(), "MM-dd HH:mm"));
-			mailType.add(mail.getType());
-			isRead.add(mail.getIsRead());
-		}
-		SendOutboxMail sendMailList = new SendOutboxMail();
-		sendMailList.setMailId(ServiceUtils.getInts(mailId.toArray()));
-		sendMailList.setTheme(theme.toArray(new String[]{}));
-		sendMailList.setRececiverName(receciverName.toArray(new String[]{}));
-		sendMailList.setTime(time.toArray(new String[]{}));
-		sendMailList.setMailType(ServiceUtils.getInts(mailType.toArray()));
-		sendMailList.setIsRead(ServiceUtils.getBooleans(isRead.toArray()));
-		sendMailList.setPageNumber(pageIndex);// 服务器页数从零开始，客户端页数从一开始
-		sendMailList.setTotalPage((int) Math.ceil(size / Common.PAGESIZE));
-		player.sendData(sendMailList);
+//		List<Mail> mailList = dao.getMailList(player.getId(), false);
+//		if (null != nMailList && nMailList.size() > 0) {
+//			mailList.addAll(nMailList);
+//		}
+//		double size = mailList.size();
+//		Mail mail;
+//		int readIndex = -1;
+//		for (int index = 0; index < size; index++) {
+//			mail = mailList.get(index);
+//			if (0 > readIndex && mail.getIsRead()) {
+//				readIndex = index;
+//			}
+//			if (!mail.getIsRead() && 0 <= readIndex) {
+//				mailList.remove(index);
+//				mailList.add(readIndex, mail);
+//				readIndex++;
+//			}
+//		}
+//		List<Integer> mailId = new ArrayList<Integer>();
+//		List<String> theme = new ArrayList<String>();
+//		List<String> receciverName = new ArrayList<String>();
+//		List<String> time = new ArrayList<String>();
+//		List<Integer> mailType = new ArrayList<Integer>();
+//		List<Boolean> isRead = new ArrayList<Boolean>();
+//		int s = (pageIndex - 1) * Common.PAGESIZE;
+//		int e = pageIndex * Common.PAGESIZE;
+//		s = s < 0 ? 0 : s;
+//		e = e > size ? (int) size : e;
+//		for (int i = s; i < e; i++) {
+//			mail = mailList.get(i);
+//			mailId.add(mail.getId());
+//			theme.add(mail.getTheme());
+//			if (mail.getReceivedId() == 0) {
+//				receciverName.add(TipMessages.SYSNAME_MESSAGE);
+//			} else {
+//				receciverName.add(mail.getReceivedName());
+//			}
+//			time.add(DateUtil.format(mail.getSendTime(), "MM-dd HH:mm"));
+//			mailType.add(mail.getType());
+//			isRead.add(mail.getIsRead());
+//		}
+//		SendOutboxMail sendMailList = new SendOutboxMail();
+//		sendMailList.setMailId(ServiceUtils.getInts(mailId.toArray()));
+//		sendMailList.setTheme(theme.toArray(new String[]{}));
+//		sendMailList.setRececiverName(receciverName.toArray(new String[]{}));
+//		sendMailList.setTime(time.toArray(new String[]{}));
+//		sendMailList.setMailType(ServiceUtils.getInts(mailType.toArray()));
+//		sendMailList.setIsRead(ServiceUtils.getBooleans(isRead.toArray()));
+//		sendMailList.setPageNumber(pageIndex);// 服务器页数从零开始，客户端页数从一开始
+//		sendMailList.setTotalPage((int) Math.ceil(size / Common.PAGESIZE));
+//		player.sendData(sendMailList);
 	}
 }

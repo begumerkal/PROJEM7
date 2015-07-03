@@ -33,7 +33,7 @@ public class TapzoyServlet extends HttpServlet {
 			String dataString = CryptionUtil.Decrypt(data, ServiceManager.getManager().getConfiguration().getString("deckey"));
 			JSONObject jsonObject = JSONObject.fromObject(dataString);
 			TapzoyInfo tapzoyInfo = (TapzoyInfo) jsonObject.toBean(jsonObject, TapzoyInfo.class);
-			WorldPlayer player = ServiceManager.getManager().getPlayerService().getWorldPlayerById(tapzoyInfo.getPlayerId());
+			WorldPlayer player =null;// ServiceManager.getManager().getPlayerService().getplayers()(tapzoyInfo.getPlayerId());
 			ServiceManager.getManager().getPlayerService()
 					.addTicket(player, tapzoyInfo.getAmount(), 0, TradeService.ORIGIN_TAPJOY, 0, "", "tapzoy", "", "");
 		} catch (Exception e) {

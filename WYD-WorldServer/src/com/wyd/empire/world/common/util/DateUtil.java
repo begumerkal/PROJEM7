@@ -5,14 +5,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
- * <p>
- * Title: 日期基类
- * </p>
- * <p>
- * Description: 一些日期相关操作
- * </p>
+ * 日期基类 一些日期相关操作
  */
 public class DateUtil {
 	// 定义默认时区
@@ -42,7 +38,7 @@ public class DateUtil {
 
 	// 设置默认时区
 	static {
-		// TimeZone.setDefault(TimeZone.getTimeZone(DEFAULT_ZONE_ID));
+//		 TimeZone.setDefault(TimeZone.getTimeZone(DEFAULT_ZONE_ID));
 	}
 
 	/**

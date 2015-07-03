@@ -61,7 +61,7 @@ public class CallBackServlet extends HttpServlet {
 					&& null != realAmt && realAmt.length() > 0) {
 				int pid = Integer.parseInt(playerId);
 				float amount = Float.parseFloat(realAmt);
-				WorldPlayer worldPlayer = ServiceManager.getManager().getPlayerService().getWorldPlayerById(pid);
+				WorldPlayer worldPlayer =null;// ServiceManager.getManager().getPlayerService().getWorldPlayerById(pid);
 				if (worldPlayer != null && amount > 0) {
 					synchronized (worldPlayer) {
 						if (true) {

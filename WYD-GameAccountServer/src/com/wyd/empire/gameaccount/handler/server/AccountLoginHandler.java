@@ -23,8 +23,13 @@ public class AccountLoginHandler implements IDataHandler {
 		String name = login.getName();
 		String pwd = login.getPassword();
 		int channel = login.getChannel();
-		String worldServerId = session.getWorldServerId();
 		String ip = login.getIp();
+		String clientModel = login.getClientModel();// 手机型号
+		String systemName = login.getSystemName();// 手机系统
+		String systemVersion = login.getSystemVersion();// 系统版本
+
+		String worldServerId = session.getWorldServerId();
+
 		String[] strArr = worldServerId.split("_");
 		int machinecode = Integer.valueOf(strArr[1]);
 
@@ -44,6 +49,9 @@ public class AccountLoginHandler implements IDataHandler {
 				newAccount.setStatus(1);
 				newAccount.setTotalLoginTimes(0);
 				newAccount.setIpAddress(ip);
+				newAccount.setClientModel(clientModel);
+				newAccount.setSystemName(systemName);
+				newAccount.setSystemVersion(systemVersion);
 				account = accountService.createAccount(newAccount);
 			}
 			if (account != null) {

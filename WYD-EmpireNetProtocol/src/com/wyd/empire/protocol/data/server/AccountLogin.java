@@ -7,6 +7,9 @@ public class AccountLogin extends AbstractData {
 	private String password;
 	private int channel; // 渠道ID
 	private String ip;
+	private String clientModel;// 手机型号
+	private String systemName;// 手机系统
+	private String systemVersion;// 系统版本
 
 	public AccountLogin(int sessionId, int serial) {
 		super(Protocol.MAIN_SERVER, Protocol.SERVER_AccountLogin, sessionId, serial);
@@ -46,6 +49,30 @@ public class AccountLogin extends AbstractData {
 
 	public void setIp(String ip) {
 		this.ip = ip;
+	}
+
+	public String getClientModel() {
+		return clientModel;
+	}
+
+	public void setClientModel(String clientModel) {
+		this.clientModel = clientModel;
+	}
+
+	public String getSystemName() {
+		return systemName;
+	}
+
+	public void setSystemName(String systemName) {
+		this.systemName = systemName;
+	}
+
+	public String getSystemVersion() {
+		return systemVersion;
+	}
+
+	public void setSystemVersion(String systemVersion) {
+		this.systemVersion = systemVersion;
 	}
 	
 	

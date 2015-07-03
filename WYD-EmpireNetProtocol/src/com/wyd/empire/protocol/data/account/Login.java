@@ -2,23 +2,27 @@ package com.wyd.empire.protocol.data.account;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.empire.protocol.Protocol;
 /**
- * 类 <code>Login</code>继承抽象类<code>AbstractData</code>，实现接口主命令Protocol.MAIN_ACCOUNT下子命令ACCOUNT_Login(账户登录)对应数据封装。
+ * (账户登录)对应数据封装。
  * 
  * @see AbstractData
  * @author doter
  */
 public class Login extends AbstractData {
-	private String 	accountName;
-    private String 	passWord;
-    private String 	version;		// 用版本字串来区分不同的主渠道
-    private int 	channel;	    // 子渠道标示
-    public Login(int sessionId, int serial) {
-        super(Protocol.MAIN_ACCOUNT, Protocol.ACCOUNT_Login, sessionId, serial);
-    }
+	private String accountName;
+	private String passWord;
+	private String version; // 用版本字串来区分不同的主渠道
+	private int channel; // 子渠道标示
+	private String clientModel;// 手机型号
+	private String systemName;// 手机系统
+	private String systemVersion;// 系统版本
+	
+	public Login(int sessionId, int serial) {
+		super(Protocol.MAIN_ACCOUNT, Protocol.ACCOUNT_Login, sessionId, serial);
+	}
 
-    public Login() {
-        super(Protocol.MAIN_ACCOUNT, Protocol.ACCOUNT_Login);
-    }
+	public Login() {
+		super(Protocol.MAIN_ACCOUNT, Protocol.ACCOUNT_Login);
+	}
 
 	public String getAccountName() {
 		return accountName;
@@ -50,6 +54,30 @@ public class Login extends AbstractData {
 
 	public void setChannel(int channel) {
 		this.channel = channel;
+	}
+
+	public String getClientModel() {
+		return clientModel;
+	}
+
+	public void setClientModel(String clientModel) {
+		this.clientModel = clientModel;
+	}
+
+	public String getSystemName() {
+		return systemName;
+	}
+
+	public void setSystemName(String systemName) {
+		this.systemName = systemName;
+	}
+
+	public String getSystemVersion() {
+		return systemVersion;
+	}
+
+	public void setSystemVersion(String systemVersion) {
+		this.systemVersion = systemVersion;
 	}
 
 }

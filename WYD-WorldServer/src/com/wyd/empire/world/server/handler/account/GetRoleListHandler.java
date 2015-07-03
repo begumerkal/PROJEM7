@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.wyd.empire.protocol.data.account.SendRoleActorList;
+import com.wyd.empire.protocol.data.account.GetRoleListOK;
 import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.entity.mongo.Player;
 import com.wyd.empire.world.entity.mysql.PlayerPet;
@@ -34,7 +34,7 @@ public class GetRoleListHandler implements IDataHandler {
 			// long time = System.currentTimeMillis();
 			List<Player> list = ServiceManager.getManager().getPlayerService().getPlayerList(client.getAccountId());
 			// log.info("GetRoleList AccountId:"+client.getAccountId()+"-----------------time:"+(System.currentTimeMillis()-time));
-			SendRoleActorList sendActorList = new SendRoleActorList(data.getSessionId(), data.getSerial());
+			GetRoleListOK sendActorList = new GetRoleListOK(data.getSessionId(), data.getSerial());
 			int playerCount = 0;
 			if (list != null) {
 				playerCount = list.size();
@@ -61,14 +61,14 @@ public class GetRoleListHandler implements IDataHandler {
 			Player player;
 			for (int i = 0; i < playerCount; i++) {
 				player = list.get(i);
-				playerName[i] = player.getName();
-				playerLevel[i] = player.getLevel();
+				playerName[i] = player.getNickname();
+				playerLevel[i] = player.getLv();
 				playerSex[i] = 1;
 				playerDiamond[i] = 1;
 				playerGold[i] = 1;
 				zsLevel[i] = 1;
 				doubleCard[i] = false;
-				vipLevel[i] = player.getVipLevel();
+				vipLevel[i] = player.getVipLv();
 				playerRank[i] = 1;
 				headMessage[i] = "";
 				faceMessage[i] = "";

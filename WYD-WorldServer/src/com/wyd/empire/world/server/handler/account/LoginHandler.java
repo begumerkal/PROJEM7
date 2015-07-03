@@ -31,6 +31,9 @@ public class LoginHandler implements IDataHandler {
 		String passWord = login.getPassWord();
 		String version = login.getVersion();
 		int channel = login.getChannel();
+		String clientModel = login.getClientModel();// 手机型号
+		String systemName = login.getSystemName();// 手机系统
+		String systemVersion = login.getSystemVersion();// 系统版本
 		logingLog.info("account:" + accountName);
 		// WorldServer 是否在维护
 		if (WorldServer.config.isMaintance()) {
@@ -45,6 +48,9 @@ public class LoginHandler implements IDataHandler {
 			accountLogin.setPassword(passWord);
 			accountLogin.setChannel(channel);
 			accountLogin.setIp(client.getIp());
+			accountLogin.setClientModel(clientModel);
+			accountLogin.setSystemName(systemName);
+			accountLogin.setSystemVersion(systemVersion);
 			LoginRequest loginRequest = new LoginRequest(data.getSerial(), data.getSessionId(), session, accountName, passWord, version,
 					channel, false, null);
 			// 根据登陆请求的参数创建loginRequset对象，接着往GameAccount服务器发送验证请求,

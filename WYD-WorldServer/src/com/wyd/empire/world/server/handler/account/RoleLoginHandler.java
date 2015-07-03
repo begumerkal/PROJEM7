@@ -1,8 +1,12 @@
 package com.wyd.empire.world.server.handler.account;
 
+import java.util.Date;
+
 import org.apache.log4j.Logger;
 
-import com.wyd.empire.protocol.data.account.RoleActorLogin;
+import com.wyd.empire.protocol.data.account.RoleActorLoginOk;
+import com.wyd.empire.protocol.data.account.RoleLogin;
+import com.wyd.empire.world.entity.mongo.Player;
 import com.wyd.empire.world.exception.ErrorMessages;
 import com.wyd.empire.world.exception.PlayerDataException;
 import com.wyd.empire.world.model.Client;
@@ -18,17 +22,19 @@ import com.wyd.protocol.handler.IDataHandler;
  * 
  * @since JDK 1.7
  */
-public class RoleActorLoginHandler implements IDataHandler {
+public class RoleLoginHandler implements IDataHandler {
 	private Logger log;
 	private Logger logedLog = Logger.getLogger("logedLog");
 
-	public RoleActorLoginHandler() {
-		this.log = Logger.getLogger(RoleActorLoginHandler.class);
+	public RoleLoginHandler() {
+		this.log = Logger.getLogger(RoleLoginHandler.class);
 	}
 
 	public AbstractData handle(AbstractData data) throws Exception {
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
-		RoleActorLogin login = (RoleActorLogin) data;
+		RoleLogin login = (RoleLogin) data;
+		String nickname = login.getNickname();
+		
 		Client client = session.getClient(data.getSessionId());
 		if ((client != null) && (client.isLogin())) {
 			if (session.isFull()) {
@@ -36,42 +42,47 @@ public class RoleActorLoginHandler implements IDataHandler {
 				throw new ProtocolException(ErrorMessages.LOGIN_FULL_MESSAGE, data.getSerial(), data.getSessionId(), data.getType(),
 						data.getSubType());
 			}
-			WorldPlayer player = null;
+			WorldPlayer worldPlayer = null;
 			try {
-				player = ServiceManager.getManager().getPlayerService().loadWorldPlayer(login.getPlayerName(), client);
+				worldPlayer = ServiceManager.getManager().getPlayerService().loadWorldPlayer(client.getAccountId(),nickname);
 			} catch (PlayerDataException ex) {
 				session.removeClient(client);
 				this.log.error(ex, ex);
 				throw new ProtocolException(ex.getMessage(), data.getSerial(), data.getSessionId(), data.getType(), data.getSubType());
 			}
-			if (player != null) {
+			if (worldPlayer != null) {
 				try {
-					// 设置玩家首次登录的mac地址
-					if (null == player.getPlayer().getMac() || player.getPlayer().getMac().length() < 1) {
-						// 推广用户激活
-						player.getPlayer().setMac(login.getMacCode());
-					}
 					// 返回loginPlayerOk
 					long nTime = System.currentTimeMillis();
-					if (null != player.getPlayer().getBsTime() && null != player.getPlayer().getBeTime()
-							&& 0 == player.getPlayer().getStatus() && player.getPlayer().getBsTime().getTime() <= nTime
-							&& nTime <= player.getPlayer().getBeTime().getTime()) {
+					Player player = worldPlayer.getPlayer();
+					Date bsTime = player.getBsTime(); 
+					Date beTime = player.getBeTime(); 
+					byte status = player.getStatus();
+					if(status ==0){
 						throw new ProtocolException(ErrorMessages.LOGIN_FREEZE_MESSAGE, data.getSerial(), data.getSessionId(),
 								data.getType(), data.getSubType());
-					} else {
-						session.write(session.loginPlayer(player, data, client));
-						logedLog.info("udid:" + client.getName());
 					}
+					if(bsTime!=null && beTime != null && nTime >=bsTime.getTime() && nTime <= beTime.getTime()){
+						throw new ProtocolException(ErrorMessages.LOGIN_FREEZE_MESSAGE, data.getSerial(), data.getSessionId(),
+								data.getType(), data.getSubType());
+					}
+					
+					session.loginPlayer(worldPlayer, data, client);
+					RoleActorLoginOk playerLoginOk = new RoleActorLoginOk(data.getSessionId(), data.getSerial());
+ 
+					 
+					logedLog.info("udid:" + client.getName());
+		 
 				} catch (ProtocolException ex) {
-					ServiceManager.getManager().getPlayerService().release(player);
+					ServiceManager.getManager().getPlayerService().release(worldPlayer);
 					throw ex;
 				} catch (Exception ex) {
 					this.log.error(ex, ex);
-					ServiceManager.getManager().getPlayerService().release(player);
+					ServiceManager.getManager().getPlayerService().release(worldPlayer);
 					throw new ProtocolException(ex.getMessage(), data.getSerial(), data.getSessionId(), data.getType(), data.getSubType());
 				}
 			} else {
-				this.log.info("AccountId[" + client.getAccountId() + "]login.getPlayerName()[" + login.getPlayerName() + "]LOGIN ERROR");
+				this.log.info("AccountId[" + client.getAccountId() + "]login.getPlayerName()[" + login.getNickname()+ "]LOGIN ERROR");
 			}
 		}
 		return null;
