@@ -172,7 +172,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 
 		this.connector = new NioSocketConnector(Runtime.getRuntime().availableProcessors() + 1);
 		SocketSessionConfig cfg = acceptor.getSessionConfig();
-		cfg.setIdleTime(IdleStatus.BOTH_IDLE,120);
+		cfg.setIdleTime(IdleStatus.BOTH_IDLE, 120);
 		cfg.setTcpNoDelay(true);
 		cfg.setReceiveBufferSize(worldreceivebuffsize);
 		cfg.setSendBufferSize(worldwritebuffsize);
@@ -206,10 +206,10 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		this.address = address;
 		this.acceptor = new NioSocketAcceptor(Runtime.getRuntime().availableProcessors() + 1);
 		SocketSessionConfig cfg = acceptor.getSessionConfig();
-		cfg.setIdleTime(IdleStatus.BOTH_IDLE,60);
+		cfg.setIdleTime(IdleStatus.BOTH_IDLE, 60);
 		cfg.setTcpNoDelay(true);
 		cfg.setReuseAddress(true);
-		
+
 		acceptor.getSessionConfig().setTcpNoDelay(true);
 		acceptor.getSessionConfig().setReceiveBufferSize(clientreceivebuffsize);
 		acceptor.getSessionConfig().setSendBufferSize(clientwritebuffsize);
@@ -242,7 +242,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		if (sessionId < 0) {
 			log.info("SessionId: " + sessionId);
 		}
-//		session.getConfig().setIdleTime(IdleStatus.BOTH_IDLE, 60);// 空闲时间60秒
+		// session.getConfig().setIdleTime(IdleStatus.BOTH_IDLE, 60);// 空闲时间60秒
 		session.setAttribute(ATTRIBUTE_STRING, sessionId);
 		session.setAttribute(LOGINMARK_KEY, LOGINMARK_UNLOG);
 		session.setAttribute(CLIENTINFO_KEY, new ClientInfo());
@@ -336,18 +336,12 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		public void sessionClosed(IoSession session) throws Exception {
 			serverSession = null;
 			// 断线重连worldServer
-			while (true) {
-				if (serverSession.isConnected()) {
-					SocketDispatcher.log.info("worldServer 断线重连成功。");
-					return;
-				}
-				try {
-					Thread.sleep(12000L);
-					SocketDispatcher.this.connect();
-					SocketDispatcher.log.info("worldServer 断线重连。。。");
-				} catch (Exception e) {
-					SocketDispatcher.log.error(e.getMessage());
-				}
+			try {
+				Thread.sleep(12000L);
+				SocketDispatcher.this.connect();
+				SocketDispatcher.log.info("worldServer 断线重连。。。");
+			} catch (Exception e) {
+				SocketDispatcher.log.error(e.getMessage());
 			}
 		}
 

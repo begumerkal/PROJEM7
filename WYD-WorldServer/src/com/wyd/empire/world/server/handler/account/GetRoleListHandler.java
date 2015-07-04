@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import com.wyd.empire.protocol.data.account.GetRoleListOK;
 import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.entity.mongo.Player;
-import com.wyd.empire.world.entity.mysql.PlayerPet;
 import com.wyd.empire.world.exception.ErrorMessages;
 import com.wyd.empire.world.model.Client;
 import com.wyd.empire.world.server.service.factory.ServiceManager;
@@ -34,69 +33,30 @@ public class GetRoleListHandler implements IDataHandler {
 			// long time = System.currentTimeMillis();
 			List<Player> list = ServiceManager.getManager().getPlayerService().getPlayerList(client.getAccountId());
 			// log.info("GetRoleList AccountId:"+client.getAccountId()+"-----------------time:"+(System.currentTimeMillis()-time));
-			GetRoleListOK sendActorList = new GetRoleListOK(data.getSessionId(), data.getSerial());
 			int playerCount = 0;
 			if (list != null) {
 				playerCount = list.size();
 			}
-			String[] playerName = new String[playerCount];
-			int[] playerLevel = new int[playerCount];
-			int[] playerSex = new int[playerCount];
-			int[] playerDiamond = new int[playerCount];
-			int[] playerGold = new int[playerCount];
-			int[] zsLevel = new int[playerCount];
-			boolean[] doubleCard = new boolean[playerCount];
-			int[] vipLevel = new int[playerCount];
-			int[] playerRank = new int[playerCount];
-			String[] headMessage = new String[playerCount];
-			String[] faceMessage = new String[playerCount];
-			String[] bodyMessage = new String[playerCount];
-			String[] weapMessage = new String[playerCount];
-			String[] wingMessage = new String[playerCount];
-			String[] petMessage = new String[playerCount];
-			int[] weapProf = new int[playerCount];
-			byte[] weapLevel = new byte[playerCount];
-			byte[] weapSkillType = new byte[playerCount];
-
-			Player player;
-			for (int i = 0; i < playerCount; i++) {
-				player = list.get(i);
-				playerName[i] = player.getNickname();
-				playerLevel[i] = player.getLv();
-				playerSex[i] = 1;
-				playerDiamond[i] = 1;
-				playerGold[i] = 1;
-				zsLevel[i] = 1;
-				doubleCard[i] = false;
-				vipLevel[i] = player.getVipLv();
-				playerRank[i] = 1;
-				headMessage[i] = "";
-				faceMessage[i] = "";
-				bodyMessage[i] = "";
-				weapMessage[i] = "";
-				wingMessage[i] = "";
-				petMessage[i] = "";
-			}
-
+			String[] nickName = new String[playerCount]; // 角色名称
+			int[] money = new int[playerCount]; // 钱
+			int[] lv = new int[playerCount]; // 玩家等级
+			int[] lvExp = new int[playerCount]; // 经验
+			int[] vipExp = new int[playerCount]; // vip经验
+			int[] vipLv = new int[playerCount]; // vip等级
+			String[] property = new String[playerCount]; // 属性
+			int[] fight = new int[playerCount]; // 战斗力
+			
+			GetRoleListOK sendActorList = new GetRoleListOK(data.getSessionId(), data.getSerial());
 			sendActorList.setPlayerCount(playerCount);
-			sendActorList.setPlayerName(playerName);
-			sendActorList.setPlayerLevel(playerLevel);
-			sendActorList.setPlayerSex(playerSex);
-			sendActorList.setPlayerDiamond(playerDiamond);
-			sendActorList.setPlayerGold(playerGold);
-			sendActorList.setZsLevel(zsLevel);
-			sendActorList.setDoubleCard(doubleCard);
-			sendActorList.setVipLevel(vipLevel);
-			sendActorList.setPlayerRank(playerRank);
-			sendActorList.setHeadMessage(headMessage);
-			sendActorList.setFaceMessage(faceMessage);
-			sendActorList.setBodyMessage(bodyMessage);
-			sendActorList.setWeapMessage(weapMessage);
-			sendActorList.setWingMessage(wingMessage);
-			sendActorList.setPetMessage(petMessage);
-			sendActorList.setWeapProf(weapProf);
-			sendActorList.setWeapLevel(weapLevel);
-			sendActorList.setWeapSkillType(weapSkillType);
+			sendActorList.setNickName(nickName);
+			sendActorList.setMoney(money);
+			sendActorList.setLv(lv);
+			sendActorList.setLvExp(lvExp);
+			sendActorList.setVipLv(vipLv);
+			sendActorList.setVipExp(vipExp);
+			sendActorList.setProperty(property);
+			sendActorList.setFight(fight);
+
 			return sendActorList;
 			// session.write(sendActorList);
 		} catch (Exception e) {
