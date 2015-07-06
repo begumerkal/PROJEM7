@@ -818,5 +818,10 @@ public class PlayerService implements Runnable {
 		updatePlayerInfo.setValue(value);
 		player.sendData(updatePlayerInfo);
 	}
-
+	
+	//定时触发
+	public void sysPlayersVigorUp(){
+		System.out.println("aaa");
+	}
+	
 }

@@ -59,7 +59,8 @@ public class WorldServer {
 		long time = System.currentTimeMillis();
 		// 加载协议BeanData和Handler类及对象
 		ProtocolFactory.init(Protocol.class, "com.wyd.empire.protocol.data", "com.wyd.empire.world.server.handler");
-		context = new ClassPathXmlApplicationContext(new String[]{"applicationContext.xml", "application-scheduling.xml"});
+//		context = new ClassPathXmlApplicationContext(new String[]{"applicationContext.xml", "application-scheduling.xml"});
+		context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		ServiceManager sm = context.getBean(ServiceManager.class);
 		ServiceManager.setServiceManager(sm);
 		SessionRegistry registry = new SessionRegistry();
