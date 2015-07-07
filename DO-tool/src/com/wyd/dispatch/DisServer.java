@@ -9,7 +9,7 @@ public class DisServer {
 	private static final Logger log = Logger.getLogger(DisServer.class);
 	/** 配置信息 */
 	public static ConfigMenger configuration = null;
- 
+
 	public static void main(String[] args) throws Throwable {
 		DisServer main = new DisServer();
 		main.launch();

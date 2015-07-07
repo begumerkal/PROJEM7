@@ -240,7 +240,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	public void registerClient(IoSession session) {
 		Integer sessionId = this.ids.incrementAndGet();
 		if (sessionId < 0) {
-			log.info("SessionId: " + sessionId);
+			log.info("用户链接SessionId: " + sessionId);
 		}
 		// session.getConfig().setIdleTime(IdleStatus.BOTH_IDLE, 60);// 空闲时间60秒
 		session.setAttribute(ATTRIBUTE_STRING, sessionId);
@@ -328,9 +328,9 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 			if (packet.type == Packet.TYPE.BUFFER) {
 				SocketDispatcher.this.dispatchToClient(packet);
 			} else {
-				System.out.println("dis收到内部数据：" + packet.data.toString());
 				SocketDispatcher.this.processControl(packet);
 			}
+			System.out.println("dis收到WORLD数据：" + packet.data.toString());
 		}
 		@Override
 		public void sessionClosed(IoSession session) throws Exception {

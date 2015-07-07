@@ -1,19 +1,19 @@
 package com.wyd.empire.protocol.data.account;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.empire.protocol.Protocol;
-public class CreateRole extends AbstractData {
+public class RoleCreate extends AbstractData {
 	private String nickname;
 	private byte heroExtId;
 	private String clientModel;// 手机型号
 	private String systemName;// 手机系统
 	private String systemVersion;// 系统版本
 
-	public CreateRole(int sessionId, int serial) {
-		super(Protocol.MAIN_ACCOUNT, Protocol.ACCOUNT_CreateRole, sessionId, serial);
+	public RoleCreate(int sessionId, int serial) {
+		super(Protocol.MAIN_ACCOUNT, Protocol.ACCOUNT_RoleCreate, sessionId, serial);
 	}
 
-	public CreateRole() {
-		super(Protocol.MAIN_ACCOUNT, Protocol.ACCOUNT_CreateRole);
+	public RoleCreate() {
+		super(Protocol.MAIN_ACCOUNT, Protocol.ACCOUNT_RoleCreate);
 	}
 
 	public String getNickname() {

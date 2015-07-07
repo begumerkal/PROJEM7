@@ -45,7 +45,19 @@ public class GetRoleListHandler implements IDataHandler {
 			int[] vipLv = new int[playerCount]; // vip等级
 			String[] property = new String[playerCount]; // 属性
 			int[] fight = new int[playerCount]; // 战斗力
-			
+
+			for (int i = 0; i < playerCount; i++) {
+				Player p = list.get(i);
+				nickName[i] = p.getNickname();
+				money[i] = p.getMoney();
+				lv[i] = p.getLv();
+				lvExp[i] = p.getLvExp();
+				vipLv[i] = p.getVipLv();
+				vipExp[i] = p.getVipExp();
+				property[i] = p.getProperty();
+				fight[i] = p.getFight();
+			}
+
 			GetRoleListOK sendActorList = new GetRoleListOK(data.getSessionId(), data.getSerial());
 			sendActorList.setPlayerCount(playerCount);
 			sendActorList.setNickName(nickName);

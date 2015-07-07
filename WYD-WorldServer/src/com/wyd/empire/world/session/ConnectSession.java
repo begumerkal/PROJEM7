@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 
-import com.wyd.empire.protocol.data.account.RoleActorLoginOk;
+import com.wyd.empire.protocol.data.account.RoleLoginOk;
 import com.wyd.empire.protocol.data.error.ProtocolError;
 import com.wyd.empire.protocol.data.server.Heartbeat;
 import com.wyd.empire.protocol.data.server.Kick;
@@ -72,7 +72,7 @@ public class ConnectSession extends Session {
 			for (Entry<Integer, Client> entry : accountId2Clients.entrySet()) {
 				Integer accountId = entry.getKey();
 				WorldPlayer player = this.playerService.getWorldPlayers().get(accountId);
-				loginOut(player);
+				playerService.release(player);
 				ServiceManager
 						.getManager()
 						.getPlayerService()
@@ -172,11 +172,6 @@ public class ConnectSession extends Session {
 		}
 	}
 
-	protected void loginOut(WorldPlayer player) {
-		ServiceManager.getManager().getPlayerService().release(player);
-		Client client = this.accountId2Clients.get(player.getPlayer().getAccountId());
-		removeClient(client);
-	}
 
 	// public void checkListened(int playerId) {
 	// Object o = this.listened.get(playerId);
@@ -224,7 +219,7 @@ public class ConnectSession extends Session {
 		if (client.getStatus() == Client.STATUS.PLAYERLOGIN) {
 			WorldPlayer player = this.playerService.getWorldPlayers().get(client.getPlayerId());
 			if (player != null)
-				loginOut(player);
+				playerService.release(player);
 		}
 	}
 
@@ -279,7 +274,7 @@ public class ConnectSession extends Session {
 	 * @return
 	 */
 	public Client getClient(int sessionId) {
-		// System.out.println("Client Size:"+this.sessionId2Clients.size());
+//		 System.out.println("Client Size:"+this.sessionId2Clients.size()+sessionId2Clients);
 		return this.sessionId2Clients.get(sessionId);
 	}
 
@@ -347,15 +342,15 @@ public class ConnectSession extends Session {
 	 * @return
 	 * @throws Exception
 	 */
-	public void loginPlayer(WorldPlayer worldplayer, AbstractData data, Client client) throws Exception {
+	public void loginPlayer(WorldPlayer worldPlayer, AbstractData data, Client client) throws Exception {
 		client.setStatus(Client.STATUS.PLAYERLOGIN);
-		client.setPlayerId(worldplayer.getPlayer().getId());
-		worldplayer.setAccountClient(client);
-		worldplayer.setConnectSession((ConnectSession) data.getHandlerSource());
-		addWorldPlayer(client, worldplayer, data.getSessionId());
+		client.setPlayerId(worldPlayer.getPlayer().getId());
+		worldPlayer.setAccountClient(client);
+		worldPlayer.setConnectSession((ConnectSession) data.getHandlerSource());
+		addWorldPlayer(client, worldPlayer, data.getSessionId());
 
-		// RoleActorLoginOk playerLoginOk = new
-		// RoleActorLoginOk(data.getSessionId(), data.getSerial());
+		// RoleLoginOk playerLoginOk = new
+		// RoleLoginOk(data.getSessionId(), data.getSerial());
 		// playerLoginOk.setPlayerId(player.getId());
 		// playerLoginOk.setPlayerName(player.getName());
 		// playerLoginOk.setTickets(player.getDiamond());

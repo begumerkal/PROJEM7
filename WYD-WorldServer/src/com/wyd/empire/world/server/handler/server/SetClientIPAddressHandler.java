@@ -26,6 +26,7 @@ public class SetClientIPAddressHandler implements IDataHandler {
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		Client client = session.getAndCreateClient(address.getSession());
 		client.setIp(address.getIp());
+		System.out.println(address.getSession()+"---------"+address.getIp());
 		return null;
 	}
 }

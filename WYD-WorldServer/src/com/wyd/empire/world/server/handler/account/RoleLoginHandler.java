@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 
-import com.wyd.empire.protocol.data.account.RoleActorLoginOk;
+import com.wyd.empire.protocol.data.account.RoleLoginOk;
 import com.wyd.empire.protocol.data.account.RoleLogin;
 import com.wyd.empire.world.entity.mongo.Player;
 import com.wyd.empire.world.exception.ErrorMessages;
@@ -44,7 +44,7 @@ public class RoleLoginHandler implements IDataHandler {
 			}
 			WorldPlayer worldPlayer = null;
 			try {
-				worldPlayer = ServiceManager.getManager().getPlayerService().loadWorldPlayer(client.getAccountId(), nickname);
+				worldPlayer = ServiceManager.getManager().getPlayerService().loadWorldPlayer(client, login);
 			} catch (PlayerDataException ex) {
 				session.removeClient(client);
 				this.log.error(ex, ex);
@@ -68,7 +68,7 @@ public class RoleLoginHandler implements IDataHandler {
 					}
 					// 角色登录成功
 					session.loginPlayer(worldPlayer, data, client);
-					RoleActorLoginOk playerLoginOk = new RoleActorLoginOk(data.getSessionId(), data.getSerial());
+					RoleLoginOk playerLoginOk = new RoleLoginOk(data.getSessionId(), data.getSerial());
 					playerLoginOk.setId(player.getId());
 					playerLoginOk.setNickname(player.getNickname());
 					playerLoginOk.setLv(player.getLv());

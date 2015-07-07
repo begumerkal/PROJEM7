@@ -283,15 +283,10 @@ public class WorldPlayer {
 
 	public class LoginOutThread implements Runnable {
 		private WorldPlayer player;
-
 		public LoginOutThread(WorldPlayer player) {
 			this.player = player;
 		}
-
 		public void run() {
-			// 更新玩家信息
-			ServiceManager.getManager().getPlayerService().clearPlayer(player);
-
 			// 记录玩家退出日志
 			GameLogService.logout(player.getPlayer().getId(), player.getPlayer().getLv(), (int) player.getPlayer().getLoginTime().getTime());
 			String area = WorldServer.config.getAreaId().toUpperCase();

@@ -211,7 +211,7 @@ public class GameLogService {
 	 *            本次上线时长（分钟）
 	 */
 	public static void logout(int playerId, int level, int onLineTime) {
-		StringBuffer sb = new StringBuffer();
+		StringBuffer sb = new StringBuffer("玩家退出playerId:");
 		sb.append(playerId);
 		sb.append("\t");
 		sb.append(level);

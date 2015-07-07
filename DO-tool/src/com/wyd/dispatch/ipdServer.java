@@ -8,9 +8,10 @@ import org.apache.log4j.Logger;
 
 import com.wyd.empire.protocol.data.account.GetRoleList;
 import com.wyd.empire.protocol.data.account.Login;
+import com.wyd.empire.protocol.data.account.RoleLogin;
 
 public class ipdServer {
-	 
+
 	private static final Logger log = Logger.getLogger(ipdServer.class);
 	private IpdConnector connector;
 	private String mode;
@@ -49,7 +50,7 @@ public class ipdServer {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void sendData() throws InterruptedException {
 		System.out.println("发送登录数据...");
 		Login login = new Login();
@@ -57,18 +58,26 @@ public class ipdServer {
 		login.setPassWord("123456");
 		login.setVersion("1.0.0.0");
 		login.setChannel(1000);
+		login.setClientModel("htc");
+		login.setSystemName("Andro");
+		login.setSystemVersion("1.0.0.1");
 		this.connector.send(login);
-		
-		Thread.sleep(800);
+
+		Thread.sleep(1000);
 		System.out.println("发送获取角色列表数据...");
 		GetRoleList roleList = new GetRoleList();
 		this.connector.send(roleList);
-		
-		
-		
-		
-		
-		
+
+//		Thread.sleep(1000);
+//		System.out.println("发送角色登录数据...");
+//		RoleLogin roleLogin = new RoleLogin();
+//		roleLogin.setNickname("一日千里");
+//		roleLogin.setHeroExtId(1);
+//		roleLogin.setClientModel("--");
+//		roleLogin.setSystemName("--");
+//		roleLogin.setSystemVersion("--");
+//		this.connector.send(roleLogin);
+
 	}
- 
+
 }

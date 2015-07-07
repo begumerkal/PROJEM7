@@ -39,8 +39,7 @@ public class HandlerUtil {
 			} else {
 				dataobj.setHandlerSource(session);
 				long sTime = System.currentTimeMillis();
-				System.out.println("handler:" + handler + ",dataobj:" + dataobj + ",sessionId:" + dataobj.getSessionId() + "<<<<<<<<");
-
+				System.out.println("handler:" + handler.getClass() + ",dataobj:" + dataobj + ",sessionId:" + dataobj.getSessionId() + "<<<<<<<<");
 				AbstractData sendData = handler.handle(dataobj);
 				if (sendData != null) {
 					session.write(sendData);

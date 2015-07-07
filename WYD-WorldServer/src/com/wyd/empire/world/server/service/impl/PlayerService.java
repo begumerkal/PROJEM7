@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.wyd.empire.protocol.data.account.RoleLogin;
 import com.wyd.empire.protocol.data.cache.PlayerInfo;
 import com.wyd.empire.protocol.data.cache.UpdatePlayer;
 import com.wyd.empire.world.common.util.Common;
@@ -21,6 +22,7 @@ import com.wyd.empire.world.exception.CreatePlayerException;
 import com.wyd.empire.world.exception.ErrorMessages;
 import com.wyd.empire.world.exception.TipMessages;
 import com.wyd.empire.world.logs.GameLogService;
+import com.wyd.empire.world.model.Client;
 import com.wyd.empire.world.model.player.WorldPlayer;
 import com.wyd.protocol.exception.ProtocolException;
 /**
@@ -50,7 +52,7 @@ public class PlayerService implements Runnable {
 		while (true) {
 			try {
 				Thread.sleep(60000L);
-				updatePlayerOnLineTime();
+				// updatePlayerOnLineTime();
 				int onlineNum = worldPlayers.size();
 				this.onlineLog.info(TipMessages.ONLINE_PLAYER_NUM + onlineNum);
 				GameLogService.onlineNum(onlineNum);
@@ -163,6 +165,8 @@ public class PlayerService implements Runnable {
 				return false;
 			clearPlayer(worldPlayer);
 			savePlayerData(worldPlayer.getPlayer());
+			
+			
 			writeLog("注销保存玩家信息：id=" + worldPlayer.getPlayer().getId() + "---name=" + worldPlayer.getName() + "---level="
 					+ worldPlayer.getPlayer().getLv());
 		}
@@ -247,12 +251,17 @@ public class PlayerService implements Runnable {
 			newPlayer.setCreateTime(new Date());
 			newPlayer.setLoginTime(new Date());
 			newPlayer.setLv(1);
+			newPlayer.setLvExp(0);
+			newPlayer.setVipLv(0);
+			newPlayer.setVipExp(0);
 			newPlayer.setStatus((byte) 1);
 			newPlayer.setMoney(0);
 			newPlayer.setClientModel(clientModel);
 			newPlayer.setSystemName(systemName);
 			newPlayer.setSystemVersion(systemVersion);
-			newPlayer = this.playerDao.save(newPlayer);
+			newPlayer.setProperty("");
+			newPlayer.setFight(0);
+			newPlayer = this.playerDao.insert(newPlayer);
 
 			// 记录角色创建日志
 			GameLogService.createPlayer(newPlayer.getId(), newPlayer.getNickname());
@@ -275,18 +284,24 @@ public class PlayerService implements Runnable {
 	 * @return
 	 * @throws Exception
 	 */
-	public WorldPlayer loadWorldPlayer(int accountId, String nickname) throws Exception {
-		WorldPlayer worldPlayer = this.worldPlayers.get(accountId);
-		if (worldPlayer == null) {
+	public WorldPlayer loadWorldPlayer(Client client, RoleLogin roleLoginData) throws Exception {
+		int accountId = client.getAccountId();
+		int playerId = client.getPlayerId();
+		String nickname = roleLoginData.getNickname();
+		WorldPlayer worldPlayer;
+		if (playerId == -1) {
 			Player player = playerDao.getPlayerByName(accountId, nickname);
-			if (player != null) {
-				worldPlayer = createWorldPlayer(player);
-				worldPlayers.put(accountId, worldPlayer);
-				this.log.info("ID[" + player.getId() + "]Level[" + player.getLv() + "] load from db");
-			} else {
-				return null;
+			// 不存在就创建角色
+			if (player == null) {
+				player = createPlayer(accountId, nickname, roleLoginData.getHeroExtId(), client.getChannel(),
+						roleLoginData.getClientModel(), roleLoginData.getSystemName(), roleLoginData.getSystemVersion());
 			}
+			worldPlayer = createWorldPlayer(player);
+			this.log.info("createWorldPlayer ID[" + player.getId() + "]Level[" + player.getLv() + "] load from db");
+		} else {
+			worldPlayer = this.worldPlayers.get(playerId);
 		}
+
 		this.log.info("GAMEACCOUNTID[" + accountId + "]FAIL TO LOGIN " + nickname);
 		return worldPlayer;
 	}
@@ -818,10 +833,10 @@ public class PlayerService implements Runnable {
 		updatePlayerInfo.setValue(value);
 		player.sendData(updatePlayerInfo);
 	}
-	
-	//定时触发
-	public void sysPlayersVigorUp(){
-		System.out.println("aaa");
+
+	// 定时触发
+	public void sysPlayersVigorUp() {
+		System.out.println();
 	}
-	
+
 }

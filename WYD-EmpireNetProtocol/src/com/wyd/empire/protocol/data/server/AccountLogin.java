@@ -74,6 +74,5 @@ public class AccountLogin extends AbstractData {
 	public void setSystemVersion(String systemVersion) {
 		this.systemVersion = systemVersion;
 	}
-	
-	
+
 }

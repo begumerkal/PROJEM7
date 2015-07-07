@@ -64,9 +64,9 @@ public class Protocol {
 	public static final byte ACCOUNT_RepeatLogin = 3;// 主账号重复登录
 	public static final byte ACCOUNT_GetRoleList = 4;//获取角色列表
 	public static final byte ACCOUNT_GetRoleListOK = 5;
-	public static final byte ACCOUNT_CreateRole = 6;//角色创建
+	public static final byte ACCOUNT_RoleCreate = 6;//角色创建
 	public static final byte ACCOUNT_RoleLogin = 7;//角色登录
-	
+	public static final byte ACCOUNT_RoleLoginOk = 8;
 	
 	public static final byte ACCOUNT_Register = 100;
 	public static final byte ACCOUNT_RegisterOk = 100;
@@ -78,7 +78,7 @@ public class Protocol {
 	public static final byte ACCOUNT_ChannelLoginResult = 16;
 
 	
-	public static final byte ACCOUNT_RoleActorLoginOk = 23;
+	
 	public static final byte ACCOUNT_GetRandomName = 24;
 	public static final byte ACCOUNT_GetRandomNameOk = 25;
 	public static final byte ACCOUNT_SetToken = 26;

@@ -77,7 +77,7 @@ public class DataBeanEncoder {
 			for (int i = 0; i < size; ++i)
 				data.write((byte[]) list.get(i));
 		} else {
-			throw new IllegalAccessException();
+			throw new IllegalAccessException("fieldName:" + fieldName + ",type:" + type + ",value:" + value);
 		}
 	}
 }

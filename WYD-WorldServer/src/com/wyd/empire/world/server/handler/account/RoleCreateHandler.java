@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.wyd.empire.protocol.data.account.CreateRole;
+import com.wyd.empire.protocol.data.account.RoleCreate;
 import com.wyd.empire.protocol.data.server.SetClientInfo;
 import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.common.util.ServiceUtils;
@@ -28,13 +28,13 @@ import com.wyd.protocol.handler.IDataHandler;
  * @author doter
  * @since JDK 1.6
  */
-public class CreateRoleHandler implements IDataHandler {
-	private Logger log = Logger.getLogger(CreateRoleHandler.class);
+public class RoleCreateHandler implements IDataHandler {
+	private Logger log = Logger.getLogger(RoleCreateHandler.class);
 
 	public AbstractData handle(AbstractData data) throws Exception {
 		ConnectSession session = (ConnectSession) data.getHandlerSource();
 		Client client = session.getClient(data.getSessionId());
-		CreateRole createActor = (CreateRole) data;
+		RoleCreate createActor = (RoleCreate) data;
 		String clientModel = createActor.getClientModel();
 		String systemName = createActor.getSystemName();
 		String systemVersion = createActor.getSystemVersion();
