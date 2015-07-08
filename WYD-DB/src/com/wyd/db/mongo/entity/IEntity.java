@@ -1,4 +1,4 @@
-package com.mongo.entity;
+package com.wyd.db.mongo.entity;
 
 public abstract class IEntity {
 	

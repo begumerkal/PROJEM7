@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.wyd.db.dao.impl.UniversalDaoHibernate;
+import com.wyd.db.mysql.dao.impl.UniversalDaoHibernate;
 import com.wyd.empire.world.dao.mysql.IPlayerBossmapDao;
 import com.wyd.empire.world.entity.mysql.PlayerBossmap;
 

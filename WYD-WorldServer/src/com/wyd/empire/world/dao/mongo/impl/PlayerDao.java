@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.repository.support.MongoRepositoryFactory;
 import org.springframework.stereotype.Repository;
 
-import com.mongo.dao.impl.BaseDao;
+import com.wyd.db.mongo.dao.impl.BaseDao;
 import com.wyd.empire.world.entity.mongo.Player;
 
 /**

@@ -1,9 +1,9 @@
-package com.wyd.db.dao;
+package com.wyd.db.mysql.dao;
  
 import java.util.List;
 import java.util.Map;
 
-import com.wyd.db.page.PageList;
+import com.wyd.db.mysql.page.PageList;
 
 /**
  * Dao接口
@@ -90,13 +90,6 @@ public interface BaseDao {
      * @param object 对应表对象
      */
 	public void remove(Object object);
-
-    /**
-     * 保存或更新列表
-     * @param collection 要进行保存或更新的列表
-     */
-	public void saveOrUpdateAll(java.util.Collection<Object> Collection);
-	
     /**
      * 保存或更新
      * @param entity

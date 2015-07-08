@@ -1,4 +1,4 @@
-package com.wyd.db.dao.impl;
+package com.wyd.db.mysql.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
@@ -14,8 +15,9 @@ import org.hibernate.Session;
 import org.springframework.orm.hibernate4.HibernateCallback;
 import org.springframework.orm.hibernate4.SessionFactoryUtils;
 import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
-import com.wyd.db.dao.BaseDao;
-import com.wyd.db.page.PageList;
+
+import com.wyd.db.mysql.dao.BaseDao;
+import com.wyd.db.mysql.page.PageList;
 /**
  * <code>BaseDaoSupport</code>Hibernate底层操作基类
  * 
@@ -238,15 +240,6 @@ public class BaseDaoSupport extends HibernateDaoSupport implements BaseDao {
         this.getHibernateTemplate().delete(object);
     }
 
-    /**
-     * 保存或更新列表
-     * @param collection
-     *            要进行保存或更新的列表
-     */
-    public void saveOrUpdateAll(Collection<Object> collection) {
-//        this.getHibernateTemplate().saveOrUpdateAll(collection);
-    }
-    
     /**
      * 保存或更新
      * @param entity

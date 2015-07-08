@@ -1,4 +1,4 @@
-package com.mongo.dao;
+package com.wyd.db.mongo.dao;
 
 import java.io.Serializable;
 import java.util.List;

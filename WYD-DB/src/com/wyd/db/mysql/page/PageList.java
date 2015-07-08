@@ -1,4 +1,4 @@
-package com.wyd.db.page;
+package com.wyd.db.mysql.page;
 import java.util.ArrayList;
 import java.util.List;
 /**

@@ -3,7 +3,7 @@ package com.wyd.empire.world.dao.mysql.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.wyd.db.dao.impl.UniversalDaoHibernate;
+import com.wyd.db.mysql.dao.impl.UniversalDaoHibernate;
 import com.wyd.empire.world.common.util.ServiceUtils;
 import com.wyd.empire.world.dao.mysql.ISpreeGiftDao;
 import com.wyd.empire.world.entity.mysql.SpreeGift;

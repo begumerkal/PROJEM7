@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.mongo.entity.IEntity;
+import com.wyd.db.mongo.entity.IEntity;
 
 /**
  * 角色表

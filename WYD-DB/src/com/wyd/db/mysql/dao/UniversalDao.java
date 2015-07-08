@@ -1,4 +1,4 @@
-package com.wyd.db.dao;
+package com.wyd.db.mysql.dao;
 
 import java.io.Serializable;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.wyd.db.dao;
+package com.wyd.db.mysql.dao;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,9 +12,9 @@ import java.util.List;
  *
  * @author <a href="mailto:bwnoll@gmail.com">Bryan Noll</a>
  * @param <T> a type variable
- * @param <PK> the primary key for that type
+ * @param <ID> the primary key for that type
  */
-public interface GenericDao <T, PK extends Serializable>  extends BaseDao{
+public interface GenericDao <T, ID extends Serializable>  extends BaseDao{
 
     /**
      * Generic method used to get all objects of a particular type. This
@@ -32,14 +32,14 @@ public interface GenericDao <T, PK extends Serializable>  extends BaseDao{
      * @return a populated object
      * @see org.springframework.orm.ObjectRetrievalFailureException
      */
-    T get(PK id);
+    T get(ID id);
 
     /**
      * Checks for existence of an object of type T using the id arg.
      * @param id the id of the entity
      * @return - true if it exists, false if it doesn't
      */
-    boolean exists(PK id);
+    boolean exists(ID id);
 
     /**
      * Generic method to save an object - handles both update and insert.
@@ -52,5 +52,5 @@ public interface GenericDao <T, PK extends Serializable>  extends BaseDao{
      * Generic method to delete an object based on class and id
      * @param id the identifier (primary key) of the object to remove
      */
-    void remove(PK id);
+    void remove(ID id);
 }

@@ -2,7 +2,7 @@ package com.wyd.empire.world.dao.mysql;
 
 import java.util.Map;
 
-import com.wyd.db.dao.UniversalDao;
+import com.wyd.db.mysql.dao.UniversalDao;
 
 /**
  * The DAO interface for the TabConsortiaright entity.

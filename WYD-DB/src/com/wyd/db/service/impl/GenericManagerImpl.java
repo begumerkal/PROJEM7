@@ -2,9 +2,11 @@ package com.wyd.db.service.impl;
 
 import java.io.Serializable;
 import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import com.wyd.db.dao.GenericDao;
+
+import com.wyd.db.mysql.dao.GenericDao;
 import com.wyd.db.service.GenericManager;
 
 /**

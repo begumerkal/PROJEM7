@@ -1,4 +1,4 @@
-package com.wyd.db.dao.impl;
+package com.wyd.db.mysql.dao.impl;
 import java.io.Serializable;
 import java.util.List;
 
@@ -6,7 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
 
-import com.wyd.db.dao.UniversalDao;
+import com.wyd.db.mysql.dao.UniversalDao;
 /**
  * This class serves as the a class that can CRUD any object witout any Spring configuration. The only downside is it does require casting from Object to the object class.
  * 

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import com.wyd.db.page.PageList;
+import com.wyd.db.mysql.page.PageList;
 
 /**
  * Business Facade interface. 

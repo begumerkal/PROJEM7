@@ -13,8 +13,8 @@ import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.util.StringUtils;
 
-import com.wyd.db.dao.impl.UniversalDaoHibernate;
-import com.wyd.db.page.PageList;
+import com.wyd.db.mysql.dao.impl.UniversalDaoHibernate;
+import com.wyd.db.mysql.page.PageList;
 import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.dao.mysql.IOperationConfigDao;
 import com.wyd.empire.world.entity.mysql.ButtonInfo;

@@ -1,4 +1,4 @@
-package com.mongo.dao.impl;
+package com.wyd.db.mongo.dao.impl;
 
 import java.io.Serializable;
 import java.util.concurrent.ConcurrentHashMap;
@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.repository.support.MongoRepositoryFactor
 import org.springframework.data.mongodb.repository.support.SimpleMongoRepository;
 import org.springframework.stereotype.Repository;
 
-import com.mongo.entity.SequenceIdEntity;
+import com.wyd.db.mongo.entity.SequenceIdEntity;
 
 @Repository
 public class SequenceIdDao extends SimpleMongoRepository<SequenceIdEntity, Serializable> {

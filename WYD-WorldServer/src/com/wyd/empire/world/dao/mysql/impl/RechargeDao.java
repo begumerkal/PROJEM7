@@ -3,8 +3,8 @@ package com.wyd.empire.world.dao.mysql.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.wyd.db.dao.impl.UniversalDaoHibernate;
-import com.wyd.db.page.PageList;
+import com.wyd.db.mysql.dao.impl.UniversalDaoHibernate;
+import com.wyd.db.mysql.page.PageList;
 import com.wyd.empire.world.dao.mysql.IRechargeDao;
 import com.wyd.empire.world.entity.mysql.Channel;
 import com.wyd.empire.world.entity.mysql.Recharge;

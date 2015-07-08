@@ -2,7 +2,7 @@ package com.wyd.empire.world.dao.mysql;
 
 import java.util.List;
 
-import com.wyd.db.dao.UniversalDao;
+import com.wyd.db.mysql.dao.UniversalDao;
 import com.wyd.empire.world.entity.mysql.DrawItem;
 import com.wyd.empire.world.entity.mysql.DrawRate;
 import com.wyd.empire.world.entity.mysql.DrawType;

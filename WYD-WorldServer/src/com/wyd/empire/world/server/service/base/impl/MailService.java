@@ -8,7 +8,7 @@ import java.util.List;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import com.wyd.db.page.PageList;
+import com.wyd.db.mysql.page.PageList;
 import com.wyd.db.service.impl.UniversalManagerImpl;
 import com.wyd.empire.protocol.data.mail.HasNewMail;
 import com.wyd.empire.protocol.data.mail.LoginCheckMailOk;

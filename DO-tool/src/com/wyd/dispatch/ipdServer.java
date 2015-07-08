@@ -68,15 +68,15 @@ public class ipdServer {
 		GetRoleList roleList = new GetRoleList();
 		this.connector.send(roleList);
 
-//		Thread.sleep(1000);
-//		System.out.println("发送角色登录数据...");
-//		RoleLogin roleLogin = new RoleLogin();
-//		roleLogin.setNickname("一日千里");
-//		roleLogin.setHeroExtId(1);
-//		roleLogin.setClientModel("--");
-//		roleLogin.setSystemName("--");
-//		roleLogin.setSystemVersion("--");
-//		this.connector.send(roleLogin);
+		Thread.sleep(1000);
+		System.out.println("发送角色登录数据...");
+		RoleLogin roleLogin = new RoleLogin();
+		roleLogin.setNickname("一日千里");
+		roleLogin.setHeroExtId(1);
+		roleLogin.setClientModel("--");
+		roleLogin.setSystemName("--");
+		roleLogin.setSystemVersion("--");
+		this.connector.send(roleLogin);
 
 	}
 

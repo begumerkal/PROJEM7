@@ -1,7 +1,7 @@
 package com.wyd.empire.gameaccount.bean;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.mongo.entity.IEntity;
+import com.wyd.db.mongo.entity.IEntity;
 /**
  * The persistent class for the tab_account database table.
  * 

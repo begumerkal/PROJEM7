@@ -1,6 +1,6 @@
 package com.wyd.empire.world.dao.mysql;
 
-import com.wyd.db.dao.UniversalDao;
+import com.wyd.db.mysql.dao.UniversalDao;
 import com.wyd.empire.world.entity.mysql.DownloadReward;
 
 public interface IDownloadRewardDao extends UniversalDao {

@@ -2,7 +2,7 @@ package com.wyd.empire.world.dao.mysql.impl;
 
 import java.util.List;
 
-import com.wyd.db.dao.impl.UniversalDaoHibernate;
+import com.wyd.db.mysql.dao.impl.UniversalDaoHibernate;
 import com.wyd.empire.world.dao.mysql.ILotteryDao;
 import com.wyd.empire.world.entity.mysql.WishItem;
 

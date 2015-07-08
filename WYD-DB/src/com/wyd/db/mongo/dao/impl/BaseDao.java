@@ -1,4 +1,4 @@
-package com.mongo.dao.impl;
+package com.wyd.db.mongo.dao.impl;
 
 import java.io.Serializable;
 import java.util.List;
@@ -10,9 +10,9 @@ import org.springframework.data.mongodb.repository.support.MongoRepositoryFactor
 import org.springframework.data.mongodb.repository.support.SimpleMongoRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
-import com.mongo.dao.IBaseDao;
-import com.mongo.entity.IEntity;
-import com.mongo.entity.SequenceIdEntity;
+import com.wyd.db.mongo.dao.IBaseDao;
+import com.wyd.db.mongo.entity.IEntity;
+import com.wyd.db.mongo.entity.SequenceIdEntity;
 
 @NoRepositoryBean
 public abstract class BaseDao<T extends IEntity, ID extends Serializable> extends SimpleMongoRepository<T, ID>

@@ -9,8 +9,8 @@ import java.util.Vector;
 
 import org.springframework.util.StringUtils;
 
-import com.wyd.db.dao.impl.UniversalDaoHibernate;
-import com.wyd.db.page.PageList;
+import com.wyd.db.mysql.dao.impl.UniversalDaoHibernate;
+import com.wyd.db.mysql.page.PageList;
 import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.common.util.ServiceUtils;
 import com.wyd.empire.world.dao.mysql.IPlayerDao;

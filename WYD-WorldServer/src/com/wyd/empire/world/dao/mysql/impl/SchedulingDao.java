@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.wyd.db.dao.impl.UniversalDaoHibernate;
+import com.wyd.db.mysql.dao.impl.UniversalDaoHibernate;
 import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.dao.mysql.ISchedulingDao;
 import com.wyd.empire.world.entity.mysql.LogActivitiesAward;
