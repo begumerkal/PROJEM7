@@ -327,7 +327,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 			Packet packet = (Packet) object;
 			
 			if (packet.type == Packet.TYPE.BUFFER) {
-				System.out.println("dis收到WORLD数据发前端：" + packet.data.toString());
+//				System.out.println("dis收到WORLD数据发前端：" + packet.data.toString());
 				SocketDispatcher.this.dispatchToClient(packet);
 			} else {
 				System.out.println("dis收到WORLD数据发系统：" + packet.data.toString());
