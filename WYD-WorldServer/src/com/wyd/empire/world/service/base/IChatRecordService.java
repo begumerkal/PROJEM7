@@ -1,4 +1,4 @@
-package com.wyd.empire.world.server.service.base;
+package com.wyd.empire.world.service.base;
 
 import java.text.ParseException;
 import java.util.List;

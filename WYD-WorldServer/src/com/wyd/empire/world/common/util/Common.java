@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.wyd.empire.world.entity.mysql.Successrate;
-import com.wyd.empire.world.server.service.factory.ServiceManager;
+import com.wyd.empire.world.service.factory.ServiceManager;
 public class Common {
     /** 喇叭ID */
     public static final int      HORNID                              = 1;

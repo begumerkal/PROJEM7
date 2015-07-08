@@ -1,4 +1,4 @@
-package com.wyd.empire.world.server.service.factory;
+package com.wyd.empire.world.service.factory;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.PropertiesConfiguration;
@@ -6,16 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wyd.empire.world.common.util.ThreadPool;
-import com.wyd.empire.world.server.service.base.IPlayerService;
-import com.wyd.empire.world.server.service.base.impl.MailService;
-import com.wyd.empire.world.server.service.impl.AbstractService;
-import com.wyd.empire.world.server.service.impl.ChatService;
-import com.wyd.empire.world.server.service.impl.ConnectService;
-import com.wyd.empire.world.server.service.impl.CrossService;
-import com.wyd.empire.world.server.service.impl.OrderSerialService;
-import com.wyd.empire.world.server.service.impl.PlayerService;
-import com.wyd.empire.world.server.service.impl.SendMailService;
-import com.wyd.empire.world.server.service.impl.TheadPlayerItemsService;
+import com.wyd.empire.world.service.base.IPlayerService;
+import com.wyd.empire.world.service.base.impl.MailService;
+import com.wyd.empire.world.service.impl.AbstractService;
+import com.wyd.empire.world.service.impl.ChatService;
+import com.wyd.empire.world.service.impl.ConnectService;
+import com.wyd.empire.world.service.impl.CrossService;
+import com.wyd.empire.world.service.impl.OrderSerialService;
+import com.wyd.empire.world.service.impl.PlayerService;
+import com.wyd.empire.world.service.impl.SendMailService;
+import com.wyd.empire.world.service.impl.TheadPlayerItemsService;
 import com.wyd.empire.world.skeleton.AccountSkeleton;
 import com.wyd.empire.world.skeleton.BattleSkeleton;
 import com.wyd.net.DefaultRequestService;

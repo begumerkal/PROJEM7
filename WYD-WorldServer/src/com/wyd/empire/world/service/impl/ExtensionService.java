@@ -1,4 +1,4 @@
-package com.wyd.empire.world.server.service.impl;
+package com.wyd.empire.world.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.commons.httpclient.NameValuePair;
 
 import com.wyd.empire.world.common.util.HttpClientUtil;
-import com.wyd.empire.world.server.service.factory.ServiceManager;
+import com.wyd.empire.world.service.factory.ServiceManager;
 
 /**
  * 推广渠道激活服务

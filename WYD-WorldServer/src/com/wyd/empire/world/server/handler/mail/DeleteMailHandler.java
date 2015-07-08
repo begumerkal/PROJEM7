@@ -7,7 +7,7 @@ import com.wyd.empire.protocol.data.mail.DeleteMailOk;
 import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.exception.ErrorMessages;
 import com.wyd.empire.world.model.player.WorldPlayer;
-import com.wyd.empire.world.server.service.factory.ServiceManager;
+import com.wyd.empire.world.service.factory.ServiceManager;
 import com.wyd.empire.world.session.ConnectSession;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.exception.ProtocolException;

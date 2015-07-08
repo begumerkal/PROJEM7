@@ -19,7 +19,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.wyd.empire.protocol.Protocol;
 import com.wyd.empire.world.common.util.HttpClientUtil;
-import com.wyd.empire.world.server.service.factory.ServiceManager;
+import com.wyd.empire.world.service.factory.ServiceManager;
 import com.wyd.empire.world.session.AdminSession;
 import com.wyd.empire.world.session.AuthSession;
 import com.wyd.empire.world.session.ConnectSession;

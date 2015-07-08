@@ -73,6 +73,6 @@ public class DataBeanDecoder {
             }
             return list;
         }
-        throw new IllegalAccessException();
+        throw new IllegalAccessException("fieldName:" + fieldName + ",type:" + type + ",data:" + data);
     }
 }

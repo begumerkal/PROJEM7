@@ -1,4 +1,4 @@
-package com.wyd.empire.world.server.service.base.impl;
+package com.wyd.empire.world.service.base.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,8 +23,8 @@ import com.wyd.empire.world.entity.mysql.Mail;
 import com.wyd.empire.world.exception.TipMessages;
 import com.wyd.empire.world.logs.GameLogService;
 import com.wyd.empire.world.model.player.WorldPlayer;
-import com.wyd.empire.world.server.service.base.IMailService;
-import com.wyd.empire.world.server.service.factory.ServiceManager;
+import com.wyd.empire.world.service.base.IMailService;
+import com.wyd.empire.world.service.factory.ServiceManager;
 
 /**
  * The service class for the TabConsortia entity.

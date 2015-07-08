@@ -8,7 +8,7 @@ import com.wyd.empire.world.entity.mongo.Player;
 import com.wyd.empire.world.entity.mysql.Interface;
 import com.wyd.empire.world.logs.GameLogService;
 import com.wyd.empire.world.model.player.WorldPlayer;
-import com.wyd.empire.world.server.service.factory.ServiceManager;
+import com.wyd.empire.world.service.factory.ServiceManager;
 import com.wyd.empire.world.session.ConnectSession;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.handler.IDataHandler;

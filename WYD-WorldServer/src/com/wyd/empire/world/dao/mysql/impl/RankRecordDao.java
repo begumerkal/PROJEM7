@@ -10,7 +10,7 @@ import com.wyd.empire.world.entity.mysql.ChallengeRecord;
 import com.wyd.empire.world.entity.mysql.IntegralArea;
 import com.wyd.empire.world.entity.mysql.RankRecord;
 import com.wyd.empire.world.entity.mysql.ShopItem;
-import com.wyd.empire.world.server.service.factory.ServiceManager;
+import com.wyd.empire.world.service.factory.ServiceManager;
 
 public class RankRecordDao extends UniversalDaoHibernate implements IRankRecordDao {
 	public RankRecordDao() {

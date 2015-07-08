@@ -6,7 +6,7 @@ import com.wyd.empire.protocol.data.purchase.BuyFailed;
 import com.wyd.empire.protocol.data.purchase.IOSSendProductCheckInfo;
 import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.model.player.WorldPlayer;
-import com.wyd.empire.world.server.service.factory.ServiceManager;
+import com.wyd.empire.world.service.factory.ServiceManager;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.handler.IDataHandler;
 

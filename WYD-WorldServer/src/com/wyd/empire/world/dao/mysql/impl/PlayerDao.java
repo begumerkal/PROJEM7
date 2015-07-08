@@ -19,8 +19,8 @@ import com.wyd.empire.world.entity.mysql.Player;
 import com.wyd.empire.world.entity.mysql.PlayerInfo;
 import com.wyd.empire.world.entity.mysql.PlayerOnline;
 import com.wyd.empire.world.model.player.Record;
-import com.wyd.empire.world.server.service.factory.ServiceManager;
-import com.wyd.empire.world.server.service.impl.ChatService;
+import com.wyd.empire.world.service.factory.ServiceManager;
+import com.wyd.empire.world.service.impl.ChatService;
 
 /**
  * The DAO class for the Player entity.

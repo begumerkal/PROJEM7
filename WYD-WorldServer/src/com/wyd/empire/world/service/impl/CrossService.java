@@ -1,4 +1,4 @@
-package com.wyd.empire.world.server.service.impl;
+package com.wyd.empire.world.service.impl;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -32,7 +32,7 @@ import com.wyd.empire.protocol.data.cross.CrossStartNewTimer;
 import com.wyd.empire.protocol.data.cross.CrossUseFly;
 import com.wyd.empire.protocol.data.cross.CrossUsingFace;
 import com.wyd.empire.world.WorldServer;
-import com.wyd.empire.world.server.service.factory.ServiceManager;
+import com.wyd.empire.world.service.factory.ServiceManager;
 import com.wyd.empire.world.skeleton.BattleSkeleton;
 import com.wyd.protocol.data.AbstractData;
 

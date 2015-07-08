@@ -7,7 +7,7 @@ import com.wyd.db.mysql.dao.impl.UniversalDaoHibernate;
 import com.wyd.db.mysql.page.PageList;
 import com.wyd.empire.world.dao.mysql.IDailyActivityDao;
 import com.wyd.empire.world.entity.mysql.DailyActivity;
-import com.wyd.empire.world.server.service.factory.ServiceManager;
+import com.wyd.empire.world.service.factory.ServiceManager;
 
 public class DailyActivityDao extends UniversalDaoHibernate implements IDailyActivityDao {
 	@SuppressWarnings("unchecked")

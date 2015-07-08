@@ -5,7 +5,7 @@ import org.apache.log4j.Logger;
 import com.wyd.empire.protocol.data.account.GetRandomName;
 import com.wyd.empire.protocol.data.account.GetRandomNameOk;
 import com.wyd.empire.world.common.util.Common;
-import com.wyd.empire.world.server.service.factory.ServiceManager;
+import com.wyd.empire.world.service.factory.ServiceManager;
 import com.wyd.empire.world.session.ConnectSession;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.exception.ProtocolException;

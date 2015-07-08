@@ -5,7 +5,7 @@ import java.util.List;
 import com.wyd.db.mysql.dao.impl.UniversalDaoHibernate;
 import com.wyd.empire.world.dao.mysql.IMagnificationDao;
 import com.wyd.empire.world.entity.mysql.Magnification;
-import com.wyd.empire.world.server.service.factory.ServiceManager;
+import com.wyd.empire.world.service.factory.ServiceManager;
 
 /**
  * The DAO class for the TabConsortiaright entity.

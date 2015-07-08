@@ -128,7 +128,7 @@
 		<property name="playerDao"> <bean class="com.wyd.empire.world.dao.mysql.impl.PlayerDao"> <property name="sessionFactory" 
 		ref="sessionFactory" /> </bean> </property> </bean> </property> </bean> -->
 
-	<bean id="ChatRecordService" parent="worldBaseTransactionProxy">
+<!-- 	<bean id="ChatRecordService" parent="worldBaseTransactionProxy">
 		<property name="target">
 			<bean class="com.wyd.empire.world.server.service.base.impl.ChatRecordService">
 				<property name="dao">
@@ -138,12 +138,12 @@
 				</property>
 			</bean>
 		</property>
-	</bean>
+	</bean> -->
 
 	<!-- <bean id="OperationConfigService" parent="worldBaseTransactionProxy"> <property name="target"> <bean class="com.wyd.empire.world.server.service.base.impl.OperationConfigService"> 
 		<property name="dao"> <bean class="com.wyd.empire.world.dao.mysql.impl.OperationConfigDao"> <property name="sessionFactory" 
 		ref="sessionFactory" /> </bean> </property> </bean> </property> </bean> -->
-	<bean id="OrderService" parent="worldBaseTransactionProxy">
+<!-- 	<bean id="OrderService" parent="worldBaseTransactionProxy">
 		<property name="target">
 			<bean class="com.wyd.empire.world.server.service.base.impl.OrderService">
 				<property name="dao">
@@ -153,12 +153,12 @@
 				</property>
 			</bean>
 		</property>
-	</bean>
+	</bean> -->
 
 
 
 	<!-- 第三方渠道配置 by:zengxc -->
-	<bean id="ThirdConfigService" parent="worldBaseTransactionProxy">
+<!-- 	<bean id="ThirdConfigService" parent="worldBaseTransactionProxy">
 		<property name="target">
 			<bean class="com.wyd.empire.world.server.service.base.impl.ThirdConfigService">
 				<property name="dao">
@@ -168,7 +168,7 @@
 				</property>
 			</bean>
 		</property>
-	</bean>
+	</bean> -->
 
 
 

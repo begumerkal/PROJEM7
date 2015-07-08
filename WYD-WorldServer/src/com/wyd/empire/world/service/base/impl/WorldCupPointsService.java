@@ -1,4 +1,4 @@
-package com.wyd.empire.world.server.service.base.impl;
+package com.wyd.empire.world.service.base.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import org.springframework.util.StringUtils;
 
 import com.wyd.empire.world.common.util.HttpClientUtil;
 import com.wyd.empire.world.common.util.ServiceUtils;
-import com.wyd.empire.world.server.service.factory.ServiceManager;
+import com.wyd.empire.world.service.factory.ServiceManager;
 
 /**
  * 世界杯调用接口服务

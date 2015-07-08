@@ -2,7 +2,7 @@ package com.wyd.empire.world.server.handler.purchase;
 
 import org.apache.log4j.Logger;
 
-import com.wyd.empire.world.server.service.factory.ServiceManager;
+import com.wyd.empire.world.service.factory.ServiceManager;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.handler.IDataHandler;
 

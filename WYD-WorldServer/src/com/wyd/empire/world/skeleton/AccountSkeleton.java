@@ -7,7 +7,7 @@ import org.apache.mina.filter.codec.ProtocolCodecFilter;
 
 import com.wyd.empire.protocol.data.server.Heartbeat;
 import com.wyd.empire.protocol.data.server.WorldServerToAccountServer;
-import com.wyd.empire.world.server.service.factory.ServiceManager;
+import com.wyd.empire.world.service.factory.ServiceManager;
 import com.wyd.net.Connector;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.data.DataBeanFilter;

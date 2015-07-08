@@ -11,7 +11,7 @@ import com.wyd.empire.world.exception.ErrorMessages;
 import com.wyd.empire.world.exception.PlayerDataException;
 import com.wyd.empire.world.model.Client;
 import com.wyd.empire.world.model.player.WorldPlayer;
-import com.wyd.empire.world.server.service.factory.ServiceManager;
+import com.wyd.empire.world.service.factory.ServiceManager;
 import com.wyd.empire.world.session.ConnectSession;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.exception.ProtocolException;

@@ -1,4 +1,4 @@
-package com.wyd.empire.world.server.service.impl;
+package com.wyd.empire.world.service.impl;
 
 /**
  * 充值订单检测服务（未使用）

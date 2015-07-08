@@ -325,12 +325,14 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		@Override
 		public void messageReceived(IoSession session, Object object) throws Exception {
 			Packet packet = (Packet) object;
+			
 			if (packet.type == Packet.TYPE.BUFFER) {
+				System.out.println("dis收到WORLD数据发前端：" + packet.data.toString());
 				SocketDispatcher.this.dispatchToClient(packet);
 			} else {
+				System.out.println("dis收到WORLD数据发系统：" + packet.data.toString());
 				SocketDispatcher.this.processControl(packet);
 			}
-			System.out.println("dis收到WORLD数据：" + packet.data.toString());
 		}
 		@Override
 		public void sessionClosed(IoSession session) throws Exception {

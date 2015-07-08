@@ -1,4 +1,4 @@
-package com.wyd.empire.world.server.service.base;
+package com.wyd.empire.world.service.base;
 
 import com.wyd.db.service.UniversalManager;
 import com.wyd.empire.world.entity.mysql.ThirdConfig;

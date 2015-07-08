@@ -6,7 +6,7 @@ import com.wyd.empire.protocol.data.server.DispatchLogin;
 import com.wyd.empire.protocol.data.server.UpdateServerInfo;
 import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.common.util.VersionUtils;
-import com.wyd.empire.world.server.service.factory.ServiceManager;
+import com.wyd.empire.world.service.factory.ServiceManager;
 import com.wyd.empire.world.session.ConnectSession;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.handler.IDataHandler;

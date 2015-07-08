@@ -1,4 +1,4 @@
-package com.wyd.empire.world.server.service.base.impl;
+package com.wyd.empire.world.service.base.impl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.wyd.db.service.impl.UniversalManagerImpl;
 import com.wyd.empire.world.dao.mysql.IChatRecordDao;
 import com.wyd.empire.world.entity.mysql.ChatRecord;
-import com.wyd.empire.world.server.service.base.IChatRecordService;
+import com.wyd.empire.world.service.base.IChatRecordService;
 
 /**
  * The service class for the TabChatRecord entity.

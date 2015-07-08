@@ -1,9 +1,9 @@
-package com.wyd.empire.world.server.service.impl;
+package com.wyd.empire.world.service.impl;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import com.wyd.empire.world.server.service.factory.ServiceManager;
+import com.wyd.empire.world.service.factory.ServiceManager;
 import com.wyd.protocol.data.AbstractData;
 
 /**

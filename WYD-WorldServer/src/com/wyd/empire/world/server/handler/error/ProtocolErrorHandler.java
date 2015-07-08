@@ -3,7 +3,7 @@ package com.wyd.empire.world.server.handler.error;
 import com.wyd.empire.protocol.data.error.ProtocolError;
 import com.wyd.empire.world.exception.ErrorMessages;
 import com.wyd.empire.world.request.SessionRequest;
-import com.wyd.empire.world.server.service.factory.ServiceManager;
+import com.wyd.empire.world.service.factory.ServiceManager;
 import com.wyd.empire.world.session.ConnectSession;
 import com.wyd.net.IRequest;
 import com.wyd.protocol.data.AbstractData;

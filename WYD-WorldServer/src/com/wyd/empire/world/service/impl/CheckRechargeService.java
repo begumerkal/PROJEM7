@@ -1,4 +1,4 @@
-package com.wyd.empire.world.server.service.impl;
+package com.wyd.empire.world.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,7 +12,7 @@ import com.wyd.empire.world.WorldServer;
 import com.wyd.empire.world.common.util.CryptionUtil;
 import com.wyd.empire.world.common.util.DateUtil;
 import com.wyd.empire.world.common.util.HttpClientUtil;
-import com.wyd.empire.world.server.service.factory.ServiceManager;
+import com.wyd.empire.world.service.factory.ServiceManager;
 
 public class CheckRechargeService {
 	public String postUrl;

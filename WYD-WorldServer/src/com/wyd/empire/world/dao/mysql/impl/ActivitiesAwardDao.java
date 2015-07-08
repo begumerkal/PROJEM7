@@ -15,7 +15,7 @@ import com.wyd.empire.world.common.util.ServiceUtils;
 import com.wyd.empire.world.dao.mysql.IActivitiesAwardDao;
 import com.wyd.empire.world.entity.mysql.ActivitiesAward;
 import com.wyd.empire.world.entity.mysql.LogActivitiesAward;
-import com.wyd.empire.world.server.service.factory.ServiceManager;
+import com.wyd.empire.world.service.factory.ServiceManager;
 
 /**
  * The DAO class for the TabConsortiaright entity.

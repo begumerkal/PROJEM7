@@ -16,7 +16,7 @@ import com.wyd.empire.world.entity.mysql.Consortia;
 import com.wyd.empire.world.entity.mysql.ConsortiaBattle;
 import com.wyd.empire.world.entity.mysql.ConsortiaSkill;
 import com.wyd.empire.world.entity.mysql.PlayerSinConsortia;
-import com.wyd.empire.world.server.service.factory.ServiceManager;
+import com.wyd.empire.world.service.factory.ServiceManager;
 
 /**
  * The DAO class for the TabConsortia entity.

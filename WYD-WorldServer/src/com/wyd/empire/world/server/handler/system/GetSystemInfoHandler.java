@@ -1,7 +1,7 @@
 package com.wyd.empire.world.server.handler.system;
 
 import com.wyd.empire.protocol.data.system.GetSystemInfoOk;
-import com.wyd.empire.world.server.service.factory.ServiceManager;
+import com.wyd.empire.world.service.factory.ServiceManager;
 import com.wyd.empire.world.session.ConnectSession;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.handler.IDataHandler;

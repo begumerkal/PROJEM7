@@ -1,4 +1,4 @@
-package com.wyd.empire.world.server.service.base.impl;
+package com.wyd.empire.world.service.base.impl;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.wyd.db.service.impl.UniversalManagerImpl;
 import com.wyd.empire.world.dao.mysql.IThirdConfigDao;
 import com.wyd.empire.world.entity.mysql.ThirdConfig;
-import com.wyd.empire.world.server.service.base.IThirdConfigService;
+import com.wyd.empire.world.service.base.IThirdConfigService;
 
 /**
  * The service class for the TabConsortiaright entity.

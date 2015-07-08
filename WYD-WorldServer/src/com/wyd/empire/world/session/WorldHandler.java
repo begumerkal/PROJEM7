@@ -2,7 +2,7 @@ package com.wyd.empire.world.session;
 
 import org.apache.mina.core.session.IoSession;
 
-import com.wyd.empire.world.server.service.factory.ServiceManager;
+import com.wyd.empire.world.service.factory.ServiceManager;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.session.Session;
 import com.wyd.session.SessionHandler;

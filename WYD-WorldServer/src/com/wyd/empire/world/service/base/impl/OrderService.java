@@ -1,4 +1,4 @@
-package com.wyd.empire.world.server.service.base.impl;
+package com.wyd.empire.world.service.base.impl;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import com.wyd.db.service.impl.UniversalManagerImpl;
 import com.wyd.empire.world.dao.mysql.IOrderDao;
 import com.wyd.empire.world.entity.mysql.BillingPoint;
 import com.wyd.empire.world.entity.mysql.Order;
-import com.wyd.empire.world.server.service.base.IOrderService;
+import com.wyd.empire.world.service.base.IOrderService;
 
 /**
  * The service class for the TabConsortiaright entity.

@@ -9,7 +9,7 @@ import com.wyd.empire.protocol.data.server.AccountLoginOk;
 import com.wyd.empire.world.exception.TipMessages;
 import com.wyd.empire.world.model.Client;
 import com.wyd.empire.world.request.LoginRequest;
-import com.wyd.empire.world.server.service.factory.ServiceManager;
+import com.wyd.empire.world.service.factory.ServiceManager;
 import com.wyd.empire.world.session.ConnectSession;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.handler.IDataHandler;
