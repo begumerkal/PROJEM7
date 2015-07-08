@@ -40,14 +40,14 @@ public class PlayerDao extends BaseDao<Player, Integer> {
 	/** 根据角色名获取角色 */
 	public Player getPlayerByName(Integer accountId, String nickname) {
 		Query query = new Query();
-		query.addCriteria(new Criteria("name").is(nickname));
+		query.addCriteria(new Criteria("nickname").is(nickname));
 		query.addCriteria(new Criteria("accountId").is(accountId));
 		return this.mongoTemplate.findOne(query, Player.class);
 	}
 	/** 根据角色名获取角色 */
 	public Player getPlayerByName(String nickname) {
 		Query query = new Query();
-		query.addCriteria(new Criteria("name").is(nickname));
+		query.addCriteria(new Criteria("nickname").is(nickname));
 		return this.mongoTemplate.findOne(query, Player.class);
 	}
 }
