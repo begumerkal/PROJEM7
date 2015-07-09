@@ -48,17 +48,6 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends BaseDaoSupp
 	}
 	// //////////////////////////////////////////////////////////////////////////////////////////
 
-	public void delete(T t) {
-		getHibernateTemplate().delete(t);
-	}
-
-	public void delete(ID id) {
-		T t = get(id);
-		if (t != null) {
-			delete(t);
-		}
-	}
-
 	public List<?> getAll(String orderBy, boolean isAsc) {
 		Assert.hasText(orderBy);
 		if (isAsc) {
