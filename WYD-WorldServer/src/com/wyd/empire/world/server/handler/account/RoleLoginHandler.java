@@ -45,7 +45,7 @@ public class RoleLoginHandler implements IDataHandler {
 			WorldPlayer worldPlayer = null;
 			try {
 				worldPlayer = ServiceManager.getManager().getPlayerService().loadWorldPlayer(client, login);
-			} catch (PlayerDataException ex) {
+			} catch (Exception ex) {
 				session.removeClient(client);
 				this.log.error(ex, ex);
 				throw new ProtocolException(ex.getMessage(), data.getSerial(), data.getSessionId(), data.getType(), data.getSubType());

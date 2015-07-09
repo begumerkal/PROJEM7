@@ -71,7 +71,7 @@ public class ipdServer {
 		Thread.sleep(1000);
 		System.out.println("发送角色登录数据...");
 		RoleLogin roleLogin = new RoleLogin();
-		roleLogin.setNickname("一日千里");
+		roleLogin.setNickname("一日千里1");
 		roleLogin.setHeroExtId(1);
 		roleLogin.setClientModel("--");
 		roleLogin.setSystemName("--");
