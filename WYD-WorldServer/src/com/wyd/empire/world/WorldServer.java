@@ -19,6 +19,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.wyd.empire.protocol.Protocol;
 import com.wyd.empire.world.common.util.HttpClientUtil;
+import com.wyd.empire.world.service.base.impl.GameConfigService;
 import com.wyd.empire.world.service.factory.ServiceManager;
 import com.wyd.empire.world.session.AdminSession;
 import com.wyd.empire.world.session.AuthSession;
@@ -66,11 +67,12 @@ public class WorldServer {
 		SessionRegistry registry = new SessionRegistry();
 		sm.getConnectService().setRegistry(registry);
 
+		//加载游戏配置数据
+		ServiceManager.getManager().getGameConfigService().load();
+		
 		// 加载configWorld.properties配置,读取配置文件内最大等级限制
 		Configuration configuration = ServiceManager.getManager().getConfiguration();
 		config = new ServerConfig(configuration);
-		// 初始化基础数据
-		// ServiceManager.getManager().initBaseData();
 		// 初始化进程
 		ServiceManager.getManager().init();
 		// 是否在维护

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.wyd.empire.world.common.util.ThreadPool;
 import com.wyd.empire.world.service.base.IPlayerService;
+import com.wyd.empire.world.service.base.impl.GameConfigService;
 import com.wyd.empire.world.service.base.impl.MailService;
 import com.wyd.empire.world.service.impl.AbstractService;
 import com.wyd.empire.world.service.impl.ChatService;
@@ -30,9 +31,9 @@ public class ServiceManager {
 	private IRequestService requestService;
 	private AccountSkeleton accountSkeleton = null;
 	private BattleSkeleton battleSkeleton = null;
-	
-	private TheadPlayerItemsService theadPlayerItemsService;
 
+	@Autowired
+	private GameConfigService gameConfigService;
 	@Autowired
 	private MailService mailService;// 邮件批量发送服务
 	@Autowired
@@ -49,7 +50,7 @@ public class ServiceManager {
 	private AbstractService abstractService;// 协议处理线程
 	@Autowired
 	private ConnectService connectService;// 连接服务
-	
+
 	private ServiceManager() {
 		try {
 			// 加载游戏配置
@@ -116,10 +117,6 @@ public class ServiceManager {
 		return chatService;
 	}
 
-	public TheadPlayerItemsService getTheadPlayerItemsService() {
-		return theadPlayerItemsService;
-	}
-
 	public IPlayerService getIPlayerService() {
 		return (IPlayerService) playerService;
 	}
@@ -166,5 +163,10 @@ public class ServiceManager {
 	public AbstractService getAbstractService() {
 		return abstractService;
 	}
+
+	public GameConfigService getGameConfigService() {
+		return gameConfigService;
+	}
+	
 
 }

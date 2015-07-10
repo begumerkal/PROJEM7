@@ -8,8 +8,10 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate4.HibernateCallback;
 import org.springframework.util.Assert;
 
@@ -29,6 +31,11 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends BaseDaoSupp
 	public GenericDaoHibernate(final Class<T> clazz) {
 		this.clazz = clazz;
 	}
+	@Autowired
+    public void setMySessionFactory(SessionFactory sessionFactory){
+      super.setSessionFactory(sessionFactory);  
+    }
+	
 	public List<T> getAll() {
 		return super.getHibernateTemplate().loadAll(this.clazz);
 	}

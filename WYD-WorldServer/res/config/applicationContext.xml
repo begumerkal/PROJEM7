@@ -109,10 +109,7 @@
 	<mongo:mapping-converter base-package="com.wyd.db.mongo.entity,com.wyd.empire.world.entity.mongo" />
 	<!-- mongodb bean的仓库目录，会自动扫描扩展了MongoRepository接口的接口进行注入 -->
 	<mongo:repositories base-package="com.wyd.db.mongo.dao.impl,com.wyd.empire.gameaccount.dao.impl" />
-	<context:annotation-config />
-	<context:component-scan base-package="com.wyd.db.mongo.dao,com.wyd.empire.world" />
-
-
+	<context:component-scan base-package="com.wyd.db,com.wyd.empire.world" />
 	<import resource="application-scheduling.xml" />
 
 
