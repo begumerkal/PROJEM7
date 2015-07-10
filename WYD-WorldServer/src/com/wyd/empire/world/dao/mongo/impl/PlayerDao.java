@@ -25,6 +25,8 @@ public class PlayerDao extends BaseDao<Player, Integer> {
 	public PlayerDao(MongoRepositoryFactory factory, MongoTemplate mongoOperations) {
 		super(factory, mongoOperations, Player.class);
 	}
+	
+	
 	/** 根据账号id获取角色列表 */
 	public List<Player> getPlayerListByAccountId(Integer accountId) {
 		Query query = new Query();

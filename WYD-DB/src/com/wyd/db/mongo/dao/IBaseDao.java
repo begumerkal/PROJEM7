@@ -8,8 +8,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 @NoRepositoryBean
 public interface IBaseDao<T, ID extends Serializable> extends MongoRepository<T, ID> {
- 
+
 	public List<T> findList(int skip, int limit);
 
-	
 }
