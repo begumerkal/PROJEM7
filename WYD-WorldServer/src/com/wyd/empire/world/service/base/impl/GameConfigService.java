@@ -40,6 +40,7 @@ public class GameConfigService implements IGameConfigService {
 
 	public void load() {
 		this.loadConfig(this.maildao);
+//		System.out.println(this.gameConfig.get(this.maildao.getClass().getSimpleName()).get(37774).get("theme"));
 	}
 
 	public ConcurrentHashMap<String, Map<Integer, Map>> getGameConfig() {
