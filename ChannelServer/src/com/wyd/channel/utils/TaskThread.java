@@ -32,14 +32,14 @@ public class TaskThread implements Runnable {
 				ConcurrentHashMap<Integer, ChannelLoginHandle> maps = service.getHandleMap();
 				Collection<ChannelLoginHandle> c = maps.values();
 		        Iterator<ChannelLoginHandle> it = c.iterator();
-		        for (; it.hasNext();) {
-		        	ChannelLoginHandle handle =  it.next();		        	
-		        	long cha = nowlong-handle.getCreateTime().getTime();
-		        	if(cha>timeout){
-		        		log.info(handle.getId()+" 登陆超时("+cha+")");
-		        		service.remove(handle);
-		        	}		        	
-		        }
+				for (; it.hasNext();) {
+					ChannelLoginHandle handle = it.next();
+					long cha = nowlong - handle.getCreateTime().getTime();
+					if (cha > timeout) {
+						log.info(handle.getId() + " 登陆超时(" + cha + ")");
+						service.remove(handle);
+					}
+				}
 				Thread.sleep(5000);
 			}
 		} catch (InterruptedException e) {

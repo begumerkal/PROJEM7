@@ -4,20 +4,20 @@ import java.util.Date;
 
 public class ChannelLoginHandle {
 	private int id;
-	private int state;//0处理中，1处理完
+	private int state;// 0处理中，1处理完
 	private Date createTime;
 	private ChannelLogin loginParamter;
 	private ChannelLoginResult loginResult;
-	public ChannelLoginHandle(ChannelLogin loginParamter) {		
+	public ChannelLoginHandle(ChannelLogin loginParamter) {
 		id = this.hashCode();
 		createTime = new Date();
 		this.loginParamter = loginParamter;
 	}
-	public ChannelLoginHandle(int id, ChannelLoginResult loginResult) {		
+	public ChannelLoginHandle(int id, ChannelLoginResult loginResult) {
 		this.id = id;
 		createTime = new Date();
 		this.loginResult = loginResult;
-		this.state=1;
+		this.state = 1;
 	}
 	public int getId() {
 		return id;
@@ -45,16 +45,16 @@ public class ChannelLoginHandle {
 	}
 	public void setLoginResult(ChannelLoginResult loginResult) {
 		this.loginResult = loginResult;
-	}	
-	public String toJSON(){
-		String code="",message="";
-		if(loginResult!=null){
-			code=loginResult.getCode();
-			message=loginResult.getMessage();
+	}
+	public String toJSON() {
+		String code = "", message = "";
+		if (loginResult != null) {
+			code = loginResult.getCode();
+			message = loginResult.getMessage();
 		}
-		String result = "{\"serialno\":"+this.id+",\"state\":"+this.state+",\"code\":\""+code+"\",\"message\":\""+message+"\"}";
+		String result = "{\"serialno\":" + this.id + ",\"state\":" + this.state + ",\"code\":\"" + code + "\",\"message\":\"" + message
+				+ "\"}";
 		return result.replace("\"{", "{").replace("}\"", "}");
 	}
-	
-	
+
 }

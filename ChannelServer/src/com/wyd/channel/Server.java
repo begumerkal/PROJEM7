@@ -50,10 +50,10 @@ public class Server {
 	    	Configuration config = ServiceManager.getManager().getConfiguration();
 	        org.mortbay.jetty.Server server = new org.mortbay.jetty.Server();
 	        // 设置jetty线程池
-	        BoundedThreadPool threadPool = new BoundedThreadPool();
-	        // 设置连接参数	        
-	        threadPool.setMinThreads(10);
-	        threadPool.setMaxThreads(100);
+//	        BoundedThreadPool threadPool = new BoundedThreadPool();
+//	        // 设置连接参数	        
+//	        threadPool.setMinThreads(10);
+//	        threadPool.setMaxThreads(100);
 	        // 设置监听端口，ip地址
 	        SelectChannelConnector connector = new SelectChannelConnector();
 	        connector.setPort(config.getInt("port"));

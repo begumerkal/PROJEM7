@@ -1,12 +1,12 @@
 package com.wyd.channel.dao;
 
-import com.wyd.db.dao.UniversalDao;
-
+import com.wyd.db.mysql.dao.UniversalDao;
 
 /**
- * 接口 <code>IThirdConfigDao<code> 第三渠道配置数据库操作接口 
- * @author zengxc
+ * 第三渠道配置数据库操作接口
+ * 
+ * @author doter
  *
  */
-public interface IThirdConfigDao extends UniversalDao{
+public interface IThirdConfigDao extends UniversalDao {
 }
