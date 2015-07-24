@@ -836,7 +836,7 @@ public class PlayerService implements Runnable {
 
 	// 定时触发
 	public void sysPlayersVigorUp() {
-		System.out.println();
+//		System.out.println();
 	}
 
 }
