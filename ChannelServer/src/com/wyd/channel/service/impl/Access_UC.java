@@ -3,9 +3,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.util.StringUtils;
 
 import net.sf.json.JSONObject;
+
 import com.wyd.channel.bean.Data;
 import com.wyd.channel.info.ChannelInfo_UC;
 import com.wyd.channel.result.LoginResult;
@@ -68,8 +71,10 @@ public class Access_UC implements IAccessService {
      * @return              用户登录结果
      */
     public LoginResult getUserLoginResult(ChannelInfo_UC channelInfo) {
+    	HttpServletRequest request = channelInfo.getRequest();
+    	
         Map<String, Object> parameter = new HashMap<String, Object>();
-        parameter.put("sid", channelInfo.getParameter()[1]);
+        parameter.put("sid", request.getParameter("1"));
         parameter.put("cpid", channelInfo.getCpId());
         parameter.put("gameid", channelInfo.getGameId());
         parameter.put("serviceid", channelInfo.getServiceId());
@@ -99,20 +104,5 @@ public class Access_UC implements IAccessService {
         }       
         channelLoginResult.setMessage(result_uc.getData().getUcid());
         return channelLoginResult;
-    }
-    
-    public static void main(String[] args){
-        ChannelInfo_UC channelInfo = new ChannelInfo_UC();
-        channelInfo.setCpId("20037");
-        channelInfo.setGameId("106258");
-        channelInfo.setServiceId("1324");
-        channelInfo.setApiKey("f03056aab926ec81ea60aee47627e82c");
-        String[] parameter = new String[]{"sst19cbb7715-30d1-4dc1-8c8f-575e2d8f760c105399"};
-        channelInfo.setParameter(parameter);
-        channelInfo.setChannel(1003);
-        Access_UC access_uc = new Access_UC();
-        LoginResult channelLoginResult = access_uc.getUserLoginResult((ChannelInfo_UC) channelInfo);
-        System.out.println("code: " + channelLoginResult.getCode());
-        System.out.println("message: " + channelLoginResult.getMessage());
     }
 }

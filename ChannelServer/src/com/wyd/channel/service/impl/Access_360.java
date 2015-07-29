@@ -3,7 +3,11 @@ package com.wyd.channel.service.impl;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import net.sf.json.JSONObject;
+
 import com.wyd.channel.info.ChannelInfo_360;
 import com.wyd.channel.result.LoginResult;
 import com.wyd.channel.service.IAccessService;
@@ -57,7 +61,10 @@ public class Access_360 implements IAccessService {
 	 * @return 用户登录结果
 	 */
 	public LoginResult getUserLoginResult(ChannelInfo_360 channelInfo) {
-		JSONObject jobj = JSONObject.fromObject(channelInfo.getParameter()[1]);
+		HttpServletRequest request = channelInfo.getRequest();
+		
+		
+		JSONObject jobj = JSONObject.fromObject(request.getParameter("a"));
 		Map<String, Object> parameter = new HashMap<String, Object>();
 		parameter.put("code", jobj.getString("code"));
 		parameter.put("gcrantType", channelInfo.getGrantType());

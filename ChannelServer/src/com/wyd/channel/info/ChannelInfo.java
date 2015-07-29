@@ -1,26 +1,31 @@
 package com.wyd.channel.info;
+
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * 渠道信息
- * @author sunzx
+ * 
+ * @author doter
  *
  */
 public class ChannelInfo {
-    private int      channel;  // 渠道编号
-    private String[] parameter; // 渠道参数
+	private int channel; // 渠道编号
+	private HttpServletRequest request; // 渠道请求参数
 
-    public int getChannel() {
-        return channel;
-    }
+	public int getChannel() {
+		return channel;
+	}
 
-    public void setChannel(int channel) {
-        this.channel = channel;
-    }
+	public void setChannel(int channel) {
+		this.channel = channel;
+	}
 
-    public String[] getParameter() {
-        return parameter;
-    }
+	public HttpServletRequest getRequest() {
+		return request;
+	}
 
-    public void setParameter(String[] parameter) {
-        this.parameter = parameter;
-    }
+	public void setRequest(HttpServletRequest request) {
+		this.request = request;
+	}
+
 }

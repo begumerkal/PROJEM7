@@ -8,7 +8,7 @@
 			<value>com.mysql.jdbc.Driver</value>
 		</property>
 		<property name="url">
-		<value>jdbc:mysql://192.168.1.6/ddd_world_cn?useUnicode=true&amp;characterEncoding=utf-8</value>
+		<value>jdbc:mysql://localhost/ddd_world_2_2_cn?useUnicode=true&amp;characterEncoding=utf-8</value>
 		</property>
 		<property name="username">
 			<value>developer</value>
@@ -18,7 +18,7 @@
 		</property>
 	</bean>
 	<!-- SessionFactory -->
-	<bean id="SessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+	<bean id="SessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource" ref="DataSource" />
 		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
 		<property name="hibernateProperties" ref="hibernateProperties" />
@@ -28,7 +28,7 @@
 		<property name="properties">
 			<props>
 				<!--<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>-->
-				<prop key="hibernate.dialect">com.wyd.db.hibernate.CustomSQLDialect</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
 				<prop key="hibernate.show_sql">false</prop>
 				<prop key="hibernate.bytecode.use_reflection_optimizer">true</prop>
 				<prop key="hibernate.cache.provider_class">org.hibernate.cache.HashtableCacheProvider</prop>
@@ -39,7 +39,7 @@
 		</property>
 	</bean>
 	<!-- TransactionManager -->
-	<bean id="TransactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+	<bean id="TransactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory">
 			<ref local="SessionFactory" />
 		</property>

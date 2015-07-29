@@ -4,8 +4,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
+
 import net.sf.json.JSONObject;
+
 import com.wyd.channel.info.ChannelInfo_91;
 import com.wyd.channel.result.LoginResult;
 import com.wyd.channel.result.Result_91;
@@ -62,10 +67,13 @@ public class Access_91 implements IAccessService {
      */
     public LoginResult getUserLoginResult(ChannelInfo_91 channelInfo) {
         Map<String, Object> parameter = new HashMap<String, Object>();
+        HttpServletRequest request = channelInfo.getRequest();
+        
+        
         parameter.put("AppId", channelInfo.getAppId());
         parameter.put("Act", "4"); // act为4时表示用户登录SessionId是否有效
-        parameter.put("Uin", channelInfo.getParameter()[0]);
-        parameter.put("SessionId", channelInfo.getParameter()[1]);
+        parameter.put("Uin", request.getParameter("Uin"));
+        parameter.put("SessionId", request.getParameter("SessionId"));
         parameter.put("Sign", this.getSign(channelInfo));
         Result_91 result_91 = null;
         LoginResult channelLoginResult = new LoginResult();
@@ -87,7 +95,7 @@ public class Access_91 implements IAccessService {
         } else {
             channelLoginResult.setCode(Common.STATUS_SUCCESS);
         }
-        channelLoginResult.setMessage(channelInfo.getParameter()[0]);
+        channelLoginResult.setMessage(request.getParameter(""));
         return channelLoginResult;
     }
 
@@ -97,11 +105,14 @@ public class Access_91 implements IAccessService {
      * @return              加密串
      */
     public String getSign(ChannelInfo_91 channelInfo) {
+    	
+    	HttpServletRequest request = channelInfo.getRequest();
+    	
         StringBuffer sb = new StringBuffer();
         sb.append(channelInfo.getAppId());
         sb.append("4");// act为4时表示用户登录SessionId是否有效
-        sb.append(channelInfo.getParameter()[0]);
-        sb.append(channelInfo.getParameter()[1]);
+        sb.append(request.getParameter("1"));
+        sb.append(request.getParameter("2"));
         sb.append(channelInfo.getAppKey());
         return HexBin.HashToMD5Hex(sb.toString());
     }
