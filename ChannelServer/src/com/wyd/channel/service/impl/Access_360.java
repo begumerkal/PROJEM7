@@ -25,7 +25,7 @@ public class Access_360 implements IAccessService {
 	public static final int CHANNEl_360 = 1018;
 	private static final String URL_360 = "https://openapi.360.cn/oauth2/access_token";
 	private static final String URL_360_INFO = "https://openapi.360.cn/user/me.json?access_token=";
-	
+
 	@Override
 	public Object channelLogin(Map<String, Object> parameter) throws IOException {
 		String code = parameter.get("code").toString();
@@ -61,12 +61,10 @@ public class Access_360 implements IAccessService {
 	 * @return 用户登录结果
 	 */
 	public LoginResult getUserLoginResult(ChannelInfo_360 channelInfo) {
-		HttpServletRequest request = channelInfo.getRequest();
-		
-		
-		JSONObject jobj = JSONObject.fromObject(request.getParameter("a"));
+		HashMap<String, String> requestMap = channelInfo.getRequestMap();
+
 		Map<String, Object> parameter = new HashMap<String, Object>();
-		parameter.put("code", jobj.getString("code"));
+		parameter.put("code", requestMap.get("code"));
 		parameter.put("gcrantType", channelInfo.getGrantType());
 		parameter.put("clientId", channelInfo.getClientId());
 		parameter.put("clientSecret", channelInfo.getClientSecret());
@@ -83,12 +81,20 @@ public class Access_360 implements IAccessService {
 			System.out.println(ret);
 			JSONObject jsonObject = JSONObject.fromObject(ret);
 			try {
-				String token = jsonObject.getString("access_token");
-				ret = HttpClientUtil.GetData(URL_360_INFO + token);
-				jsonObject = JSONObject.fromObject(ret);
-				jsonObject.put("token", token);
-				channelLoginResult.setCode(Common.STATUS_SUCCESS);
-				channelLoginResult.setMessage(jsonObject.toString());
+				int error_code = Integer.parseInt(jsonObject.getString("error_code"));
+				if (error_code > 0) {
+					String error = jsonObject.getString("error");
+					channelLoginResult.setCode(String.valueOf(error_code));
+					channelLoginResult.setMessage(error);
+				} else {
+					String token = jsonObject.getString("access_token");
+					ret = HttpClientUtil.GetData(URL_360_INFO + token);
+					jsonObject = JSONObject.fromObject(ret);
+					jsonObject.put("token", token);
+					channelLoginResult.setCode(Common.STATUS_SUCCESS);
+					channelLoginResult.setMessage(jsonObject.toString());
+				}
+
 			} catch (Exception e) {
 				e.printStackTrace();
 				channelLoginResult.setCode(Common.STATUS_FAIL);

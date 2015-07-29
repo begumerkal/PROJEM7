@@ -67,13 +67,13 @@ public class Access_91 implements IAccessService {
      */
     public LoginResult getUserLoginResult(ChannelInfo_91 channelInfo) {
         Map<String, Object> parameter = new HashMap<String, Object>();
-        HttpServletRequest request = channelInfo.getRequest();
+        HashMap<String, String> requestMap = channelInfo.getRequestMap();
         
         
         parameter.put("AppId", channelInfo.getAppId());
         parameter.put("Act", "4"); // act为4时表示用户登录SessionId是否有效
-        parameter.put("Uin", request.getParameter("Uin"));
-        parameter.put("SessionId", request.getParameter("SessionId"));
+        parameter.put("Uin", requestMap.get("Uin"));
+        parameter.put("SessionId", requestMap.get("SessionId"));
         parameter.put("Sign", this.getSign(channelInfo));
         Result_91 result_91 = null;
         LoginResult channelLoginResult = new LoginResult();
@@ -95,7 +95,8 @@ public class Access_91 implements IAccessService {
         } else {
             channelLoginResult.setCode(Common.STATUS_SUCCESS);
         }
-        channelLoginResult.setMessage(request.getParameter(""));
+        channelLoginResult.setMessage(requestMap.get("1"));
+        
         return channelLoginResult;
     }
 
@@ -106,13 +107,13 @@ public class Access_91 implements IAccessService {
      */
     public String getSign(ChannelInfo_91 channelInfo) {
     	
-    	HttpServletRequest request = channelInfo.getRequest();
+    	HashMap<String, String> requestMap = channelInfo.getRequestMap();
     	
         StringBuffer sb = new StringBuffer();
         sb.append(channelInfo.getAppId());
         sb.append("4");// act为4时表示用户登录SessionId是否有效
-        sb.append(request.getParameter("1"));
-        sb.append(request.getParameter("2"));
+        sb.append(requestMap.get("1"));
+        sb.append(requestMap.get("2"));
         sb.append(channelInfo.getAppKey());
         return HexBin.HashToMD5Hex(sb.toString());
     }

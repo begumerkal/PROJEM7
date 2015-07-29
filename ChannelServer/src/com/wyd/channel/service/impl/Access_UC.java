@@ -71,10 +71,10 @@ public class Access_UC implements IAccessService {
      * @return              用户登录结果
      */
     public LoginResult getUserLoginResult(ChannelInfo_UC channelInfo) {
-    	HttpServletRequest request = channelInfo.getRequest();
+    	HashMap<String, String> requestMap = channelInfo.getRequestMap();
     	
         Map<String, Object> parameter = new HashMap<String, Object>();
-        parameter.put("sid", request.getParameter("1"));
+        parameter.put("sid", requestMap.get("1"));
         parameter.put("cpid", channelInfo.getCpId());
         parameter.put("gameid", channelInfo.getGameId());
         parameter.put("serviceid", channelInfo.getServiceId());

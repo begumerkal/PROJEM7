@@ -1,6 +1,7 @@
 package com.wyd.channel.servlet;
 
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -36,11 +37,12 @@ public class ChannelService {
 		return channelService;
 	}
 
-	public ChannelLoginHandle createLoginHandle(HttpServletRequest request, PrintWriter out) {
-		ChannelLoginHandle handle = new ChannelLoginHandle(request);
+	public ChannelLoginHandle createLoginHandle(HashMap<String, String> requestMap, PrintWriter out) {
+		ChannelLoginHandle handle = new ChannelLoginHandle(requestMap);
 
 		System.out.println(System.currentTimeMillis());
-		ServiceManager.getManager().getHttpThreadPool().execute(new ChannelThread(handle, out));
+//		ServiceManager.getManager().getHttpThreadPool().execute(new ChannelThread(handle, out));//多线程任务执行，但是返回有问题
+		handle = new ChannelThread(handle, out).channelLogin();
 		System.out.println(System.currentTimeMillis());
 		return handle;
 	}
@@ -55,7 +57,7 @@ public class ChannelService {
 		}
 
 		public void run() {
-			channelLogin(handle, out);
+			channelLogin();
 		}
 
 		/**
@@ -68,26 +70,16 @@ public class ChannelService {
 		 *            登录验证参数
 		 * @return
 		 */
-		@SuppressWarnings("unchecked")
-		public void channelLogin(ChannelLoginHandle handle, PrintWriter out) {
+		public ChannelLoginHandle channelLogin() {
 			try {
-				IThirdConfigService thirdConfigService = ServiceManager.getManager().getThirdConfigService();
-				ThirdConfig config;
-				String appKey = null, appId = null;
-
-				HttpServletRequest request = handle.getRequest();
-				String channelStr = request.getParameter("channelid");
+				// IThirdConfigService thirdConfigService =
+				// ServiceManager.getManager().getThirdConfigService();
+//				HashMap<String, String> requestMap
+				
+				HashMap<String, String> requestMap = handle.getRequestMap();
+				String channelStr = requestMap.get("channelid");
 				int channelid = StringUtils.hasText(channelStr) ? Integer.parseInt(channelStr) : 0;
-
 				ChannelInfo channelInfo = null;
-				Map<String, Object> parameters = request.getParameterMap();
-
-				StringBuffer sb = new StringBuffer("渠道登录参数：");
-				for (Entry<String, Object> element : parameters.entrySet()) {
-					sb.append(element.getKey() + ":");
-					sb.append(element.getValue() + ",");
-				}
-				log.info(sb.toString());
 
 				switch (channelid) {
 					case Access_91.CHANNEl_91_JJ :
@@ -105,12 +97,13 @@ public class ChannelService {
 								ChannelUtil.CLIENT_SECRET_360, ChannelUtil.REDIRECT_URI_360);
 						break;
 				}
-				
+
 				if (channelInfo == null)
-					return;
+					return null;
 
 				channelInfo.setChannel(channelid);
-				channelInfo.setRequest(request);
+				channelInfo.setRequestMap(requestMap);
+				
 				LoginResult loginResult = com.wyd.channel.service.impl.ChannelService.channelLogin(channelInfo);
 
 				ChannelLoginResult channelLoginResult = new ChannelLoginResult();
@@ -119,20 +112,24 @@ public class ChannelService {
 				String thirdReturnMessage = loginResult.getThirdReturnMessage() == null ? "" : loginResult.getThirdReturnMessage();
 				log.info("渠道号： " + channelid + " 第三方平台服务器返回的message: " + thirdReturnMessage + " 服务端返回的code: "
 						+ channelLoginResult.getCode() + " 服务端返回的message：" + channelLoginResult.getMessage());
+				
 				// 处理完
 				handle.setState(1);
 				handle.setLoginResult(channelLoginResult);
-				System.out.println(handle.toJSON());
-				out.write(handle.toJSON());
+//				System.out.println(handle.toJSON());
+				System.out.println("-----");
+				
+				out.print(handle.toJSON());
 				out.flush();
 				out.close();
-
+				
 			} catch (Exception ex) {
 				ex.printStackTrace();
 				handle.setState(1);
 				handle.setLoginResult(new ChannelLoginResult("-2", "发生异常：" + ex.getMessage()));
 			}
-
+			
+			return handle;
 		}
 	}
 }

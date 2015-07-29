@@ -1,6 +1,7 @@
 package com.wyd.channel.bean;
 
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -9,12 +10,11 @@ public class ChannelLoginHandle {
 	private int state;// 0处理中，1处理完
 	private Date createTime;
 	private ChannelLoginResult loginResult;
-	private HttpServletRequest request;
+	private HashMap<String, String> requestMap;
 	
-	public ChannelLoginHandle(HttpServletRequest request) {
- 
+	public ChannelLoginHandle(HashMap<String, String> requestMap) {
 		createTime = new Date();
-		this.request = request;
+		this.requestMap = requestMap;
 	}
  
 	public int getState() {
@@ -29,12 +29,15 @@ public class ChannelLoginHandle {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-	public HttpServletRequest getRequest() {
-		return request;
+
+	public HashMap<String, String> getRequestMap() {
+		return requestMap;
 	}
-	public void setRequest(HttpServletRequest request) {
-		this.request = request;
+
+	public void setRequestMap(HashMap<String, String> requestMap) {
+		this.requestMap = requestMap;
 	}
+
 	public ChannelLoginResult getLoginResult() {
 		return loginResult;
 	}

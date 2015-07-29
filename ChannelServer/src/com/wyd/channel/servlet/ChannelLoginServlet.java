@@ -3,6 +3,9 @@ package com.wyd.channel.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -31,30 +34,34 @@ public class ChannelLoginServlet extends HttpServlet {
 		doPost(req, resp);
 	}
 
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
-		Enumeration<?> params = request.getParameterNames();
-		log.info("登陆请求信息:");
-		String paramstr = "";
-		while (params.hasMoreElements()) {
-			String paramName = (String) params.nextElement();
-			String[] paramValues = request.getParameterValues(paramName);
-			paramstr += paramName + "=" + paramValues[0] + "&";
+		Map<String, String> parameters = request.getParameterMap();
+		HashMap<String, String> requestMap = new HashMap<String, String>();
+
+		StringBuffer sb = new StringBuffer("渠道登录参数：");
+		for (Entry<String, String> element : parameters.entrySet()) {
+			String key = element.getKey();
+			String[] value = (String[]) ((Entry) element).getValue();
+			sb.append(key + ":");
+			// element.getValue()[0];
+			System.out.println(element.getKey());
+			sb.append(value[0] + ",");
+			requestMap.put(key, value[0]);
 		}
-		log.info(paramstr);
-		System.out.println(paramstr);
+		log.info(sb.toString());
+		System.out.println(sb.toString());
 		String channelStr = request.getParameter("channelid");// 渠道id
 
 		if (channelStr != null) {
-			ChannelService service = ChannelService.getChannelService();
-			service.createLoginHandle(request, out);
+			ChannelService.getChannelService().createLoginHandle(requestMap, out);
 		} else {
 			out.write("接口准备就绪！");
 			out.flush();
 			out.close();
 		}
 	}
-
 }
