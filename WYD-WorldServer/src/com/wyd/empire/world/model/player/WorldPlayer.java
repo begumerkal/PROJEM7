@@ -87,7 +87,7 @@ public class WorldPlayer {
 	}
 
 	public void sendData(AbstractData data) {
-		if (null != connSession)
+		if (this.connSession != null)
 			connSession.write(data, player.getId());
 	}
 
@@ -288,7 +288,8 @@ public class WorldPlayer {
 		}
 		public void run() {
 			// 记录玩家退出日志
-			GameLogService.logout(player.getPlayer().getId(), player.getPlayer().getLv(), (int) player.getPlayer().getLoginTime().getTime());
+			GameLogService
+					.logout(player.getPlayer().getId(), player.getPlayer().getLv(), (int) player.getPlayer().getLoginTime().getTime());
 			String area = WorldServer.config.getAreaId().toUpperCase();
 		}
 	}

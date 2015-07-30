@@ -26,7 +26,7 @@ public class AccountLoginOkHandler implements IDataHandler {
 		LoginRequest request = (LoginRequest) ServiceManager.getManager().getRequestService().remove(legacyLoginOk.getSerial());
 		ConnectSession session = request.getConnectionSession();
 		try {
-			if (legacyLoginOk.getStatus() == 0) {//登录成功
+			if (legacyLoginOk.getStatus() == 0) {// 登录成功
 				int accountId = legacyLoginOk.getAccountId();
 				String name = legacyLoginOk.getName();
 				String password = legacyLoginOk.getPassword();
@@ -37,7 +37,7 @@ public class AccountLoginOkHandler implements IDataHandler {
 						RepeatLogin repeatLogin = new RepeatLogin(client1.getSessionId(), 0);
 						repeatLogin.setMessage(TipMessages.REPEATLOGIN);
 						session.write(repeatLogin);
-//						session.killSession(client1.getSessionId());
+						// session.killSession(client1.getSessionId());
 						ServiceManager.getManager().getConnectService().forceLogout(accountId);
 					}
 					client.setStatus(Client.STATUS.LOGIN);
@@ -45,15 +45,15 @@ public class AccountLoginOkHandler implements IDataHandler {
 					client.setName(name);
 					client.setPassword(password);
 					client.setChannel(request.getSubChannel());
-					session.registerClientWithAccountId(client);
+					session.registerClientWithAccountId(client);// accountId->client
 					LoginOk loginOk = new LoginOk(request.getSessionId(), request.getId());
 					session.write(loginOk);
 					this.log.info("AccountID[" + accountId + "][Login Ok]");
-				}else{
+				} else {
 					this.log.info("AccountID[" + accountId + "][Login Fail]");
 				}
 
-			} else if (legacyLoginOk.getStatus()==1) {
+			} else if (legacyLoginOk.getStatus() == 1) {
 				LoginFail loginFail = new LoginFail(request.getSessionId(), request.getId());
 				loginFail.setMessage(TipMessages.LOGINFAIL);
 				return loginFail;

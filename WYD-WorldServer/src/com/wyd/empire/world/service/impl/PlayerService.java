@@ -106,11 +106,11 @@ public class PlayerService implements Runnable {
 	/**
 	 * 检查玩家是否在线 *
 	 * 
-	 * @param id
+	 * @param playerId
 	 * @return
 	 */
-	public boolean playerIsOnline(int id) {
-		return this.worldPlayers.containsKey(id);
+	public boolean playerIsOnline(int playerId) {
+		return this.worldPlayers.containsKey(playerId);
 	}
 
 	/**
@@ -165,14 +165,23 @@ public class PlayerService implements Runnable {
 				return false;
 			clearPlayer(worldPlayer);
 			savePlayerData(worldPlayer.getPlayer());
-			
-			
 			writeLog("注销保存玩家信息：id=" + worldPlayer.getPlayer().getId() + "---name=" + worldPlayer.getName() + "---level="
 					+ worldPlayer.getPlayer().getLv());
 		}
 		return false;
 	}
-
+	/**
+	 * 踢玩家下线
+	 * 
+	 * @param playerId
+	 */
+	public void killLine(int accountId) {
+		WorldPlayer worldPlayer = this.worldPlayers.remove(accountId);
+		if (null != worldPlayer) {
+			worldPlayer.getConnectSession().killSession(worldPlayer.getClient().getSessionId());
+			worldPlayer.getConnectSession().removeClient(worldPlayer.getClient());
+		}
+	}
 	/**
 	 * 从playerService里注销玩家
 	 * 
@@ -303,6 +312,7 @@ public class PlayerService implements Runnable {
 		}
 
 		this.log.info("GAMEACCOUNTID[" + accountId + "]FAIL TO LOGIN " + nickname);
+		worldPlayer.setLoginTime(System.currentTimeMillis());
 		return worldPlayer;
 	}
 
@@ -335,10 +345,9 @@ public class PlayerService implements Runnable {
 	 * @param newPlayerName
 	 * @throws Exception
 	 */
-	public void modifyName(WorldPlayer player, String nickname) throws Exception {
+	public void updateName(WorldPlayer player, String nickname) throws Exception {
 		try {
 			String name = nickname.trim();
-			String oldName = player.getName();
 			if (name.length() == 0) {
 				throw new Exception(Common.ERRORKEY + ErrorMessages.PLAYER_CREATENAME);
 			}
@@ -374,26 +383,19 @@ public class PlayerService implements Runnable {
 	}
 
 	/**
-	 * 更新玩家对战历史记录
-	 * 
-	 * @param player
-	 * @param battleMode
-	 * @param pnMode
-	 * @param win
-	 */
-	public void updateBattleHistory(Player player, int battleMode, int pnMode, boolean win) {
-	}
-
-	/**
 	 * 增加玩家经验
 	 * 
 	 * @param playerId
 	 * @param exp
 	 * @throws Exception
 	 */
-	public void updatePlayerEXP(WorldPlayer player, int exp) throws Exception {
-		// int pChannel1 = 1;
-		// int level = player.getLevel();
+	public void addPlayerEXP(WorldPlayer worldPlayer, int exp) throws Exception {
+		Player player = worldPlayer.getPlayer();
+		int pChannel1 = 1;
+		int lv = player.getLv();
+		int lvExp = player.getLvExp() + exp;
+
+		//
 		// int sjexp = getUpgradeExp(level, player.getPlayer().getZsLevel());
 		// int dqexp = player.getPlayer().getExp() + exp;
 		// String savelog = null;
@@ -453,12 +455,6 @@ public class PlayerService implements Runnable {
 		// info.put("cardSeatNum", cardSeatNum + "");
 		// sendUpdatePlayer(info, player);
 	}
-
-	// 触发宠物升级检查,如果玩家有足够经验时也会升级
-	private void checkPetLevel(WorldPlayer player) {
-
-	}
-
 	/**
 	 * 更新玩家的金币数量
 	 * 
@@ -470,7 +466,9 @@ public class PlayerService implements Runnable {
 	 *            备注
 	 * @throws Exception
 	 */
-	public void updatePlayerGold(WorldPlayer worldPlayer, int gold, String origin, String remark) throws Exception {
+	public boolean updatePlayerGold(WorldPlayer worldPlayer, int gold, String origin, String remark) throws Exception {
+
+		return true;
 		// if (0 == gold)
 		// return;
 		// Player player = worldPlayer.getPlayer();
@@ -496,7 +494,7 @@ public class PlayerService implements Runnable {
 	}
 
 	/**
-	 * 增加点卷
+	 * 增加点卷(充值后调用)
 	 * 
 	 * @param player
 	 * @param amount
@@ -741,38 +739,6 @@ public class PlayerService implements Runnable {
 	}
 
 	/**
-	 * 使用钻石
-	 * 
-	 * @param worldPlayer
-	 *            玩家
-	 * @param amount
-	 *            使用的钻石数量
-	 * @param origin
-	 *            来源
-	 * @param itemId
-	 *            物品ID
-	 * @param itemPriceId
-	 *            物品价格
-	 * @param remark
-	 * @throws ProtocolException
-	 */
-	public void useTicket(WorldPlayer worldPlayer, int amount, int origin, int[] itemId, int[] itemPriceId, String remark)
-			throws ProtocolException {
-	}
-
-	/**
-	 * 踢玩家下线
-	 * 
-	 * @param playerId
-	 */
-	public void killLine(int accountId) {
-		WorldPlayer worldPlayer = this.worldPlayers.remove(accountId);
-		if (null != worldPlayer) {
-			worldPlayer.getConnectSession().killSession(worldPlayer.getClient().getSessionId());
-			worldPlayer.getConnectSession().removeClient(worldPlayer.getClient());
-		}
-	}
-	/**
 	 * 推送玩家信息到客户端
 	 * 
 	 * @param player
@@ -788,35 +754,7 @@ public class PlayerService implements Runnable {
 		worldPlayer.sendData(playerInfo);
 	}
 
-	private void setPictureUrl(PlayerPicture privateInfo, PlayerInfo playerInfo) {
-		String[] testArry = privateInfo.getPictureUrlTest().equals("") ? new String[0] : privateInfo.getPictureUrlTest().split(",");
-		String testUrl = "";
-		// 格式调整非空状态下前后加上","
-		String passUrl = "," + privateInfo.getPictureUrlPass() + ",";
-		// 处理对应的待审核图片替换已经更改的图片显示
-		int index = 0;
-		for (String urls : testArry) {
-			// 格式： 待审核替换地址 # 待被替换图片地址 192.168.1.2#192.168.1.8
-			String[] url = urls.split("#");
-			if (index > 0) {
-				testUrl += ",";
-			}
-			testUrl += url[0];
-			if (url.length != 2) { // 容错处理
-				passUrl = passUrl.replaceAll(url[1] + ",", "");
-			}
-			index++;
-		}
-		// 最终格式处理去除多余的","
-		if (!passUrl.equals("") && !passUrl.equals(",")) {
-			passUrl = passUrl.substring(1, passUrl.length() - 1);
-		} else if (passUrl.equals(",")) {
-			passUrl = "";
-		}
-		playerInfo.setPictureUrl(passUrl);
-		playerInfo.setPendingUrl(testUrl);
-	}
-
+	//推送修改后的数据，如金币，经验，等级等
 	public void sendUpdatePlayer(Map<String, String> info, WorldPlayer player) {
 		int size = info.size();
 		String[] key = new String[size];
@@ -836,7 +774,7 @@ public class PlayerService implements Runnable {
 
 	// 定时触发
 	public void sysPlayersVigorUp() {
-//		System.out.println();
+		// System.out.println();
 	}
 
 }
