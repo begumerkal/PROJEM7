@@ -159,10 +159,13 @@ public class PlayerService implements Runnable {
 	 */
 	public boolean release(WorldPlayer worldPlayer) {
 		synchronized (worldPlayer) {
-			if (worldPlayer == null)
+			if (worldPlayer == null) {
 				return false;
+			}
+			Player player = worldPlayer.getPlayer();
+			player.setIsOnline(false);
 			clearPlayer(worldPlayer);
-			savePlayerData(worldPlayer.getPlayer());
+			savePlayerData(player);
 			writeLog("注销保存玩家信息：id=" + worldPlayer.getPlayer().getId() + "---name=" + worldPlayer.getName() + "---level="
 					+ worldPlayer.getPlayer().getLv());
 		}
@@ -752,7 +755,7 @@ public class PlayerService implements Runnable {
 		worldPlayer.sendData(playerInfo);
 	}
 
-	//推送修改后的数据，如金币，经验，等级等
+	// 推送修改后的数据，如金币，经验，等级等
 	public void sendUpdatePlayer(Map<String, String> info, WorldPlayer player) {
 		int size = info.size();
 		String[] key = new String[size];

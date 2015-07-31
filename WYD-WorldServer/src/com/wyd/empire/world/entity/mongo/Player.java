@@ -15,6 +15,7 @@ import com.wyd.db.mongo.entity.IEntity;
 @Document(collection = "player")
 public class Player extends IEntity {
 	private Integer accountId; // 玩家帐号ID
+	private boolean isOnline;// 是否在线
 	private Integer areaId; // 玩家分区ID
 	private Integer lv; // 玩家等级
 	private Integer lvExp; // 玩家等级
@@ -44,6 +45,12 @@ public class Player extends IEntity {
 	}
 	public void setAccountId(Integer accountId) {
 		this.accountId = accountId;
+	}
+	public boolean getIsOnline() {
+		return isOnline;
+	}
+	public void setIsOnline(boolean isOnline) {
+		this.isOnline = isOnline;
 	}
 	public Integer getAreaId() {
 		return areaId;

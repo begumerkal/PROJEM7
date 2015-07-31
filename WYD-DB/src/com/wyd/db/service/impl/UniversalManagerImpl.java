@@ -15,7 +15,7 @@ import com.wyd.db.service.UniversalManager;
  * Base class for Business Services - use this class for utility methods and
  * generic CRUD methods.
  *
- * @author <a href="mailto:matt@raibledesigns.com">Matt Raible</a>
+ * @author doter
  */
 @SuppressWarnings("rawtypes")
 public class UniversalManagerImpl implements UniversalManager {

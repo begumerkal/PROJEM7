@@ -347,6 +347,7 @@ public class ConnectSession extends Session {
 		client.setPlayerId(worldPlayer.getPlayer().getId());
 		worldPlayer.setAccountClient(client);
 		worldPlayer.setConnectSession((ConnectSession) data.getHandlerSource());
+		worldPlayer.getPlayer().setIsOnline(true);
 		addWorldPlayer(client, worldPlayer, data.getSessionId());
 
 		// RoleLoginOk playerLoginOk = new
