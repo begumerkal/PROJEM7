@@ -3,10 +3,7 @@ package com.wyd.empire.world.server.handler.chat;
 import org.apache.log4j.Logger;
 
 import com.wyd.empire.protocol.data.chat.ChangeChannel;
-import com.wyd.empire.world.common.util.Common;
 import com.wyd.empire.world.entity.mongo.Player;
-import com.wyd.empire.world.entity.mysql.Interface;
-import com.wyd.empire.world.logs.GameLogService;
 import com.wyd.empire.world.model.player.WorldPlayer;
 import com.wyd.empire.world.service.factory.ServiceManager;
 import com.wyd.empire.world.session.ConnectSession;

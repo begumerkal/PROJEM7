@@ -1,29 +1,10 @@
-package com.wyd.empire.world.service.impl;
+package com.wyd.empire.world.service.base.impl;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Vector;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
-
-import com.wyd.empire.protocol.data.chat.ReceiveMessage;
-import com.wyd.empire.protocol.data.chat.SyncChannels;
-import com.wyd.empire.protocol.data.server.BroadCast;
-import com.wyd.empire.world.common.util.Common;
-import com.wyd.empire.world.common.util.ServiceUtils;
-import com.wyd.empire.world.entity.mysql.ChatRecord;
-import com.wyd.empire.world.entity.mysql.Friend;
-import com.wyd.empire.world.exception.ErrorMessages;
-import com.wyd.empire.world.exception.TipMessages;
-import com.wyd.empire.world.model.player.WorldPlayer;
-import com.wyd.empire.world.service.factory.ServiceManager;
-import com.wyd.empire.world.session.ConnectSession;
-import com.wyd.protocol.ProtocolManager;
-import com.wyd.session.Session;
 
 /**
  * 聊天服务
@@ -54,7 +35,6 @@ public class ChatService {
 	/** 禁止所有频道聊天 */
 	public static final int CHAT_STATUS3 = 3; // 禁止所有频道聊天
 	SimpleDateFormat timeSF = new SimpleDateFormat("MM-dd HH:mm");
-	Vector<ChatRecord> chatRecordList = new Vector<ChatRecord>();
 	/** 世界聊天频道 */
 	public static final String CHAT_WORLD_CHANNEL = "WORLD";
 	/** 公会聊天频道 */

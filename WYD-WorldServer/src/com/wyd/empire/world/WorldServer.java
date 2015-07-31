@@ -14,14 +14,14 @@ import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.executor.ExecutorFilter;
 import org.apache.mina.transport.socket.SocketSessionConfig;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
+import org.mortbay.jetty.nio.SelectChannelConnector;
+import org.mortbay.jetty.servlet.Context;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.wyd.empire.protocol.Protocol;
 import com.wyd.empire.world.common.util.HttpClientUtil;
-import com.wyd.empire.world.service.base.impl.GameConfigService;
 import com.wyd.empire.world.service.factory.ServiceManager;
-import com.wyd.empire.world.session.AdminSession;
 import com.wyd.empire.world.session.AuthSession;
 import com.wyd.empire.world.session.ConnectSession;
 import com.wyd.empire.world.session.WorldHandler;
@@ -55,21 +55,22 @@ public class WorldServer {
 	 * 
 	 * @throws Exception
 	 */
-	
+
 	public void launch() throws Exception {
 		long time = System.currentTimeMillis();
 		// 加载协议BeanData和Handler类及对象
 		ProtocolFactory.init(Protocol.class, "com.wyd.empire.protocol.data", "com.wyd.empire.world.server.handler");
-//		context = new ClassPathXmlApplicationContext(new String[]{"applicationContext.xml", "application-scheduling.xml"});
+		// context = new ClassPathXmlApplicationContext(new
+		// String[]{"applicationContext.xml", "application-scheduling.xml"});
 		context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		ServiceManager sm = context.getBean(ServiceManager.class);
 		ServiceManager.setServiceManager(sm);
 		SessionRegistry registry = new SessionRegistry();
 		sm.getConnectService().setRegistry(registry);
 
-		//加载游戏配置数据
+		// 加载游戏配置数据
 		ServiceManager.getManager().getGameConfigService().load();
-		
+
 		// 加载configWorld.properties配置,读取配置文件内最大等级限制
 		Configuration configuration = ServiceManager.getManager().getConfiguration();
 		config = new ServerConfig(configuration);
@@ -98,8 +99,7 @@ public class WorldServer {
 		// 启动世界服务器
 		bind(new ConnectSessionHandler(registry));
 		// 启动游戏管理服务
-		bindAdmin(new AdminSessionHandler(registry));
-		// openManagerServlet();
+		openManagerServlet();
 		log.info("游戏世界服务器启动...");
 		System.out.println("游戏世界服务器启动...");
 		System.out.println("login time:" + ((System.currentTimeMillis() - time) / 1000) + "秒");
@@ -192,80 +192,63 @@ public class WorldServer {
 		// 监听
 		acceptor.bind();
 	}
-	private void bindAdmin(SessionHandler sessionHandler) throws Exception {
-		NioSocketAcceptor acceptor = new NioSocketAcceptor(Runtime.getRuntime().availableProcessors() + 1);
-		acceptor.getFilterChain().addFirst("uwap2databean", new DataBeanFilter());
-		acceptor.getFilterChain().addFirst("uwap2codec", new ProtocolCodecFilter(new S2SEncoder(), new S2SDecoder()));
-		acceptor.setHandler(sessionHandler);
-		acceptor.setDefaultLocalAddress(new InetSocketAddress(ServiceManager.getManager().getConfiguration().getString("localip"),
-				ServiceManager.getManager().getConfiguration().getInt("adminport")));
-		acceptor.bind();
+
+	/**
+	 * 后台管理服务
+	 *
+	 * @throws Exception
+	 */
+	private void openManagerServlet() throws Exception {
+		org.mortbay.jetty.Server server = new org.mortbay.jetty.Server();
+		// // 设置jetty线程池
+		// BoundedThreadPool threadPool = new BoundedThreadPool();
+		// // 设置连接参数
+		// threadPool.setMinThreads(10);
+		// threadPool.setMaxThreads(50);
+		// 设置监听端口，ip地址
+		SelectChannelConnector connector = new SelectChannelConnector();
+		connector.setPort(ServiceManager.getManager().getConfiguration().getInt("http"));
+		connector.setHost(ServiceManager.getManager().getConfiguration().getString("localip"));
+		server.addConnector(connector);
+		// 访问项目地址import org.mortbay.jetty.servlet.Context;
+		Context root = new Context(server, "/", 1);
+		
+		
+// 
+//		// 网易的充值平台回调地址
+//		root.addServlet(new ServletHolder(new CallBackServlet()), "/callback/*");
+//		root.addServlet(new ServletHolder(new PointCallBackServlet()), "/pointcallback/*");
+//
+//		// 爱游戏平台服务器验证
+//		root.addServlet(new ServletHolder(new SynchronousServlet()), "/synchronous/*");
+//		// EFUN充值接入
+//		root.addServlet(new ServletHolder(new RechargeServlet()), "/recharge/*");
+//		// EFUN充值接入(新)
+//		root.addServlet(new ServletHolder(new RechargeNewServlet()), "/rechargeNew/*");
+//		// tapjoy接入
+//		root.addServlet(new ServletHolder(new TapzoyServlet()), "/tapjoy/*");
+//		// 第三方支付获取玩家信息接口
+//		root.addServlet(new ServletHolder(new GetPlayerInfoServlet()), "/getPlayerInfo/*");
+//		// 外部抽奖检查用户信息是否正确
+//		root.addServlet(new ServletHolder(new CheckPlayerInfoServlet()), "/checkinfo/*");
+//		// 外部抽奖发放奖励
+//		root.addServlet(new ServletHolder(new ItemsGivenServlet()), "/itemsgiven/*");
+//		// 批量发放奖励
+//		root.addServlet(new ServletHolder(new BatchRunSendRewardServlet()), "/BatchRunSendReward/*");
+//		// 批量发放宠物
+//		root.addServlet(new ServletHolder(new GiftPetByGMServlet()), "/GiftPetByGM/*");
+//		// 意见箱导出excel
+//		root.addServlet(new ServletHolder(new ExportExcelOPServlet()), "/ExportExcelOP/*");
+//		// 查询发放物品日志
+//		root.addServlet(new ServletHolder(new GetItemLogServlet()), "/GetItemLog/*");
+//		// 查询发放金币日志
+//		root.addServlet(new ServletHolder(new GetGoldCountLogServlet()), "/GetGoldCountLog/*");
+//		// 查询强化日志
+//		root.addServlet(new ServletHolder(new GetStrongRecordLogServlet()), "/GetStrongRecordLog/*");
+//		
+//		
+		server.start();
 	}
-
-	// /**
-	// * 后台管理服务
-	// *
-	// * @throws Exception
-	// */
-	// private void openManagerServlet() throws Exception {
-	// org.mortbay.jetty.Server server = new org.mortbay.jetty.Server();
-	// // // 设置jetty线程池
-	// // BoundedThreadPool threadPool = new BoundedThreadPool();
-	// // // 设置连接参数
-	// // threadPool.setMinThreads(10);
-	// // threadPool.setMaxThreads(50);
-	// // 设置监听端口，ip地址
-	// SelectChannelConnector connector = new SelectChannelConnector();
-	// connector.setPort(ServiceManager.getManager().getConfiguration().getInt("http"));
-	// connector.setHost(ServiceManager.getManager().getConfiguration().getString("localip"));
-	// server.addConnector(connector);
-	// // 访问项目地址
-	// Context root = new Context(server, "/", 1);
-	// // 网易的充值平台回调地址
-	// root.addServlet(new ServletHolder(new CallBackServlet()), "/callback/*");
-	// root.addServlet(new ServletHolder(new PointCallBackServlet()),
-	// "/pointcallback/*");
-	//
-	// // 爱游戏平台服务器验证
-	// root.addServlet(new ServletHolder(new SynchronousServlet()),
-	// "/synchronous/*");
-	// // EFUN充值接入
-	// root.addServlet(new ServletHolder(new RechargeServlet()), "/recharge/*");
-	// // EFUN充值接入(新)
-	// root.addServlet(new ServletHolder(new RechargeNewServlet()),
-	// "/rechargeNew/*");
-	// // tapjoy接入
-	// root.addServlet(new ServletHolder(new TapzoyServlet()), "/tapjoy/*");
-	// // 第三方支付获取玩家信息接口
-	// root.addServlet(new ServletHolder(new GetPlayerInfoServlet()),
-	// "/getPlayerInfo/*");
-	// // 外部抽奖检查用户信息是否正确
-	// root.addServlet(new ServletHolder(new CheckPlayerInfoServlet()),
-	// "/checkinfo/*");
-	// // 外部抽奖发放奖励
-	// root.addServlet(new ServletHolder(new ItemsGivenServlet()),
-	// "/itemsgiven/*");
-	// // 批量发放奖励
-	// root.addServlet(new ServletHolder(new BatchRunSendRewardServlet()),
-	// "/BatchRunSendReward/*");
-	// // 批量发放宠物
-	// root.addServlet(new ServletHolder(new GiftPetByGMServlet()),
-	// "/GiftPetByGM/*");
-	// // 意见箱导出excel
-	// root.addServlet(new ServletHolder(new ExportExcelOPServlet()),
-	// "/ExportExcelOP/*");
-	// // 查询发放物品日志
-	// root.addServlet(new ServletHolder(new GetItemLogServlet()),
-	// "/GetItemLog/*");
-	// // 查询发放金币日志
-	// root.addServlet(new ServletHolder(new GetGoldCountLogServlet()),
-	// "/GetGoldCountLog/*");
-	// // 查询强化日志
-	// root.addServlet(new ServletHolder(new GetStrongRecordLogServlet()),
-	// "/GetStrongRecordLog/*");
-	// server.start();
-	// }
-
 	/**
 	 * 跨服对战服务
 	 * 
@@ -329,35 +312,6 @@ public class WorldServer {
 		@Override
 		public Session createSession(IoSession session) {
 			return new AuthSession(session);
-		}
-	}
-
-	static class AdminSessionHandler extends SessionHandler {
-		@Override
-		public Session createSession(IoSession session) {
-			AdminSession ret = new AdminSession(session);
-			return ret;
-		}
-
-		public AdminSessionHandler(SessionRegistry paramSessionRegistry) {
-			super(paramSessionRegistry);
-		}
-
-		@Override
-		public void messageReceived(IoSession session, Object msg) throws Exception {
-			super.messageReceived(session, msg);
-		}
-
-		@Override
-		public void exceptionCaught(IoSession arg0, Throwable arg1) throws Exception {
-			super.exceptionCaught(arg0, arg1);
-			// arg1.printStackTrace();
-		}
-
-		@Override
-		public void inputClosed(IoSession arg0) throws Exception {
-			// TODO Auto-generated method stub
-
 		}
 	}
 

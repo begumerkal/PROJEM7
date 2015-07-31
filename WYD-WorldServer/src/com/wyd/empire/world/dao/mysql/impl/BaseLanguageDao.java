@@ -5,17 +5,17 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.wyd.db.mysql.dao.impl.GenericDaoHibernate;
-import com.wyd.empire.world.entity.mysql.Mail;
+import com.wyd.empire.world.entity.mysql.BaseLanguage;
 
 /**
  * The DAO class for the Mail entity.
  */
 @Repository
-public class Mail2Dao extends GenericDaoHibernate<Mail, Integer> {
-	public Mail2Dao() {
-		super(Mail.class);
+public class BaseLanguageDao extends GenericDaoHibernate<BaseLanguage, Integer> {
+	public BaseLanguageDao() {
+		super(BaseLanguage.class);
 	}
-	public List<Mail> getAll() {
+	public List<BaseLanguage> getAll() {
 		return super.getAll();
 	}
 

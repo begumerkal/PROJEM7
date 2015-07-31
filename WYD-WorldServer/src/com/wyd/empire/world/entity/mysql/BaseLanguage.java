@@ -9,7 +9,7 @@ import javax.persistence.Table;
  * BaseLanguage entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "base_language", catalog = "game3")
+@Table(name = "base_language")
 public class BaseLanguage implements java.io.Serializable {
 
 	// Fields
@@ -17,7 +17,6 @@ public class BaseLanguage implements java.io.Serializable {
 	private Integer id;
 	private String zh;
 	private String en;
-	private Integer baseAnnouncementId;
 
 	// Constructors
 
@@ -26,12 +25,10 @@ public class BaseLanguage implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public BaseLanguage(Integer id, String zh, String en,
-			Integer baseAnnouncementId) {
+	public BaseLanguage(Integer id, String zh, String en, Integer baseAnnouncementId) {
 		this.id = id;
 		this.zh = zh;
 		this.en = en;
-		this.baseAnnouncementId = baseAnnouncementId;
 	}
 
 	// Property accessors
@@ -62,14 +59,4 @@ public class BaseLanguage implements java.io.Serializable {
 	public void setEn(String en) {
 		this.en = en;
 	}
-
-	@Column(name = "base_announcement_id", nullable = false)
-	public Integer getBaseAnnouncementId() {
-		return this.baseAnnouncementId;
-	}
-
-	public void setBaseAnnouncementId(Integer baseAnnouncementId) {
-		this.baseAnnouncementId = baseAnnouncementId;
-	}
-
 }

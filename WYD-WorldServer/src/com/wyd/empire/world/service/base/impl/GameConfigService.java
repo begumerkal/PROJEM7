@@ -11,23 +11,25 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 import com.wyd.db.mysql.dao.impl.GenericDaoHibernate;
-import com.wyd.empire.world.dao.mysql.impl.Mail2Dao;
-import com.wyd.empire.world.service.base.IGameConfigService;
+import com.wyd.empire.world.dao.mysql.impl.BaseLanguageDao;
 
 /**
  * 加载游戏配置
  */
 @Service
 @SuppressWarnings(value = {"rawtypes", "unchecked"})
-public class GameConfigService implements IGameConfigService {
+public class GameConfigService {
 	@Autowired
-	private Mail2Dao maildao;
+	private BaseLanguageDao baseLanguageDao;
 	// 一般格式配置　id->map
 	ConcurrentHashMap<String, Map<Integer, Map>> gameConfig = new ConcurrentHashMap<String, Map<Integer, Map>>();
 	SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+	/**
+	 * 一般格式配置　id->map
+	 * */
 	private void loadConfig(GenericDaoHibernate<?, ?> dao) {
-		List<?> rsl = maildao.getAll();
+		List<?> rsl = baseLanguageDao.getAll();
 		String key = dao.getClass().getSimpleName();
 		gameConfig.remove(key);
 		Map map2 = new HashMap();
@@ -39,8 +41,7 @@ public class GameConfigService implements IGameConfigService {
 	}
 
 	public void load() {
-		this.loadConfig(this.maildao);
-//		System.out.println(this.gameConfig.get(this.maildao.getClass().getSimpleName()).get(37774).get("theme"));
+		this.loadConfig(this.baseLanguageDao);
 	}
 
 	public ConcurrentHashMap<String, Map<Integer, Map>> getGameConfig() {

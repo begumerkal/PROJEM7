@@ -6,17 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wyd.empire.world.common.util.ThreadPool;
-import com.wyd.empire.world.service.base.IPlayerService;
+import com.wyd.empire.world.service.base.impl.ChatService;
 import com.wyd.empire.world.service.base.impl.GameConfigService;
-import com.wyd.empire.world.service.base.impl.MailService;
+import com.wyd.empire.world.service.base.impl.PlayerService;
 import com.wyd.empire.world.service.impl.AbstractService;
-import com.wyd.empire.world.service.impl.ChatService;
 import com.wyd.empire.world.service.impl.ConnectService;
 import com.wyd.empire.world.service.impl.CrossService;
 import com.wyd.empire.world.service.impl.OrderSerialService;
-import com.wyd.empire.world.service.impl.PlayerService;
 import com.wyd.empire.world.service.impl.SendMailService;
-import com.wyd.empire.world.service.impl.TheadPlayerItemsService;
 import com.wyd.empire.world.skeleton.AccountSkeleton;
 import com.wyd.empire.world.skeleton.BattleSkeleton;
 import com.wyd.net.DefaultRequestService;
@@ -34,8 +31,6 @@ public class ServiceManager {
 
 	@Autowired
 	private GameConfigService gameConfigService;
-	@Autowired
-	private MailService mailService;// 邮件批量发送服务
 	@Autowired
 	private PlayerService playerService;// 游戏角色服务
 	@Autowired
@@ -117,18 +112,6 @@ public class ServiceManager {
 		return chatService;
 	}
 
-	public IPlayerService getIPlayerService() {
-		return (IPlayerService) playerService;
-	}
-
-	/**
-	 * 邮件批量发送服务
-	 * 
-	 * @return
-	 */
-	public MailService getSendMailService() {
-		return mailService;
-	}
 
 	/**
 	 * 发送电子邮件服务

@@ -1,19 +1,8 @@
 package com.wyd.empire.world.server.handler.mail;
 
-import java.text.SimpleDateFormat;
-
 import org.apache.log4j.Logger;
 
-import com.wyd.empire.protocol.data.mail.GetMailContent;
-import com.wyd.empire.protocol.data.mail.SendMailContent;
-import com.wyd.empire.world.common.util.Common;
-import com.wyd.empire.world.entity.mysql.Mail;
-import com.wyd.empire.world.exception.ErrorMessages;
-import com.wyd.empire.world.model.player.WorldPlayer;
-import com.wyd.empire.world.service.factory.ServiceManager;
-import com.wyd.empire.world.session.ConnectSession;
 import com.wyd.protocol.data.AbstractData;
-import com.wyd.protocol.exception.ProtocolException;
 import com.wyd.protocol.handler.IDataHandler;
 
 /**

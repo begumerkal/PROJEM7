@@ -12,9 +12,6 @@ import java.util.Random;
 
 import org.apache.log4j.Logger;
 
-import com.wyd.empire.world.entity.mysql.ShopItem;
-import com.wyd.empire.world.service.factory.ServiceManager;
-
 public class ServiceUtils {
 	static Logger log = Logger.getLogger(ServiceUtils.class);
 	public static Random randGen;
