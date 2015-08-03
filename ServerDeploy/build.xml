@@ -10,11 +10,11 @@
 	</target>
 	<target name="callDB">
 		<echo message="build db.jar" />
-		<ant antfile="build.xml" dir="../WYD-DB/" />
+		<ant antfile="build.xml" dir="../APP-DB/" />
 	</target>
 	<target name="callTapzoy">
 			<echo message="build Tapzoy.jar" />
-			<ant antfile="build.xml" dir="../WYD-Tapzoy/" />
+			<ant antfile="build.xml" dir="../APP-Tapzoy/" />
 	</target>
 	<target name="callChannel">
 		<echo message="build ChannelAccess.jar" />
@@ -23,7 +23,7 @@
 	
 	<target name="callRelayServer">
 		<echo message="build RelayServer.jar" />
-		<ant antfile="build.xml" dir="../WYD-RelayServer/" />
+		<ant antfile="build.xml" dir="../APP-RelayServer/" />
 	</target>
 	
 	<target name="callVM">
@@ -38,12 +38,12 @@
 
 	<target name="callNetProtocol">
 		<echo message="build protocol.jar" />
-		<ant antfile="build.xml" dir="../WYD-NetProtocol/" />
+		<ant antfile="build.xml" dir="../APP-NetProtocol/" />
 	</target>
 
 	<target name="callEmpireNetProtocol">
 		<echo message="build empireProtocol.jar" />
-		<ant antfile="build.xml" dir="../WYD-EmpireNetProtocol/" />
+		<ant antfile="build.xml" dir="../APP-EmpireNetProtocol/" />
 	</target>
 	<target name="callImage">
 		<echo message="build image.jar" />
@@ -51,31 +51,31 @@
 	</target>
 	<target name="callAccountServer">
 		<echo message="build AccountServer.jar" />
-		<ant antfile="build.xml" dir="../WYD-AccountServer/" />
+		<ant antfile="build.xml" dir="../APP-AccountServer/" />
 	</target>
 	<target name="callGameAccountServer">
 		<echo message="build GameAccountServer.jar" />
-		<ant antfile="build.xml" dir="../WYD-GameAccountServer/" />
+		<ant antfile="build.xml" dir="../APP-GameAccountServer/" />
 	</target>
 	<target name="callIpdServer">
 		<echo message="build IpdServer.jar" />
-		<ant antfile="build.xml" dir="../WYD-IpdServer/" />
+		<ant antfile="build.xml" dir="../APP-IpdServer/" />
 	</target>
 	<target name="callWorldServer">
 		<echo message="build WorldServer.jar" />
-		<ant antfile="build.xml" dir="../WYD-WorldServer/" />
+		<ant antfile="build.xml" dir="../APP-WorldServer/" />
 	</target>
 	<target name="callDispatchServer">
 		<echo message="build DispatchServer.jar" />
-		<ant antfile="build.xml" dir="../WYD-DispatchServer/" />
+		<ant antfile="build.xml" dir="../APP-DispatchServer/" />
 	</target>
 	<target name="callExtensionServer">
 		<echo message="build ExtensionServer.jar" />
-		<ant antfile="build.xml" dir="../WYD-ExtensionServer/" />
+		<ant antfile="build.xml" dir="../APP-ExtensionServer/" />
 	</target>
 	<target name="callExchangeServer">
 		<echo message="build ExchangeServer.jar" />
-		<ant antfile="build.xml" dir="../WYD-ExchangeServer/" />
+		<ant antfile="build.xml" dir="../APP-ExchangeServer/" />
 	</target>
 	<target name="callChmod">
 		<chmod perm="777">

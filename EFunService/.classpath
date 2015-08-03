@@ -4,6 +4,6 @@
 	<classpathentry kind="src" path="res/config"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/netgame"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/WYD-DB"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/APP-DB"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,9 +1,0 @@
-eclipse.preferences.version=1
-encoding//res/config/configWorld.properties=UTF-8
-encoding//res/config/errormsg.properties=GBK
-encoding//res/config/infomsg.properties=gb2312
-encoding//res/config/jdbc.properties=UTF-8
-encoding//res/config/serverMessage.properties=gb2312
-encoding//res/script/run.bat=gb2312
-encoding/<project>=UTF-8
-encoding/res=UTF-8
