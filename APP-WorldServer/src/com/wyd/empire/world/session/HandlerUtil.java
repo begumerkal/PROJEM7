@@ -6,13 +6,12 @@ import com.wyd.net.ProtocolFactory;
 import com.wyd.protocol.data.AbstractData;
 import com.wyd.protocol.exception.ProtocolException;
 import com.wyd.protocol.handler.IDataHandler;
-import com.wyd.session.HandlerMonitorService;
 import com.wyd.session.Session;
 
 /**
  * 处理世界服务器业务逻辑
  * 
- * @author sunzx
+ * @author doter
  *
  */
 public class HandlerUtil {
@@ -45,7 +44,7 @@ public class HandlerUtil {
 					session.write(sendData);
 				}
 				long time = System.currentTimeMillis() - sTime;
-				if (time > 1000)
+				if (time > 100)
 					timeLog.info(handler.getClass().getSimpleName() + "-----Time:" + time);
 				// System.out.println(handler.getClass().getSimpleName() + "--"
 				// + time);
