@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.springframework.context.ApplicationContext;
 
-import com.wyd.db.service.impl.UniversalManagerImpl;
+import com.app.db.service.impl.UniversalManagerImpl;
 import com.wyd.service.bean.Mail;
 import com.wyd.service.bean.Player;
 import com.wyd.service.dao.IMailDao;

@@ -6,9 +6,9 @@ import java.net.InetSocketAddress;
 import org.apache.commons.configuration.Configuration;
 import org.apache.log4j.Logger;
 
-import com.wyd.empire.protocol.data.account.GetRoleList;
-import com.wyd.empire.protocol.data.account.Login;
-import com.wyd.empire.protocol.data.account.RoleLogin;
+import com.app.empire.protocol.data.account.GetRoleList;
+import com.app.empire.protocol.data.account.Login;
+import com.app.empire.protocol.data.account.RoleLogin;
 
 public class ipdServer {
 

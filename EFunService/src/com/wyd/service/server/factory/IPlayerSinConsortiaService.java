@@ -1,7 +1,7 @@
 package com.wyd.service.server.factory;
 
 
-import com.wyd.db.service.UniversalManager;
+import com.app.db.service.UniversalManager;
 import com.wyd.service.bean.PlayerSinConsortia;
 
 /**

@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.wyd.db.page.PageList;
-import com.wyd.db.service.impl.UniversalManagerImpl;
+import com.app.db.page.PageList;
+import com.app.db.service.impl.UniversalManagerImpl;
 import com.wyd.service.bean.Player;
 import com.wyd.service.dao.IPlayerDao;
 import com.wyd.service.server.factory.IPlayerService;

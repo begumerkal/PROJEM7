@@ -3,7 +3,7 @@ package com.wyd.service.dao.impl;
 import java.util.Date;
 import java.util.List;
 
-import com.wyd.db.dao.impl.UniversalDaoHibernate;
+import com.app.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.service.bean.PlayerDIYTitle;
 import com.wyd.service.bean.PlayerTaskTitle;
 import com.wyd.service.bean.Title;

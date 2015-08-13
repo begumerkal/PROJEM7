@@ -779,7 +779,7 @@ ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsysca
 
 VM Arguments:
 jvm_args: -agentlib:jdwp=transport=dt_socket,suspend=y,address=localhost:46612 -Dfile.encoding=UTF-8 -Dawt.useSystemAAFontSettings=gasp 
-java_command: com.wyd.empire.world.WorldServer
+java_command: com.app.empire.world.WorldServer
 Launcher Type: SUN_STANDARD
 
 Environment Variables:

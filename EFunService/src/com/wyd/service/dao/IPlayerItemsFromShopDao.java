@@ -1,7 +1,7 @@
 package com.wyd.service.dao;
 import java.util.List;
 
-import com.wyd.db.dao.UniversalDao;
+import com.app.db.dao.UniversalDao;
 import com.wyd.service.bean.PlayerItemsFromShop;
 /**
  * The DAO interface for the TabPlayeritemsfromshop entity.

@@ -1,6 +1,6 @@
 package com.wyd.service.server.impl;
 
-import com.wyd.db.service.impl.UniversalManagerImpl;
+import com.app.db.service.impl.UniversalManagerImpl;
 import com.wyd.service.bean.PlayerPet;
 import com.wyd.service.dao.IPlayerPetDao;
 import com.wyd.service.server.factory.IPlayerPetService;

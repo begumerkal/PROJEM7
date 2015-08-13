@@ -3,7 +3,7 @@ package com.wyd.service.dao.impl;
 import java.util.List;
 import java.util.Vector;
 
-import com.wyd.db.dao.impl.UniversalDaoHibernate;
+import com.app.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.service.bean.PlayerSinConsortia;
 import com.wyd.service.dao.IPlayerSinConsortiaDao;
 

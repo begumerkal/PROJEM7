@@ -2,7 +2,7 @@ package com.wyd.service.dao.impl;
 
 import java.util.List;
 
-import com.wyd.db.dao.impl.UniversalDaoHibernate;
+import com.app.db.dao.impl.UniversalDaoHibernate;
 import com.wyd.service.bean.WorldCupCode;
 import com.wyd.service.bean.WorldCupPoints;
 import com.wyd.service.dao.IWorldCupDao;

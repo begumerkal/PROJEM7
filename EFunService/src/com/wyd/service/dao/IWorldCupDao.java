@@ -1,5 +1,5 @@
 package com.wyd.service.dao;
-import com.wyd.db.dao.UniversalDao;
+import com.app.db.dao.UniversalDao;
 import com.wyd.service.bean.WorldCupCode;
 import com.wyd.service.bean.WorldCupPoints;
 /**

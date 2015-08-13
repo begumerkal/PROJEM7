@@ -3,7 +3,7 @@ package com.wyd.service.server.impl;
 
 import org.hibernate.Hibernate;
 
-import com.wyd.db.service.impl.UniversalManagerImpl;
+import com.app.db.service.impl.UniversalManagerImpl;
 import com.wyd.service.bean.PlayerSinConsortia;
 import com.wyd.service.dao.IPlayerSinConsortiaDao;
 import com.wyd.service.server.factory.IPlayerSinConsortiaService;

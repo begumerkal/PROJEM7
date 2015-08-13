@@ -1,7 +1,7 @@
 package com.wyd.channel.service;
 
+import com.app.db.service.UniversalManager;
 import com.wyd.channel.bean.ThirdConfig;
-import com.wyd.db.service.UniversalManager;
 
 /**
  * 接口 <code>IThirdConfigService</code>第三方渠道配置信息业务逻辑层接口

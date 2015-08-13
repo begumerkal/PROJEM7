@@ -7,7 +7,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 
-import com.wyd.db.service.impl.UniversalManagerImpl;
+import com.app.db.service.impl.UniversalManagerImpl;
 import com.wyd.service.bean.GetItem;
 import com.wyd.service.bean.GiftRecord;
 import com.wyd.service.bean.Player;

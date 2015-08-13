@@ -5,7 +5,7 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 
-import com.wyd.db.service.impl.UniversalManagerImpl;
+import com.app.db.service.impl.UniversalManagerImpl;
 import com.wyd.service.bean.WorldCupCode;
 import com.wyd.service.bean.WorldCupPoints;
 import com.wyd.service.dao.IWorldCupDao;

@@ -106,10 +106,10 @@
 	</bean>
 
 	<!-- 映射转换器，扫描back-package目录下的文件，根据注释，把它们作为mongodb的一个collection的映射 -->
-	<mongo:mapping-converter base-package="com.wyd.db.mongo.entity,com.wyd.empire.world.entity.mongo" />
+	<mongo:mapping-converter base-package="com.app.db.mongo.entity,com.app.empire.world.entity.mongo" />
 	<!-- mongodb bean的仓库目录，会自动扫描扩展了MongoRepository接口的接口进行注入 -->
-	<mongo:repositories base-package="com.wyd.db.mongo.dao.impl,com.wyd.empire.gameaccount.dao.impl" />
-	<context:component-scan base-package="com.wyd.db,com.wyd.empire.world" />
+	<mongo:repositories base-package="com.app.db.mongo.dao.impl,com.app.empire.gameaccount.dao.impl" />
+	<context:component-scan base-package="com.app.db,com.app.empire.world" />
 	<import resource="application-scheduling.xml" />
 
 
@@ -121,15 +121,15 @@
 
 
 	<!-- world Service -->
-	<!-- <bean id="PlayerService" parent="worldBaseTransactionProxy"> <property name="target"> <bean class="com.wyd.empire.world.server.service.base.impl.BasePlayerService"> 
-		<property name="playerDao"> <bean class="com.wyd.empire.world.dao.mysql.impl.PlayerDao"> <property name="sessionFactory" 
+	<!-- <bean id="PlayerService" parent="worldBaseTransactionProxy"> <property name="target"> <bean class="com.app.empire.world.server.service.base.impl.BasePlayerService"> 
+		<property name="playerDao"> <bean class="com.app.empire.world.dao.mysql.impl.PlayerDao"> <property name="sessionFactory" 
 		ref="sessionFactory" /> </bean> </property> </bean> </property> </bean> -->
 
 <!-- 	<bean id="ChatRecordService" parent="worldBaseTransactionProxy">
 		<property name="target">
-			<bean class="com.wyd.empire.world.server.service.base.impl.ChatRecordService">
+			<bean class="com.app.empire.world.server.service.base.impl.ChatRecordService">
 				<property name="dao">
-					<bean class="com.wyd.empire.world.dao.mysql.impl.ChatRecordDao">
+					<bean class="com.app.empire.world.dao.mysql.impl.ChatRecordDao">
 						<property name="sessionFactory" ref="sessionFactory" />
 					</bean>
 				</property>
@@ -137,14 +137,14 @@
 		</property>
 	</bean> -->
 
-	<!-- <bean id="OperationConfigService" parent="worldBaseTransactionProxy"> <property name="target"> <bean class="com.wyd.empire.world.server.service.base.impl.OperationConfigService"> 
-		<property name="dao"> <bean class="com.wyd.empire.world.dao.mysql.impl.OperationConfigDao"> <property name="sessionFactory" 
+	<!-- <bean id="OperationConfigService" parent="worldBaseTransactionProxy"> <property name="target"> <bean class="com.app.empire.world.server.service.base.impl.OperationConfigService"> 
+		<property name="dao"> <bean class="com.app.empire.world.dao.mysql.impl.OperationConfigDao"> <property name="sessionFactory" 
 		ref="sessionFactory" /> </bean> </property> </bean> </property> </bean> -->
 <!-- 	<bean id="OrderService" parent="worldBaseTransactionProxy">
 		<property name="target">
-			<bean class="com.wyd.empire.world.server.service.base.impl.OrderService">
+			<bean class="com.app.empire.world.server.service.base.impl.OrderService">
 				<property name="dao">
-					<bean class="com.wyd.empire.world.dao.mysql.impl.OrderDao">
+					<bean class="com.app.empire.world.dao.mysql.impl.OrderDao">
 						<property name="sessionFactory" ref="sessionFactory" />
 					</bean>
 				</property>
@@ -157,9 +157,9 @@
 	<!-- 第三方渠道配置 by:zengxc -->
 <!-- 	<bean id="ThirdConfigService" parent="worldBaseTransactionProxy">
 		<property name="target">
-			<bean class="com.wyd.empire.world.server.service.base.impl.ThirdConfigService">
+			<bean class="com.app.empire.world.server.service.base.impl.ThirdConfigService">
 				<property name="dao">
-					<bean class="com.wyd.empire.world.dao.mysql.impl.ThirdConfigDao">
+					<bean class="com.app.empire.world.dao.mysql.impl.ThirdConfigDao">
 						<property name="sessionFactory" ref="sessionFactory" />
 					</bean>
 				</property>

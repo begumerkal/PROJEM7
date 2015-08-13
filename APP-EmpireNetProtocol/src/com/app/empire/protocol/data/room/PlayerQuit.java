@@ -1,0 +1,24 @@
+package com.app.empire.protocol.data.room;
+
+import com.app.empire.protocol.Protocol;
+import com.app.protocol.data.AbstractData;
+
+public class PlayerQuit extends AbstractData {
+	private int     oldSeat;
+	
+	public PlayerQuit(int sessionId, int serial) {
+		super(Protocol.MAIN_ROOM, Protocol.ROOM_PlayerQuit, sessionId, serial);
+	}
+
+	public PlayerQuit() {
+		super(Protocol.MAIN_ROOM, Protocol.ROOM_PlayerQuit);
+	}
+
+	public int getOldSeat() {
+		return oldSeat;
+	}
+
+	public void setOldSeat(int oldSeat) {
+		this.oldSeat = oldSeat;
+	}
+}

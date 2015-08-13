@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import com.wyd.db.page.PageList;
+import com.app.db.page.PageList;
 import com.wyd.service.bean.Empireaccount;
 import com.wyd.service.bean.Player;
 import com.wyd.service.server.factory.ServiceManager;

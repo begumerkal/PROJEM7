@@ -4,7 +4,7 @@ import java.util.List;
 import org.hibernate.Hibernate;
 import org.springframework.context.ApplicationContext;
 
-import com.wyd.db.service.impl.UniversalManagerImpl;
+import com.app.db.service.impl.UniversalManagerImpl;
 import com.wyd.service.bean.BuffRecord;
 import com.wyd.service.bean.Consortia;
 import com.wyd.service.dao.IConsortiaDao;

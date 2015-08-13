@@ -2,8 +2,8 @@ package com.wyd.dispatch;
 
 import org.apache.log4j.Logger;
 
-import com.wyd.empire.protocol.Protocol;
-import com.wyd.net.ProtocolFactory;
+import com.app.empire.protocol.Protocol;
+import com.app.net.ProtocolFactory;
 
 public class DisServer {
 	private static final Logger log = Logger.getLogger(DisServer.class);
@@ -17,7 +17,7 @@ public class DisServer {
 
 	private void launch() throws Exception {
 		// 初始化协议接口
-		ProtocolFactory.init(Protocol.class, "com.wyd.empire.protocol.data", "com.wyd.empire.server.handler");
+		ProtocolFactory.init(Protocol.class, "com.app.empire.protocol.data", "com.app.empire.server.handler");
 		// 加载配置文件
 		configuration = new ConfigMenger("configDispatch.properties");
 		// 初始化ipd服务，启动Ipdservice ,作为客户端，连接ipd server

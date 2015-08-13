@@ -3,7 +3,7 @@ package com.wyd.service.server.impl;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 
-import com.wyd.db.service.impl.UniversalManagerImpl;
+import com.app.db.service.impl.UniversalManagerImpl;
 import com.wyd.service.bean.MarryRecord;
 import com.wyd.service.dao.IMarryDao;
 import com.wyd.service.server.factory.IMarryService;

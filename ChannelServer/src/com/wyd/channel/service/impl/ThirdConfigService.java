@@ -1,12 +1,13 @@
 package com.wyd.channel.service.impl;
 
 import java.util.List;
+
 import org.springframework.context.ApplicationContext;
 
+import com.app.db.service.impl.UniversalManagerImpl;
 import com.wyd.channel.bean.ThirdConfig;
 import com.wyd.channel.dao.IThirdConfigDao;
 import com.wyd.channel.service.IThirdConfigService;
-import com.wyd.db.service.impl.UniversalManagerImpl;
 
 /**
  * The service class for the TabConsortiaright entity.

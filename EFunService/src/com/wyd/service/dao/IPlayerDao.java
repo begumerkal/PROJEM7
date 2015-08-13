@@ -2,8 +2,8 @@ package com.wyd.service.dao;
 
 import java.util.List;
 
-import com.wyd.db.dao.UniversalDao;
-import com.wyd.db.page.PageList;
+import com.app.db.dao.UniversalDao;
+import com.app.db.page.PageList;
 import com.wyd.service.bean.Player;
 
 public interface IPlayerDao extends UniversalDao {
