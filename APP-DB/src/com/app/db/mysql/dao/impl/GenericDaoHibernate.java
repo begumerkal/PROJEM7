@@ -12,6 +12,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.orm.hibernate4.HibernateCallback;
 import org.springframework.util.Assert;
 
@@ -32,6 +33,7 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends BaseDaoSupp
 		this.clazz = clazz;
 	}
 	@Autowired
+	@Qualifier("sessionFactory")
     public void setMySessionFactory(SessionFactory sessionFactory){
       super.setSessionFactory(sessionFactory);  
     }
