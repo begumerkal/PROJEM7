@@ -12,7 +12,7 @@ package com.app.empire.world.service.base.impl;
 //
 //import com.app.db.service.impl.UniversalManagerImpl;
 //import com.app.empire.world.dao.mysql.IChatRecordDao;
-//import com.app.empire.world.entity.mysql.ChatRecord;
+//import com.app.empire.world.entity.mysql.gameConfig.ChatRecord;
 //import com.app.empire.world.service.base.IChatRecordService;
 //
 ///**

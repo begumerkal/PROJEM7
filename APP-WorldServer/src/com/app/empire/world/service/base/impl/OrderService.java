@@ -7,8 +7,8 @@ package com.app.empire.world.service.base.impl;
 //
 //import com.app.db.service.impl.UniversalManagerImpl;
 //import com.app.empire.world.dao.mysql.IOrderDao;
-//import com.app.empire.world.entity.mysql.BillingPoint;
-//import com.app.empire.world.entity.mysql.Order;
+//import com.app.empire.world.entity.mysql.gameConfig.BillingPoint;
+//import com.app.empire.world.entity.mysql.gameConfig.Order;
 //import com.app.empire.world.service.base.IOrderService;
 //
 ///**

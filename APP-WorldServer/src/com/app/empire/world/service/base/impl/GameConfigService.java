@@ -6,22 +6,23 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 import com.app.db.mysql.dao.impl.UniversalDaoHibernate;
-import com.app.empire.world.dao.mysql.impl.BaseLanguageDao;
-import com.app.empire.world.dao.mysql.impl.BaseLanguageDaoDemo;
-import com.app.empire.world.entity.mysql.BaseLanguage;
+import com.app.empire.world.dao.mysql.gameConfig.impl.BaseLanguageDao;
+import com.app.empire.world.dao.mysql.gameLog.impl.BaseLanguageDaoDemo;
+import com.app.empire.world.entity.mysql.gameConfig.BaseLanguage;
 
 /**
  * 加载游戏配置
  */
 
 @SuppressWarnings(value = {"rawtypes", "unchecked"})
+@Service
 public class GameConfigService {
-	private BaseLanguageDao baseLanguageDao;
 	@Autowired
-	private BaseLanguageDaoDemo demo;
+	private BaseLanguageDao baseLanguageDao;
 	// 一般格式配置　id->map
 	ConcurrentHashMap<String, Map<Integer, Map>> gameConfig = new ConcurrentHashMap<String, Map<Integer, Map>>();
 
@@ -39,20 +40,14 @@ public class GameConfigService {
 		}
 		this.gameConfig.put(key, map2);
 	}
+	
+	
 
 	public void load() {
 		this.loadConfig(baseLanguageDao, BaseLanguage.class);
-		
-		List<?> rsl = demo.getAll();
-		for (Object object : rsl) {
-			System.out.println( JSON.toJSON(object));
-		}
 	}
-
 	public ConcurrentHashMap<String, Map<Integer, Map>> getGameConfig() {
 		return this.gameConfig;
 	}
-	public void setBaseLanguageDao(BaseLanguageDao baseLanguageDao) {
-		this.baseLanguageDao = baseLanguageDao;
-	}
+
 }

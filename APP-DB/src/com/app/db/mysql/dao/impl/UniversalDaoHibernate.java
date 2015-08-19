@@ -5,6 +5,9 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.app.db.mysql.dao.UniversalDao;
 /**
@@ -24,6 +27,12 @@ public class UniversalDaoHibernate extends BaseDaoSupport implements UniversalDa
      */
     public Object save(Object o) {
         return getHibernateTemplate().merge(o);
+    }
+    
+	@Autowired
+	@Qualifier("gameConfigSessionFactory")
+	public void setMySessionFactory(SessionFactory sessionFactory){
+      super.setSessionFactory(sessionFactory); 
     }
 
     /**

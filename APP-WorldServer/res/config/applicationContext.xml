@@ -194,40 +194,40 @@
 	
 	
 	
-	<bean id="GameConfigService" parent="gameConfigBaseTransactionProxy">
+<!-- 	<bean id="GameConfigService" parent="gameConfigBaseTransactionProxy">
 		<property name="target">
 			<bean class="com.app.empire.world.service.base.impl.GameConfigService">
 				<property name="baseLanguageDao">
-					<bean class="com.app.empire.world.dao.mysql.impl.BaseLanguageDao">
+					<bean class="com.app.empire.world.dao.mysql.gameConfig.impl.BaseLanguageDao">
 						<property name="sessionFactory" ref="gameConfigSessionFactory" />
 					</bean>
 				</property>
 			</bean>
 		</property>
-	</bean>
+	</bean> -->
 	
 	
 	<!-- world Service -->
 	<!-- <bean id="PlayerService" parent="worldBaseTransactionProxy"> <property name="target"> <bean class="com.app.empire.world.server.service.base.impl.BasePlayerService"> 
-		<property name="playerDao"> <bean class="com.app.empire.world.dao.mysql.impl.PlayerDao"> <property name="sessionFactory" 
+		<property name="playerDao"> <bean class="com.app.empire.world.dao.mysql.gameConfig.impl.PlayerDao"> <property name="sessionFactory" 
 		ref="sessionFactory" /> </bean> </property> </bean> </property> </bean> -->
 
 	<!-- <bean id="ChatRecordService" parent="worldBaseTransactionProxy"> <property name="target"> <bean class="com.app.empire.world.server.service.base.impl.ChatRecordService"> 
-		<property name="dao"> <bean class="com.app.empire.world.dao.mysql.impl.ChatRecordDao"> <property name="sessionFactory" ref="sessionFactory" 
+		<property name="dao"> <bean class="com.app.empire.world.dao.mysql.gameConfig.impl.ChatRecordDao"> <property name="sessionFactory" ref="sessionFactory" 
 		/> </bean> </property> </bean> </property> </bean> -->
 
 	<!-- <bean id="OperationConfigService" parent="worldBaseTransactionProxy"> <property name="target"> <bean class="com.app.empire.world.server.service.base.impl.OperationConfigService"> 
-		<property name="dao"> <bean class="com.app.empire.world.dao.mysql.impl.OperationConfigDao"> <property name="sessionFactory" 
+		<property name="dao"> <bean class="com.app.empire.world.dao.mysql.gameConfig.impl.OperationConfigDao"> <property name="sessionFactory" 
 		ref="sessionFactory" /> </bean> </property> </bean> </property> </bean> -->
 	<!-- <bean id="OrderService" parent="worldBaseTransactionProxy"> <property name="target"> <bean class="com.app.empire.world.server.service.base.impl.OrderService"> 
-		<property name="dao"> <bean class="com.app.empire.world.dao.mysql.impl.OrderDao"> <property name="sessionFactory" ref="sessionFactory" 
+		<property name="dao"> <bean class="com.app.empire.world.dao.mysql.gameConfig.impl.OrderDao"> <property name="sessionFactory" ref="sessionFactory" 
 		/> </bean> </property> </bean> </property> </bean> -->
 
 
 
 	<!-- 第三方渠道配置 by:zengxc -->
 	<!-- <bean id="ThirdConfigService" parent="worldBaseTransactionProxy"> <property name="target"> <bean class="com.app.empire.world.server.service.base.impl.ThirdConfigService"> 
-		<property name="dao"> <bean class="com.app.empire.world.dao.mysql.impl.ThirdConfigDao"> <property name="sessionFactory" ref="sessionFactory" 
+		<property name="dao"> <bean class="com.app.empire.world.dao.mysql.gameConfig.impl.ThirdConfigDao"> <property name="sessionFactory" ref="sessionFactory" 
 		/> </bean> </property> </bean> </property> </bean> -->
 
 

@@ -201,7 +201,7 @@ public class PlayerService implements Runnable {
 				playerDao.save(player);
 			}
 		} catch (Exception e) {
-			log.equals(e);
+			log.error(e);
 		}
 	}
 
@@ -250,7 +250,8 @@ public class PlayerService implements Runnable {
 			if (this.playerDao.getPlayerByName(name) != null) {
 				throw new CreatePlayerException(ErrorMessages.PLAYER_SAMENAME);
 			}
-
+			
+			//创建角色信息
 			Player newPlayer = new Player();
 			newPlayer.setAccountId(accountId);
 			newPlayer.setNickname(nickname);
@@ -268,7 +269,11 @@ public class PlayerService implements Runnable {
 			newPlayer.setProperty("");
 			newPlayer.setFight(0);
 			newPlayer = this.playerDao.insert(newPlayer);
-
+			//发角色英雄
+			
+			
+			
+			
 			// 记录角色创建日志
 			GameLogService.createPlayer(newPlayer.getId(), newPlayer.getNickname());
 			return newPlayer;

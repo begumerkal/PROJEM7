@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.repository.support.MongoRepositoryFactory;
+import org.springframework.stereotype.Repository;
 
 import com.app.db.mongo.dao.impl.BaseDao;
 import com.app.empire.world.entity.mongo.Mail;
@@ -18,7 +19,7 @@ import com.app.empire.world.entity.mongo.Mail;
  * 
  * @author doter
  */
-
+@Repository
 public class MailDao extends BaseDao<Mail, Integer> {
 
 	@Autowired

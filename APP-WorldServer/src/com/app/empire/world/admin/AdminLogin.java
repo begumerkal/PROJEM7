@@ -3,7 +3,7 @@ package com.app.empire.world.admin;
 //
 //import java.util.List;
 //
-//import com.app.empire.world.entity.mysql.Application;
+//import com.app.empire.world.entity.mysql.gameConfig.Application;
 //
 //public class AdminLogin {
 //	private int userId;
