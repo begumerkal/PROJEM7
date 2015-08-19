@@ -14,8 +14,10 @@ import com.app.protocol.exception.ProtocolException;
 import com.app.session.Session;
 import com.app.thread.ThreadPool;
 
-/*
+/**
  * 消息处理类
+ * 
+ * @author doter
  */
 @Service
 public class AbstractService implements Runnable {

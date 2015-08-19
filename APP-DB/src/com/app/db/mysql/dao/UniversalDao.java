@@ -64,7 +64,7 @@ public interface UniversalDao extends BaseDao{
      * @param o the object to save
      * @return a populated object
      */
-    Object save(Object o);
+    Object merge(Object o);
     
     void update(Object o);
     

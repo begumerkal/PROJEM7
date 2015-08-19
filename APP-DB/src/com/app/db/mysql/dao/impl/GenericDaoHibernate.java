@@ -49,7 +49,7 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends BaseDaoSupp
 		T entity = (T) super.getHibernateTemplate().get(this.clazz, id);
 		return entity != null;
 	}
-	public T save(T object) {
+	public T merge(T object) {
 		return (T) super.getHibernateTemplate().merge(object);
 	}
 	public void remove(ID id) {

@@ -91,6 +91,11 @@ public interface BaseDao {
      */
 	public void remove(Object object);
     /**
+     * 保存
+     * @param entity
+     */
+    public void save(Object entity);
+    /**
      * 保存或更新
      * @param entity
      */

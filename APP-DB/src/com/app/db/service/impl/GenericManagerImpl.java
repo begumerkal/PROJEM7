@@ -87,7 +87,7 @@ public class GenericManagerImpl<T, PK extends Serializable> implements GenericMa
      * {@inheritDoc}
      */
     public T save(T object) {
-        return genericDao.save(object);
+        return genericDao.merge(object);
     }
 
     /**

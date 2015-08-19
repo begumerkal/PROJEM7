@@ -6,7 +6,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 /**
  * 处理注册登录等账号相关线程池
- * @author sunzx
+ * @author doter
  */
 public abstract class ThreadPool implements RejectedExecutionHandler {
     /** 线程池 */

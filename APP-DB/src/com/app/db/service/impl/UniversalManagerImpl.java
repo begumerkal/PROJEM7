@@ -71,7 +71,7 @@ public class UniversalManagerImpl implements UniversalManager {
      * {@inheritDoc}
      */
     public Object save(Object o) {
-        return dao.save(o);
+        return dao.merge(o);
     }
     
     public void update(Object o) {

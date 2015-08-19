@@ -25,7 +25,7 @@ public class UniversalDaoHibernate extends BaseDaoSupport implements UniversalDa
     /**
      * {@inheritDoc}如果该对象是新对象执行添加，不会根据主键来update,永远都是添加新记录
      */
-    public Object save(Object o) {
+    public Object merge(Object o) {
         return getHibernateTemplate().merge(o);
     }
     

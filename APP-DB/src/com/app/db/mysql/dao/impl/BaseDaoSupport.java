@@ -2,7 +2,6 @@ package com.app.db.mysql.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -239,7 +238,13 @@ public class BaseDaoSupport extends HibernateDaoSupport implements BaseDao {
     public void remove(final Object object) {
         this.getHibernateTemplate().delete(object);
     }
-
+    /**
+     * 保存
+     * @param entity
+     */
+    public void save(Object entity) {
+        this.getHibernateTemplate().save(entity);
+    }
     /**
      * 保存或更新
      * @param entity
