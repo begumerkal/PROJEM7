@@ -13,6 +13,7 @@ import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 
 import com.app.empire.protocol.Protocol;
+import com.app.protocol.INetData;
 import com.app.protocol.s2s.S2SSegment;
 /**
  * 类 <code>HttpDispatcher</code>继承<code>Dispatcher</code>
@@ -211,5 +212,10 @@ public class HttpDispatcher implements Dispatcher, Runnable {
 		public void sessionIdle(IoSession session, IdleStatus idleStatus) throws Exception {
 			session.close(true);
 		}
+	}
+	@Override
+	public void syncPlayer(INetData data) {
+		// TODO Auto-generated method stub
+		
 	}
 }

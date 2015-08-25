@@ -1,7 +1,14 @@
-package com.app.empire.protocol.data.account;
+package com.app.empire.protocol.data.server;
+
 import com.app.empire.protocol.Protocol;
 import com.app.protocol.data.AbstractData;
-public class RoleLoginOk extends AbstractData {
+/****
+ * 玩家信息同步
+ * 
+ * @author doter
+ *
+ */
+public class SyncPlayer extends AbstractData {
 	private int id;// 角色id
 	private int heroId;// 英雄id
 	private String nickname; // 玩家角色名称
@@ -11,16 +18,12 @@ public class RoleLoginOk extends AbstractData {
 	private int fight; // 玩家当前战斗力
 	
 
-	private int lvExp; // 玩家等级
-	private int vipExp; // 玩家vip经验
-	private int money; // 玩家金币数量
-
-	public RoleLoginOk(int sessionId, int serial) {
-		super(Protocol.MAIN_ACCOUNT, Protocol.ACCOUNT_RoleLoginOk, sessionId, serial);
+	public SyncPlayer(int sessionId, int serial) {
+		super(Protocol.MAIN_ACCOUNT, Protocol.SERVER_SyncPlayer, sessionId, serial);
 	}
 
-	public RoleLoginOk() {
-		super(Protocol.MAIN_ACCOUNT, Protocol.ACCOUNT_RoleLoginOk);
+	public SyncPlayer() {
+		super(Protocol.MAIN_ACCOUNT, Protocol.SERVER_SyncPlayer);
 	}
 
 	public int getId() {
@@ -47,6 +50,14 @@ public class RoleLoginOk extends AbstractData {
 		this.lv = lv;
 	}
 
+	public int getHeroId() {
+		return heroId;
+	}
+
+	public void setHeroId(int heroId) {
+		this.heroId = heroId;
+	}
+
 	public int getVipLv() {
 		return vipLv;
 	}
@@ -69,38 +80,6 @@ public class RoleLoginOk extends AbstractData {
 
 	public void setFight(int fight) {
 		this.fight = fight;
-	}
-
-	public int getHeroId() {
-		return heroId;
-	}
-
-	public void setHeroId(int heroId) {
-		this.heroId = heroId;
-	}
-
-	public int getLvExp() {
-		return lvExp;
-	}
-
-	public void setLvExp(int lvExp) {
-		this.lvExp = lvExp;
-	}
-
-	public int getVipExp() {
-		return vipExp;
-	}
-
-	public void setVipExp(int vipExp) {
-		this.vipExp = vipExp;
-	}
-
-	public int getMoney() {
-		return money;
-	}
-
-	public void setMoney(int money) {
-		this.money = money;
 	}
 
 }

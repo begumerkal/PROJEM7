@@ -17,6 +17,7 @@ import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 
 import com.app.empire.protocol.Protocol;
+import com.app.protocol.INetData;
 import com.app.protocol.INetSegment;
 import com.app.protocol.s2s.S2SSegment;
 public class SingleSocketDispatcher implements Dispatcher, Runnable {
@@ -261,5 +262,10 @@ public class SingleSocketDispatcher implements Dispatcher, Runnable {
 
 		public void sessionIdle(IoSession session, IdleStatus idleStatus) throws Exception {
 		}
+	}
+	@Override
+	public void syncPlayer(INetData data) {
+		// TODO Auto-generated method stub
+		
 	}
 }

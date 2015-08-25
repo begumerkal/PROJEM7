@@ -134,11 +134,12 @@ public class PlayerService implements Runnable {
 	/** 更新玩家在线时间 */
 	private void updatePlayerOnLineTime(Player player) {
 		try {
+			player.setLoginOutTime(new Date());
 			long loginTime = player.getLoginTime().getTime();
 			long loginOutTime = player.getLoginOutTime().getTime();
-			int longTime = (int) (loginOutTime - loginTime);
-			int onLineTime = player.getOnLineTime();
+			int longTime = (int) (loginOutTime-loginTime);
 			if (longTime > 0) {
+				int onLineTime = player.getOnLineTime();
 				onLineTime += longTime;
 				player.setOnLineTime(onLineTime);
 			}
@@ -250,8 +251,8 @@ public class PlayerService implements Runnable {
 			if (this.playerDao.getPlayerByName(name) != null) {
 				throw new CreatePlayerException(ErrorMessages.PLAYER_SAMENAME);
 			}
-			
-			//创建角色信息
+
+			// 创建角色信息
 			Player newPlayer = new Player();
 			newPlayer.setAccountId(accountId);
 			newPlayer.setNickname(nickname);
@@ -269,11 +270,8 @@ public class PlayerService implements Runnable {
 			newPlayer.setProperty("");
 			newPlayer.setFight(0);
 			newPlayer = this.playerDao.insert(newPlayer);
-			//发角色英雄
-			
-			
-			
-			
+			// 发角色英雄
+
 			// 记录角色创建日志
 			GameLogService.createPlayer(newPlayer.getId(), newPlayer.getNickname());
 			return newPlayer;

@@ -21,7 +21,6 @@ public class S2SSegment implements INetSegment {
     public S2SSegment(byte type, byte subType, int serial, int sessionId, byte flag) {
         this.numOfParameter = 0;
         this.serial = -1;
-        this.sessionId = -1;
         this.type = type;
         this.subType = subType;
         this.serial = serial;

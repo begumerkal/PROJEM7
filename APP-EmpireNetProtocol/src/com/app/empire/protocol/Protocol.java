@@ -14,8 +14,9 @@ public class Protocol {
 	public static final byte SERVER_AccountLoginOk = 8;
 	public static final byte SERVER_SessionClosed = 9;// dis告知world 用户下线
 	public static final byte SERVER_SetClientIPAddress = 10;// 用户链接dis告知world用户ip
-	public static final byte SERVER_Kick = 11;//踢用户下线
-	
+	public static final byte SERVER_Kick = 11;// 踢用户下线
+	public static final byte SERVER_SyncPlayer = 12;// 玩家角色信息同步(系统内部使用)
+
 	public static final byte SERVER_ServerLogin = 100;
 	public static final byte SERVER_ServerLoginOk = 100;
 	public static final byte SERVER_ServerLoginFailed = 100;
@@ -27,18 +28,16 @@ public class Protocol {
 	public static final byte SERVER_LegacyRegister = 100;
 	public static final byte SERVER_LegacyRegisterOk = 100;
 
-	public static final byte SERVER_LegacyLogout = 13; // 登出(暂没使用)
 	public static final byte SERVER_PlayerLogout = 14; // 玩家登出(主要用这个协议通知)
 	public static final byte SERVER_LegacyVerification = 15;
 	public static final byte SERVER_LegacyVerificationResult = 16;
 	// 查询用户所在服务区信息
-	public static final byte SERVER_GetPlayerArea = 20;
 	public static final byte SERVER_GetPlayerAreaOk = 21;
 	public static final byte SERVER_SetClientInfo = 22; // 设置客户端信息
 	// 用户管理（广播，踢下线等）
 	public static final byte SERVER_BroadCast = 60;
 	public static final byte SERVER_ForceBroadCast = 61;
-	
+
 	public static final byte SERVER_ShutDown = 63;
 	// 服务器维护相关（推荐流量最好的服务器）
 	public static final byte SERVER_AddBalance = 70;
@@ -59,26 +58,26 @@ public class Protocol {
 
 	/** 用户帐号相关协议（客户端共享） */
 	public static final byte MAIN_ACCOUNT = 2;
-	public static final byte ACCOUNT_Login = 1;// 用户登录
-	public static final byte ACCOUNT_LoginOk = 2;// 登录成功
-	public static final byte ACCOUNT_RepeatLogin = 3;// 主账号重复登录
-	public static final byte ACCOUNT_GetRoleList = 4;//获取角色列表
-	public static final byte ACCOUNT_GetRoleListOK = 5;
-	public static final byte ACCOUNT_RoleCreate = 6;//角色创建
-	public static final byte ACCOUNT_RoleLogin = 7;//角色登录
-	public static final byte ACCOUNT_RoleLoginOk = 8;
+	public static final byte ACCOUNT_Heartbeat = 1;// 客户端对dis心跳
+	public static final byte ACCOUNT_Login = 2;// 用户登录
+	public static final byte ACCOUNT_LoginOk = 3;// 登录成功
+	public static final byte ACCOUNT_RepeatLogin = 4;// 主账号重复登录
+	public static final byte ACCOUNT_GetRoleList = 5;// 获取角色列表
+	public static final byte ACCOUNT_GetRoleListOK = 6;
+	public static final byte ACCOUNT_RoleCreate = 7;// 角色创建
+	public static final byte ACCOUNT_RoleLogin = 8;// 角色登录
+	public static final byte ACCOUNT_RoleLoginOk = 9;// 角色登录成功
+	public static final byte ACCOUNT_Move = 10;// 角色移动
 	
+	
+	
+
 	public static final byte ACCOUNT_Register = 100;
 	public static final byte ACCOUNT_RegisterOk = 100;
 	public static final byte ACCOUNT_RegisterFail = 100;
-	
-
-	
 	public static final byte ACCOUNT_ChannelLogin = 15;
 	public static final byte ACCOUNT_ChannelLoginResult = 16;
 
-	
-	
 	public static final byte ACCOUNT_GetRandomName = 24;
 	public static final byte ACCOUNT_GetRandomNameOk = 25;
 	public static final byte ACCOUNT_SetToken = 26;
@@ -134,7 +133,32 @@ public class Protocol {
 	public static final byte ADMIN_GetGPSServerConfigureOk = 32;
 	public static final byte ADMIN_UpdateGPSServerConfigure = 33;
 	public static final byte ADMIN_UpdateGPSServerConfigureOk = 34;
-
+	/** 系统间通信协议 */
+	public static final byte MAIN_SYSTEM = 4;
+	public static final byte SYSTEM_NOP = 1;
+	public static final byte SYSTEM_SYNC = 2;
+	public static final byte SYSTEM_HttpClose = 3;
+	public static final byte SYSTEM_ShakeHands = 4;// 客户端对dis心跳
+	public static final byte SYSTEM_TopHands = 5;
+	public static final byte SYSTEM_GetIslandState = 7;
+	public static final byte SYSTEM_GetIslandStateOk = 8;
+	public static final byte SYSTEM_GetSystemInfo = 9;
+	public static final byte SYSTEM_GetSystemInfoOk = 10;
+	public static final byte SYSTEM_GetNoviceRemark = 11;
+	public static final byte SYSTEM_GetNoviceRemarkOk = 12;
+	public static final byte SYSTEM_GetItemPriceAndVip = 13;
+	public static final byte SYSTEM_GetItemPriceAndVipOk = 14;
+	public static final byte SYSTEM_EarthPush = 15;
+	public static final byte SYSTEM_BattleShakeHands = 16;
+	public static final byte SYSTEM_GetPayAppRewardList = 17;
+	public static final byte SYSTEM_GetPayAppRewardListOk = 18;
+	public static final byte SYSTEM_GetPayAppReward = 19;
+	public static final byte SYSTEM_GetPayAppRewardOk = 20;
+	public static final byte SYSTEM_GetKeyProcess = 21;
+	public static final byte SYSTEM_GetKeyProcessOk = 22;
+	
+	
+	
 	/** 公告协议 */
 	public static final byte MAIN_BULLETIN = 11;
 	public static final byte BULLETIN_GetBulletin = 1;
@@ -697,29 +721,7 @@ public class Protocol {
 	public static final byte QUALIFYING_Exit = 5;
 	public static final byte QUALIFYING_Detail = 6;
 	public static final byte QUALIFYING_DetailOk = 7;
-	/** 系统间通信协议 */
-	public static final byte MAIN_SYSTEM = 80;
-	public static final byte SYSTEM_NOP = 1;
-	public static final byte SYSTEM_SYNC = 2;
-	public static final byte SYSTEM_HttpClose = 3;
-	public static final byte SYSTEM_ShakeHands = 4;// 客户端对dis心跳
-	public static final byte SYSTEM_TopHands = 5;
-	public static final byte SYSTEM_GetIslandState = 7;
-	public static final byte SYSTEM_GetIslandStateOk = 8;
-	public static final byte SYSTEM_GetSystemInfo = 9;
-	public static final byte SYSTEM_GetSystemInfoOk = 10;
-	public static final byte SYSTEM_GetNoviceRemark = 11;
-	public static final byte SYSTEM_GetNoviceRemarkOk = 12;
-	public static final byte SYSTEM_GetItemPriceAndVip = 13;
-	public static final byte SYSTEM_GetItemPriceAndVipOk = 14;
-	public static final byte SYSTEM_EarthPush = 15;
-	public static final byte SYSTEM_BattleShakeHands = 16;
-	public static final byte SYSTEM_GetPayAppRewardList = 17;
-	public static final byte SYSTEM_GetPayAppRewardListOk = 18;
-	public static final byte SYSTEM_GetPayAppReward = 19;
-	public static final byte SYSTEM_GetPayAppRewardOk = 20;
-	public static final byte SYSTEM_GetKeyProcess = 21;
-	public static final byte SYSTEM_GetKeyProcessOk = 22;
+
 	/** 合成强化主协议 */
 	public static final byte MAIN_STRENGTHEN = 81;
 	public static final byte STRENGTHEN_GetItemList = 1;

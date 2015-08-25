@@ -22,6 +22,8 @@ public class DisServer {
 	private TrustIpService trustIpService = null;
 	/** 分服服务 */
 	private IpdService ipdService = null;
+	/** 同屏同步服务 */
+	private SyncService syncService = new SyncService();
 
 	public static void main(String[] args) throws Throwable {
 		DisServer main = new DisServer();
@@ -40,6 +42,8 @@ public class DisServer {
 		configuration = new ConfigMenger("configDispatch.properties");
 		// 创建通道服务
 		this.channelService = new ChannelService();
+		// 同屏同步服务
+
 		// 控制处理器初始化,启动Control线程，监听
 		this.controlProcessor = TimeControlProcessor.getControlProcessor();
 		this.controlProcessor.start();
@@ -61,6 +65,9 @@ public class DisServer {
 			((SocketDispatcher) this.dispatcher).start();
 			((SocketDispatcher) this.dispatcher).setChannelService(this.channelService);
 			((SocketDispatcher) this.dispatcher).setTrustIpService(this.trustIpService);
+			((SocketDispatcher) this.dispatcher).setSyncService(this.syncService);
+			
+			
 			this.controlProcessor.setDispatcher(this.dispatcher);
 			// 配置
 			int clientreceivebuffsize = configuration.getConfiguration().getInt("clientreceivebuffsize");

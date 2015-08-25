@@ -68,6 +68,7 @@ public class RoleLoginHandler implements IDataHandler {
 					}
 					// 角色登录成功
 					session.loginPlayer(worldPlayer, data, client);
+					player.setLoginTime(new Date());//设置登录时间
 					RoleLoginOk playerLoginOk = new RoleLoginOk(data.getSessionId(), data.getSerial());
 					playerLoginOk.setId(player.getId());
 					playerLoginOk.setNickname(player.getNickname());

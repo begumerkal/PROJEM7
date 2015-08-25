@@ -8,6 +8,13 @@ import org.apache.mina.core.session.IoSession;
 
 import com.app.empire.protocol.Protocol;
 import com.app.protocol.INetData;
+
+/***
+ * 执行worldServer 发来的协议(内部处理)
+ * 
+ * @author doter
+ *
+ */
 public class TimeControlProcessor implements ControlProcessor, Runnable {
 	private static TimeControlProcessor controlProcessor = new TimeControlProcessor();
 	private static final Logger log = Logger.getLogger(TimeControlProcessor.class);
@@ -58,11 +65,41 @@ public class TimeControlProcessor implements ControlProcessor, Runnable {
 			log.info("TimeControlProcessor process INetData Exception.");
 		}
 	}
+	/** 任务处理 */
+	protected void process0(INetData data) {
+		byte type = data.getType();
+		try {
+			switch (type) {
+				case Protocol.MAIN_SERVER :// 服务器间协议
+					processServerMsg(data);
+					break;
+				case Protocol.MAIN_CHAT :
+					processChannelMsg(data);
+					break;
+			}
+		} catch (Exception ex) {
+			log.error(ex, ex);
+		}
+	}
 
+	public void run() {
+		while (true) {
+			try {
+				// 检索并移除此队列datas的头部，如果此队列不存在任何元素，则一直等待。
+				INetData data = (INetData) datas.take();
+				process0(data);
+			} catch (InterruptedException ex) {
+				log.error(ex, ex);
+			}
+		}
+	}
 	private void processServerMsg(INetData data) {
 		byte type = data.getSubType();
 		try {
 			switch (type) {
+				case Protocol.SERVER_SyncPlayer :
+					syncPlayer(data);// 同步玩家基本数据
+					break;
 				case Protocol.SERVER_NotifyMaintance : // '\037'
 					maintance(data);// 设置服务器状态状态
 					break;
@@ -136,34 +173,6 @@ public class TimeControlProcessor implements ControlProcessor, Runnable {
 				Channel channel = channelService.getChannel(rChannels[i]);
 				if (channel != null)
 					channel.removeSession(session);
-			}
-		}
-	}
-	/** 任务处理 */
-	protected void process0(INetData data) {
-		byte type = data.getType();
-		try {
-			switch (type) {
-				case Protocol.MAIN_SERVER ://服务器间协议
-					processServerMsg(data);
-					break;
-				case Protocol.MAIN_CHAT :
-					processChannelMsg(data);
-					break;
-			}
-		} catch (Exception ex) {
-			log.error(ex, ex);
-		}
-	}
-
-	public void run() {
-		while (true) {
-			try {
-				// 检索并移除此队列datas的头部，如果此队列不存在任何元素，则一直等待。
-				INetData data = (INetData) datas.take();
-				process0(data);
-			} catch (InterruptedException ex) {
-				log.error(ex, ex);
 			}
 		}
 	}
@@ -241,5 +250,14 @@ public class TimeControlProcessor implements ControlProcessor, Runnable {
 	private void kick(INetData data) throws Exception {
 		int sessionId = data.readInt();
 		dispatcher.unRegisterClient(sessionId);
+	}
+	/***
+	 * 同步玩家角色信息
+	 * 
+	 * @param data
+	 * @throws Exception
+	 */
+	private void syncPlayer(INetData data) throws Exception {
+		dispatcher.syncPlayer(data);
 	}
 }

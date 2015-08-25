@@ -2,8 +2,11 @@ package com.app.dispatch.vo;
 
 public class Map {
 	private int id;
-	private int high;
-	private int width;
+	private int width;// 宽度
+	private int high;// 高度
+	private int widthNum;// 宽度格子数
+	private int highNum;// 高度格子数
+
 	private int maxPlayer;
 
 	public int getId() {
@@ -29,6 +32,18 @@ public class Map {
 	}
 	public void setMaxPlayer(int maxPlayer) {
 		this.maxPlayer = maxPlayer;
+	}
+	public int getWidthNum() {
+		return widthNum;
+	}
+	public void setWidthNum(int widthNum) {
+		this.widthNum = widthNum;
+	}
+	public int getHighNum() {
+		return highNum;
+	}
+	public void setHighNum(int highNum) {
+		this.highNum = highNum;
 	}
 
 }
