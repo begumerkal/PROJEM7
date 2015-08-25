@@ -29,6 +29,8 @@ import com.app.protocol.ProtocolManager;
 import com.app.protocol.s2s.S2SData;
 import com.app.protocol.s2s.S2SSegment;
 
+import edu.emory.mathcs.backport.java.util.Arrays;
+
 public class SocketDispatcher implements Dispatcher, Runnable {
 	private static final String ATTRIBUTE_STRING = "SESSIONID";
 	private static final Logger log = Logger.getLogger(SocketDispatcher.class);
@@ -253,7 +255,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 						ClientInfo client = (ClientInfo) session.getAttribute(CLIENTINFO_KEY);
 						if (client == null)
 							throw new Exception("ClientInfo is null");
-						INetData udata = new S2SData(buffer.array(), 1, sessionId);
+						INetData udata = new S2SData(Arrays.copyOfRange(buffer.array(), 18, buffer.array().length), 1, sessionId);
 						int playerId = udata.readInt();// 角色id
 						int heroId = udata.readInt();// 英雄id
 						String nickname = udata.readString();// 玩家角色名称
@@ -271,8 +273,9 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 						client.setPlayer(player);
 						session.setAttribute(PLAYERID_KEY, playerId);
 						allClientInfo.put(playerId, client);
-
+						
 					} catch (Exception ex) {
+						ex.printStackTrace();
 						log.error(ex, ex);
 					}
 				}
