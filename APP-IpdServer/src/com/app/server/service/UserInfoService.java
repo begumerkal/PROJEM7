@@ -41,10 +41,10 @@ public class UserInfoService {
 			dataMap.put("openudid", serverInfo.getConfig().getOpenudid());
 			dataMap.put("group", lineInfo.getGroup());
 			dataMap.put("serverId", lineInfo.getServerId());
-			
-			List<String>  appendConfig = ServiceManager.getManager().getConfigService().getConfigList();
+			dataMap.put("lineId", lineInfo.getId());
+			List<String> appendConfig = ServiceManager.getManager().getConfigService().getConfigList();
 			dataMap.put("append", appendConfig);
-			
+
 		} else {
 			dataMap.put("bulletin", serverInfo.getConfig().getBulletin());
 		}

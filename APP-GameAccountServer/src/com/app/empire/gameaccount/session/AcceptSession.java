@@ -1,11 +1,10 @@
 package com.app.empire.gameaccount.session;
 import java.net.SocketAddress;
-
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
-
 import com.app.protocol.data.AbstractData;
 import com.app.session.Session;
+
 public class AcceptSession extends Session {
 	protected String worldServerId;
 	protected boolean valid = false;
@@ -75,7 +74,7 @@ public class AcceptSession extends Session {
 
 	@Override
 	public void idle(IoSession session, IdleStatus status) {
-		System.out.println("关闭链接："+session);
+		System.out.println("关闭链接：" + session + " worldServerId:" + worldServerId);
 		session.close(true);
 	}
 }

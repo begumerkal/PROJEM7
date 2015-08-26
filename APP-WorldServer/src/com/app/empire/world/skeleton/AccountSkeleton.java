@@ -35,9 +35,10 @@ public class AccountSkeleton extends Connector implements IDataHandler {
 	@Override
 	protected void connected() {
 		String area = ServiceManager.getManager().getConfiguration().getString("area");
+		String group = ServiceManager.getManager().getConfiguration().getString("group");
 		String machinecode = ServiceManager.getManager().getConfiguration().getString("machinecode");
 		WorldServerToAccountServer wta = new WorldServerToAccountServer();
-		wta.setWorldServerId(area+"_"+machinecode);
+		wta.setWorldServerId(area+"-"+group+"-"+machinecode);
 		send(wta);
 	}
 	@Override

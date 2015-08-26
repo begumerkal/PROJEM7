@@ -34,7 +34,7 @@ public class ServerLoadServlet extends HttpServlet {
         String group = req.getParameter("group");
         
         if (null == group || !ServiceManager.getManager().getConfigService().exisGroup("",group)) {
-            group = ServiceManager.getManager().getConfiguration().getString("defaultgroup");
+            group = ServiceManager.getManager().getConfiguration().getString("defaultGroup");
         }
         
         Map<String, Map<String, Map<Integer, ServerInfo>>> serverInfoMap = ServiceManager.getManager().getServerListService().getServerInfoMap();

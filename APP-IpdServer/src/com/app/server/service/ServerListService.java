@@ -73,7 +73,7 @@ public class ServerListService {
 	 * 将新加登录服务器信息增加到服务器列表中
 	 * 
 	 * @param id
-	 *            dispatch 编号
+	 *            line 编号
 	 * @param area
 	 *            服务器所在分区名称
 	 * @param addressInfo
@@ -112,7 +112,7 @@ public class ServerListService {
 					info.setUpdateurl(updateurl);
 					info.setAppraisal(appraisal);
 					info.setAddress(address);
-					System.out.println("AddServer 地区: " + area + ", machineId: " + machineId + ", 线:" + id);
+					System.out.println("AddServer 地区成功: " + area + ", machineId: " + machineId + ", 线:" + id);
 				}
 			}
 		}
