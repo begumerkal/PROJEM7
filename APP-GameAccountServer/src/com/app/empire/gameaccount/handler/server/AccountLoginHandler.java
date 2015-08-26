@@ -31,7 +31,7 @@ public class AccountLoginHandler implements IDataHandler {
 		String worldServerId = session.getWorldServerId();
 
 		String[] strArr = worldServerId.split("_");
-		int machinecode = Integer.valueOf(strArr[1]);
+		int machinecode = Integer.valueOf(strArr[2]);
 
 		int nowTime = (int) (System.currentTimeMillis() / 100);
 		AccountService accountService = ServiceFactory.getServiceFactory().getAccountService();
