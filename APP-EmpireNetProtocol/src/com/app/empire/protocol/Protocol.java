@@ -68,6 +68,8 @@ public class Protocol {
 	public static final byte ACCOUNT_RoleLogin = 8;// 角色登录
 	public static final byte ACCOUNT_RoleLoginOk = 9;// 角色登录成功
 	public static final byte ACCOUNT_Move = 10;// 角色移动
+	public static final byte ACCOUNT_ReportPlace = 11;// 报告位置
+	
 	
 	
 	
@@ -156,9 +158,7 @@ public class Protocol {
 	public static final byte SYSTEM_GetPayAppRewardOk = 20;
 	public static final byte SYSTEM_GetKeyProcess = 21;
 	public static final byte SYSTEM_GetKeyProcessOk = 22;
-	
-	
-	
+
 	/** 公告协议 */
 	public static final byte MAIN_BULLETIN = 11;
 	public static final byte BULLETIN_GetBulletin = 1;

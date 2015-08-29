@@ -3,6 +3,9 @@ package com.app.dispatch;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -90,17 +93,60 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 			IoBuffer buffer = (IoBuffer) object;
 			byte type = buffer.get(19);
 			byte subType = buffer.get(20);
-			if (checkProtocol(session, type, subType)) {
-				if (buffer.limit() >= 20 && type == Protocol.MAIN_ACCOUNT && subType == Protocol.ACCOUNT_Heartbeat
-						&& 1 == buffer.getShort(16)) {// 回应客户端心跳协议// 一个包&长度大于20
-					IoBuffer byteBuffer = IoBuffer.wrap(ProtocolManager.makeSegment(heartbeat).getPacketByteArray());
-					session.write(byteBuffer.duplicate());
+			if (checkProtocol(session, type, subType)) {// 协议检查
+				if (type == Protocol.MAIN_ACCOUNT) {
+					if (subType == Protocol.ACCOUNT_Heartbeat) {// 回应客户端心跳协议
+						IoBuffer byteBuffer = IoBuffer.wrap(ProtocolManager.makeSegment(heartbeat).getPacketByteArray());
+						session.write(byteBuffer.duplicate());// 返回心跳协议
+					} else if (subType == Protocol.ACCOUNT_Move) {// 玩家移动协议处理
+						try {
+							ClientInfo client = (ClientInfo) session.getAttribute(CLIENTINFO_KEY);
+							Player player = client.getPlayer();
+
+							INetData udata = new S2SData(Arrays.copyOfRange(buffer.array(), 18, buffer.array().length), 1, -1);
+							int playerId = udata.readInt();
+							byte direction = udata.readByte();// 方向1-12
+							int toWidth = udata.readInt();// 所在宽度位置
+							int toHigh = udata.readInt();// 所在高度位置
+							player.setDirection(direction);
+							player.setToWidth(toWidth);
+							player.setToHigh(toHigh);
+							this.syncService.broadcastingMove(client, toWidth, toHigh);
+
+						} catch (IllegalAccessException e) {
+							log.error(e.getMessage());
+							e.printStackTrace();
+						}
+					} else if (subType == Protocol.ACCOUNT_ReportPlace) {// 客户端告知服务器位置
+						try {
+							ClientInfo client = (ClientInfo) session.getAttribute(CLIENTINFO_KEY);
+							Player player = client.getPlayer();
+
+							INetData udata = new S2SData(Arrays.copyOfRange(buffer.array(), 18, buffer.array().length), 1, -1);
+							byte direction = udata.readByte();// 方向1-12
+							int nowWidth = udata.readInt();// 所在宽度位置
+							int nowHigh = udata.readInt();// 所在高度位置
+
+
+							
+							this.syncService.reportPlace(client, nowWidth, nowHigh);
+
+							player.setDirection(direction);
+							player.setWidth(nowWidth);
+							player.setHigh(nowHigh);
+
+						} catch (IllegalAccessException e) {
+							log.error(e.getMessage());
+							e.printStackTrace();
+						}
+					}
 				} else if ((Boolean) session.getAttribute(LOGINMARK_KEY) || type == Protocol.MAIN_ACCOUNT
 						|| type == Protocol.MAIN_ERRORCODE || type == Protocol.MAIN_SYSTEM) {// 判断用户是否已经登录或者为登录协议
 					buffer.putInt(4, id.intValue());// sessionId
-					this.serverSession.write(buffer.duplicate());
+					this.serverSession.write(buffer.duplicate());// 发送worldServer
 				} else {// 不是心跳，不是登录协议，并且用户未登录则断开socket连接
-					log.info("Kill Session LOGINMARK:" + session.getAttribute(LOGINMARK_KEY) + "---type:" + type + "---subtype:" + subType);
+					log.info("用户未登录Kill Session LOGINMARK:" + session.getAttribute(LOGINMARK_KEY) + "---type:" + type + "---subtype:"
+							+ subType);
 					session.close(true);
 				}
 			}
@@ -119,30 +165,43 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	 */
 	public boolean checkProtocol(IoSession session, int type, int subType) {
 		ClientInfo client = (ClientInfo) session.getAttribute(CLIENTINFO_KEY);
+		long nowTime = System.currentTimeMillis();
 		if (client != null) {
-			if (type == Protocol.MAIN_ACCOUNT && subType == Protocol.ACCOUNT_Heartbeat) {// 判断是否心跳
-				if (System.currentTimeMillis() - client.getHeartbeatTime() <= 10000) {
-					client.addHeartbeatCount();
-					if (client.getHeartbeatCount() > this.configuration.getInt("heartbeatcount")) {// 10秒钟内心跳数大于2则断开连接
-						log.info("Warning SessionId [" + session.getId() + "] HeartbeatCount: + " + client.getHeartbeatCount());
-						session.close(true);
-						return false;
+			if (type == Protocol.MAIN_ACCOUNT) {
+				if (subType == Protocol.ACCOUNT_Heartbeat) {// 判断是否心跳
+					if (nowTime - client.getHeartbeatTime() <= 10000) {
+						client.addHeartbeatCount();
+						if (client.getHeartbeatCount() > this.configuration.getInt("heartbeatCount")) {// 10秒钟内心跳数大于2则断开连接
+							log.info("Warning SessionId [" + session.getId() + "] HeartbeatCount: + " + client.getHeartbeatCount());
+							session.close(true);
+							return false;
+						}
+					} else {
+						client.setHeartbeatCount(0);
+						client.setHeartbeatTime(nowTime);
 					}
-				} else {
-					client.setHeartbeatCount(0);
-					client.setHeartbeatTime(System.currentTimeMillis());
+				} else if (subType == Protocol.ACCOUNT_Move) {// 移动协议
+					if (nowTime - client.getMoveTime() <= 1000) {
+						client.addMovecount();
+						if (client.getMoveCount() > this.configuration.getInt("moveCount")) {
+							return false;
+						}
+					} else {
+						client.setMoveCount(0);
+						client.setMoveTime(nowTime);
+					}
 				}
 			} else {// 其他协议
-				if (System.currentTimeMillis() - client.getProtocolTime() <= 1000) {// 除战斗
+				if (nowTime - client.getProtocolTime() <= 1000) {// 除战斗
 					client.addProtocolCount();
-					if (client.getProtocolCount() > this.configuration.getInt("protocolcount")) {// 1秒钟内协议大于15则断开连接
+					if (client.getProtocolCount() > this.configuration.getInt("protocolCount")) {// 1秒钟内协议大于15则断开连接
 						log.info("Warning SessionId [" + session.getId() + "] ProtocolCount: + " + client.getProtocolCount());
 						session.close(true);
 						return false;
 					}
 				} else {
 					client.setProtocolCount(0);
-					client.setProtocolTime(System.currentTimeMillis());
+					client.setProtocolTime(nowTime);
 				}
 			}
 		} else {
@@ -273,7 +332,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 						client.setPlayer(player);
 						session.setAttribute(PLAYERID_KEY, playerId);
 						allClientInfo.put(playerId, client);
-						
+
 					} catch (Exception ex) {
 						ex.printStackTrace();
 						log.error(ex, ex);
@@ -482,12 +541,15 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	}
 
 	public class ClientInfo {
-		private long heartbeatTime = 0;
-		private int heartbeatCount = 0;
-		private long protocolTime = 0;
-		private int protocolCount = 0;
+		private long heartbeatTime = 0;// 心跳时间
+		private int heartbeatCount = 0;// 心跳次数
+		private long protocolTime = 0;// 协议时间
+		private int protocolCount = 0;// 协议次数
+		private long moveTime = 0;// 移动时间
+		private int moveCount = 0;// 移动次数
 		private IoSession ioSession;
 		private Player player;
+		private Timer timer = new Timer();
 
 		public ClientInfo(IoSession ioSession) {
 			this.ioSession = ioSession;
@@ -537,12 +599,33 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 			this.player = player;
 		}
 
+		public long getMoveTime() {
+			return moveTime;
+		}
+
+		public void setMoveTime(long moveTime) {
+			this.moveTime = moveTime;
+		}
+
+		public int getMoveCount() {
+			return moveCount;
+		}
+
+		public void setMoveCount(int moveCount) {
+			this.moveCount = moveCount;
+		}
+
 		public void addHeartbeatCount() {
 			this.heartbeatCount++;
 		}
-
 		public void addProtocolCount() {
 			this.protocolCount++;
+		}
+		public void addMovecount() {
+			this.moveCount++;
+		}
+		public Timer getTimer() {
+			return timer;
 		}
 
 	}
