@@ -104,7 +104,7 @@ public class SyncService {
 					}
 				}
 			}
-			// 说明修改了区块
+			// 说明移动到了新的区块中
 			if (viewList.size() > 0) {
 				// map 区块中删除用户
 				this.delPlayerSessionToMapPiece(mapId, player.getWidth(), player.getHigh(), clientInfo);

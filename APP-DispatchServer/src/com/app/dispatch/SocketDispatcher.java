@@ -127,13 +127,13 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 							int nowWidth = udata.readInt();// 所在宽度位置
 							int nowHigh = udata.readInt();// 所在高度位置
 
-
-							
 							this.syncService.reportPlace(client, nowWidth, nowHigh);
 
 							player.setDirection(direction);
 							player.setWidth(nowWidth);
 							player.setHigh(nowHigh);
+							
+							
 
 						} catch (IllegalAccessException e) {
 							log.error(e.getMessage());
