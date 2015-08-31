@@ -34,7 +34,7 @@ public class DispatcherServlet extends HttpServlet {
 		if (area == null)
 			area = "CN";
 		if (group == null)
-			group = "1000_G1";
+			group = "G1";
 		if (null == versionString)
 			versionString = "1.0.0";
 		if (serverid == null)

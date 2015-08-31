@@ -30,6 +30,6 @@ public interface IAccountService {
 	 * @param name
 	 * @return
 	 */
-	public Account login(String name, String worldServerId);
+	public Account login(String username, int channel, String worldServerId);
 
 }

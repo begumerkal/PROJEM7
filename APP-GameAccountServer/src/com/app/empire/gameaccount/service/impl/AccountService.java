@@ -62,8 +62,8 @@ public class AccountService implements IAccountService {
 	}
 	
 	@Override
-	public Account login(String username, String worldServerId) {
-		return this.accountDao.login(username, worldServerId);
+	public Account login(String username, int channel, String worldServerId) {
+		return this.accountDao.login(username, channel,worldServerId);
 	}
 
 

@@ -53,15 +53,13 @@ public class AccountDao extends BaseDao<Account, Integer> {
 	public Account createAccount(Account account) {
 		return this.insert(account);
 	}
-	
-	
-	public Account login(String username, String worldServerId) {
+
+	public Account login(String username, int channel, String worldServerId) {
 		Query query = new Query();
 		query.addCriteria(new Criteria("username").is(username));
 		query.addCriteria(new Criteria("serverid").is(worldServerId));
+		query.addCriteria(new Criteria("channel").is(channel));
 		return this.mongoTemplate.findOne(query, Account.class);
 	}
- 
-	
-	
+
 }

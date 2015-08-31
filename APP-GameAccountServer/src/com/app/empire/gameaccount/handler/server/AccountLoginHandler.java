@@ -37,7 +37,7 @@ public class AccountLoginHandler implements IDataHandler {
 		AccountService accountService = ServiceFactory.getServiceFactory().getAccountService();
 		try {
 			AccountLoginOk loginOk = new AccountLoginOk(data.getSessionId(), data.getSerial());
-			Account account = accountService.login(name, session.getWorldServerId());
+			Account account = accountService.login(name, channel, worldServerId);
 			if (account == null) {
 				Account newAccount = new Account();
 				newAccount.setUsername(name);
