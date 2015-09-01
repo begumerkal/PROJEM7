@@ -32,13 +32,13 @@ public class DeleteMailHandler implements IDataHandler {
 		try {
 			DeleteMailOk deleteMailOk = new DeleteMailOk(data.getSessionId(), data.getSerial());
 			if (deleteMail.getMailId().length == 0) {
-				throw new Exception(Common.ERRORKEY + ErrorMessages.MAIL_DETELE_MESSAGE);
+				throw new Exception(Common.CHAT_GUILD + ErrorMessages.MAIL_DETELE_MESSAGE);
 			}
 			session.write(deleteMailOk);
 //			ServiceManager.getManager().getEMailService().deleteMail(player.getId(), deleteMail.getMailId(), player.getLevel());
 //			ServiceManager.getManager().getEMailService().sendMailStatus(player);
 		} catch (Exception ex) {
-			if (null == ex.getMessage() || !ex.getMessage().startsWith(Common.ERRORKEY))
+			if (null == ex.getMessage() || !ex.getMessage().startsWith("Common.ERRORKEY"))
 				this.log.error(ex, ex);
 			throw new ProtocolException(ErrorMessages.MAIL_DETELE_MESSAGE, data.getSerial(), data.getSessionId(), data.getType(),
 					data.getSubType());

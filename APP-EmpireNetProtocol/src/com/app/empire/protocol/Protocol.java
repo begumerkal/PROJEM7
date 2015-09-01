@@ -99,42 +99,15 @@ public class Protocol {
 	public static final byte ACCOUNT_GetDownloadRewardList = 63;
 	public static final byte ACCOUNT_GetDownloadRewardListOK = 64;
 
-	/** GM帐户协议和相关管理协议 */
-	public static final byte MAIN_ADMIN = 3;
-	public static final byte ADMIN_Login = 1;
-	public static final byte ADMIN_LoginResult = 2;
-	public static final byte ADMIN_GivenItems = 3;
-	public static final byte ADMIN_GivenItemsResult = 4;
-	public static final byte ADMIN_GetData = 5;
-	public static final byte ADMIN_GetDataResult = 6;
-	public static final byte ADMIN_Banned = 7;
-	public static final byte ADMIN_BannedResult = 8;
-	public static final byte ADMIN_Gag = 9;
-	public static final byte ADMIN_GagResult = 10;
-	public static final byte ADMIN_Update = 11;
-	public static final byte ADMIN_UpdateResult = 12;
-	public static final byte ADMIN_Add = 13;
-	public static final byte ADMIN_AddResult = 14;
-	public static final byte ADMIN_GetSystemInfo = 15;
-	public static final byte ADMIN_GetSystemInfoResult = 16;
-	public static final byte ADMIN_Delete = 17;
-	public static final byte ADMIN_DeleteResult = 18;
-	public static final byte ADMIN_SendMail = 19;
-	public static final byte ADMIN_SendMailResult = 20;
-	public static final byte ADMIN_Version = 21;
-	public static final byte ADMIN_VersionResult = 22;
-	public static final byte ADMIN_AddByJson = 23;
-	public static final byte ADMIN_AddByJsonResult = 24;
-	public static final byte ADMIN_UpdateByJson = 25;
-	public static final byte ADMIN_UpdateByJsonResult = 26;
-	public static final byte ADMIN_GetDataById = 27;
-	public static final byte ADMIN_GetDataByIdResult = 28;
-	public static final byte ADMIN_UpdateAccountResult = 29;
-	public static final byte ADMIN_UpdateAccountResultOk = 30;
-	public static final byte ADMIN_GetGPSServerConfigure = 31;
-	public static final byte ADMIN_GetGPSServerConfigureOk = 32;
-	public static final byte ADMIN_UpdateGPSServerConfigure = 33;
-	public static final byte ADMIN_UpdateGPSServerConfigureOk = 34;
+	/** 聊天相关协议 */
+	public static final byte MAIN_CHAT = 3;
+	public static final byte CHAT_SendMessage = 1;
+	public static final byte CHAT_ReceiveMessage = 2;
+	public static final byte CHAT_ChangeChannel = 3;
+	public static final byte CHAT_SyncChannels = 4;
+	public static final byte CHAT_GetSpeakerNum = 5;
+	public static final byte CHAT_GetSpeakerNumOk = 6;
+	
 	/** 系统间通信协议 */
 	public static final byte MAIN_SYSTEM = 4;
 	public static final byte SYSTEM_NOP = 1;
@@ -174,14 +147,7 @@ public class Protocol {
 	public static final byte MAIN_MAP = 15;
 	public static final byte MAP_GetMapList = 1;
 	public static final byte MAP_GetMapListOk = 2;
-	/** 聊天相关协议 */
-	public static final byte MAIN_CHAT = 16;
-	public static final byte CHAT_SendMessage = 1;
-	public static final byte CHAT_ReceiveMessage = 2;
-	public static final byte CHAT_ChangeChannel = 3;
-	public static final byte CHAT_SyncChannels = 4;
-	public static final byte CHAT_GetSpeakerNum = 5;
-	public static final byte CHAT_GetSpeakerNumOk = 6;
+
 	/** 副本房间相关协议 */
 	public static final byte MAIN_BOSSMAPROOM = 18;
 	public static final byte BOSSMAPROOM_CreateRoom = 1;

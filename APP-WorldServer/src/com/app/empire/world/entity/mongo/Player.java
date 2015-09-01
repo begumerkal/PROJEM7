@@ -39,6 +39,7 @@ public class Player extends IEntity {
 	private String systemVersion;// 系统版本
 	private String property;// 属性
 	private int channelId;// 渠道id
+	private int guildId;// 公会id
 
 	public Integer getAccountId() {
 		return accountId;
@@ -189,6 +190,12 @@ public class Player extends IEntity {
 	}
 	public void setChannelId(int channelId) {
 		this.channelId = channelId;
+	}
+	public int getGuildId() {
+		return guildId;
+	}
+	public void setGuildId(int guildId) {
+		this.guildId = guildId;
 	}
 
 }

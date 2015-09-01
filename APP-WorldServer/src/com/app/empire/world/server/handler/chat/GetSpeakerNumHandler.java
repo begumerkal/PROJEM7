@@ -35,8 +35,8 @@ public class GetSpeakerNumHandler implements IDataHandler {
 		int colorSpeakNum = 0;
 		try {
 			List<Integer> itemIds = new ArrayList<Integer>();
-			itemIds.add(Common.HORNID);
-			itemIds.add(Common.COLOURHORNID);
+			itemIds.add(Common.CHAT_GUILD);
+			itemIds.add(Common.CHAT_GUILD);
 
 		 
 
@@ -46,7 +46,7 @@ public class GetSpeakerNumHandler implements IDataHandler {
 			session.write(getSpeakerNumOk);
 
 		} catch (Exception ex) {
-			if (null == ex.getMessage() || !ex.getMessage().startsWith(Common.ERRORKEY))
+			if (null == ex.getMessage() || !ex.getMessage().startsWith("Common.ERRORKEY"))
 				this.log.error(ex, ex);
 			throw new ProtocolException(ErrorMessages.CHAT_CHANNEL_MESSAGE, data.getSerial(), data.getSessionId(), data.getType(),
 					data.getSubType());

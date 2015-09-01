@@ -39,7 +39,6 @@ public class PlayerService implements Runnable {
 	 * 玩家playerID与WorldPlayer对应关系HashMap，原名players
 	 */
 	private ConcurrentHashMap<Integer, WorldPlayer> worldPlayers = new ConcurrentHashMap<Integer, WorldPlayer>();
-
 	public ConcurrentHashMap<Integer, WorldPlayer> getWorldPlayers() {
 		return worldPlayers;
 	}

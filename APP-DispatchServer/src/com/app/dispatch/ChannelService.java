@@ -17,7 +17,11 @@ public class ChannelService {
 
 	public Channel getAndCreate(String name) {
 		Channel channel = new Channel(name);
-		return this.channels.putIfAbsent(name, channel);
+		Channel c = this.channels.putIfAbsent(name, channel);
+		if (c == null) {
+			c = channel;
+		}
+		return c;
 	}
 
 	public Channel getChannel(String name) {

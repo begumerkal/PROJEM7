@@ -2,7 +2,7 @@ package com.app.empire.protocol.data.server;
 import com.app.empire.protocol.Protocol;
 import com.app.protocol.data.AbstractData;
 public class BroadCast extends AbstractData {
-    private String channel;
+    private String channel;//频道标识
     private byte[] data;
 
     public BroadCast(int sessionId, int serial) {

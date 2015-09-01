@@ -39,9 +39,9 @@ public class IOSSendProductCheckInfoHandler implements IDataHandler {
 		if (iosSendProductCheckInfo.getKey() != null && iosSendProductCheckInfo.getKey().length() > 1000) {
 //			ServiceManager.getManager().getPCRechargeService().addspci(player, data, RechargeService.IOSORDER);
 		} else {
-			int code = Common.PURCHASE_BUY_TYPE_VERIFY_FAIL;
+			int code = Common.CHAT_GUILD;
 			if (iosSendProductCheckInfo.getKey().equals("-1")) {
-				code = Common.PURCHASE_BUY_TYPE_CANCEL;
+				code = Common.CHAT_GUILD;
 			}
 			BuyFailed buyFailed = new BuyFailed();
 			buyFailed.setOrderNum(iosSendProductCheckInfo.getOrderNum());

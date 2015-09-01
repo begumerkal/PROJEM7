@@ -146,10 +146,10 @@ public class TimeControlProcessor implements ControlProcessor, Runnable {
 	}
 
 	private void processChannelMsg(INetData data) {
-		byte type = data.getSubType();
+		byte subType = data.getSubType();
 		try {
-			switch (type) {
-				case Protocol.CHAT_SyncChannels :
+			switch (subType) {
+				case Protocol.CHAT_SyncChannels ://聊天频道设置
 					syncChannel(data);
 					break;
 			}
@@ -157,20 +157,20 @@ public class TimeControlProcessor implements ControlProcessor, Runnable {
 			log.error(ex, ex);
 		}
 	}
-	/** 聊天处理 */
+	
+	/** 玩家聊天频道设置 */
 	private void syncChannel(INetData data) throws Exception {
 		int sessionId = data.readInt();
 		IoSession session = dispatcher.getSession(sessionId);
 		if (session != null) {
-			String aChannels[] = data.readStrings();
-			String rChannels[] = data.readStrings();
-			for (int i = 0; i < aChannels.length; i++) {
-				Channel channel = channelService.getAndCreate(aChannels[i]);
-				if (channel != null)
-					channel.join(session);
+			String addChannels[] = data.readStrings();
+			String removeChannels[] = data.readStrings();
+			for (String str : addChannels) {
+				Channel channel = channelService.getAndCreate(str);
+				channel.join(session);
 			}
-			for (int i = 0; i < rChannels.length; i++) {
-				Channel channel = channelService.getChannel(rChannels[i]);
+			for (String str : removeChannels) {
+				Channel channel = channelService.getChannel(str);
 				if (channel != null)
 					channel.removeSession(session);
 			}
