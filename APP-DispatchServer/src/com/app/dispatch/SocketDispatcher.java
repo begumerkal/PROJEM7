@@ -132,16 +132,16 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 							player.setDirection(direction);
 							player.setWidth(nowWidth);
 							player.setHigh(nowHigh);
-							
-							
 
 						} catch (IllegalAccessException e) {
 							log.error(e.getMessage());
 							e.printStackTrace();
 						}
+					} else {
+						buffer.putInt(4, id.intValue());// sessionId
+						this.serverSession.write(buffer.duplicate());// 发送worldServer
 					}
-				} else if ((Boolean) session.getAttribute(LOGINMARK_KEY) || type == Protocol.MAIN_ACCOUNT
-						|| type == Protocol.MAIN_ERRORCODE || type == Protocol.MAIN_SYSTEM) {// 判断用户是否已经登录或者为登录协议
+				} else if ((Boolean) session.getAttribute(LOGINMARK_KEY) || type == Protocol.MAIN_ERRORCODE || type == Protocol.MAIN_SYSTEM) {// 判断用户是否已经登录或者为登录协议
 					buffer.putInt(4, id.intValue());// sessionId
 					this.serverSession.write(buffer.duplicate());// 发送worldServer
 				} else {// 不是心跳，不是登录协议，并且用户未登录则断开socket连接

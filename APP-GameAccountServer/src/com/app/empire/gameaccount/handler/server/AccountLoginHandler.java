@@ -30,7 +30,7 @@ public class AccountLoginHandler implements IDataHandler {
 
 		String worldServerId = session.getWorldServerId();
 
-		String[] strArr = worldServerId.split("_");
+		String[] strArr = worldServerId.split("-");
 		int machinecode = Integer.valueOf(strArr[2]);
 
 		int nowTime = (int) (System.currentTimeMillis() / 100);
