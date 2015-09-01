@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
 
-import com.app.dispatch.SocketDispatcher.ClientInfo;
+import com.app.dispatch.vo.ClientInfo;
 import com.app.dispatch.vo.Map;
 import com.app.dispatch.vo.Player;
 import com.app.empire.protocol.data.account.Move;
