@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.app.empire.protocol.data.account.RoleLogin;
-import com.app.empire.protocol.data.cache.PlayerInfo;
-import com.app.empire.protocol.data.cache.UpdatePlayer;
+//import com.app.empire.protocol.data.cache.PlayerInfo;
+//import com.app.empire.protocol.data.cache.UpdatePlayer;
 import com.app.empire.world.common.util.Common;
 import com.app.empire.world.common.util.KeywordsUtil;
 import com.app.empire.world.common.util.ServiceUtils;
@@ -747,10 +747,10 @@ public class PlayerService implements Runnable {
 			return;
 		Player player = worldPlayer.getPlayer();
 
-		PlayerInfo playerInfo = new PlayerInfo();
-		playerInfo.setId(player.getId());
-		playerInfo.setName(player.getNickname());
-		worldPlayer.sendData(playerInfo);
+//		PlayerInfo playerInfo = new PlayerInfo();
+//		playerInfo.setId(player.getId());
+//		playerInfo.setName(player.getNickname());
+//		worldPlayer.sendData(playerInfo);
 	}
 
 	// 推送修改后的数据，如金币，经验，等级等
@@ -765,10 +765,10 @@ public class PlayerService implements Runnable {
 			value[i] = info.get(k);
 			i++;
 		}
-		UpdatePlayer updatePlayerInfo = new UpdatePlayer();
-		updatePlayerInfo.setKey(key);
-		updatePlayerInfo.setValue(value);
-		player.sendData(updatePlayerInfo);
+//		UpdatePlayer updatePlayerInfo = new UpdatePlayer();
+//		updatePlayerInfo.setKey(key);
+//		updatePlayerInfo.setValue(value);
+//		player.sendData(updatePlayerInfo);
 	}
 
 	// 定时触发
