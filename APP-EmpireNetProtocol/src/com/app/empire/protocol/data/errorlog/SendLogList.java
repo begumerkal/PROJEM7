@@ -4,7 +4,7 @@ import com.app.empire.protocol.Protocol;
 import com.app.protocol.data.AbstractData;
 
 public class SendLogList extends AbstractData {
-    private String[] loglist;
+	private String[] loglist;
 	public SendLogList(int sessionId, int serial) {
 		super(Protocol.MAIN_ERRORLOG, Protocol.ERRORLOG_SendLogList, sessionId, serial);
 	}
@@ -13,11 +13,11 @@ public class SendLogList extends AbstractData {
 		super(Protocol.MAIN_ERRORLOG, Protocol.ERRORLOG_SendLogList);
 	}
 
-    public String[] getLoglist() {
-        return loglist;
-    }
+	public String[] getLoglist() {
+		return loglist;
+	}
 
-    public void setLoglist(String[] loglist) {
-        this.loglist = loglist;
-    }
+	public void setLoglist(String[] loglist) {
+		this.loglist = loglist;
+	}
 }

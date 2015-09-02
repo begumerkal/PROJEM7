@@ -3,7 +3,6 @@ package com.app.empire.world.server.handler.mail;
 import org.apache.log4j.Logger;
 
 import com.app.empire.protocol.data.mail.GetInboxMailNew;
-import com.app.empire.protocol.data.nearby.GetNearbyReceivedMailList;
 import com.app.empire.world.exception.ErrorMessages;
 import com.app.empire.world.model.player.WorldPlayer;
 import com.app.empire.world.service.factory.ServiceManager;

@@ -3,6 +3,7 @@ package com.app.empire.protocol.data.errorlog;
 import com.app.empire.protocol.Protocol;
 import com.app.protocol.data.AbstractData;
 
+ 
 public class SendLog extends AbstractData {
     private String logfilename;
     private String[] logs;

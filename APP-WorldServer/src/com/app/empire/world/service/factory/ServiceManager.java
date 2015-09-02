@@ -11,7 +11,7 @@ import com.app.empire.world.service.base.impl.GameConfigService;
 import com.app.empire.world.service.base.impl.PlayerService;
 import com.app.empire.world.service.impl.AbstractService;
 import com.app.empire.world.service.impl.ConnectService;
-import com.app.empire.world.service.impl.CrossService;
+//import com.app.empire.world.service.impl.CrossService;
 import com.app.empire.world.service.impl.OrderSerialService;
 import com.app.empire.world.service.impl.SendMailService;
 import com.app.empire.world.skeleton.AccountSkeleton;
@@ -39,8 +39,8 @@ public class ServiceManager {
 	private SendMailService sendMailService;// 发送电子邮件服务
 	@Autowired
 	private OrderSerialService orderSerialService;
-	@Autowired
-	private CrossService crossService;// 跨服对战相关服务
+//	@Autowired
+//	private CrossService crossService;// 跨服对战相关服务
 	@Autowired
 	private AbstractService abstractService;// 协议处理线程
 	@Autowired
@@ -134,9 +134,9 @@ public class ServiceManager {
 		return simpleThreadPool;
 	}
 
-	public CrossService getCrossService() {
-		return crossService;
-	}
+//	public CrossService getCrossService() {
+//		return crossService;
+//	}
 
 	/**
 	 * 获取协议处理线程

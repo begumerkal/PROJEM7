@@ -1,16 +1,13 @@
 package com.wyd.dispatch;
 import java.net.InetSocketAddress;
 
-import org.apache.commons.configuration.Configuration;
 import org.apache.log4j.Logger;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 
-import com.app.empire.protocol.data.server.SendAddress;
 import com.app.net.Connector;
 import com.app.protocol.data.DataBeanFilter;
 import com.app.protocol.s2s.S2SDecoder;
 import com.app.protocol.s2s.S2SEncoder;
-import com.app.protocol.utils.IpUtil;
 public class IpdConnector extends Connector {
 	private static final Logger log = Logger.getLogger(IpdConnector.class);
 
