@@ -2,7 +2,7 @@ package com.wyd.service.dao.impl;
 
 import java.util.List;
 
-import com.app.db.dao.impl.UniversalDaoHibernate;
+import com.app.db.mysql.dao.impl.UniversalDaoHibernate;
 import com.wyd.service.bean.Empireaccount;
 import com.wyd.service.dao.IAccountDao;
 

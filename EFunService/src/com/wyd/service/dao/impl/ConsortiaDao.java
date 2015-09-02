@@ -3,7 +3,9 @@ package com.wyd.service.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.app.db.dao.impl.UniversalDaoHibernate;
+ 
+
+import com.app.db.mysql.dao.impl.UniversalDaoHibernate;
 import com.wyd.service.bean.BuffRecord;
 import com.wyd.service.bean.Consortia;
 import com.wyd.service.bean.PlayerSinConsortia;
