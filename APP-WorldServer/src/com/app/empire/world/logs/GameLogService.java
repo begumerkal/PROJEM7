@@ -332,6 +332,7 @@ public class GameLogService {
 	 */
 	public static void onlineNum(int num) {
 		StringBuffer sb = new StringBuffer();
+		sb.append("角色在线数量:");
 		sb.append(num);
 		saveData(MARKNUM_ONLINENUM, sb.toString());
 	}
