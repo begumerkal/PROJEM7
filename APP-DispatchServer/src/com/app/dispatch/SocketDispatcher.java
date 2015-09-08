@@ -246,7 +246,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		InetSocketAddress address = new InetSocketAddress(worldIp, worldPort);
 
 		this.connector = new NioSocketConnector(Runtime.getRuntime().availableProcessors() + 1);
-		SocketSessionConfig cfg = acceptor.getSessionConfig();
+		SocketSessionConfig cfg = this.connector.getSessionConfig();
 		cfg.setIdleTime(IdleStatus.BOTH_IDLE, 120);
 		cfg.setTcpNoDelay(true);
 		cfg.setReceiveBufferSize(worldreceivebuffsize);
