@@ -252,6 +252,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		cfg.setReceiveBufferSize(worldreceivebuffsize);
 		cfg.setSendBufferSize(worldwritebuffsize);
 		connector.getFilterChain().addLast("codec", new ProtocolCodecFilter(new ServerWYDEncoder(), new ServerWYDDecoder()));
+		connector.getFilterChain().addLast("threadPool", new ExecutorFilter(1, 4));
 		connector.setHandler(new ServerSessionHandler());
 		connector.setDefaultRemoteAddress(address);
 		ConnectFuture future = this.connector.connect();
