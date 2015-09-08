@@ -42,7 +42,7 @@
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<!-- 配置Hibernate拦截器,自动填充数据的插入、更新时间 -->
 		<property name="dataSource" ref="dataSource" />
-		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
+		<property name="configLocation" value="classpath:hibernate.cfg.log.xml" />
 		<property name="hibernateProperties">
 			<value>
 				<!-- 设置数据库方言 -->
@@ -115,7 +115,7 @@
 	<bean id="gameConfigSessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<!-- 配置Hibernate拦截器,自动填充数据的插入、更新时间 -->
 		<property name="dataSource" ref="gameConfigDataSource" />
-		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
+		<property name="configLocation" value="classpath:hibernate.cfg.gameConfig.xml" />
 		<property name="hibernateProperties">
 			<value>
 				<!-- 设置数据库方言 -->
