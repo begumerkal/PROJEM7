@@ -3,23 +3,33 @@ package com.app.empire.world.service.base.impl;
 import java.io.Serializable;
 import java.util.concurrent.ThreadPoolExecutor;
 
+import org.mortbay.log.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.app.db.mysql.dao.impl.BaseDaoSupport;
+import com.app.empire.world.dao.mysql.gameLog.impl.LogAccountLoginDao;
+import com.app.empire.world.entity.mysql.gameLog.LogAccountLogin;
 import com.app.thread.ThreadPool;
 
 /**
- * 游戏日志记录
+ * 游戏日志记录(异步)
  * 
  * @author doter
  */
 @Service
 public class GameLogService {
-	private HandlerThreadPool threadPool = new HandlerThreadPool(2, 10, 100);
-
-	public void saveLog(BaseDaoSupport dao, Serializable entity) {
+	private HandlerThreadPool threadPool = new HandlerThreadPool(2, 4, 100);
+	@Autowired
+	private LogAccountLoginDao logAccountLoginDao;
+	//记录账号登录日志
+	public void saveLogAccountLogin(LogAccountLogin entity){
+		saveLog(logAccountLoginDao, entity);
+	}
+	
+	private void saveLog(BaseDaoSupport dao, Serializable entity) {
 		try {
-			threadPool.execute(new ThreadTask(dao, entity));
+			threadPool.execute(new LogThreadTask(dao, entity));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -53,13 +63,13 @@ public class GameLogService {
 			System.err.println("LogThreadPool Is Full...");
 		}
 	}
-
-	class ThreadTask implements Runnable {
+	
+	static class LogThreadTask implements Runnable {
 		private BaseDaoSupport dao;
 		private Serializable entity;
 
 		// 构造函数
-		public ThreadTask(BaseDaoSupport dao, Serializable entity) {
+		public LogThreadTask(BaseDaoSupport dao, Serializable entity) {
 			this.dao = dao;
 			this.entity = entity;
 		}
@@ -69,6 +79,7 @@ public class GameLogService {
 			try {
 				dao.save(entity);
 			} catch (Throwable e) {
+				Log.info(e.getMessage());
 				e.printStackTrace();
 			}
 		}

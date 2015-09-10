@@ -1,11 +1,14 @@
 package com.app.empire.world.server.handler.server;
 
+import java.util.Date;
+
 import org.apache.log4j.Logger;
 
 import com.app.empire.protocol.data.account.LoginFail;
 import com.app.empire.protocol.data.account.LoginOk;
 import com.app.empire.protocol.data.account.RepeatLogin;
 import com.app.empire.protocol.data.server.AccountLoginOk;
+import com.app.empire.world.entity.mysql.gameLog.LogAccountLogin;
 import com.app.empire.world.exception.TipMessages;
 import com.app.empire.world.model.Client;
 import com.app.empire.world.request.LoginRequest;
@@ -49,6 +52,14 @@ public class AccountLoginOkHandler implements IDataHandler {
 					LoginOk loginOk = new LoginOk(request.getSessionId(), request.getId());
 					session.write(loginOk);
 					this.log.info("AccountID[" + accountId + "][Login Ok]");
+					
+					
+					//记录账号登录日志
+					LogAccountLogin entity = new LogAccountLogin();
+					entity.setAccountId(accountId);
+					entity.setAccountName(name);
+					entity.setDateTime(new Date());
+					ServiceManager.getManager().getGameLogService().saveLogAccountLogin(entity);
 				} else {
 					this.log.info("AccountID[" + accountId + "][Login Fail]");
 				}

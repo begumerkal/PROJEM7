@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:mongo="http://www.springframework.org/schema/data/mongo"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-        http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context-3.0.xsd        
-        http://www.springframework.org/schema/data/mongo
-        http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd">
-
+	        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	        http://www.springframework.org/schema/context
+	        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	        http://www.springframework.org/schema/tx
+	        http://www.springframework.org/schema/tx/spring-tx.xsd
+	        http://www.springframework.org/schema/aop
+	        http://www.springframework.org/schema/aop/spring-aop.xsd
+	        http://www.springframework.org/schema/data/mongo
+	        http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd">
 	<!-- JDBC参数配置 -->
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" lazy-init="true">
 		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
@@ -69,29 +73,26 @@
 		</property>
 	</bean>
 
-	<!-- log TransactionManager -->
+	<!-- log 事务管理 -->
+<!-- 	
 	<bean id="logTransactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-		<property name="sessionFactory">
-			<ref local="sessionFactory" />
-		</property>
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-
-	<bean id="logBaseTransactionProxy" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
-		abstract="true">
-		<property name="transactionManager" ref="logTransactionManager" />
-		<property name="transactionAttributes">
-			<props>
-				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
-				<prop key="remove*">PROPAGATION_REQUIRED,-Exception</prop>
-				<prop key="save*">PROPAGATION_REQUIRED,-Exception</prop>
-				<prop key="create*">PROPAGATION_REQUIRED,-Exception</prop>
-				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
-				<prop key="update*">PROPAGATION_REQUIRED,-Exception</prop>
-				<prop key="is*">PROPAGATION_REQUIRED,readOnly</prop>
-			</props>
-		</property>
-	</bean>
-
+	<tx:advice id="txAdvice" transaction-manager="logTransactionManager">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="find*" read-only="true" />
+			<tx:method name="*" rollback-for="Exception" />
+		</tx:attributes>
+	</tx:advice>
+	<aop:config proxy-target-class="true">
+		<aop:pointcut id="logPointcut" expression="execution(* com.app.empire.world.dao.mysql.gameLog.impl.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="logPointcut" />
+	</aop:config>
+-->
+<!--  
+	<tx:annotation-driven transaction-manager="logTransactionManager"  proxy-target-class="true"/> 
+-->
 	<!-- 游戏Config数据源配置 -->
 	<bean id="gameConfigDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<!-- 设置JDBC驱动名称 -->
@@ -141,33 +142,7 @@
 			</value>
 		</property>
 	</bean>
-
-	<!-- gameConfig TransactionManager -->
-	<bean id="gameConfigTransactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-		<property name="sessionFactory">
-			<ref local="gameConfigSessionFactory" />
-		</property>
-	</bean>
-
-	<bean id="gameConfigBaseTransactionProxy" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
-		abstract="true">
-		<property name="transactionManager" ref="gameConfigTransactionManager" />
-		<property name="transactionAttributes">
-			<props>
-				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
-				<prop key="remove*">PROPAGATION_REQUIRED,-Exception</prop>
-				<prop key="save*">PROPAGATION_REQUIRED,-Exception</prop>
-				<prop key="create*">PROPAGATION_REQUIRED,-Exception</prop>
-				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
-				<prop key="update*">PROPAGATION_REQUIRED,-Exception</prop>
-				<prop key="is*">PROPAGATION_REQUIRED,readOnly</prop>
-			</props>
-		</property>
-	</bean>
 	<!-- mySql 配置结束 -->
-
-
-
 	<!-- mongo 配置开始 -->
 	<mongo:mongo host="${mongodb.host}" port="${mongodb.port}" />
 	<!-- mongo的工厂，通过它来取得mongo实例,dbname为mongodb的数据库名，没有的话会自动创建 -->
@@ -188,47 +163,39 @@
 	<mongo:repositories base-package="com.app.db.mongo.dao.impl,com.app.empire.gameaccount.dao.impl" />
 	<context:component-scan base-package="com.app.db,com.app.empire.world" />
 	<import resource="application-scheduling.xml" />
-	
-	
-	
-	
-	
-	
-<!-- 	<bean id="GameConfigService" parent="gameConfigBaseTransactionProxy">
-		<property name="target">
-			<bean class="com.app.empire.world.service.base.impl.GameConfigService">
-				<property name="baseLanguageDao">
-					<bean class="com.app.empire.world.dao.mysql.gameConfig.impl.BaseLanguageDao">
-						<property name="sessionFactory" ref="gameConfigSessionFactory" />
-					</bean>
-				</property>
-			</bean>
-		</property>
-	</bean> -->
-	
-	
+
+
+
+
+
+
+	<!-- <bean id="GameConfigService" parent="gameConfigBaseTransactionProxy"> <property name="target"> <bean class="com.app.empire.world.service.base.impl.GameConfigService"> 
+		<property name="baseLanguageDao"> <bean class="com.app.empire.world.dao.mysql.gameConfig.impl.BaseLanguageDao"> <property 
+		name="sessionFactory" ref="gameConfigSessionFactory" /> </bean> </property> </bean> </property> </bean> -->
+
+
 	<!-- world Service -->
 	<!-- <bean id="PlayerService" parent="worldBaseTransactionProxy"> <property name="target"> <bean class="com.app.empire.world.server.service.base.impl.BasePlayerService"> 
 		<property name="playerDao"> <bean class="com.app.empire.world.dao.mysql.gameConfig.impl.PlayerDao"> <property name="sessionFactory" 
 		ref="sessionFactory" /> </bean> </property> </bean> </property> </bean> -->
 
 	<!-- <bean id="ChatRecordService" parent="worldBaseTransactionProxy"> <property name="target"> <bean class="com.app.empire.world.server.service.base.impl.ChatRecordService"> 
-		<property name="dao"> <bean class="com.app.empire.world.dao.mysql.gameConfig.impl.ChatRecordDao"> <property name="sessionFactory" ref="sessionFactory" 
-		/> </bean> </property> </bean> </property> </bean> -->
+		<property name="dao"> <bean class="com.app.empire.world.dao.mysql.gameConfig.impl.ChatRecordDao"> <property name="sessionFactory" 
+		ref="sessionFactory" /> </bean> </property> </bean> </property> </bean> -->
 
 	<!-- <bean id="OperationConfigService" parent="worldBaseTransactionProxy"> <property name="target"> <bean class="com.app.empire.world.server.service.base.impl.OperationConfigService"> 
 		<property name="dao"> <bean class="com.app.empire.world.dao.mysql.gameConfig.impl.OperationConfigDao"> <property name="sessionFactory" 
 		ref="sessionFactory" /> </bean> </property> </bean> </property> </bean> -->
 	<!-- <bean id="OrderService" parent="worldBaseTransactionProxy"> <property name="target"> <bean class="com.app.empire.world.server.service.base.impl.OrderService"> 
-		<property name="dao"> <bean class="com.app.empire.world.dao.mysql.gameConfig.impl.OrderDao"> <property name="sessionFactory" ref="sessionFactory" 
-		/> </bean> </property> </bean> </property> </bean> -->
+		<property name="dao"> <bean class="com.app.empire.world.dao.mysql.gameConfig.impl.OrderDao"> <property name="sessionFactory" 
+		ref="sessionFactory" /> </bean> </property> </bean> </property> </bean> -->
 
 
 
 	<!-- 第三方渠道配置 by:zengxc -->
 	<!-- <bean id="ThirdConfigService" parent="worldBaseTransactionProxy"> <property name="target"> <bean class="com.app.empire.world.server.service.base.impl.ThirdConfigService"> 
-		<property name="dao"> <bean class="com.app.empire.world.dao.mysql.gameConfig.impl.ThirdConfigDao"> <property name="sessionFactory" ref="sessionFactory" 
-		/> </bean> </property> </bean> </property> </bean> -->
+		<property name="dao"> <bean class="com.app.empire.world.dao.mysql.gameConfig.impl.ThirdConfigDao"> <property name="sessionFactory" 
+		ref="sessionFactory" /> </bean> </property> </bean> </property> </bean> -->
 
 
 

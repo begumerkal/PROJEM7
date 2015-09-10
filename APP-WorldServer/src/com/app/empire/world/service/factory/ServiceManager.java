@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.app.empire.world.common.util.ThreadPool;
 import com.app.empire.world.service.base.impl.ChatService;
 import com.app.empire.world.service.base.impl.GameConfigService;
+import com.app.empire.world.service.base.impl.GameLogService;
 import com.app.empire.world.service.base.impl.PlayerService;
 import com.app.empire.world.service.impl.AbstractService;
 import com.app.empire.world.service.impl.ConnectService;
@@ -31,6 +32,8 @@ public class ServiceManager {
 
 	@Autowired
 	private GameConfigService gameConfigService;
+	@Autowired
+	private GameLogService gameLogService;
 	@Autowired
 	private PlayerService playerService;// 游戏角色服务
 	@Autowired
@@ -149,6 +152,10 @@ public class ServiceManager {
 
 	public GameConfigService getGameConfigService() {
 		return gameConfigService;
+	}
+
+	public GameLogService getGameLogService() {
+		return gameLogService;
 	}
 	
 
