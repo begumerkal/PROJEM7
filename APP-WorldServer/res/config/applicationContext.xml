@@ -43,7 +43,7 @@
 		<property name="maxIdle" value="10" />
 	</bean>
 
-	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+	<bean id="logSessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<!-- 配置Hibernate拦截器,自动填充数据的插入、更新时间 -->
 		<property name="dataSource" ref="dataSource" />
 		<property name="configLocation" value="classpath:hibernate.cfg.log.xml" />
@@ -76,7 +76,7 @@
 	<!-- log 事务管理 -->
 <!-- 	
 	<bean id="logTransactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="sessionFactory" ref="logSessionFactory" />
 	</bean>
 	<tx:advice id="txAdvice" transaction-manager="logTransactionManager">
 		<tx:attributes>
@@ -172,7 +172,6 @@
 	<!-- <bean id="GameConfigService" parent="gameConfigBaseTransactionProxy"> <property name="target"> <bean class="com.app.empire.world.service.base.impl.GameConfigService"> 
 		<property name="baseLanguageDao"> <bean class="com.app.empire.world.dao.mysql.gameConfig.impl.BaseLanguageDao"> <property 
 		name="sessionFactory" ref="gameConfigSessionFactory" /> </bean> </property> </bean> </property> </bean> -->
-
 
 	<!-- world Service -->
 	<!-- <bean id="PlayerService" parent="worldBaseTransactionProxy"> <property name="target"> <bean class="com.app.empire.world.server.service.base.impl.BasePlayerService"> 

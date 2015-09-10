@@ -33,12 +33,12 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends BaseDaoSupp
 		this.clazz = clazz;
 	}
 	@Autowired
-	@Qualifier("sessionFactory")
-    public void setMySessionFactory(SessionFactory sessionFactory){
-      super.setSessionFactory(sessionFactory);  
-      getHibernateTemplate().setCheckWriteOperations(false);//不检查读写权限
-    }
-	
+	@Qualifier("logSessionFactory")
+	public void setMySessionFactory(SessionFactory sessionFactory) {
+		super.setSessionFactory(sessionFactory);
+		getHibernateTemplate().setCheckWriteOperations(false);// 不检查读写权限
+	}
+
 	public List<T> getAll() {
 		return super.getHibernateTemplate().loadAll(this.clazz);
 	}
