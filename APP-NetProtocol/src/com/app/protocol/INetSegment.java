@@ -1,7 +1,7 @@
 package com.app.protocol;
 public abstract interface INetSegment {
-	public static final byte[] HEAD = {'H', 'O', 'G', 'P'};
-	public static final byte[] EMTPY_PACKET = {'H', 'O', 'G', 'P', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 18, 0, 0, 0};
+	public static final byte[] HEAD = {0, 0, 0, 1};
+	public static final byte[] EMTPY_PACKET = {0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 18, 0, 0, 0};
 
 	public abstract byte getType();
 
