@@ -18,7 +18,7 @@ public class ProtocolErrorHandler implements IDataHandler {
 		}
 		ConnectSession session = ((SessionRequest) request).getConnectionSession();
 		msg.setSerial(request.getId());
-		msg.setCause(ErrorMessages.getErrorMesssage(msg.getCode()));
+		msg.setMsg(ErrorMessages.getErrorMesssage(msg.getCode()));
 		msg.setSessionId(((SessionRequest) request).getSessionId());
 		if (session != null)
 			session.write(msg);
