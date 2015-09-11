@@ -207,7 +207,7 @@ public class WorldServer {
 		// threadPool.setMaxThreads(50);
 		// 设置监听端口，ip地址
 		SelectChannelConnector connector = new SelectChannelConnector();
-		connector.setPort(ServiceManager.getManager().getConfiguration().getInt("http"));
+		connector.setPort(ServiceManager.getManager().getConfiguration().getInt("httpPort"));
 		connector.setHost(ServiceManager.getManager().getConfiguration().getString("localip"));
 		server.addConnector(connector);
 		// 访问项目地址import org.mortbay.jetty.servlet.Context;
