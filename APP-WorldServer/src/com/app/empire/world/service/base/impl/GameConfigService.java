@@ -39,7 +39,7 @@ public class GameConfigService {
 			map2.put(map1.get("id"), map1);
 		}
 		this.gameConfig.put(key, map2);
-		System.out.println(this.gameConfig);
+//		System.out.println(this.gameConfig);
 	}
 	
 	
