@@ -25,8 +25,8 @@ public class ProtocolError extends AbstractData {
 
 	public ProtocolError(ProtocolException ex) {
 		this(ex.getSessionId(), ex.getSerial());
-		setType(ex.getType());
-		setSubType(ex.getSubType());
+		setErrorType(ex.getType());
+		setErrorSubType(ex.getSubType());
 		setMsg(ex.getMessage());
 		if (ex.getMessage() == null)
 			setMsg("");

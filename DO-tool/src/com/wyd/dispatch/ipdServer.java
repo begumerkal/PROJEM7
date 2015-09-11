@@ -54,7 +54,7 @@ public class ipdServer {
 	public void sendData() throws InterruptedException {
 		System.out.println("发送登录数据...");
 		Login login = new Login();
-		login.setAccountName("doter");
+		login.setAccountName("doter1");
 		login.setPassWord("123456");
 		login.setVersion("1.0.0.0");
 		login.setChannel(1000);
