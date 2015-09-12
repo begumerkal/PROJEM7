@@ -87,8 +87,8 @@ public class ByteListUtil {
 			//
 			str = str == null ? "" : str;
 			byte[] data = str.getBytes("utf-8");
-			list.add((byte) (data.length >>> 8 & 0xFF));
-			list.add((byte) (data.length >>> 0 & 0xFF));
+			list.add((byte) (data.length >> 8 & 0xFF));
+			list.add((byte) (data.length & 0xFF));
 			for (byte d : data) {
 				list.add(d);
 			}
