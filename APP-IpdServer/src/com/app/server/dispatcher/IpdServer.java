@@ -115,11 +115,5 @@ public class IpdServer {
 			DispatchSession ret = new DispatchSession(session);
 			return ret;
 		}
-
-		@Override
-		public void inputClosed(IoSession arg0) throws Exception {
-			// TODO Auto-generated method stub
-
-		}
 	}
 }

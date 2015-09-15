@@ -30,12 +30,12 @@ public abstract class SessionHandler implements IoHandler {
 	public SessionHandler(SessionRegistry registry) {
 		this.registry = registry;
 	}
-
+	@Override
 	public void exceptionCaught(IoSession session, Throwable ex) throws Exception {
 		// session.close(true);
 		log.error(ex, ex);
 	}
-
+	@Override
 	public void messageReceived(IoSession ioSession, Object msg) throws Exception {
 		AbstractData dataobj = (AbstractData) msg;
 		Session session = this.registry.getSession(ioSession);
@@ -68,16 +68,16 @@ public abstract class SessionHandler implements IoHandler {
 			}
 		}
 	}
-
+	@Override
 	public void messageSent(IoSession arg0, Object arg1) throws Exception {
 	}
-
+	@Override
 	public void sessionClosed(IoSession session) throws Exception {
 		Session s = this.registry.removeSession(session);
 		if (s != null)
 			s.closed();
 	}
-
+	@Override
 	public void sessionCreated(IoSession session) throws Exception {
 		Session s = createSession(session);
 		if (s != null) {
@@ -85,7 +85,7 @@ public abstract class SessionHandler implements IoHandler {
 			s.created();
 		}
 	}
-
+	@Override
 	public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
 		Session s = this.registry.getSession(session);
 		System.out.println("链接空闲－－" + session.toString());
@@ -93,14 +93,11 @@ public abstract class SessionHandler implements IoHandler {
 			s.idle(session, status);
 		}
 	}
-
+	@Override
 	public void sessionOpened(IoSession session) throws Exception {
 		Session s = this.registry.getSession(session);
 		if (s != null)
 			s.opened();
-	}
-
-	public void inputClosed(IoSession arg0) throws Exception {
 	}
 
 	public SessionRegistry getSessionRegistry() {
