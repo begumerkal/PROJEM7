@@ -8,6 +8,6 @@ LIB_PATH=${LIB_PATH}:$i
 done
 
 
-$JAVA_HOME/bin/java -server -Xmx512m -XX:MaxDirectMemorySize=128M -verbose:gc -Djava.awt.headless=true -Djava.nio.channels.spi.SelectorProvider=sun.nio.ch.EPollSelectorProvider -classpath .:$CLASSPATH:$LIB_PATH:dddDispatchServer.jar com.app.dispatch.Main >> stdout.log 2>&1 &
+$JAVA_HOME/bin/java -server -Xmx512m -XX:MaxDirectMemorySize=128M -verbose:gc -Djava.awt.headless=true -Djava.nio.channels.spi.SelectorProvider=sun.nio.ch.EPollSelectorProvider -classpath .:$CLASSPATH:$LIB_PATH:dddDispatchServer.jar com.app.DisServer.Main >> stdout.log 2>&1 &
 
 echo $! > ddddispatchserver.pid
