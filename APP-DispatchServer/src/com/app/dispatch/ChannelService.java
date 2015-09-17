@@ -1,35 +1,36 @@
 package com.app.dispatch;
 
+import io.netty.channel.Channel;
+
 import java.util.concurrent.ConcurrentHashMap;
-import org.apache.mina.core.session.IoSession;
 
 public class ChannelService {
-	private ConcurrentHashMap<String, Channel> channels = new ConcurrentHashMap<String, Channel>();
-	private Channel worldChannel = new Channel("WORLD");
+	private ConcurrentHashMap<String, Channels> channels = new ConcurrentHashMap<String, Channels>();
+	private Channels worldChannel = new Channels("WORLD");
 
 	public ChannelService() {
 		this.channels.put(this.worldChannel.getName(), this.worldChannel);
 	}
 
-	public Channel getWorldChannel() {
+	public Channels getWorldChannel() {
 		return this.worldChannel;
 	}
 
-	public Channel getAndCreate(String name) {
-		Channel channel = new Channel(name);
-		Channel c = this.channels.putIfAbsent(name, channel);
+	public Channels getAndCreate(String name) {
+		Channels channels = new Channels(name);
+		Channels c = this.channels.putIfAbsent(name, channels);
 		if (c == null) {
-			c = channel;
+			c = channels;
 		}
 		return c;
 	}
 
-	public Channel getChannel(String name) {
+	public Channels getChannel(String name) {
 		return this.channels.get(name);
 	}
 
-	public void removeSessionFromAllChannel(IoSession session) {
-		for (Channel channel : this.channels.values())
-			channel.removeSession(session);
+	public void removeSessionFromAllChannel(Channel channel) {
+		for (Channels channels : this.channels.values())
+			channels.removeSession(channel);
 	}
 }

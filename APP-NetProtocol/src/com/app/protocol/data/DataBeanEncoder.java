@@ -1,4 +1,7 @@
 package com.app.protocol.data;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToMessageEncoder;
+
 import java.lang.reflect.Field;
 import java.util.List;
 
@@ -7,13 +10,33 @@ import org.apache.log4j.Logger;
 
 import com.app.protocol.INetSegment;
 import com.app.protocol.ProtocolManager;
-public class DataBeanEncoder {
+public class DataBeanEncoder extends MessageToMessageEncoder<Object> {
 	Logger log;
 	// SimpleDateFormat sdf = new SimpleDateFormat("mm:ss:SSSS");
 	public DataBeanEncoder() {
 		this.log = Logger.getLogger(DataBeanEncoder.class);
 	}
-
+	@Override
+	protected void encode(ChannelHandlerContext ctx, Object msg, List<Object> out) throws Exception {
+		AbstractData data = (AbstractData) msg;
+		INetSegment segment = ProtocolManager.getNetSegmentInstance(data.getType(), data.getSubType(), data.getSessionId(), data.getSerial(), data.getFlag());
+		Field[] fs = data.getClass().getDeclaredFields();
+		for (Field f : fs) {
+			String ftype = f.getType().getSimpleName();
+			Object value = PropertyUtils.getProperty(data, f.getName());
+			if (value == null) {
+				System.out.println("type:" + data.getType() + "------------SubType:" + data.getSubType() + " PropertyName:" + f.getName() + " value is null");
+			} else if (value instanceof String[]) {
+				for (String str : (String[]) value) {
+					if (str == null) {
+						System.out.println("type:" + data.getType() + "------------SubType:" + data.getSubType() + " PropertyName:" + f.getName() + " value is null");
+					}
+				}
+			}
+			setValue(segment, f.getName(), ftype, value);
+		}
+		out.add(segment);
+	}
 	public INetSegment encode(AbstractData data) throws Exception {
 		INetSegment segment = ProtocolManager.getNetSegmentInstance(data.getType(), data.getSubType(), data.getSessionId(),
 				data.getSerial(), data.getFlag());
@@ -34,13 +57,6 @@ public class DataBeanEncoder {
 			}
 			setValue(segment, f.getName(), ftype, value);
 		}
-
-		// System.out.println("type:" + data.getType() + "------------SubType:"
-		// + data.getSubType());
-		// this.log.info("Send Msg —————— " + data.getClass().getSimpleName() +
-		// " " + data.getType() + "," + data.getSubType());
-		// System.out.println(sdf.format((new Date()))+"Send Msg —————— " +
-		// data.getClass().getSimpleName());
 		return segment;
 	}
 
@@ -80,4 +96,5 @@ public class DataBeanEncoder {
 			throw new IllegalAccessException("fieldName:" + fieldName + ",type:" + type + ",value:" + value);
 		}
 	}
+
 }

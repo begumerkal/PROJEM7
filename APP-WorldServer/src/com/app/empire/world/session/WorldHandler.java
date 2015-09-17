@@ -1,11 +1,11 @@
 package com.app.empire.world.session;
 
-import org.apache.mina.core.session.IoSession;
+import io.netty.channel.ChannelHandlerContext;
 
 import com.app.empire.world.service.factory.ServiceManager;
 import com.app.protocol.data.AbstractData;
 import com.app.session.Session;
-import com.app.session.SessionHandler;
+import com.app.session.ServerHandler;
 import com.app.session.SessionRegistry;
 
 /**
@@ -14,7 +14,7 @@ import com.app.session.SessionRegistry;
  * 
  * @since JDK 1.6
  */
-public abstract class WorldHandler extends SessionHandler {
+public abstract class WorldHandler extends ServerHandler {
 
 	/**
 	 * 构造函数，初始化<tt>SessionRegistry</tt>值
@@ -29,9 +29,9 @@ public abstract class WorldHandler extends SessionHandler {
 	 * 处理dis 转发过来的消息
 	 */
 	@Override
-	public void messageReceived(IoSession ioSession, Object msg) throws Exception {
+	public void messageReceived(ChannelHandlerContext ctx, Object msg) throws Exception {
 		AbstractData dataobj = (AbstractData) msg;
-		Session session = this.registry.getSession(ioSession);
+		Session session = this.registry.getSession(ctx.channel());
 		if (session != null)
 			ServiceManager.getManager().getAbstractService().addAbstractInfo(dataobj, session);
 		else

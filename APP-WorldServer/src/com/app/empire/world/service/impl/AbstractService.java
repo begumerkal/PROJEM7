@@ -22,7 +22,7 @@ import com.app.thread.ThreadPool;
 @Service
 public class AbstractService implements Runnable {
 	private Logger log = Logger.getLogger(AbstractService.class);
-	private HandlerThreadPool threadPool = new HandlerThreadPool(10, 100, 500);
+	private HandlerThreadPool threadPool = new HandlerThreadPool(20, 200, 500);
 	private LinkedBlockingQueue<AbstractInfo> abstractList = new LinkedBlockingQueue<AbstractInfo>(1024);
 
 	public AbstractService() {

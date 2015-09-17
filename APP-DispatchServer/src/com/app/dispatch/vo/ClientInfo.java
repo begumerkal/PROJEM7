@@ -1,8 +1,8 @@
 package com.app.dispatch.vo;
 
-import java.util.Timer;
+import io.netty.channel.Channel;
 
-import org.apache.mina.core.session.IoSession;
+import java.util.Timer;
 
 public class ClientInfo {
 	private long heartbeatTime = 0;// 心跳时间
@@ -11,12 +11,12 @@ public class ClientInfo {
 	private int protocolCount = 0;// 协议次数
 	private long moveTime = 0;// 移动时间
 	private int moveCount = 0;// 移动次数
-	private IoSession ioSession;
+	private Channel channel;
 	private Player player;
 	private Timer timer = new Timer();
 
-	public ClientInfo(IoSession ioSession) {
-		this.ioSession = ioSession;
+	public ClientInfo(Channel channel) {
+		this.channel = channel;
 	}
 
 	public long getHeartbeatTime() {
@@ -51,8 +51,8 @@ public class ClientInfo {
 		this.protocolCount = protocolCount;
 	}
 
-	public IoSession getIoSession() {
-		return ioSession;
+	public Channel getChannel() {
+		return channel;
 	}
 
 	public Player getPlayer() {

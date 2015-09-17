@@ -30,8 +30,8 @@ public class S2SSegment implements INetSegment {
         ByteListUtil.addByte(this.buffer, flag);//1
         ByteListUtil.addByte(this.buffer, type);//1
         ByteListUtil.addByte(this.buffer, subType);//1
-        ByteListUtil.addInt(this.buffer, 8);//4
-        ByteListUtil.addByte(this.buffer, (byte) 0);//1
+        ByteListUtil.addInt(this.buffer, 8);//4 数据长度
+        ByteListUtil.addByte(this.buffer, (byte) 0);//1　数据个数
     }
 
     public S2SSegment(byte type, byte subType, byte flag) {

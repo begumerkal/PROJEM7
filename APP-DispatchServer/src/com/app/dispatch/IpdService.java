@@ -1,6 +1,5 @@
 package com.app.dispatch;
 
-import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -10,12 +9,12 @@ import org.apache.log4j.Logger;
 
 import com.app.empire.protocol.data.server.SyncLoad;
 import com.app.empire.protocol.data.server.UpdateServerInfo;
+import com.app.protocol.data.AbstractData;
 
 public class IpdService implements Runnable {
-	private BlockingQueue<SyncLoad> messages = new LinkedBlockingQueue<SyncLoad>();
+	private BlockingQueue<AbstractData> messages = new LinkedBlockingQueue<AbstractData>();
 	private static final Logger log = Logger.getLogger(IpdService.class);
 	private IpdConnector connector;
-	private String mode;
 	private Configuration configuration;
 	/**
 	 * 初始化IP分配器，并连接IpdService服务器
@@ -27,27 +26,23 @@ public class IpdService implements Runnable {
 		String ip = configuration.getString("ipdServer");
 		int port = configuration.getInt("ipdPort");
 		this.connector = new IpdConnector("Ipd Connector", new InetSocketAddress(ip, port));
-		this.mode = configuration.getString("servertype");
-		if (!(this.mode.equals("singlesocket")))
-			ipdConnect();
+		new Thread(this, "IPD Service").start();
+		new Thread(new ipdConnect()).start();
 	}
 
 	/**
 	 * 连接IpdService服务器
 	 */
-	public void ipdConnect() {
-		try {
-			if (this.connector.isConnected())
-				this.connector.close();
-			this.connector.connect();
-			new Thread(this, "IPD Service").start();
-
-			if (this.connector.isConnected())
-				System.out.println("ipd 服务链接成功！");
-			else
-				System.out.println("ipd 服务链接失败！");
-		} catch (ConnectException e) {
-			log.warn("分配器连接失败！");
+	private class ipdConnect implements Runnable {
+		@Override
+		public void run() {
+			try {
+				if (IpdService.this.connector.isConnected())
+					IpdService.this.connector.close();
+				IpdService.this.connector.connect();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -68,8 +63,9 @@ public class IpdService implements Runnable {
 	 * 发送数据给ipdservice
 	 * 
 	 * @param data
+	 * @throws InterruptedException 
 	 */
-	public void updateServerInfo(String area, String group, int machineId, String version, String updateurl, String remark, String appraisal) {
+	public void updateServerInfo(String area, String group, int machineId, String version, String updateurl, String remark, String appraisal) throws InterruptedException {
 		UpdateServerInfo dataInfo = new UpdateServerInfo();
 		dataInfo.setArea(area);
 		dataInfo.setGroup(group);
@@ -85,13 +81,13 @@ public class IpdService implements Runnable {
 		String address = ip + ":" + port;
 
 		dataInfo.setAddress(address);
-		this.connector.send(dataInfo);
+		this.messages.put(dataInfo);
 	}
 
 	public void run() {
 		while (true) {
 			try {
-				SyncLoad notify = (SyncLoad) this.messages.take();
+				AbstractData notify = (AbstractData) this.messages.take();
 				this.connector.send(notify);
 			} catch (InterruptedException ex1) {
 				log.debug(ex1, ex1);

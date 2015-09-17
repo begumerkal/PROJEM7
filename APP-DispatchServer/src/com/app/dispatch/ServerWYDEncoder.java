@@ -1,13 +1,14 @@
 package com.app.dispatch;
-import org.apache.mina.core.buffer.IoBuffer;
-import org.apache.mina.core.session.IoSession;
-import org.apache.mina.filter.codec.ProtocolEncoder;
-import org.apache.mina.filter.codec.ProtocolEncoderOutput;
-public class ServerWYDEncoder implements ProtocolEncoder {
-	public void dispose(IoSession ioSession) throws Exception {
-	}
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToByteEncoder;
 
-	public void encode(IoSession session, Object object, ProtocolEncoderOutput out) throws Exception {
-		out.write((IoBuffer) object);
+import java.nio.ByteBuffer;
+
+public class ServerWYDEncoder extends MessageToByteEncoder<ByteBuffer> {
+	@Override
+	protected void encode(ChannelHandlerContext ctx, ByteBuffer msg, ByteBuf out) throws Exception {
+		out.writeBytes((ByteBuffer) msg);
+		ctx.flush();
 	}
 }

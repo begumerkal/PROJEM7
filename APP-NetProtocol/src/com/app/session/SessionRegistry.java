@@ -1,10 +1,11 @@
 package com.app.session;
 
+import io.netty.channel.Channel;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.mina.core.session.IoSession;
-
+ 
 /**
  * 类 SessionRegistry Session注册管理类 管理Session与IoSession，Id与Session关系
  * SessionRegistry会话注册类，用于快速查找IoSession与Session子类的映射关系
@@ -12,7 +13,7 @@ import org.apache.mina.core.session.IoSession;
  * @since JDK 1.7
  */
 public class SessionRegistry {
-	private ConcurrentHashMap<IoSession, Session> ioSession2Session = new ConcurrentHashMap<IoSession, Session>();
+	private ConcurrentHashMap<Channel, Session> channel2Session = new ConcurrentHashMap<Channel, Session>();
 	private ConcurrentHashMap<Integer, Session> sessionID2Session = new ConcurrentHashMap<Integer, Session>();
 	private AtomicInteger i = new AtomicInteger(1);
 
@@ -24,9 +25,9 @@ public class SessionRegistry {
 	 *            会话
 	 */
 	public void registry(Session session) {
-		this.ioSession2Session.put(session.getIoSession(), session);
+		this.channel2Session.put(session.getChannel(), session);
 		int sessionId = i.incrementAndGet();
-		session.sessionId = sessionId;
+		session.setSessionId(sessionId);
 		this.sessionID2Session.put(sessionId, session);
 	}
 
@@ -37,8 +38,8 @@ public class SessionRegistry {
 	 *            IoSession
 	 * @return 被删掉哈希表中IoSession对应的<tt>session</tt>值
 	 */
-	public Session removeSession(IoSession session) {
-		Session sessions = this.ioSession2Session.remove(session);
+	public Session removeSession(Channel channel) {
+		Session sessions = this.channel2Session.remove(channel);
 		if (sessions != null)
 			this.sessionID2Session.remove(sessions.sessionId);
 		return sessions;
@@ -53,7 +54,7 @@ public class SessionRegistry {
 	public Session removeSession(int sessionId) {
 		Session sessions = this.sessionID2Session.remove(sessionId);
 		if (sessions != null)
-			this.sessionID2Session.remove(sessions.getIoSession());
+			this.sessionID2Session.remove(sessions.getChannel());
 		return sessions;
 	}
 
@@ -64,8 +65,8 @@ public class SessionRegistry {
 	 *            IoSession
 	 * @return
 	 */
-	public Session getSession(IoSession session) {
-		return this.ioSession2Session.get(session);
+	public Session getSession(Channel channel) {
+		return this.channel2Session.get(channel);
 	}
 
 	/**
@@ -79,8 +80,8 @@ public class SessionRegistry {
 		return this.sessionID2Session.get(sessionId);
 	}
 
-	public ConcurrentHashMap<IoSession, Session> getIoSession2Session() {
-		return ioSession2Session;
+	public ConcurrentHashMap<Channel, Session> getChannel2Session() {
+		return this.channel2Session;
 	}
 
 	public ConcurrentHashMap<Integer, Session> getSessionID2Session() {

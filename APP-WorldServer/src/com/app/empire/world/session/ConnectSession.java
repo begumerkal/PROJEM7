@@ -1,21 +1,14 @@
 package com.app.empire.world.session;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import io.netty.channel.Channel;
+import io.netty.handler.timeout.IdleState;
+
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.log4j.Logger;
-import org.apache.mina.core.session.IdleStatus;
-import org.apache.mina.core.session.IoSession;
 
-import com.app.empire.protocol.data.account.RoleLoginOk;
 import com.app.empire.protocol.data.error.ProtocolError;
-import com.app.empire.protocol.data.server.Heartbeat;
 import com.app.empire.protocol.data.server.Kick;
 import com.app.empire.protocol.data.server.NotifyMaintance;
 import com.app.empire.protocol.data.server.NotifyMaxPlayer;
@@ -25,7 +18,6 @@ import com.app.empire.world.model.Client;
 import com.app.empire.world.model.player.WorldPlayer;
 import com.app.empire.world.service.base.impl.PlayerService;
 import com.app.empire.world.service.factory.ServiceManager;
-import com.app.empire.world.service.impl.ConnectService;
 import com.app.empire.world.skeleton.AccountSkeleton;
 import com.app.protocol.data.AbstractData;
 import com.app.protocol.exception.ProtocolException;
@@ -58,8 +50,8 @@ public class ConnectSession extends Session {
 	private AccountSkeleton accountSkeleton;
 	private boolean shutdown = false;
 
-	public ConnectSession(IoSession session) {
-		super(session);
+	public ConnectSession(Channel channel) {
+		super(channel);
 	}
 
 	@Override
@@ -80,7 +72,6 @@ public class ConnectSession extends Session {
 								"连接关闭保存玩家信息：id=" + player.getPlayer().getId() + "---name=" + player.getPlayer().getNickname() + "---level="
 										+ player.getPlayer().getLv());
 			}
-
 			log.info(this.name + "closed");
 			System.out.println("dispatch " + this.name + " closed");
 		}
@@ -92,9 +83,9 @@ public class ConnectSession extends Session {
 	}
 
 	@Override
-	public void idle(IoSession session, IdleStatus status) {
-		System.out.println("关闭链接：" + session);
-		session.close(true);
+	public void idle(Channel channel, IdleState status) {
+		System.out.println("关闭链接：" + channel);
+		close();
 	}
 
 	@Override

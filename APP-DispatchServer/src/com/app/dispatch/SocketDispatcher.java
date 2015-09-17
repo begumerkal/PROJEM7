@@ -1,33 +1,38 @@
 package com.app.dispatch;
 
+import io.netty.bootstrap.Bootstrap;
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.timeout.IdleState;
+import io.netty.handler.timeout.IdleStateEvent;
+import io.netty.handler.timeout.IdleStateHandler;
+import io.netty.util.AttributeKey;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.SocketAddress;
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.nio.ByteBuffer;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.log4j.Logger;
-import org.apache.mina.core.buffer.IoBuffer;
-import org.apache.mina.core.future.ConnectFuture;
-import org.apache.mina.core.service.IoHandlerAdapter;
-import org.apache.mina.core.session.IdleStatus;
-import org.apache.mina.core.session.IoSession;
-import org.apache.mina.filter.codec.ProtocolCodecFilter;
-import org.apache.mina.filter.executor.ExecutorFilter;
-import org.apache.mina.transport.socket.SocketSessionConfig;
-import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
-import org.apache.mina.transport.socket.nio.NioSocketConnector;
 import org.springframework.util.StringUtils;
 
 import com.app.dispatch.vo.ClientInfo;
 import com.app.dispatch.vo.Player;
 import com.app.empire.protocol.Protocol;
 import com.app.empire.protocol.data.account.Heartbeat;
-import com.app.empire.protocol.data.system.ShakeHands;
 import com.app.protocol.INetData;
 import com.app.protocol.ProtocolManager;
 import com.app.protocol.s2s.S2SData;
@@ -36,17 +41,15 @@ import com.app.protocol.s2s.S2SSegment;
 import edu.emory.mathcs.backport.java.util.Arrays;
 
 public class SocketDispatcher implements Dispatcher, Runnable {
-	private static final String ATTRIBUTE_STRING = "SESSIONID";
 	private static final Logger log = Logger.getLogger(SocketDispatcher.class);
 	private AtomicInteger ids = new AtomicInteger(0);
-	private ConcurrentHashMap<Integer, IoSession> sessions = new ConcurrentHashMap<Integer, IoSession>();// sessionID-->客户端iosession
+	private ConcurrentHashMap<Integer, Channel> sessions = new ConcurrentHashMap<Integer, Channel>();// sessionID-->客户端Channel
 	private ConcurrentHashMap<Integer, ClientInfo> allClientInfo = new ConcurrentHashMap<Integer, ClientInfo>();// playerId-->客户端
 
 	private ChannelService channelService = null;
-	private NioSocketAcceptor acceptor = null;
-	private NioSocketConnector connector = null;
+	private Channel worldChannel = null;
 	/** worldServer Iosession */
-	private IoSession serverSession = null;
+	private Channel serverSession = null;
 	/** 允许加载的ip段 */
 	private TrustIpService trustIpService = null;
 	private Configuration configuration = null;
@@ -54,12 +57,12 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	public static final String SERVERID = "serverid";
 	public static final String SERVERNAME = "servername";
 	public static final String SERVERPASSWORD = "serverpassword";
-	private SocketAddress address;
 	private boolean shutdown = false;
 	private Heartbeat heartbeat = new Heartbeat();
-	private static final String LOGINMARK_KEY = "ISLOGED";
-	protected static final String CLIENTINFO_KEY = "CLIENTINFO";
-	protected static final String PLAYERID_KEY = "PLAYERID";
+	private static final AttributeKey<Boolean> LOGINMARK_KEY = AttributeKey.valueOf("ISLOGED");
+	protected static final AttributeKey<ClientInfo> CLIENTINFO_KEY = AttributeKey.valueOf("CLIENTINFO");
+	protected static final AttributeKey<Integer> PLAYERID_KEY = AttributeKey.valueOf("PLAYERID");
+	private static final AttributeKey<Integer> ATTRIBUTE_STRING = AttributeKey.valueOf("SESSIONID");
 	private static final boolean LOGINMARK_UNLOG = false;
 	private static final boolean LOGINMARK_LOGED = true;
 
@@ -68,9 +71,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	}
 
 	public void start() {
-		Thread thread = new Thread(this);
-		thread.setName("OnlinePrinter");
-		thread.start();
+		new Thread(this, "OnlinePrinter").start();
 	}
 	/** 设置通道服务 */
 	public void setChannelService(ChannelService channelService) {
@@ -87,24 +88,28 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	}
 
 	/** 转发数据至 worldServer */
-	public void dispatchToServer(IoSession session, Object object) {
+	public void dispatchToServer(Channel channel, Object msg) {
 		// System.out.println("* 转发数据至 worldServer *");
-		Integer id = (Integer) session.getAttribute(ATTRIBUTE_STRING);
+		Integer id = (Integer) channel.attr(ATTRIBUTE_STRING).get();
+
 		if (id != null) {
-			IoBuffer buffer = (IoBuffer) object;
-			byte type = buffer.get(19);
-			byte subType = buffer.get(20);
-			if (checkProtocol(session, type, subType)) {// 协议检查
+			ByteBuffer data = (ByteBuffer) msg;
+
+			// byte type = data[18];// 第19个字节
+			// byte subType = data[19];// 第20个字节
+			// IoBuffer buffer = (IoBuffer) msg;
+			byte type = data.get(19);
+			byte subType = data.get(20);
+			if (checkProtocol(channel, type, subType)) {// 协议检查
 				if (type == Protocol.MAIN_ACCOUNT) {
 					if (subType == Protocol.ACCOUNT_Heartbeat) {// 回应客户端心跳协议
-						IoBuffer byteBuffer = IoBuffer.wrap(ProtocolManager.makeSegment(heartbeat).getPacketByteArray());
-						session.write(byteBuffer.duplicate());// 返回心跳协议
+						ByteBuffer byteBuffer = ByteBuffer.wrap(ProtocolManager.makeSegment(heartbeat).getPacketByteArray());
+						channel.writeAndFlush(byteBuffer.duplicate());// 返回心跳协议
 					} else if (subType == Protocol.ACCOUNT_Move) {// 玩家移动协议处理
 						try {
-							ClientInfo client = (ClientInfo) session.getAttribute(CLIENTINFO_KEY);
+							ClientInfo client = (ClientInfo) channel.attr(CLIENTINFO_KEY).get();
 							Player player = client.getPlayer();
-
-							INetData udata = new S2SData(Arrays.copyOfRange(buffer.array(), 18, buffer.array().length), 1, -1);
+							INetData udata = new S2SData(Arrays.copyOfRange(data.array(), 18, data.array().length), 1, -1);
 							int playerId = udata.readInt();
 							byte direction = udata.readByte();// 方向1-12
 							int toWidth = udata.readInt();// 所在宽度位置
@@ -113,23 +118,19 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 							player.setToWidth(toWidth);
 							player.setToHigh(toHigh);
 							this.syncService.broadcastingMove(client, toWidth, toHigh);
-
 						} catch (IllegalAccessException e) {
 							log.error(e.getMessage());
 							e.printStackTrace();
 						}
 					} else if (subType == Protocol.ACCOUNT_ReportPlace) {// 客户端告知服务器位置
 						try {
-							ClientInfo client = (ClientInfo) session.getAttribute(CLIENTINFO_KEY);
+							ClientInfo client = (ClientInfo) channel.attr(CLIENTINFO_KEY).get();
 							Player player = client.getPlayer();
-
-							INetData udata = new S2SData(Arrays.copyOfRange(buffer.array(), 18, buffer.array().length), 1, -1);
+							INetData udata = new S2SData(Arrays.copyOfRange(data.array(), 18, data.array().length), 1, -1);
 							byte direction = udata.readByte();// 方向1-12
 							int nowWidth = udata.readInt();// 所在宽度位置
 							int nowHigh = udata.readInt();// 所在高度位置
-
 							this.syncService.reportPlace(client, nowWidth, nowHigh);
-
 							player.setDirection(direction);
 							player.setWidth(nowWidth);
 							player.setHigh(nowHigh);
@@ -139,20 +140,21 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 							e.printStackTrace();
 						}
 					} else {
-						buffer.putInt(4, id.intValue());// sessionId
-						this.serverSession.write(buffer.duplicate());// 发送worldServer
+						data.putInt(4, id.intValue());// sessionId
+						this.serverSession.writeAndFlush(data.duplicate());// 发送worldServer
 					}
-				} else if ((Boolean) session.getAttribute(LOGINMARK_KEY) || type == Protocol.MAIN_ERRORCODE || type == Protocol.MAIN_SYSTEM) {// 判断用户是否已经登录或者为登录协议
-					buffer.putInt(4, id.intValue());// sessionId
-					this.serverSession.write(buffer.duplicate());// 发送worldServer
+				} else if ((Boolean) channel.attr(LOGINMARK_KEY).get() == true || type == Protocol.MAIN_ERRORCODE
+						|| type == Protocol.MAIN_SYSTEM) {// 判断用户是否已经登录或者为登录协议
+					data.putInt(4, id.intValue());// sessionId
+					this.serverSession.writeAndFlush(data.duplicate());// 发送worldServer
 				} else {// 不是心跳，不是登录协议，并且用户未登录则断开socket连接
-					log.info("用户未登录Kill Session LOGINMARK:" + session.getAttribute(LOGINMARK_KEY) + "---type:" + type + "---subtype:"
-							+ subType);
-					session.close(true);
+					log.info("用户未登录Kill Session LOGINMARK:" + (Boolean) channel.attr(LOGINMARK_KEY).get() + "---type:" + type
+							+ "---subtype:" + subType);
+					channel.close();
 				}
 			}
 		} else {
-			session.close(true);
+			channel.close();
 		}
 	}
 
@@ -164,8 +166,8 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	 * @param subType
 	 * @return true正常false异常
 	 */
-	public boolean checkProtocol(IoSession session, int type, int subType) {
-		ClientInfo client = (ClientInfo) session.getAttribute(CLIENTINFO_KEY);
+	public boolean checkProtocol(Channel channel, int type, int subType) {
+		ClientInfo client = (ClientInfo) channel.attr(CLIENTINFO_KEY).get();// session.getAttribute(CLIENTINFO_KEY);
 		long nowTime = System.currentTimeMillis();
 		if (client != null) {
 			if (type == Protocol.MAIN_ACCOUNT) {
@@ -173,8 +175,8 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 					if (nowTime - client.getHeartbeatTime() <= 10000) {
 						client.addHeartbeatCount();
 						if (client.getHeartbeatCount() > this.configuration.getInt("heartbeatCount")) {// 10秒钟内心跳数大于2则断开连接
-							log.info("Warning SessionId [" + session.getId() + "] HeartbeatCount: + " + client.getHeartbeatCount());
-							session.close(true);
+							log.info("Warning SessionId [" + channel.id() + "] HeartbeatCount: + " + client.getHeartbeatCount());
+							channel.close();
 							return false;
 						}
 					} else {
@@ -196,8 +198,8 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 				if (nowTime - client.getProtocolTime() <= 1000) {// 除战斗
 					client.addProtocolCount();
 					if (client.getProtocolCount() > this.configuration.getInt("protocolCount")) {// 1秒钟内协议大于15则断开连接
-						log.info("Warning SessionId [" + session.getId() + "] ProtocolCount: + " + client.getProtocolCount());
-						session.close(true);
+						log.info("Warning SessionId [" + channel.id() + "] ProtocolCount: + " + client.getProtocolCount());
+						channel.close();
 						return false;
 					}
 				} else {
@@ -206,13 +208,13 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 				}
 			}
 		} else {
-			session.close(true);
+			channel.close();
 			return false;
 		}
 		return true;
 	}
 
-	public IoSession getSession(int sessionId) {
+	public Channel getSession(int sessionId) {
 		return this.sessions.get(sessionId);
 	}
 
@@ -220,7 +222,7 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	public void sendControlSegment(S2SSegment seg) {
 		try {
 			seg.setSessionId(-1);
-			this.serverSession.write(IoBuffer.wrap(seg.getPacketByteArray()));
+			this.serverSession.writeAndFlush(ByteBuffer.wrap(seg.getPacketByteArray()));
 		} catch (NullPointerException e) {
 			log.info("this.serverSession is null.");
 			if (this.serverSession == null) {
@@ -232,38 +234,45 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	/**
 	 * 实现DispatchServer连接WorldServer，这时DispatchServer做为Client端
 	 * 
-	 * @param address
-	 *            连接地址
-	 * @param config
-	 *            配置信息
-	 * @return ConnectFuture 连接状态
 	 */
-	public ConnectFuture connect() {
-		int worldreceivebuffsize = this.configuration.getInt("worldreceivebuffsize");
-		int worldwritebuffsize = this.configuration.getInt("worldwritebuffsize");
-		String worldIp = this.configuration.getString("worldip");
-		int worldPort = this.configuration.getInt("worldport");
-		InetSocketAddress address = new InetSocketAddress(worldIp, worldPort);
-
-		this.connector = new NioSocketConnector(Runtime.getRuntime().availableProcessors() + 1);
-		SocketSessionConfig cfg = this.connector.getSessionConfig();
-		cfg.setIdleTime(IdleStatus.BOTH_IDLE, 120);
-		cfg.setTcpNoDelay(true);
-		cfg.setReceiveBufferSize(worldreceivebuffsize);
-		cfg.setSendBufferSize(worldwritebuffsize);
-		connector.getFilterChain().addLast("codec", new ProtocolCodecFilter(new ServerWYDEncoder(), new ServerWYDDecoder()));
-		connector.getFilterChain().addLast("threadPool", new ExecutorFilter(1, 4));
-		connector.setHandler(new ServerSessionHandler());
-		connector.setDefaultRemoteAddress(address);
-		ConnectFuture future = this.connector.connect();
-		future.awaitUninterruptibly();
-
-		if (this.serverSession == null || !this.serverSession.isConnected()) {
-			log.error("WorldServer 连接失败!");
-		} else {
-			System.out.println("WorldServer 连接成功!");
+	public void connect() {
+		new Thread(new ConnectWorld()).start();
+	}
+	private class ConnectWorld implements Runnable {
+		@Override
+		public void run() {
+			String worldIp = SocketDispatcher.this.configuration.getString("worldip");
+			int worldPort = SocketDispatcher.this.configuration.getInt("worldport");
+			InetSocketAddress address = new InetSocketAddress(worldIp, worldPort);
+			// 配置客户端NIO线程组
+			EventLoopGroup group = new NioEventLoopGroup();
+			try {
+				Bootstrap b = new Bootstrap();
+				b.group(group).channel(NioSocketChannel.class).handler(new ChannelInitializer<SocketChannel>() {
+					@Override
+					public void initChannel(SocketChannel ch) throws Exception {
+						ChannelPipeline p = ch.pipeline();
+						p.addLast(new IdleStateHandler(0, 0, 120));
+						p.addLast(new ServerWYDEncoder());
+						p.addLast(new ServerWYDDecoder());
+						p.addLast(new ServerSessionHandler());
+					}
+				});
+				b.option(ChannelOption.SO_KEEPALIVE, false);
+				b.option(ChannelOption.SO_REUSEADDR, true);
+				b.option(ChannelOption.TCP_NODELAY, true);
+				// 发起异步连接操作
+				ChannelFuture f = b.connect(address).sync();
+				// 等待客户端链路关闭
+				f.channel().closeFuture().sync();
+			} catch (Exception e) {
+				System.out.println(e.toString());
+			} finally {
+				// 释放NIO线程组
+				System.out.println("释放NIO线程组");
+				group.shutdownGracefully();
+			}
 		}
-		return future;
 	}
 
 	/**
@@ -278,42 +287,69 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	 * @throws IOException
 	 *             绑定监听出错时抛出些异常
 	 */
-	public void bind(SocketAddress address, int clientreceivebuffsize, int clientwritebuffsize) throws IOException {
-		this.address = address;
-		this.acceptor = new NioSocketAcceptor(Runtime.getRuntime().availableProcessors() + 1);
-		SocketSessionConfig cfg = acceptor.getSessionConfig();
-		cfg.setIdleTime(IdleStatus.BOTH_IDLE, 60);
-		cfg.setTcpNoDelay(true);
-		cfg.setReuseAddress(true);
-
-		acceptor.getSessionConfig().setTcpNoDelay(true);
-		acceptor.getSessionConfig().setReceiveBufferSize(clientreceivebuffsize);
-		acceptor.getSessionConfig().setSendBufferSize(clientwritebuffsize);
-		// 添加Protocol编码过滤器
-		acceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(new SimpleWYDEncoder(), new SimpleWYDDecoderForSocket()));
-		acceptor.getFilterChain().addLast("threadPool", new ExecutorFilter(1, 4));
-		acceptor.setHandler(new ClientSessionHandler());
-		acceptor.setDefaultLocalAddress(address);
-		this.acceptor.bind();
+	public void bind() throws IOException {
+		new Thread(new Bind(), "Dispatch_Service").start();
+	}
+	private class Bind implements Runnable {
+		@Override
+		public void run() {
+			// bossGroup线程池用来接受客户端的连接请求
+			EventLoopGroup bossGroup = new NioEventLoopGroup();
+			// workerGroup线程池用来处理boss线程池里面的连接的数据
+			EventLoopGroup workerGroup = new NioEventLoopGroup();
+			try {
+				// 配置服务器的NIO线程组
+				ServerBootstrap b = new ServerBootstrap();
+				b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).childHandler(new ChannelInitializer<SocketChannel>() {
+					@Override
+					public void initChannel(SocketChannel ch) throws Exception {
+						ChannelPipeline p = ch.pipeline();
+						p.addLast(new IdleStateHandler(0, 0, 60));
+						 p.addLast(new SimpleWYDEncoder());
+						p.addLast(new SimpleWYDDecoderForSocket());
+						p.addLast(new ClientSessionHandler());
+					}
+				});
+				b.option(ChannelOption.SO_REUSEADDR, true);
+				b.option(ChannelOption.TCP_NODELAY, true);
+				b.childOption(ChannelOption.SO_KEEPALIVE, false);
+				b.option(ChannelOption.SO_BACKLOG, 128);
+				// 绑定端口，同步等待成功
+				ChannelFuture f = b.bind(SocketDispatcher.this.configuration.getString("localip"),
+						SocketDispatcher.this.configuration.getInt("port")).sync();
+				SocketDispatcher.this.worldChannel = f.channel();
+				System.out.println("dis启动成功。。。");
+				// 等待服务端监听端口关闭
+				f.channel().closeFuture().sync();
+			} catch (Exception e) {
+				System.out.println("dis启动成功。。。");
+				SocketDispatcher.log.error(e.getMessage(), e);
+			} finally {
+				// 释放线程池资源
+				System.out.println("释放线程池资源");
+				workerGroup.shutdownGracefully();
+				bossGroup.shutdownGracefully();
+			}
+		}
 	}
 
 	/** 转发数据至前端 */
 	public void dispatchToClient(Packet packet) {
 		int sessionId = packet.sessionId;
-		IoBuffer buffer = packet.buffer;
-		IoSession session = (IoSession) this.sessions.get(Integer.valueOf(sessionId));
-		if (session != null) {
+		ByteBuffer buffer = packet.buffer;
+		Channel channel = (Channel) this.sessions.get(Integer.valueOf(sessionId));
+		if (channel != null) {
 			byte type = buffer.get(19);
 			if (type == Protocol.MAIN_ACCOUNT) {
 				byte subType = buffer.get(20);
 				if (subType == Protocol.ACCOUNT_LoginOk) {
 					// 账号登录成功
-					session.setAttribute(LOGINMARK_KEY, LOGINMARK_LOGED);
-					SocketDispatcher.this.channelService.getWorldChannel().join(session);
+					channel.attr(LOGINMARK_KEY).set(LOGINMARK_LOGED);
+					SocketDispatcher.this.channelService.getWorldChannel().join(channel);
 				} else if (subType == Protocol.ACCOUNT_RoleLoginOk) {
 					// 角色登录成功添加Player对象
 					try {
-						ClientInfo client = (ClientInfo) session.getAttribute(CLIENTINFO_KEY);
+						ClientInfo client = (ClientInfo) channel.attr(CLIENTINFO_KEY).get();
 						if (client == null)
 							throw new Exception("ClientInfo is null");
 						INetData udata = new S2SData(Arrays.copyOfRange(buffer.array(), 18, buffer.array().length), 1, sessionId);
@@ -332,34 +368,31 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 						player.setProperty(property);
 						player.setFight(fight);
 						client.setPlayer(player);
-						session.setAttribute(PLAYERID_KEY, playerId);
-						allClientInfo.put(playerId, client);
 
+						channel.attr(PLAYERID_KEY).set(playerId);
+						allClientInfo.put(playerId, client);
 					} catch (Exception ex) {
 						ex.printStackTrace();
 						log.error(ex, ex);
 					}
 				}
 			}
-			session.write(buffer);
+			channel.writeAndFlush(buffer);
 		}
 	}
 	/** 用户上线，注册客户端 */
-	public void registerClient(IoSession session) {
+	public void registerClient(Channel channel) {
 		Integer sessionId = this.ids.incrementAndGet();
 		if (sessionId < 0) {
 			log.info("用户链接SessionId: " + sessionId);
 		}
-		// session.getConfig().setIdleTime(IdleStatus.BOTH_IDLE, 60);// 空闲时间60秒
-		session.setAttribute(ATTRIBUTE_STRING, sessionId);
-		session.setAttribute(LOGINMARK_KEY, LOGINMARK_UNLOG);
-		// 设置客户端消息初始化
-		session.setAttribute(CLIENTINFO_KEY, new ClientInfo(session));
+		channel.attr(ATTRIBUTE_STRING).set(sessionId);
+		channel.attr(LOGINMARK_KEY).set(LOGINMARK_UNLOG);
+		channel.attr(CLIENTINFO_KEY).set(new ClientInfo(channel));
 
-		this.sessions.put(sessionId, session);
-		// this.channelService.getWorldChannel().join(session);
+		this.sessions.put(sessionId, channel);
 		// ====发送ip地址到worldserver===
-		InetSocketAddress address = (InetSocketAddress) session.getRemoteAddress();
+		InetSocketAddress address = (InetSocketAddress) channel.remoteAddress();
 		String hostAddress = address.getAddress().getHostAddress();
 		if (StringUtils.hasText(hostAddress)) {
 			S2SSegment seg = new S2SSegment((byte) Protocol.MAIN_SERVER, (byte) Protocol.SERVER_SetClientIPAddress);
@@ -367,16 +400,15 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 			seg.writeString(hostAddress);
 			sendControlSegment(seg);
 		}
-		// =======
 	}
 	/** 用户下线，注销客户端 */
-	protected void unRegisterClient(IoSession session) {
-		if ((Boolean) session.getAttribute(LOGINMARK_KEY)) {
-			this.channelService.getWorldChannel().removeSession(session);
+	protected void unRegisterClient(Channel channel) {
+		if ((Boolean) channel.attr(LOGINMARK_KEY).get() == true) {
+			this.channelService.getWorldChannel().removeSession(channel);
 			// this.channelService.removeSessionFromAllChannel(session);
 		}
-		Integer sessionId = (Integer) session.getAttribute(ATTRIBUTE_STRING);
-		Integer playerId = (Integer) session.getAttribute(PLAYERID_KEY);
+		Integer sessionId = (Integer) channel.attr(ATTRIBUTE_STRING).get();
+		Integer playerId = (Integer) channel.attr(PLAYERID_KEY).get();
 		if (sessionId != null) {
 			S2SSegment seg = new S2SSegment((byte) Protocol.MAIN_SERVER, (byte) Protocol.SERVER_SessionClosed);
 			seg.writeInt(sessionId.intValue());
@@ -388,28 +420,26 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	}
 	/** 提玩家下线 */
 	public void unRegisterClient(int sessionId) {
-		IoSession session = (IoSession) this.sessions.remove(Integer.valueOf(sessionId));
-		if ((session != null) && (session.isConnected()))
-			session.close(true);
+		Channel session = (Channel) this.sessions.remove(Integer.valueOf(sessionId));
+		if ((session != null) && (session.isActive()))
+			session.close();
 	}
 	/** 执行worldServer 发来的协议 */
 	protected void processControl(Packet packet) {
 		TimeControlProcessor.getControlProcessor().process(packet.data);
 	}
 	/** 广播线上所有用户 */
-	public void broadcast(IoBuffer buffer) {
-		for (IoSession session : this.sessions.values()) {
-			session.write(buffer.duplicate());
+	@Override
+	public void broadcast(ByteBuffer buffer) {
+		for (Channel channel : this.sessions.values()) {
+			channel.writeAndFlush(buffer.duplicate());
 		}
-		buffer.clear();
 	}
 	/** 重新开启服务 */
 	public void shutdown() {
-		this.acceptor.unbind();
+		this.worldChannel.close();
 		try {
-			this.acceptor.setHandler(new ClientSessionHandler());
-			this.acceptor.setDefaultLocalAddress(this.address);
-			this.acceptor.bind();
+			bind();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -446,9 +476,9 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 		while (true) {
 			try {
 				Thread.sleep(60000L);
+				log.info("ONLINE 链接数量[" + this.sessions.size() + "]");
 			} catch (InterruptedException ex) {
 			}
-			log.info("ONLINE Session[" + this.sessions.size() + "]");
 		}
 	}
 
@@ -456,16 +486,19 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 	 * DispatchServer处理WorldServer数据信息,做为客户端的处理Handler，第一次登陆时注册dispatcher
 	 * server信息
 	 */
-	class ServerSessionHandler extends IoHandlerAdapter {
+	class ServerSessionHandler extends SimpleChannelInboundHandler<Object> {
 		@Override
-		public void exceptionCaught(IoSession sesion, Throwable throwable) throws Exception {
+		public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
 			// sesion.close(true);
-			SocketDispatcher.log.error(throwable, throwable);
+			SocketDispatcher.log.error(cause, cause);
 		}
 		@Override
-		public void messageReceived(IoSession session, Object object) throws Exception {
-			Packet packet = (Packet) object;
-
+		public void channelReadComplete(ChannelHandlerContext ctx) {
+			ctx.flush();
+		}
+		@Override
+		protected void messageReceived(ChannelHandlerContext ctx, Object msg) throws Exception {
+			Packet packet = (Packet) msg;
 			if (packet.type == Packet.TYPE.BUFFER) {
 				// System.out.println("dis收到WORLD数据发前端：" +
 				// packet.data.toString());
@@ -475,8 +508,22 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 				SocketDispatcher.this.processControl(packet);
 			}
 		}
+
 		@Override
-		public void sessionClosed(IoSession session) throws Exception {
+		public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
+			serverSession = ctx.channel();
+		}
+		@Override
+		public void channelActive(ChannelHandlerContext ctx) throws Exception {
+			System.out.println("WorldServer 链接成功！！！");
+			S2SSegment seg = new S2SSegment(Protocol.MAIN_SERVER, Protocol.SERVER_DispatchLogin);
+			seg.writeString((String) SocketDispatcher.this.configuration.getProperty("area"));
+			seg.writeString((String) SocketDispatcher.this.configuration.getProperty("serverpassword"));
+			seg.writeInt(SocketDispatcher.this.configuration.getInt("maxplayer"));
+			SocketDispatcher.this.sendControlSegment(seg);
+		}
+		@Override
+		public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
 			serverSession = null;
 			// 断线重连worldServer
 			try {
@@ -488,58 +535,79 @@ public class SocketDispatcher implements Dispatcher, Runnable {
 			}
 		}
 
-		// I/O processor线程触发
 		@Override
-		public void sessionCreated(IoSession session) throws Exception {
-			serverSession = session;
-		}
-		@Override
-		public void sessionIdle(IoSession session, IdleStatus idleStatus) throws Exception {
-			S2SSegment seg = new S2SSegment(Protocol.MAIN_SERVER, Protocol.SERVER_Heartbeat);
-			SocketDispatcher.this.sendControlSegment(seg);
-		}
-		@Override
-		public void sessionOpened(IoSession session) {
-			S2SSegment seg = new S2SSegment(Protocol.MAIN_SERVER, Protocol.SERVER_DispatchLogin);
-			seg.writeString((String) SocketDispatcher.this.configuration.getProperty("area"));
-			seg.writeString((String) SocketDispatcher.this.configuration.getProperty("serverpassword"));
-			seg.writeInt(SocketDispatcher.this.configuration.getInt("maxplayer"));
-			SocketDispatcher.this.sendControlSegment(seg);
+		public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+			if (evt instanceof IdleStateEvent) {
+				S2SSegment seg = new S2SSegment(Protocol.MAIN_SERVER, Protocol.SERVER_Heartbeat);
+				IdleStateEvent e = (IdleStateEvent) evt;
+				if (e.state() == IdleState.READER_IDLE) {
+					SocketDispatcher.this.sendControlSegment(seg);
+					log.info("READER_IDLE 读超时");
+				} else if (e.state() == IdleState.ALL_IDLE) {
+					SocketDispatcher.this.sendControlSegment(seg);
+					log.info("ALL_IDLE 超时");
+				} else if (e.state() == IdleState.WRITER_IDLE) {
+					SocketDispatcher.this.sendControlSegment(seg);
+					log.info("WRITER_IDLE 写超时");
+				}
+			}
 		}
 	}
 
 	/**
 	 * DispatchServer做为服务器端的处理Handler，处理手机客户端的数据信息
 	 */
-	class ClientSessionHandler extends IoHandlerAdapter {
+	class ClientSessionHandler extends SimpleChannelInboundHandler<Object> {
 		@Override
-		public void exceptionCaught(IoSession session, Throwable throwable) throws Exception {
-			SocketDispatcher.log.error(throwable, throwable);
-			session.close(true);
+		public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+			SocketDispatcher.log.error(cause.getMessage(), cause);
+			ctx.channel().close();
 		}
 		@Override
-		public void messageReceived(IoSession session, Object object) throws Exception {
-			SocketDispatcher.this.dispatchToServer(session, object);
+		public void channelReadComplete(ChannelHandlerContext ctx) {
+			ctx.flush();
 		}
 		@Override
-		public void sessionClosed(IoSession session) throws Exception {
-			if (!(SocketDispatcher.this.shutdown))
-				SocketDispatcher.this.unRegisterClient(session);
+		protected void messageReceived(ChannelHandlerContext ctx, Object msg) throws Exception {
+			SocketDispatcher.this.dispatchToServer(ctx.channel(), msg);
+		}
+		// 通道注册
+		@Override
+		public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
 		}
 		@Override
-		public void sessionCreated(IoSession session) throws Exception {
-		}
-		@Override
-		public void sessionOpened(IoSession session) throws Exception {
-			InetSocketAddress address = (InetSocketAddress) session.getRemoteAddress();
-			SocketDispatcher.this.registerClient(session);
+		public void channelActive(ChannelHandlerContext ctx) throws Exception {
+			// 与客户端建立连接后
+			InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
+			SocketDispatcher.this.registerClient(ctx.channel());
 			log.info("ok:" + address.getAddress().getHostAddress());
 		}
 
+		// 通道取消注册
 		@Override
-		public void sessionIdle(IoSession session, IdleStatus idleStatus) throws Exception {
-			session.close(true);
+		public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
+			if (!(SocketDispatcher.this.shutdown))
+				SocketDispatcher.this.unRegisterClient(ctx.channel());
 		}
-	}
+		@Override
+		public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+			if (evt instanceof IdleStateEvent) {
+				IdleStateEvent e = (IdleStateEvent) evt;
+				if (e.state() == IdleState.READER_IDLE) {
+					this.channelIdle(ctx.channel(), e.state());
+					log.info("READER_IDLE 读超时--");
+				} else if (e.state() == IdleState.ALL_IDLE) {
+					this.channelIdle(ctx.channel(), e.state());
+					log.info("ALL_IDLE 超时--");
+				} else if (e.state() == IdleState.WRITER_IDLE) {
+					this.channelIdle(ctx.channel(), e.state());
+					log.info("WRITER_IDLE 写超时--");
+				}
+			}
+		}
+		private void channelIdle(Channel channel, IdleState state) throws Exception {
+			channel.close();
+		}
 
+	}
 }

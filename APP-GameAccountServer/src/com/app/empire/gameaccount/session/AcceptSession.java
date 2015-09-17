@@ -1,7 +1,9 @@
 package com.app.empire.gameaccount.session;
+import io.netty.channel.Channel;
+import io.netty.handler.timeout.IdleState;
+
 import java.net.SocketAddress;
-import org.apache.mina.core.session.IdleStatus;
-import org.apache.mina.core.session.IoSession;
+
 import com.app.protocol.data.AbstractData;
 import com.app.session.Session;
 
@@ -17,8 +19,8 @@ public class AcceptSession extends Session {
 		this.worldServerId = worldServerId;
 	}
 
-	public AcceptSession(IoSession session) {
-		this.session = session;
+	public AcceptSession(Channel channel) {
+		this.channel = channel;
 	}
 
 	public boolean isValid() {
@@ -30,20 +32,14 @@ public class AcceptSession extends Session {
 	}
 
 	public void send(AbstractData message) {
-		if ((this.session != null) && (this.session.isConnected())) {
-			this.session.write(message);
-		}
-	}
-
-	public void close() {
-		if ((this.session != null) && (this.session.isConnected())) {
-			this.session.close(true);
+		if (isConnected()) {
+			write(message);
 		}
 	}
 
 	public SocketAddress getRemoteAddress() {
-		if (this.session != null) {
-			return this.session.getRemoteAddress();
+		if (this.channel != null) {
+			return this.channel.remoteAddress();
 		}
 		return null;
 	}
@@ -73,8 +69,8 @@ public class AcceptSession extends Session {
 	}
 
 	@Override
-	public void idle(IoSession session, IdleStatus status) {
-		System.out.println("关闭链接：" + session + " worldServerId:" + worldServerId);
-		session.close(true);
+	public void idle(Channel channel, IdleState status) {
+		System.out.println("关闭链接：" + channel + " worldServerId:" + worldServerId);
+		channel.close();
 	}
 }

@@ -1,5 +1,17 @@
 package com.app.empire.world;
 
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.timeout.IdleStateHandler;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -8,12 +20,6 @@ import java.util.List;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.log4j.Logger;
-import org.apache.mina.core.session.IdleStatus;
-import org.apache.mina.core.session.IoSession;
-import org.apache.mina.filter.codec.ProtocolCodecFilter;
-import org.apache.mina.filter.executor.ExecutorFilter;
-import org.apache.mina.transport.socket.SocketSessionConfig;
-import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.mortbay.jetty.nio.SelectChannelConnector;
 import org.mortbay.jetty.servlet.Context;
 import org.springframework.context.ApplicationContext;
@@ -22,19 +28,17 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.app.empire.protocol.Protocol;
 import com.app.empire.world.common.util.HttpClientUtil;
 import com.app.empire.world.service.factory.ServiceManager;
-import com.app.empire.world.session.AuthSession;
 import com.app.empire.world.session.ConnectSession;
 import com.app.empire.world.session.WorldHandler;
 import com.app.empire.world.skeleton.AccountSkeleton;
 import com.app.empire.world.skeleton.BattleSkeleton;
-import com.app.empire.world.skeleton.NearbySkeleton;
 import com.app.net.IRequestService;
 import com.app.net.ProtocolFactory;
-import com.app.protocol.data.DataBeanFilter;
+import com.app.protocol.data.DataBeanDecoder;
+import com.app.protocol.data.DataBeanEncoder;
 import com.app.protocol.s2s.S2SDecoder;
 import com.app.protocol.s2s.S2SEncoder;
 import com.app.session.Session;
-import com.app.session.SessionHandler;
 import com.app.session.SessionRegistry;
 
 /**
@@ -47,6 +51,7 @@ public class WorldServer {
 	private static final Logger log = Logger.getLogger(WorldServer.class);
 	public IRequestService requestService;
 	public static WorldServer instance = null;
+	private Configuration configuration = null;
 	public static ServerConfig config;
 	private ApplicationContext context;
 
@@ -60,8 +65,6 @@ public class WorldServer {
 		long time = System.currentTimeMillis();
 		// 加载协议BeanData和Handler类及对象
 		ProtocolFactory.init(Protocol.class, "com.app.empire.protocol.data", "com.app.empire.world.server.handler");
-		// context = new ClassPathXmlApplicationContext(new
-		// String[]{"applicationContext.xml", "application-scheduling.xml"});
 		context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		ServiceManager sm = context.getBean(ServiceManager.class);
 		ServiceManager.setServiceManager(sm);
@@ -70,39 +73,29 @@ public class WorldServer {
 
 		// 加载游戏配置数据
 		ServiceManager.getManager().getGameConfigService().load();
-
 		// 加载configWorld.properties配置,读取配置文件内最大等级限制
-		Configuration configuration = ServiceManager.getManager().getConfiguration();
-		config = new ServerConfig(configuration);
+		this.configuration = ServiceManager.getManager().getConfiguration();
+		config = new ServerConfig(this.configuration);
 		// 初始化进程
 		ServiceManager.getManager().init();
 		// 是否在维护
-		String maintance = null;
-		maintance = configuration.getString("maintance");
+		String maintance = this.configuration.getString("maintance");
 		if (maintance == null) {
 			config.setMaintance(true);
 		} else if (maintance.toLowerCase().equals("false")) {
 			config.setMaintance(false);
 		}
-		// 创建SessionRegistry会话注册类，用于快速查找IoSession与Session子类的映射关系。
-
-		// 创建ConnectSessionHandler，是IoHandler子类，并创建会话ConnectSession——
-		// 其包含IoSession接口，并持有所需服务的引用。
 		log.info("connect auth");
-		// 连接GameAccountServer服务器
-		connectAccountService();
-		log.info("AccountService connected");
-		connectBattleService();
-		log.info("BattleService connected");
-		connectNearbyService();
-		log.info("NearbyService connected");
+		new Thread(new ConnectAccount()).start();
+		// connectBattleService();//跨服对战
 		// 启动世界服务器
-		bind(new ConnectSessionHandler(registry));
+		new Thread(new Bind(new ConnectSessionHandler(registry))).start();
+		// bind(new ConnectSessionHandler(registry));
 		// 启动游戏管理服务
 		openManagerServlet();
-		log.info("游戏世界服务器启动...");
-		System.out.println("游戏世界服务器启动...");
-		System.out.println("login time:" + ((System.currentTimeMillis() - time) / 1000) + "秒");
+		System.out.println("游戏世界服务器启动......");
+		System.out.println("use time:" + ((System.currentTimeMillis() - time) / 1000) + "秒");
+
 		// 同步GM工具中的服务器信息
 		if (null != configuration.getString("adminurl")) {
 			try {
@@ -118,7 +111,8 @@ public class WorldServer {
 				sb.append("\"}");
 				List<NameValuePair> data = new ArrayList<NameValuePair>();
 				data.add(new NameValuePair("param", sb.toString()));
-				System.out.println(HttpClientUtil.PostData(configuration.getString("adminurl") + "/updateWorld/updateWorld.action", data));
+				System.out.println(HttpClientUtil.PostData(this.configuration.getString("adminurl") + "/updateWorld/updateWorld.action",
+						data));
 			} catch (Exception e) {
 			}
 		}
@@ -136,8 +130,8 @@ public class WorldServer {
 				sb.append("\"}");
 				List<NameValuePair> data = new ArrayList<NameValuePair>();
 				data.add(new NameValuePair("param", sb.toString()));
-				System.out
-						.println(HttpClientUtil.PostData(configuration.getString("rechargeurl") + "/updateWorld/updateWorld.action", data));
+				System.out.println(HttpClientUtil.PostData(this.configuration.getString("rechargeurl") + "/updateWorld/updateWorld.action",
+						data));
 			} catch (Exception e) {
 			}
 		}
@@ -148,21 +142,21 @@ public class WorldServer {
 	 * @param handler
 	 * @throws Exception
 	 */
-	private void connectAccountService() throws Exception {
-		String authip = ServiceManager.getManager().getConfiguration().getString("authip");
-		String authport = ServiceManager.getManager().getConfiguration().getString("authport");
-		AccountSkeleton accountSkeleton = new AccountSkeleton("accountskeleton", new InetSocketAddress(authip, Integer.parseInt(authport)));
-		accountSkeleton.setUserName(config.getAreaId());
-		accountSkeleton.setPassword(ServiceManager.getManager().getConfiguration().getString("serverpassword"));
-		accountSkeleton.connect();
-
-		if (accountSkeleton.isConnected())
-			System.out.println("账号服务器链接..成功！");
-		else
-			System.out.println("账号服务器链接..失败！");
-
-		log.info("Account auth connected");
-		ServiceManager.getManager().setAccountSkeleton(accountSkeleton);
+	private class ConnectAccount implements Runnable {
+		@Override
+		public void run() {
+			try {
+				String authip = ServiceManager.getManager().getConfiguration().getString("authip");
+				String authport = ServiceManager.getManager().getConfiguration().getString("authport");
+				AccountSkeleton accountSkeleton = new AccountSkeleton("accountskeleton", new InetSocketAddress(authip,
+						Integer.parseInt(authport)));
+				ServiceManager.getManager().setAccountSkeleton(accountSkeleton);
+				accountSkeleton.connect();
+				log.info("Account auth connected");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	/**
 	 * 启动游戏世界，启动端口监听
@@ -171,26 +165,52 @@ public class WorldServer {
 	 * @param sessionHandler
 	 * @throws Exception
 	 */
-	private void bind(WorldHandler sessionHandler) throws Exception {
-		NioSocketAcceptor acceptor = new NioSocketAcceptor(Runtime.getRuntime().availableProcessors() + 1);
-
-		SocketSessionConfig cfg = acceptor.getSessionConfig();
-		cfg.setIdleTime(IdleStatus.BOTH_IDLE, 180);
-		cfg.setReuseAddress(true);
-
-		// 添加IoHandler处理线程池
-		acceptor.getFilterChain().addFirst("uwap2databean", new DataBeanFilter());
-		acceptor.getFilterChain().addFirst("uwap2codec", new ProtocolCodecFilter(new S2SEncoder(), new S2SDecoder()));
-		acceptor.getFilterChain().addLast("threadPool", new ExecutorFilter(4, 16));
-		// 会话配置
-		cfg.setReceiveBufferSize(ServiceManager.getManager().getConfiguration().getInt("receivebuffsize"));
-		cfg.setSendBufferSize(ServiceManager.getManager().getConfiguration().getInt("writebuffsize"));
-		cfg.setTcpNoDelay(ServiceManager.getManager().getConfiguration().getBoolean("tcpnodelay"));
-		acceptor.setHandler(sessionHandler);
-		acceptor.setDefaultLocalAddress(new InetSocketAddress(ServiceManager.getManager().getConfiguration().getString("localip"),
-				ServiceManager.getManager().getConfiguration().getInt("port")));
-		// 监听
-		acceptor.bind();
+	class Bind implements Runnable {
+		WorldHandler sessionHandler;
+		public Bind(WorldHandler sessionHandler) {
+			this.sessionHandler = sessionHandler;
+		}
+		@Override
+		public void run() {
+			// bossGroup线程池用来接受客户端的连接请求
+			EventLoopGroup bossGroup = new NioEventLoopGroup();
+			// workerGroup线程池用来处理boss线程池里面的连接的数据
+			EventLoopGroup workerGroup = new NioEventLoopGroup();
+			try {
+				// 配置服务器的NIO线程组
+				ServerBootstrap b = new ServerBootstrap();
+				b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).childHandler(new ChannelInitializer<SocketChannel>() {
+					@Override
+					public void initChannel(SocketChannel ch) throws Exception {
+						ChannelPipeline p = ch.pipeline();
+						p.addLast(new IdleStateHandler(0, 0, 180));
+						p.addLast(new S2SEncoder());
+						p.addLast(new S2SDecoder());
+						p.addLast(new DataBeanEncoder());
+						p.addLast(new DataBeanDecoder());
+						p.addLast(sessionHandler);
+					}
+				});
+				b.option(ChannelOption.SO_REUSEADDR, true);
+				b.option(ChannelOption.TCP_NODELAY, true);
+				b.childOption(ChannelOption.SO_KEEPALIVE, false);
+				b.option(ChannelOption.SO_BACKLOG, 128);
+				// 绑定端口，同步等待成功
+				ChannelFuture f = b
+						.bind(WorldServer.this.configuration.getString("localip"), WorldServer.this.configuration.getInt("port")).sync();
+				System.out.println("游戏逻辑服启动成功。。。");
+				// 等待服务端监听端口关闭
+				f.channel().closeFuture().sync();
+			} catch (Exception e) {
+				System.out.println("游戏逻辑服启动失败!!!");
+				WorldServer.log.error(e.getMessage(), e);
+			} finally {
+				// 释放线程池资源
+				System.out.println("释放线程池资源");
+				workerGroup.shutdownGracefully();
+				bossGroup.shutdownGracefully();
+			}
+		}
 	}
 
 	/**
@@ -212,41 +232,54 @@ public class WorldServer {
 		server.addConnector(connector);
 		// 访问项目地址import org.mortbay.jetty.servlet.Context;
 		Context root = new Context(server, "/", 1);
-		
-		
-// 
-//		// 网易的充值平台回调地址
-//		root.addServlet(new ServletHolder(new CallBackServlet()), "/callback/*");
-//		root.addServlet(new ServletHolder(new PointCallBackServlet()), "/pointcallback/*");
-//
-//		// 爱游戏平台服务器验证
-//		root.addServlet(new ServletHolder(new SynchronousServlet()), "/synchronous/*");
-//		// EFUN充值接入
-//		root.addServlet(new ServletHolder(new RechargeServlet()), "/recharge/*");
-//		// EFUN充值接入(新)
-//		root.addServlet(new ServletHolder(new RechargeNewServlet()), "/rechargeNew/*");
-//		// tapjoy接入
-//		root.addServlet(new ServletHolder(new TapzoyServlet()), "/tapjoy/*");
-//		// 第三方支付获取玩家信息接口
-//		root.addServlet(new ServletHolder(new GetPlayerInfoServlet()), "/getPlayerInfo/*");
-//		// 外部抽奖检查用户信息是否正确
-//		root.addServlet(new ServletHolder(new CheckPlayerInfoServlet()), "/checkinfo/*");
-//		// 外部抽奖发放奖励
-//		root.addServlet(new ServletHolder(new ItemsGivenServlet()), "/itemsgiven/*");
-//		// 批量发放奖励
-//		root.addServlet(new ServletHolder(new BatchRunSendRewardServlet()), "/BatchRunSendReward/*");
-//		// 批量发放宠物
-//		root.addServlet(new ServletHolder(new GiftPetByGMServlet()), "/GiftPetByGM/*");
-//		// 意见箱导出excel
-//		root.addServlet(new ServletHolder(new ExportExcelOPServlet()), "/ExportExcelOP/*");
-//		// 查询发放物品日志
-//		root.addServlet(new ServletHolder(new GetItemLogServlet()), "/GetItemLog/*");
-//		// 查询发放金币日志
-//		root.addServlet(new ServletHolder(new GetGoldCountLogServlet()), "/GetGoldCountLog/*");
-//		// 查询强化日志
-//		root.addServlet(new ServletHolder(new GetStrongRecordLogServlet()), "/GetStrongRecordLog/*");
-//		
-//		
+
+		//
+		// // 网易的充值平台回调地址
+		// root.addServlet(new ServletHolder(new CallBackServlet()),
+		// "/callback/*");
+		// root.addServlet(new ServletHolder(new PointCallBackServlet()),
+		// "/pointcallback/*");
+		//
+		// // 爱游戏平台服务器验证
+		// root.addServlet(new ServletHolder(new SynchronousServlet()),
+		// "/synchronous/*");
+		// // EFUN充值接入
+		// root.addServlet(new ServletHolder(new RechargeServlet()),
+		// "/recharge/*");
+		// // EFUN充值接入(新)
+		// root.addServlet(new ServletHolder(new RechargeNewServlet()),
+		// "/rechargeNew/*");
+		// // tapjoy接入
+		// root.addServlet(new ServletHolder(new TapzoyServlet()), "/tapjoy/*");
+		// // 第三方支付获取玩家信息接口
+		// root.addServlet(new ServletHolder(new GetPlayerInfoServlet()),
+		// "/getPlayerInfo/*");
+		// // 外部抽奖检查用户信息是否正确
+		// root.addServlet(new ServletHolder(new CheckPlayerInfoServlet()),
+		// "/checkinfo/*");
+		// // 外部抽奖发放奖励
+		// root.addServlet(new ServletHolder(new ItemsGivenServlet()),
+		// "/itemsgiven/*");
+		// // 批量发放奖励
+		// root.addServlet(new ServletHolder(new BatchRunSendRewardServlet()),
+		// "/BatchRunSendReward/*");
+		// // 批量发放宠物
+		// root.addServlet(new ServletHolder(new GiftPetByGMServlet()),
+		// "/GiftPetByGM/*");
+		// // 意见箱导出excel
+		// root.addServlet(new ServletHolder(new ExportExcelOPServlet()),
+		// "/ExportExcelOP/*");
+		// // 查询发放物品日志
+		// root.addServlet(new ServletHolder(new GetItemLogServlet()),
+		// "/GetItemLog/*");
+		// // 查询发放金币日志
+		// root.addServlet(new ServletHolder(new GetGoldCountLogServlet()),
+		// "/GetGoldCountLog/*");
+		// // 查询强化日志
+		// root.addServlet(new ServletHolder(new GetStrongRecordLogServlet()),
+		// "/GetStrongRecordLog/*");
+		//
+		//
 		server.start();
 	}
 	/**
@@ -261,31 +294,9 @@ public class WorldServer {
 		if (null != battleip && null != battleport) {
 			BattleSkeleton battleSkeleton = new BattleSkeleton("battleSkeleton", new InetSocketAddress(battleip,
 					Integer.parseInt(battleport)));
-			battleSkeleton.setUserName(config.getMachineCode() + "");
-			battleSkeleton.setPassword(ServiceManager.getManager().getConfiguration().getString("serverpassword"));
 			battleSkeleton.connect();
 			log.info("Battle auth connected");
 			ServiceManager.getManager().setBattleSkeleton(battleSkeleton);
-		}
-	}
-
-	/**
-	 * 附近好友服务
-	 * 
-	 * @param handler
-	 * @throws Exception
-	 */
-	private void connectNearbyService() throws Exception {
-		String nearbyip = ServiceManager.getManager().getConfiguration().getString("nearbyip");
-		String nearbyport = ServiceManager.getManager().getConfiguration().getString("nearbyport");
-		if (null != nearbyip && null != nearbyport) {
-			NearbySkeleton nearbySkeleton = new NearbySkeleton("nearbySkeleton", new InetSocketAddress(nearbyip,
-					Integer.parseInt(nearbyport)));
-			nearbySkeleton.setUserName(config.getMachineCode() + "");
-			nearbySkeleton.setPassword(ServiceManager.getManager().getConfiguration().getString("serverpassword"));
-			nearbySkeleton.connect();
-			log.info("Nearby auth connected");
-			// ServiceManager.getManager().getNearbyService().setNearbySkeleton(nearbySkeleton);
 		}
 	}
 
@@ -304,18 +315,11 @@ public class WorldServer {
 		}
 	}
 
-	class AuthSessionHandler extends SessionHandler {
-		public AuthSessionHandler(SessionRegistry paramSessionRegistry) {
-			super(paramSessionRegistry);
+	class ConnectSessionHandler extends WorldHandler {
+		
+		public ConnectSessionHandler(SessionRegistry sessionRegistry) {
+			super(sessionRegistry);
 		}
-
-		@Override
-		public Session createSession(IoSession session) {
-			return new AuthSession(session);
-		}
-	}
-
-	static class ConnectSessionHandler extends WorldHandler {
 		/**
 		 * 创建一个　Session　类
 		 * 
@@ -324,17 +328,12 @@ public class WorldServer {
 		 * @return ConnectSession
 		 */
 		@Override
-		public Session createSession(IoSession session) {
-			ConnectSession connSession = new ConnectSession(session);
+		public Session createSession(Channel channel) {
+			ConnectSession connSession = new ConnectSession(channel);
 			ServiceManager serviceManager = ServiceManager.getManager();
 			connSession.setAccountSkeleton(serviceManager.getAccountSkeleton());
 			connSession.setPlayerService(serviceManager.getPlayerService());
 			return connSession;
 		}
-
-		public ConnectSessionHandler(SessionRegistry sessionRegistry) {
-			super(sessionRegistry);
-		}
-
 	}
 }

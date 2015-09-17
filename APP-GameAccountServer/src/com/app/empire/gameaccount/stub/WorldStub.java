@@ -1,22 +1,29 @@
 package com.app.empire.gameaccount.stub;
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.timeout.IdleStateHandler;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.log4j.Logger;
-import org.apache.mina.core.session.IdleStatus;
-import org.apache.mina.core.session.IoSession;
-import org.apache.mina.filter.codec.ProtocolCodecFilter;
-import org.apache.mina.filter.executor.ExecutorFilter;
-import org.apache.mina.transport.socket.SocketSessionConfig;
-import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 
 import com.app.empire.gameaccount.session.AcceptSession;
-import com.app.protocol.data.DataBeanFilter;
+import com.app.protocol.data.DataBeanDecoder;
+import com.app.protocol.data.DataBeanEncoder;
 import com.app.protocol.s2s.S2SDecoder;
 import com.app.protocol.s2s.S2SEncoder;
 import com.app.session.Session;
-import com.app.session.SessionHandler;
+import com.app.session.ServerHandler;
 import com.app.session.SessionRegistry;
 /**
  * 账号服务
@@ -25,7 +32,6 @@ import com.app.session.SessionRegistry;
  *
  */
 public class WorldStub {
-	private NioSocketAcceptor acceptor;
 	private Configuration configuration;
 	private int receiveBufferSize = 32767;
 	private int sendBufferSize = 32767;
@@ -37,42 +43,52 @@ public class WorldStub {
 		this.configuration = configuration;
 	}
 
-	public void start() throws IOException {
-		this.acceptor = new NioSocketAcceptor(Runtime.getRuntime().availableProcessors() + 1);
-		SocketSessionConfig cfg = acceptor.getSessionConfig();
-		cfg.setIdleTime(IdleStatus.BOTH_IDLE,180);
-		cfg.setTcpNoDelay(true);
-		cfg.setReuseAddress(true);
-		if (this.configuration.containsKey("receivebuffersize")) {
-			this.receiveBufferSize = this.configuration.getInt("receivebuffersize");
+	public void start() throws Exception {
+		// bossGroup线程池用来接受客户端的连接请求
+		EventLoopGroup bossGroup = new NioEventLoopGroup();
+		// workerGroup线程池用来处理boss线程池里面的连接的数据
+		EventLoopGroup workerGroup = new NioEventLoopGroup();
+		try {
+			// 配置服务器的NIO线程组
+			ServerBootstrap b = new ServerBootstrap();
+			b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).childHandler(new ChannelInitializer<SocketChannel>() {
+				@Override
+				public void initChannel(SocketChannel ch) throws Exception {
+					ChannelPipeline p = ch.pipeline();
+					p.addLast(new IdleStateHandler(0, 0, 180));
+					p.addLast(new S2SEncoder());
+					p.addLast(new S2SDecoder());
+					p.addLast(new DataBeanEncoder());
+					p.addLast(new DataBeanDecoder());
+					p.addLast(new ClientSessionHandler(WorldStub.this.registry));
+				}
+			});
+			b.option(ChannelOption.SO_REUSEADDR, true);
+			b.option(ChannelOption.TCP_NODELAY, true);
+			b.childOption(ChannelOption.SO_KEEPALIVE, false);
+			b.option(ChannelOption.SO_BACKLOG, 128);
+			// 绑定端口，同步等待成功
+			ChannelFuture f = b.bind(this.configuration.getString("serverip"), this.configuration.getInt("port")).sync();
+			System.out.println("游戏分区帐号数据服务器启动..."+this.configuration.getString("serverip")+":"+this.configuration.getString("port"));
+			log.info("游戏分区帐号数据服务器启动..."+this.configuration.getString("serverip")+":"+this.configuration.getString("port"));
+			// 等待服务端监听端口关闭
+			f.channel().closeFuture().sync();
+		} finally {
+			// 释放线程池资源
+			// System.out.println("释放线程池资源");
+			workerGroup.shutdownGracefully();
+			bossGroup.shutdownGracefully();
 		}
-		if (this.configuration.containsKey("sendbuffersize")) {
-			this.sendBufferSize = this.configuration.getInt("sendbuffersize");
-		}
-		cfg.setReceiveBufferSize(this.receiveBufferSize);
-		cfg.setSendBufferSize(this.sendBufferSize);
-		this.acceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(new S2SEncoder(), new S2SDecoder()));
-		this.acceptor.getFilterChain().addLast("uwap2data", new DataBeanFilter());
-		acceptor.getFilterChain().addLast("threadPool", new ExecutorFilter(1, 4));
-
-		// 指定业务逻辑处理器
-		acceptor.setHandler(new ClientSessionHandler(this.registry));
-		// 设置端口号
-		acceptor.setDefaultLocalAddress(new InetSocketAddress(this.configuration.getString("serverip"), this.configuration.getInt("port")));
-		acceptor.bind();
-		log.info("游戏分区帐号数据服务器启动..."+this.configuration.getString("serverip")+":"+this.configuration.getString("port"));
 	}
-
-	class ClientSessionHandler extends SessionHandler {
-
+		
+	class ClientSessionHandler extends ServerHandler {
 		public ClientSessionHandler(SessionRegistry registry) {
 			super(registry);
 		}
-
 		@Override
-		public Session createSession(IoSession ioSession) {
+		public Session createSession(Channel channel) {
 //			System.out.println("有 WorldServer 链接过来..");
-			return new AcceptSession(ioSession);
+			return new AcceptSession(channel);
 		}
 
 	}

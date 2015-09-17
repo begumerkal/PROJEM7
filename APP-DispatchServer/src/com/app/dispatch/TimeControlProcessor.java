@@ -1,10 +1,11 @@
 package com.app.dispatch;
+import io.netty.channel.Channel;
+
+import java.nio.ByteBuffer;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.log4j.Logger;
-import org.apache.mina.core.buffer.IoBuffer;
-import org.apache.mina.core.session.IoSession;
 
 import com.app.empire.protocol.Protocol;
 import com.app.protocol.INetData;
@@ -161,18 +162,18 @@ public class TimeControlProcessor implements ControlProcessor, Runnable {
 	/** 玩家聊天频道设置 */
 	private void syncChannel(INetData data) throws Exception {
 		int sessionId = data.readInt();
-		IoSession session = dispatcher.getSession(sessionId);
+		Channel session = dispatcher.getSession(sessionId);
 		if (session != null) {
 			String addChannels[] = data.readStrings();
 			String removeChannels[] = data.readStrings();
 			for (String str : addChannels) {
-				Channel channel = channelService.getAndCreate(str);
-				channel.join(session);
+				Channels channels = channelService.getAndCreate(str);
+				channels.join(session);
 			}
 			for (String str : removeChannels) {
-				Channel channel = channelService.getChannel(str);
-				if (channel != null)
-					channel.removeSession(session);
+				Channels channels = channelService.getChannel(str);
+				if (channels != null)
+					channels.removeSession(session);
 			}
 		}
 	}
@@ -195,7 +196,7 @@ public class TimeControlProcessor implements ControlProcessor, Runnable {
 	 * @throws Exception
 	 */
 	private void forceBroadcast(INetData data) throws Exception {
-		dispatcher.broadcast(IoBuffer.wrap(data.readBytes()));
+		dispatcher.broadcast(ByteBuffer.wrap(data.readBytes()));
 	}
 
 	/**
@@ -205,9 +206,9 @@ public class TimeControlProcessor implements ControlProcessor, Runnable {
 	 * @throws Exception
 	 */
 	private void broadcast(INetData data) throws Exception {
-		Channel channel = channelService.getChannel(data.readString());
-		if (channel != null)
-			channel.broadcast(IoBuffer.wrap(data.readBytes()));
+		Channels channels = channelService.getChannel(data.readString());
+		if (channels != null)
+			channels.broadcast(ByteBuffer.wrap(data.readBytes()));
 	}
 
 	/**

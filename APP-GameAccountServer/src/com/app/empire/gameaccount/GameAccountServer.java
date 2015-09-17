@@ -17,8 +17,6 @@ public class GameAccountServer {
 		ServiceFactory sf = context.getBean(ServiceFactory.class);
 		sf.setServiceFactory(sf);// 因为herder处理是new出来的
 		sf.getWorldStub().start();
-
-		System.out.println("游戏分区帐号数据服务器启动...");
 	}
 
 	public static void main(String[] args) throws Exception {

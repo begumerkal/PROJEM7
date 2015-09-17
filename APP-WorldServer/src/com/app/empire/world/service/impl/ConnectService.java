@@ -1,8 +1,9 @@
 package com.app.empire.world.service.impl;
 
+import io.netty.channel.Channel;
+
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.mina.core.session.IoSession;
 import org.springframework.stereotype.Service;
 
 import com.app.empire.world.session.ConnectSession;
@@ -22,7 +23,7 @@ public class ConnectService implements Runnable {
 
 	/** 广播数据到所有的dis */
 	public void broadcast(AbstractData seg) {
-		ConcurrentHashMap<IoSession, Session> sessionMap = registry.getIoSession2Session();
+		ConcurrentHashMap<Channel, Session> sessionMap = registry.getChannel2Session();
 		for (Session session : sessionMap.values()) {
 			session.write(seg);
 		}
@@ -35,21 +36,21 @@ public class ConnectService implements Runnable {
 	 * @param playerId
 	 */
 	public void writeTo(AbstractData seg, int playerId) {
-		ConcurrentHashMap<IoSession, Session> sessionMap = registry.getIoSession2Session();
+		ConcurrentHashMap<Channel, Session> sessionMap = registry.getChannel2Session();
 		for (Session session : sessionMap.values()) {
 			((ConnectSession) session).write(seg, playerId);
 		}
 	}
 	/** 重启dis */
 	public void shutdown() {
-		ConcurrentHashMap<IoSession, Session> sessionMap = registry.getIoSession2Session();
+		ConcurrentHashMap<Channel, Session> sessionMap = registry.getChannel2Session();
 		for (Session session : sessionMap.values()) {
 			((ConnectSession) session).shutdown();
 		}
 	}
 
 	public void logOnline() {
-		ConcurrentHashMap<IoSession, Session> sessionMap = registry.getIoSession2Session();
+		ConcurrentHashMap<Channel, Session> sessionMap = registry.getChannel2Session();
 		for (Session session : sessionMap.values()) {
 			((ConnectSession) session).loginOnline();
 		}
@@ -57,7 +58,7 @@ public class ConnectService implements Runnable {
 
 	public int getOnline() {
 		int playerNum = 0;
-		ConcurrentHashMap<IoSession, Session> sessionMap = registry.getIoSession2Session();
+		ConcurrentHashMap<Channel, Session> sessionMap = registry.getChannel2Session();
 		for (Session session : sessionMap.values()) {
 			playerNum += ((ConnectSession) session).sessionSize();
 		}
@@ -71,14 +72,14 @@ public class ConnectService implements Runnable {
 	 *            据账号id
 	 */
 	public void forceLogout(int accountId) {
-		ConcurrentHashMap<IoSession, Session> sessionMap = registry.getIoSession2Session();
+		ConcurrentHashMap<Channel, Session> sessionMap = registry.getChannel2Session();
 		for (Session session : sessionMap.values()) {
 			((ConnectSession) session).forceLogout(accountId);
 		}
 	}
 	 /** 禁止玩家上线*/
 	public void kick(int playerId) {
-		ConcurrentHashMap<IoSession, Session> sessionMap = registry.getIoSession2Session();
+		ConcurrentHashMap<Channel, Session> sessionMap = registry.getChannel2Session();
 		for (Session session : sessionMap.values()) {
 			((ConnectSession) session).kick(playerId);
 		}
@@ -93,7 +94,7 @@ public class ConnectService implements Runnable {
 			} catch (InterruptedException ex) {
 			}
 			try {
-				ConcurrentHashMap<IoSession, Session> sessionMap = registry.getIoSession2Session();
+				ConcurrentHashMap<Channel, Session> sessionMap = registry.getChannel2Session();
 				for (Session session : sessionMap.values()) {
 					((ConnectSession) session).notifyMaxPlayer();
 				}

@@ -1,9 +1,6 @@
 package com.app.dispatch;
 
-import java.net.InetSocketAddress;
-
 import org.apache.log4j.Logger;
-import org.apache.mina.core.future.ConnectFuture;
 
 import com.app.empire.protocol.Protocol;
 import com.app.net.ProtocolFactory;
@@ -57,66 +54,23 @@ public class DisServer {
 		this.ipdService = new IpdService(configuration.getConfiguration());
 		this.controlProcessor.setIpdService(this.ipdService);
 
-		int worldreceivebuffsize = configuration.getConfiguration().getInt("worldreceivebuffsize");
-		int worldwritebuffsize = configuration.getConfiguration().getInt("worldwritebuffsize");
-		if ("socket".equals(serverType)) {
-			// dis 监听端口链接客户端
-			this.dispatcher = new SocketDispatcher(configuration.getConfiguration());
-			((SocketDispatcher) this.dispatcher).start();
-			((SocketDispatcher) this.dispatcher).setChannelService(this.channelService);
-			((SocketDispatcher) this.dispatcher).setTrustIpService(this.trustIpService);
-			((SocketDispatcher) this.dispatcher).setSyncService(this.syncService);
-			
-			
-			this.controlProcessor.setDispatcher(this.dispatcher);
-			// 配置
-			int clientreceivebuffsize = configuration.getConfiguration().getInt("clientreceivebuffsize");
-			int clientwritebuffsize = configuration.getConfiguration().getInt("clientwritebuffsize");
-			String ip = configuration.getConfiguration().getString("localip");
-			int port = configuration.getConfiguration().getInt("port");
-			((SocketDispatcher) this.dispatcher).bind(new InetSocketAddress(ip, port), clientreceivebuffsize, clientwritebuffsize);
-			log.info("binded");
-			// 链接world
-			ConnectFuture future = ((SocketDispatcher) this.dispatcher).connect();
-			// 阻塞数据，直到确定与world server连接成功
-			future.awaitUninterruptibly();
-			log.info("数据分发服务器启动完成  -- 端口:" + configuration.getConfiguration().getInt("port"));
-		} else {
-			ConnectFuture future = null;
-			if ("http".equals(serverType)) {
-				this.dispatcher = new HttpDispatcher(this.controlProcessor, configuration.getConfiguration());
-				((HttpDispatcher) this.dispatcher).start();
-				((HttpDispatcher) this.dispatcher).setChannelService(this.channelService);
-				((HttpDispatcher) this.dispatcher).setTrustIpService(this.trustIpService);
-				this.controlProcessor.setDispatcher(this.dispatcher);
-				((HttpDispatcher) this.dispatcher).bind(configuration.getConfiguration().getString("localip"), configuration
-						.getConfiguration().getInt("port"));
-				log.info("binded");
-				future = ((HttpDispatcher) this.dispatcher).connect(
-						new InetSocketAddress(configuration.getConfiguration().getString("worldip"), configuration.getConfiguration()
-								.getInt("worldport")), worldreceivebuffsize, worldwritebuffsize);
-				future.awaitUninterruptibly();
-				log.info("Http Dispatch Started");
-				log.info("数据分发服务器启动完成  -- 端口:" + configuration.getConfiguration().getInt("port"));
-			} else if ("singlesocket".equals(serverType)) {
-				this.dispatcher = new SingleSocketDispatcher(this.controlProcessor, configuration.getConfiguration());
-				((SingleSocketDispatcher) this.dispatcher).setChannelService(this.channelService);
-				((SingleSocketDispatcher) this.dispatcher).setTrustIpService(this.trustIpService);
-				((SingleSocketDispatcher) this.dispatcher).setIpdService(this.ipdService);
-				this.controlProcessor.setDispatcher(this.dispatcher);
-				((SingleSocketDispatcher) this.dispatcher).bind(new InetSocketAddress(
-						configuration.getConfiguration().getString("localip"), configuration.getConfiguration().getInt("port")),
-						worldreceivebuffsize, worldwritebuffsize);
-				log.info("binded");
-				future = ((SingleSocketDispatcher) this.dispatcher).connect(new InetSocketAddress(configuration.getConfiguration()
-						.getString("worldip"), configuration.getConfiguration().getInt("worldport")), worldreceivebuffsize,
-						worldwritebuffsize);
-				future.awaitUninterruptibly();
-				log.info("SingleSocket Dispatch Started");
-			} else {
-				throw new RuntimeException("Unknow Server Type");
-			}
-		}
+		// dis 监听端口链接客户端
+		this.dispatcher = new SocketDispatcher(configuration.getConfiguration());
+		((SocketDispatcher) this.dispatcher).start();// 打印链接数量
+		((SocketDispatcher) this.dispatcher).setChannelService(this.channelService);
+		((SocketDispatcher) this.dispatcher).setTrustIpService(this.trustIpService);
+		((SocketDispatcher) this.dispatcher).setSyncService(this.syncService);
+		this.controlProcessor.setDispatcher(this.dispatcher);
+		((SocketDispatcher) this.dispatcher).bind();
+
+		// 链接worldServer
+		((SocketDispatcher) this.dispatcher).connect();
+		// 链接world
+		// ConnectFuture future = ((SocketDispatcher)
+		// this.dispatcher).connect();
+		// // 阻塞数据，直到确定与world server连接成功
+		// future.awaitUninterruptibly();
+		log.info("数据分发服务器启动完成  -- 端口:" + configuration.getConfiguration().getInt("port"));
 		System.out.println("数据分发服务器启动完成  -- 端口:" + configuration.getConfiguration().getInt("port"));
 	}
 }

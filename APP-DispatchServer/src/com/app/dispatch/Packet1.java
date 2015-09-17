@@ -1,14 +1,14 @@
 package com.app.dispatch;
 
-import org.apache.mina.core.buffer.IoBuffer;
+import java.nio.ByteBuffer;
 
 public class Packet1 {
 	public TYPE type = TYPE.BUFFER;
-	public IoBuffer buffer;
+	public ByteBuffer buffer;
 	public int sessionId = 0;
 	public int param = 0;
 
-	public Packet1(IoBuffer buffer, int sessionId) {
+	public Packet1(ByteBuffer buffer, int sessionId) {
 		this.type = TYPE.BUFFER;
 		this.buffer = buffer;
 		this.sessionId = sessionId;

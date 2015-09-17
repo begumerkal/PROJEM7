@@ -1,7 +1,8 @@
 package com.app.server.dispatcher;
+import io.netty.channel.Channel;
+import io.netty.handler.timeout.IdleState;
+
 import org.apache.log4j.Logger;
-import org.apache.mina.core.session.IdleStatus;
-import org.apache.mina.core.session.IoSession;
 
 import com.app.server.service.ServiceManager;
 import com.app.session.Session;
@@ -13,8 +14,8 @@ public class DispatchSession extends Session {
 	private Integer serverId;
 	private String address;
 
-	public DispatchSession(IoSession session) {
-		super(session);
+	public DispatchSession(Channel channel) {
+		super(channel);
 	}
 	@Override
 	public void closed() {
@@ -31,9 +32,9 @@ public class DispatchSession extends Session {
 	public void opened() {
 	}
 	@Override
-	public void idle(IoSession session, IdleStatus status) {
-		System.out.println("关闭链接："+session);
-		session.close(true);
+	public void idle(Channel channel, IdleState status) {
+		System.out.println("关闭链接："+channel);
+		channel.close();
 	}
 	public int getId() {
 		return this.id;
