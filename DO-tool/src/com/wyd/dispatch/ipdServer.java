@@ -54,7 +54,7 @@ public class ipdServer {
 	public void sendData() throws InterruptedException {
 		System.out.println("发送登录数据...");
 		Login login = new Login();
-		login.setAccountName("doter1");
+		login.setAccountName("doter");
 		login.setPassWord("123456");
 		login.setVersion("1.0.0.0");
 		login.setChannel(1000);
@@ -62,16 +62,18 @@ public class ipdServer {
 		login.setSystemName("Andro");
 		login.setSystemVersion("1.0.0.1");
 		this.connector.send(login);
-
 		Thread.sleep(1000);
 		System.out.println("发送获取角色列表数据...");
-		GetRoleList roleList = new GetRoleList();
-		this.connector.send(roleList);
+		for (int i = 0; i < 100000000; i++) {
+			GetRoleList roleList = new GetRoleList();
+			this.connector.send(roleList);
+			Thread.sleep(1);
+		}
 
 		Thread.sleep(1000);
 		System.out.println("发送角色登录数据...");
 		RoleLogin roleLogin = new RoleLogin();
-		roleLogin.setNickname("一日千里1");
+		roleLogin.setNickname("一日千里");
 		roleLogin.setHeroExtId(1);
 		roleLogin.setClientModel("--");
 		roleLogin.setSystemName("--");
