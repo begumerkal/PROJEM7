@@ -1,7 +1,5 @@
 package com.app.empire.world;
 
-import io.netty.channel.ChannelHandler.Sharable;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -316,7 +314,7 @@ public class WorldServer {
 			return new AuthSession(session);
 		}
 	}
-	@Sharable
+
 	static class ConnectSessionHandler extends WorldHandler {
 		/**
 		 * 创建一个　Session　类
