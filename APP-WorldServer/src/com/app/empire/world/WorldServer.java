@@ -40,7 +40,7 @@ import com.app.protocol.s2s.S2SDecoder;
 import com.app.protocol.s2s.S2SEncoder;
 import com.app.session.Session;
 import com.app.session.SessionRegistry;
-
+import io.netty.channel.ChannelHandler.Sharable;
 /**
  * 类 WorldServer 游戏世界入口类。 创建游戏世界中各服务，创建监听端口、连接帐号服务器
  * 
@@ -314,7 +314,7 @@ public class WorldServer {
 			}
 		}
 	}
-
+	@Sharable
 	class ConnectSessionHandler extends WorldHandler {
 		
 		public ConnectSessionHandler(SessionRegistry sessionRegistry) {
