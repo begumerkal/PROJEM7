@@ -64,11 +64,11 @@ public class ipdServer {
 		this.connector.send(login);
 		Thread.sleep(1000);
 		System.out.println("发送获取角色列表数据...");
-		for (int i = 0; i < 100000000; i++) {
+//		for (int i = 0; i < 100000000; i++) {
 			GetRoleList roleList = new GetRoleList();
 			this.connector.send(roleList);
 			Thread.sleep(1);
-		}
+//		}
 
 		Thread.sleep(1000);
 		System.out.println("发送角色登录数据...");

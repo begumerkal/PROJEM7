@@ -2,12 +2,11 @@
 <random>
 	<area id="CN">
 	    <group id="G1" >
-			<machine id="0" name="一区" istest="1" openudid="0" bulletin="服务器正在维护" >50</machine>
-			<machine id="1" name="二区" istest="0" openudid="0" bulletin="服务器正在维护" >100</machine>
-			<machine id="2" name="三区" istest="0" openudid="0" bulletin="服务器正在维护" >100</machine>
-			<machine id="3" name="四区" istest="0" openudid="0" bulletin="服务器正在维护" >100</machine>
-			<machine id="4" name="五区 " istest="0" openudid="0" bulletin="服务器正在维护" >100</machine>
-			<machine id="5" name="6区" istest="0" openudid="0" bulletin="服务器正在维护" >100</machine>
+			<machine id="1" name="一区区黄巍" istest="0" openudid="0" bulletin="服务器正在维护" >100</machine>
+			<machine id="2" name="二区黄巍" istest="0" openudid="0" bulletin="服务器正在维护" >100</machine>
+			<machine id="3" name="三区黄巍" istest="0" openudid="0" bulletin="服务器正在维护" >100</machine>
+			<machine id="4" name="皓东" istest="0" openudid="0" bulletin="服务器正在维护" >100</machine>
+			<machine id="5" name="五区" istest="0" openudid="0" bulletin="服务器正在维护" >100</machine>
 			<machine id="6" name="7区" istest="0" openudid="0" bulletin="服务器正在维护" >100</machine>
 			<machine id="7" name="8区" istest="0" openudid="0" bulletin="服务器正在维护" >100</machine>
 			<machine id="8" name="9区" istest="0" openudid="0" bulletin="服务器正在维护" >100</machine>
