@@ -2,8 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="res/config"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/APP-DB"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/APP-EmpireNetProtocol"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/APP-NetProtocol"/>
+	<classpathentry kind="lib" path="/home/doter/apps-n/game/Library/lib/netty-all-5.0.0.Alpha2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/NetGame"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
